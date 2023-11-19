@@ -10,56 +10,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="flex">
+    <header class="nav-bar">
+        <div class="title">
             <img src="websiteimages/sargento_logo.png" alt="">
-            <div class="h-container">
-                <h1 class="gold-gradient">Sargento Upholstery</h1>
-                <h2>Textile Furniture Services</h2>
+            <div class="h-title">
+                <h1 class="gold-gradient m-0">Sargento Upholstery</h1>
+                <h2 class="m-0">Textile Furniture Service</h2>
             </div>
         </div>
-        <nav>
+        <div class="navlinks">
             <a href="services_craftsmanship.html">Services</a>
             <a href="testimonials.html">Testimonials</a>
             <a href="contact_us.html">Contact Us</a>
-        </nav>
+        </div>
     </header>
 
-    <!-- Remove divider div -->
-    <!-- This is only for testing header and footer -->
+    <!-- Remove divider -->
     <div class="divider">
-
     </div>
     <!-- Remove divider -->
 
-    <footer class="flex">
-        <div class="footer-title flex">
+    <footer class="footer">
+        <div class="footer-title d-flex">
             <img src="websiteimages/sargento_logo.png" alt="">
-            <div>
-                <h2 class="gold-gradient title">Sargento Upholstery</h2>
-                <span class="sub-title">Textile Furniture Service</span>
+            <div class="f-title">
+                <h3 class="gold-gradient m-0 main-title">Sargento Upholstery</h3>
+                <h3 class="m-0 sub-title">Textile Furniture Service</h3>
             </div>
         </div>
         <div class="socials">
             <h3>Socials</h3>
-            <a href="">
-                <img src="websiteimages/email_logo.png" alt="">
-            </a>
-            <a href="">
-                <img src="websiteimages/facebook_logo.png" alt="">
-            </a>
-            <a href="">
-                <img src="websiteimages/messenger_logo.png" alt="">
-            </a>
-        </div>  
+            <div class="img-container d-flex">
+                <a href="mailto:placeholder@test.com"><img src="websiteimages/email_logo.png" alt=""></a>     
+                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/facebook_logo.png" alt=""></a>
+                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/messenger_logo.png" alt=""></a>
+            </div>
+        </div>
         <div class="quicklinks">
             <h3>Quicklinks</h3>
-            <a href="">Services</a>
-            <a href="">Our Work</a>
-            <a href="">Order</a>
-            <a href="">Testimonials</a>
-            <a href="">About Us</a>
-            <a href="">Contact Us</a>
+            <div class="d-flex link-container">
+                <div class="left d-flex flex-column">
+                    <a href="about_us.html">About Us</a>
+                    <a href="contact_us.html">Contact Us</a>
+                </div>
+                <div class="right d-flex flex-column">
+                    <a href="services_craftsmanship.html">Service</a>
+                    <a href="services_works.html">Our Works</a>
+                    <a href="order.html">Order</a>
+                    <a href="testimonials.html">Testimonials</a>
+                </div>
+            </div>
         </div>
     </footer>
 </body>

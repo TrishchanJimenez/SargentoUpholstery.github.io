@@ -1,54 +1,11 @@
 body {
     margin: 0;
     font-family: 'Playfair Display', sans-serif;
-}
-
-header {
-    background-color: #111111;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 3vw;
-}
-
-header img {
-    /* max-width: 100%;
-    height: auto; */
-    margin: 5px;
+    overflow-x: hidden;
 }
 
 a {
     text-decoration: none;
-}
-
-h1 {
-    margin: 0;
-}
-
-header h2 {
-    color: white;
-    margin: 0;
-    font-size: 0.9em;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-}
-
-nav a {
-    color: white;
-    margin: 0px 30px;
-    padding: 5px 5px;
-    font-weight: bold;
-}
-
-footer {
-    background-color: #111111;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    justify-content: space-between;
-}
-
-footer h3 {
-    color: white;
 }
 
 .gold-gradient {
@@ -57,40 +14,161 @@ footer h3 {
     -webkit-background-clip: text; 
 }
 
-.flex {
+.m-0 {
+    margin: 0;
+}
+
+.d-flex {
     display: flex;
 }
 
-.h-container {
-    margin-top: 9px;
-    margin-left: 8px;
+.flex-column {
+    flex-direction: column;
+}
+
+.nav-bar {
+    width: 100%;
+    height: 100px;
+    align-content: center;
+    align-items: center;
+    background-color: #111111;
+    padding: 0.5% 0% 0.5% 2%;
 }
 
 .title {
+    display: flex;
+    width: 40%;
+    height: 100px;
+    float: left;
+}
+
+.title h1 {
+    font-size: 36px;
+}
+
+.title h2 {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.h-title {
+    margin-top: 1.5%;
+    margin-left: 1.5%;
+}
+
+.navlinks {
+    display: flex;
+    justify-content: flex-end;
+    width: 30%;
+    height: 100px;
+    float: right;
+    align-content: center;
+    margin-right: 5%;
+}
+
+.navlinks a {
+    align-self: center;
+    color: white;
+    padding: 0 3%;
+    margin: 0 1%;
     font-weight: bold;
-    font-size: 30px;
-    text-wrap: nowrap;
+    font-size: 18px;
+}
+
+.divider {
+    height: 100px;
+}
+
+.footer {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    background-color: #111111;
+    padding-top: 1%;
+}
+
+.footer-title {
+    width: 33%;
+    height: 120px;
+    float: left;
+    align-items: center;
+    margin-left: 2%;
+}
+
+.footer-title img {
+    width: 85px;
+    height: 85px;
+}
+
+.f-title {
+    margin-top: 0.5%;
+    margin-left: 1.5%;;
+}
+
+.main-title {
+    font-size: 40px;
+    font-weight: bold;
 }
 
 .sub-title {
+    font-size: 20px;
     font-family: 'Roboto', sans-serif;
+    font-weight: 400;
     color: white;
+}
+
+.socials {
+    width: 33%;
+    height: 120px;
+    text-align: center;
+}
+
+.socials h3 {
+    color: white;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.img-container {
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.img-container a {
+    padding: 1.5%;
+}
+
+.quicklinks {
+    width: 33%;
+    height: 300px;
+    float: right;
+    text-align: right;
+    color: white;
+    margin: 0 3.8% 0 0;
 }
 
 .quicklinks a {
     color: white;
+    font-size: 18px;
+    padding: 1% 0;
 }
 
-.divider {
+.link-container {
+    justify-content: flex-end;
+}
+
+.quicklinks .left {
+    width: 30%;
     height: 200px;
+    float: left;
 }
 
-.socials {
-    text-align: center;
+.quicklinks .right {
+    width: 30%;
+    height: 200px;
+    float: right;
 }
-
-.quicklinks {
-    text-align: right;
-}
-
-/* Testing */
