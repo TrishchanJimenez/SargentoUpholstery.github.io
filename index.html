@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
+    <script defer src="scripts.js"></script>
 </head>
 <body>
     <header class="nav-bar">
@@ -31,9 +32,24 @@
         </h2>
         <a href="">Get a free quote</a>
     </div>
-    <div class="carousel">
-        <img src="websiteimages/carouselimg1.png" alt="">
-        <p class="gold-gradient">Lorem ipsum dolor sit amet.</p>
+    <div id="carousel">
+        <div id="slide-container">
+            <div class="slides">     
+                <img class="slide" src="websiteimages/carouselimg1.png"> 
+            </div>
+            <div class="slides">
+                <img class="slide" src="websiteimages/homefeaturedimg.png"> 
+            </div> 
+            <div class="slides">
+                <img class="slide" src="websiteimages/prodcategimg.png"> 
+            </div>
+            <a id="previous" class="arrow">&#10094</a>
+            <a id="next" class="arrow">&#10095</a>
+            <div id="text-bar">
+                <p id="description" class="gold-gradient"></p>
+            </div>
+            <div id="dotsContainer"></div>
+        </div>
     </div>
     <div class="product-category-section">
         <div class="product-category-header">
