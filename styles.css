@@ -8,6 +8,11 @@ a {
     text-decoration: none;
 }
 
+@media (max-width: 1000px) {
+    html {
+        font-size: 14px;
+    }
+}
 
 /* Start of Utility Classes */
 .gold-gradient {
@@ -38,38 +43,38 @@ a {
     align-items: center;
     background-color: #111111;
     padding: 0.5% 0% 0.5% 2%;
+    position: relative;
 }
 
 .title {
     display: flex;
     width: 40%;
-    height: 100px;
+    height: 100%;
     float: left;
     white-space: nowrap;
 }
 
 .title h1 {
-    font-size: 36px;
+    font-size: 2.25rem;
 }
 
 .title h2 {
     color: white;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 .h-title {
-    margin-top: 1.5%;
-    margin-left: 1.5%;
+    margin: auto 0;
 }
 
 .navlinks {
     display: flex;
     justify-content: flex-end;
     width: 30%;
-    height: 100px;
     float: right;
+    height: 100%;
     align-content: center;
     margin-right: 5%;
 }
@@ -80,13 +85,76 @@ a {
     padding: 0 3%;
     margin: 0 1%;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.125rem;
     white-space: nowrap;
 }
 
-@media only screen and (min-width: 820px) {
+.main-menu .open-btn {
+    font-size: 30px;
+    color: #fff;
+	position: absolute;
+	right: 5%;
+	top: 30%;
+}
+
+.offcanvas-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: rgb(26, 2, 43);
+    width: 70vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    transform: translateX(100%);
+    transition: all .4s ease;
+}
+
+.offcanvas-menu.active {
+    transform: translateX(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 30px;
+    color: #fff;
+}
+
+.offcanvas-menu ul {
+    width: 100%;
+}
+
+.offcanvas-menu ul li {
+    list-style: none;
+}
+
+.offcanvas-menu ul li a {
+    font-size: 30px;
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+    font-weight: 400;
+    line-height: 1.5;
+    display: block;
+    text-decoration: none;
+    padding: 15px 0 15px 7vw;
+    transition: all .4s ease;
+}
+
+.offcanvas-menu ul li a:hover {
+    background: rgb(69, 21, 243);
+}
+
+@media (min-width: 800px) {
+    .open-btn, .offcanvas-menu {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
     .navlinks {
-        display: hidden;
+        display: none;
     }
 }
 
@@ -140,6 +208,7 @@ a {
 
 .slide {
    width: 100%; 
+   max-height: 60vh;
    object-fit: cover;
 }
 
