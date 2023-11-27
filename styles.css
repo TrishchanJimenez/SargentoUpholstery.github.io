@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Playfair Display', sans-serif;
-    overflow-x: hidden;
+    overflow-x: hidden !important; 
 }
 
 a {
@@ -84,6 +84,12 @@ a {
     white-space: nowrap;
 }
 
+@media only screen and (min-width: 820px) {
+    .navlinks {
+        display: hidden;
+    }
+}
+
 /* End of Header CSS */
 
 /* Start of Homepage CSS */
@@ -130,7 +136,6 @@ a {
 #slide-container {
    overflow: hidden; 
    position: relative; 
-   max-height: 500px;
 }
 
 .slide {
@@ -422,6 +427,55 @@ a {
 }
 
 /* End of Order Page CSS */
+
+/* Start of Testimonials Page CSS */
+
+.testimonials-featured-img {
+    width: 100vw;
+    object-fit: cover;
+}
+
+.testimonials-title {
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.testimonials-title h2 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.testimonials-title p {
+    font-size: 1.5rem;
+}
+
+.testimonials-title a {
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+    padding: 1% 2%;
+}
+
+.star-container {
+    display: flex;
+    justify-content: center;
+}
+
+h2.star-rating {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.review-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* End of Testimonials Page CSS */
 
 /* Start of Footer CSS */
 .footer {
