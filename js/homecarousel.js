@@ -1,6 +1,6 @@
 //Home Page carousel
 var index = 0; 
-var description = ["Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
+var description = ["Discover Comfort in Every Detail", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
 
 var slides = document.getElementsByClassName("slides"); 
 var nextArrow = document.getElementById("next");

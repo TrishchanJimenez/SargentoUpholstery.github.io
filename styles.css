@@ -1,3 +1,15 @@
+:root {
+    --fs-xl: clamp(1rem, 2rem + 5vw, 4rem);
+    --fs-l:  3rem;
+    --fs-40: 2.5rem;
+    --fs-36: 2.25rem;
+    --fs-32: 2rem;
+    --fs-24: 1.5rem;
+    --fs-20: 1.25rem;
+    --fs-18: 1.125rem;
+    --fs-16: 1rem;
+}
+
 html {
     overflow-x: hidden;
 }
@@ -10,18 +22,6 @@ body {
 
 a {
     text-decoration: none;
-}
-
-@media (max-width: 1000px) {
-    html {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 425px) {
-    html {
-        font-size: 12px;
-    }
 }
 
 /* Start of Utility Classes */
@@ -130,7 +130,6 @@ a {
     width: 70vw;
     height: 100vh;
     display: flex;
-    align-items: center;
     transform: translateX(100%);
     transition: all .4s ease;
     z-index: 100;
@@ -155,6 +154,7 @@ a {
 
 .offcanvas-menu ul {
     width: 100%;
+    margin-top: 30%;
 }
 
 .offcanvas-menu ul li {
@@ -189,6 +189,12 @@ a {
     }
 }
 
+@media (max-width: 412px) {
+    .offcanvas-menu {
+        width: 100vw;
+    }
+}
+
 /* End of Header CSS */
 
 /* Start of Homepage CSS */
@@ -208,7 +214,7 @@ a {
 }
 
 .featured-img h2 {
-    font-size: 4rem;
+    font-size: var(--fs-xl);
     margin-top: 12%;
 }
 
@@ -417,6 +423,13 @@ a {
     right: 5%;
 }
 
+@media (max-width: 720px) {
+    .start-quote, .end-quote {
+        width: 80px;
+        height: auto;
+    }
+}
+
 .cta-testimonials {
     margin-top: 2%;
     background-color: black;
@@ -462,11 +475,9 @@ a {
     font-weight: bold;
 }
 
-@media (max-width: 900px) {
-    .review {
-        display: block;
-        margin: 0 auto;
-        width: 80%;
+@media (max-width: 375px) {
+    .category-container a {
+        width: 90%;
     }
 }
 
@@ -475,7 +486,7 @@ a {
         width: 70%;
     }
 
-    .category-container div {
+    .category-container a {
         width: 40%;
     }
 
@@ -483,11 +494,15 @@ a {
         padding: 2% 3%;
     }
 }
-@media (max-width: 375px) {
-    .category-container div {
-        width: 90%;
+
+@media (max-width: 900px) {
+    .review {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
     }
 }
+
 /* End of Homepage CSS */
 
 /* Start of Order Page CSS */
@@ -846,7 +861,9 @@ h2.star-rating {
 
 @media (max-width: 650px) {
     .services_craftmanship_card {
-        width: 90%
+        width: 85%;
+        text-align: left;
+        border-radius: 10px;
     }
 }
 
@@ -873,10 +890,12 @@ h2.star-rating {
 .contact_us_text{
     display: flex;
     justify-content: center;
+    margin-left: 10%;
 }
 
 .contact_us_text div {
     margin: 0 4%;
+    /* width: 50%; */
 }
 
 .contact_us_text h1{
@@ -895,10 +914,18 @@ h2.star-rating {
     width: 80%;
 }
 
+@media (max-width: 600px) {
+    .map iframe {
+        width: 80%;
+        height: auto;
+    }
+}
+
 @media (max-width: 725px) {
     .contact_us_text {
         flex-direction: column;
         text-align: center;
+        margin-left: 0;
     }
 }
 
@@ -910,3 +937,66 @@ h2.star-rating {
 }
 
 /* End of Contact us CSS */
+
+/* Start of About Us CSS */
+
+.about-us-featuredimg {
+    width: 100vw;
+}
+
+.about-us-toptext {
+    margin: 0 auto 5%;
+    text-align: center;
+    width: 70%;
+}
+
+.about-us-toptext h2 {
+    font-size: 3rem;
+}
+
+.about-us-toptext p {
+    font-size: 1.25rem;
+    margin-bottom: 4%;
+}
+
+.about-us-toptext a {
+    background-color: black;
+    color: white;
+    padding: 2% 4%;
+    border-radius: 5px;
+}
+
+.values-philosophy {
+    background-color: #FFDC5C;
+    text-align: center;
+    padding: 1% 0 4%;
+}
+
+.values-philosophy h2 {
+    display: block;
+    font-size: 3rem;
+}
+
+.values-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.values-container .values {
+    width: 25%;
+    margin: 0 2.5%;
+    /* text-align: center; */
+}
+
+.values-container h2 {
+    font-size: 1.5rem;
+}
+
+.values-container p {
+    font-size: 1rem;
+}
+
+
+/* End of About Us CSS */
