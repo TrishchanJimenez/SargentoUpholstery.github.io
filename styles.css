@@ -997,6 +997,23 @@ h2.star-rating {
     border-radius: 5px;
 }
 
+.about-us-history {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5% 0;
+}
+
+.about-us-history * {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.about-us-history h2 {
+    font-size: 3rem;
+    margin-bottom: 2.5%;
+}
+
 .values-philosophy {
     background-color: #FFDC5C;
     text-align: center;
