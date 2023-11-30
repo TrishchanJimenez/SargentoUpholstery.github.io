@@ -201,6 +201,7 @@ a {
     .navlinks {
         display: none;
     }
+
 }
 
 @media (max-width: 412px) {
@@ -764,7 +765,7 @@ h2.star-rating {
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
     .footer {
         flex-direction: column;
         justify-content: center;
