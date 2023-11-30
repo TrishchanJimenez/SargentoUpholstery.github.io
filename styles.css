@@ -184,7 +184,7 @@ a {
     }
 }
 
-@media(max-width: 330px) {
+@media(max-width: 360px) {
     .nav-bar {
         padding-left: 2%;
     }
@@ -554,7 +554,6 @@ a {
 
 .faq-section {
     width: 49%;
-    border: 1px solid blue;
     margin-left: 1%;
 }
 
@@ -576,6 +575,7 @@ a {
     background-image: url(websiteimages/orderfooterimg.png);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     text-align: center;
     margin-top: 5%;
     padding: 15% 0;
@@ -593,6 +593,20 @@ a {
     color: white;
     padding: 1% 3%;
     border-radius: 5px;
+}
+
+@media (max-width: 360px) {
+    .order-container {
+        display: unset;
+        margin: unset;
+    }
+    .order-form, .faq-section {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .order-form {
+        height: 700px;
+    }
 }
 
 /* End of Order Page CSS */
