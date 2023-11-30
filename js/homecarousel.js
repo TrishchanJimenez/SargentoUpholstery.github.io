@@ -1,6 +1,5 @@
 //Home Page carousel
 var index = 0; 
-var description = ["Discover Comfort in Every Detail", "Lorem ipsum dolor sit amet.", "Lorem ipsum dolor sit amet."]
 
 var slides = document.getElementsByClassName("slides"); 
 var nextArrow = document.getElementById("next");
@@ -38,7 +37,6 @@ function showSlides(x) {
 	
 	slides[index].style.display = "block";
 	dotArray[index].className += " activeDot"; 
-	desc.innerHTML = description[index]; 
 }
 
 nextArrow.onclick = function() {
