@@ -1,14 +1,12 @@
 :root {
-    --fs-xl: clamp(1.5rem, 2rem + 5vw, 4rem);
-    --fs-l:  3rem;
-    --fs-40: clamp(1.25rem, 10vw, 2.5rem);
-    --fs-36: 2.25rem;
-    --fs-32: 2rem;
-    --fs-24: 1.5rem;
-    --fs-20: 1.25rem;
-    --fs-18: 1.125rem;
-    --fs-16: 1rem;
-    font-size: clamp(12px, 14px + 5vw, 18px);
+    --fs-48: clamp(28px, 3.12vw, 48px);
+    --fs-40: clamp(26px, 2.59vw, 40px);
+    --fs-36: clamp(25px, 2.34vw, 36px);
+    --fs-32: clamp(24px, 2.08vw, 32px);
+    --fs-24: clamp(22px, 1.56vw, 24px);
+    --fs-20: clamp(18px,  1.3vw, 20px);
+    --fs-18: clamp(16px, 1.17vw, 18px);
+    --fs-16: clamp(14px, 0.78vw,16px);
 }
 
 html {
@@ -76,14 +74,14 @@ a {
 }
 
 .title h1 {
-    font-size: clamp(1.5rem, 5vw ,2.25rem);
+    font-size: var(--fs-48);
 }
 
 .title h2 {
     color: white;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    font-size: clamp(1rem, 4vw, 1.125rem);
+    font-size: var(--fs-18);
 }
 
 .h-title {
@@ -106,12 +104,12 @@ a {
     padding: 0 3%;
     margin: 0 1%;
     font-weight: bold;
-    font-size: 1.125rem;
+    font-size: var(--fs-18);
     white-space: nowrap;
 }
 
 .main-menu .open-btn {
-    font-size: 30px;
+    font-size: var(--fs-32);
     color: #fff;
     position: absolute;
     right: 5%;
@@ -144,7 +142,7 @@ a {
     position: absolute;
     top: 30px;
     left: 30px;
-    font-size: 30px;
+    font-size: var(--fs-32);
     color: #fff;
 }
 
@@ -232,13 +230,13 @@ a {
 }
 
 .featured-img h2 {
-    font-size: var(--fs-xl);
+    font-size: clamp(32px, 4.15vw, 64px);
     margin-top: 12%;
 }
 
 .featured-img h2 span {
     display: block;
-    font-size: 2rem;
+    font-size: var(--fs-32);
 }
 
 .featured-img a {
@@ -318,7 +316,7 @@ a {
     position: relative;
     display: inline-block;
     font-weight: bold;
-    font-size: 32px;
+    font-size: var(--fs-32);
 }
 
 #dotsContainer {
@@ -362,11 +360,11 @@ a {
 }
 
 .product-category-header h2 {
-    font-size: 2rem;
+    font-size: var(--fs-32);
 }
 
 .product-category-header p{
-    font-size: 1rem;
+    font-size: var(--fs-16);
 }
 
 .category-container {
@@ -384,7 +382,7 @@ a {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 2.25rem;
+    font-size: var(--fs-36);
     font-weight: bold;
     margin: 2%;
     border-radius: 15px;
@@ -427,7 +425,7 @@ a {
     display: inline-block;
     position: relative;
     padding: 2.5% 4% 1%;
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
 }
 
 .start-quote {
@@ -532,7 +530,7 @@ a {
 
 .order-page-title {
     text-align: center;
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .order-container {
@@ -558,17 +556,17 @@ a {
 }
 
 .faq-section h3 {
-    font-size: 3rem;
+    font-size: var(--fs-48);
     text-align: center;
 }
 
 .questions-title {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
 }
 
 .questions p {
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
 }
 
 .order-testimonials-cta {
@@ -583,11 +581,11 @@ a {
 
 .order-testimonials-cta p {
     font-weight: bold;
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .order-testimonials-cta a {
-    font-size: 1rem;
+    font-size: var(--fs-16);
     font-weight: bold;
     background-color: black;
     color: white;
@@ -625,12 +623,12 @@ a {
 }
 
 .testimonials-title h2 {
-    font-size: 3rem;
+    font-size: var(--fs-48);
     font-weight: bold;
 }
 
 .testimonials-title p {
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
 }
 
 .testimonials-title a {
@@ -658,7 +656,7 @@ a {
 
 h2.star-rating {
     text-align: center;
-    font-size: 3rem;
+    font-size: var(--fs-48);
     font-weight: bold;
 }
 
@@ -705,7 +703,7 @@ h2.star-rating {
 }
 
 .sub-title {
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     color: white;
@@ -748,7 +746,7 @@ h2.star-rating {
 }
 
 .quicklinks h3 {
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
     font-weight: bold;
 }
 
@@ -812,11 +810,11 @@ h2.star-rating {
 
 .services_craftmanship_text h2{
     font-weight: bold;
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .services_craftmanship_text p {
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
     margin-bottom: 4%;
 }
 
@@ -851,7 +849,7 @@ h2.star-rating {
 .services_craftmanship_text_2{
     width: 75%;
     margin: 5% auto 0;
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
     text-align: center
 }
 
@@ -931,7 +929,7 @@ h2.star-rating {
 
 .contact_us_text_title{
     text-align: center;
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .contact_us_text{
@@ -946,11 +944,11 @@ h2.star-rating {
 }
 
 .contact_us_text h1{
-    font-size: 2.5rem;
+    font-size: var(--fs-40);
 }
 
 .contact_us_text p{
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
 }
 
 .map{
@@ -1001,11 +999,11 @@ h2.star-rating {
 }
 
 .about-us-toptext h2 {
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .about-us-toptext p {
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
     margin-bottom: 4%;
 }
 
@@ -1029,7 +1027,7 @@ h2.star-rating {
 }
 
 .about-us-history h2 {
-    font-size: 3rem;
+    font-size: var(--fs-48);
     margin-bottom: 2.5%;
 }
 
@@ -1041,7 +1039,7 @@ h2.star-rating {
 
 .values-philosophy h2 {
     display: block;
-    font-size: 3rem;
+    font-size: var(--fs-48);
 }
 
 .values-container {
@@ -1058,11 +1056,11 @@ h2.star-rating {
 }
 
 .values-container h2 {
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
 }
 
 .values-container p {
-    font-size: 1rem;
+    font-size: var(--fs-16);
 }
 
 @media (max-width: 800px) {
