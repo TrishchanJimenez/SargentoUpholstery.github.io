@@ -698,12 +698,12 @@ h2.star-rating {
 }
 
 .main-title {
-    font-size: var(--fs-40);
+    font-size: var(--fs-48);
     font-weight: bold;
 }
 
 .sub-title {
-    font-size: var(--fs-20);
+    font-size: var(--fs-24);
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     color: white;
@@ -729,6 +729,16 @@ h2.star-rating {
 
 .img-container a {
     padding: 1.5%;
+}
+
+.img-container a img {
+    height: 50px;
+    width: 50px
+}
+
+.img-container a img.email-icon {
+    height: 60px;
+    width: 60px;
 }
 
 .quicklinks {
