@@ -176,12 +176,6 @@ a {
     background: rgb(69, 21, 243);
 }
 
-@media (min-width: 800px) {
-    .open-btn, .offcanvas-menu {
-        display: none;
-    }
-}
-
 @media(max-width: 360px) {
     .nav-bar {
         padding-left: 2%;
@@ -195,12 +189,6 @@ a {
     }
 }
 
-@media (max-width: 800px) {
-    .navlinks {
-        display: none;
-    }
-}
-
 @media (max-width: 412px) {
     .offcanvas-menu {
         width: 100vw;
@@ -208,6 +196,18 @@ a {
     .title img {
         width: 45px;
         height: 45px;
+    }
+}
+
+@media (max-width: 800px) {
+    .navlinks {
+        display: none;
+    }
+}
+
+@media (min-width: 800px) {
+    .open-btn, .offcanvas-menu {
+        display: none;
     }
 }
 
@@ -392,24 +392,12 @@ a {
     padding: 10% 20%;
 }
 
-.product-category-1 {
-    background-image: url(websiteimages/loveseatsimg.png);
-}
-.product-category-2 {
-    background-image: url(websiteimages/sofasimg.png);
-}
-.product-category-3 {
-    background-image: url(websiteimages/bedsimage.png);
-}
-.product-category-4 {
-    background-image: url(websiteimages/chairsimg.png);
-}
-.product-category-5 {
-    background-image: url(websiteimages/ottomanimg.png);
-}
-.product-category-6 {
-    background-image: url(websiteimages/customordersimg.png);
-}
+.product-category-1 { background-image: url(websiteimages/loveseatsimg.png)   ;}
+.product-category-2 { background-image: url(websiteimages/sofasimg.png)       ;}
+.product-category-3 { background-image: url(websiteimages/bedsimage.png)      ;}
+.product-category-4 { background-image: url(websiteimages/chairsimg.png)      ;}
+.product-category-5 { background-image: url(websiteimages/ottomanimg.png)     ;}
+.product-category-6 { background-image: url(websiteimages/customordersimg.png);}
 
 .home-testimonials{
     text-align: center;
@@ -438,13 +426,6 @@ a {
     position: absolute;
     bottom: 20%;
     right: 5%;
-}
-
-@media (max-width: 720px) {
-    .start-quote, .end-quote {
-        width: 80px;
-        height: auto;
-    }
 }
 
 .cta-testimonials {
@@ -490,6 +471,13 @@ a {
     padding: 1% 1.5%;
     border-radius: 5px;
     font-weight: bold;
+}
+
+@media (max-width: 720px) {
+    .start-quote, .end-quote {
+        width: 80px;
+        height: auto;
+    }
 }
 
 @media (max-width: 375px) {
@@ -766,12 +754,6 @@ h2.star-rating {
     height: 50%;
 }
 
-@media (max-width: 355px) {
-    .f-title h3:first-child {
-        font-size: 1.7rem;
-    }
-}
-
 @media (max-width: 800px) {
     .footer {
         flex-direction: column;
@@ -950,7 +932,6 @@ h2.star-rating {
 
 .contact_us_text div {
     margin: 0 4%;
-    /* width: 50%; */
 }
 
 .contact_us_text h1{
@@ -1077,7 +1058,6 @@ h2.star-rating {
     .values-container .values {
         width: 40%;
         margin: 0 5%;
-        /* text-align: center; */
     }
 }
 
@@ -1085,7 +1065,6 @@ h2.star-rating {
     .values-container .values {
         width: 80%;
         margin: 0 auto;
-        /* text-align: center; */
     }
 }
 /* End of About Us CSS */
