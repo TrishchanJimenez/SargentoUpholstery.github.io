@@ -2,18 +2,15 @@
 var index = 0; 
 
 var slides = document.getElementsByClassName("slides"); 
-var nextArrow = document.getElementById("next");
 
+var nextArrow = document.getElementById("next");
 var previousArrow = document.getElementById("previous");
 
-var desc = document.getElementById("description");
-
 var dotsContainer = document.getElementById("dotsContainer");
-
 var dotArray = document.getElementsByClassName("dots"); 
 
 createDots(); 
-showSlides(index); 
+showSlides(index);
 
 function createDots() {
 	for (i=0; i<slides.length; i++) {
@@ -50,3 +47,12 @@ previousArrow.onclick = function() {
 } 
 
 dotArray[0].onclick = showSlides(1); 
+
+window.setInterval(function autoshowSlide() {
+	showSlides(index);
+	if(index > slides.length-1) {
+		index = 0;
+	} else {
+		index += 1;
+	}
+}, 2000); 
