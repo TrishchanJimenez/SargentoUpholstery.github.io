@@ -180,7 +180,7 @@ a {
     .nav-bar {
         padding-left: 2%;
     }
-
+    
     .title img {
         display: none;
     }
@@ -490,11 +490,11 @@ a {
     .product-category-header {
         width: 90%;
     }
-
+    
     .category-container a {
         width: 40%;
     }
-
+    
     .cta-testimonials {
         padding: 2% 3%;
     }
@@ -882,15 +882,15 @@ h2.star-rating {
         text-align: center;
         width: 65%
     }
-
+    
     .services_craftmanship_card img, .services_craftmanship_card div{
         width: 100%
     }
-
+    
     .services_craftmanship_card_text.ta-right {
         text-align: center;
     }
-
+    
     .services_craftmanship_card.big {
         display: none;
     }
@@ -1098,6 +1098,41 @@ h2.star-rating {
     background-color: black;
     color: white;
     border-radius: 5px;
+}
+
+.selector-container {
+    display: flex;
+    justify-content: center;
+}
+
+#type-selector {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 0.5% 1%;
+    font-size: var(--fs-20);
+}
+
+#color-selector {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 0.5% 1%;
+    font-size: var(--fs-20);
+}
+
+.gallery-section {
+    width: 80%;
+    margin: 2% auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gallery-item {
+    height: 250px;
+    width: 250px;
+    margin: 2px;
 }
 
 .services_works_gallery {
