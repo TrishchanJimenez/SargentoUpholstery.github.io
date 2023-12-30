@@ -1,14 +1,12 @@
 //Navigation Menu for small screen
-const openBtn = document.querySelector('.open-btn');
-const closeBtn = document.querySelector('.close-btn');
-const offcanvasMenu = document.querySelector('.offcanvas-menu')
+const openBtn = document.getElementById('open-btn');
+const closeBtn = document.getElementById('close-btn');
+const menu = document.getElementById('offcanvas-menu')
 
-openBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    offcanvasMenu.classList.add('active');
+openBtn.addEventListener('click', (e) => {
+    menu.classList.add('active');
 });
 
-closeBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-    offcanvasMenu.classList.remove('active');
+closeBtn.addEventListener('click', (e) => {
+    menu.classList.remove('active');
 });

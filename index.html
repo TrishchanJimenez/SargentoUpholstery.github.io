@@ -5,144 +5,125 @@
     <title>Sargento Upholstery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles.css" rel='stylesheet'>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <script defer src="js/homecarousel.js"></script>
-    <script defer src="js/offcanvas.js"></script>
 </head>
 <body>
-    <header class="nav-bar">
-        <a href="index.html" class="title">
-            <img src="websiteimages/sargento_logo.png" alt="">
-            <div class="h-title">
-                <h1 class="gold-gradient m-0">Sargento Upholstery</h1>
-                <h2 class="m-0">Textile Furniture Service</h2>
-            </div>
+    <header class="header">
+        <a class="business-brand" href="index.html">
+            <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
+            <h1 class="business-name text-gold">Sargento Upholstery</h1>
+            <h2 class="business-category">Textile Furniture Service</h2>
         </a>
-        <div class="navlinks">
-            <a href="services_craftsmanship.html">Services</a>
-            <a href="testimonials.html">Testimonials</a>
-            <a href="contact_us.html">Contact Us</a>
-        </div>
         <nav class="main-menu">
-            <a class="open-btn" href="#"><img src="websiteimages/menu-icon.svg" alt=""></a>
-            <div class="offcanvas-menu">
-                <a class="close-btn" href="#">
-                    <img src="websiteimages/close-icon.svg" alt="">
-                </a>
-            <ul>
-                <li><a href="services_craftsmanship.html">Services</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="contact_us.html">Contact Us</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<div class="featured-img">
-    <h2>
-        Well-crafted & Timeless
-        <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
-    </h2>
-    <a href="order.html">Get a free quote</a>
-</div>
-<div id="carousel">
-    <div id="slide-container">
-        <div class="slides">     
-            <img class="slide" src="websiteimages/carouselimg1.png"> 
-        </div>
-        <div class="slides">
-            <img class="slide" src="websiteimages/carouselimg2.jpg"> 
-        </div> 
-        <div class="slides">
-            <img class="slide" src="websiteimages/carouselimg3.jpg"> 
-        </div>
-        <div class="slides">
-            <img class="slide" src="websiteimages/carouselimg4.jpg"> 
-        </div>
-        <a id="previous" class="arrow">&#10094</a>
-        <a id="next" class="arrow">&#10095</a>
-        <div id="dotsContainer"></div>
+            <img src="websiteimages/menu-icon.svg" alt="" id="open-btn" width="30px" height="30px">
+            <div id="offcanvas-menu">
+                <img src="websiteimages/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
+                <ul class="nav-links">
+                    <li><a href="services_craftsmanship.html">Services</a></li>
+                    <li><a href="services_works.html">Our Works</a></li>
+                    <li><a href="order.html">Order</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="about_us.html">About Us</a></li>
+                    <li><a href="contact_us.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="featured">
+        <h2 class="featured-title">
+            Well-crafted & Timeless
+            <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
+        </h2>
+        <a href="order.html" class="btn btn-black">Get a free quote</a>
     </div>
-</div>
-<div class="product-category-section">
-    <div class="product-category-header">
-        <h2>Our Previous Crafts</h2>
-        <p>Take a tour of our successes as we consider the turning points and contributions that have created our story in the Upholstery industry.</p>
-    </div>
-    <div class="category-container">
-        <a class="product-category-1" href="">
-            <p>Loveseats</p>
-        </a>
-        <a class="product-category-2" href="">
-            <p>Sofas</p>
-        </a>
-        <a class="product-category-3" href="">
-            <p>Beds</p>
-        </a>
-        <a class="product-category-4" href="">
-            <p>Chairs</p>
-        </a>
-        <a class="product-category-5" href="">
-            <p>Ottomans</p>
-        </a>
-        <a class="product-category-6" href="">
-            <p>Custom</p>
-        </a>
-    </div>
-</div>
-<div class="home-testimonials">
-    <h2>Our Clients' Testimonials</h2>
-    <div class="review">
-        <img src="websiteimages/Start quote.png" alt="" class="start-quote">
-        <p>Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for Sargento Upholstery.<br><br><span class="client-name">-JB von Kampfer</span></p>
-        <img src="websiteimages/End quote.png" alt="" class="end-quote">
-    </div>
-    <div class="review">
-        <img src="websiteimages/Start quote.png" alt="" class="start-quote">
-        <p>Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!<br><br><span class="client-name">-Albert Mendoza</span></p>
-        <img src="websiteimages/End quote.png" alt="" class="end-quote">
-    </div>
-    <div>
-        <a href="testimonials.html" class="cta-testimonials">More Reviews</a>
-    </div>
-</div>
-<div class="home-aboutus">
-    <img src="websiteimages/teampicture.png" alt="">
-    <div class="home-about-info">
-        <h2 class="gold-gradient">The Sargento Family Business</h2>
-        <hr>
-        <p>Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a strategic relocation has contributed to the business's resilience in a competitive industry.</p>
-        <a href="about_us.html">Learn More</a>
-    </div>
-</div>
-<footer class="footer">
-    <div class="footer-title d-flex">
-        <div class="f-title">
-            <h3 class="gold-gradient m-0 main-title">Sargento Upholstery</h3>
-            <h3 class="m-0 sub-title">Textile Furniture Service</h3>
+    <div class="product">
+        <h2 class="product-category-title">Our Previous Crafts</h2>
+        <p class="product-category-intro">Take a tour of our successes as we consider the turning points and contributions
+            that have created our story in the Upholstery industry.</p>
+        <div class="product-categories">
+            <a class="product-category" id="category-loveseat" href="">
+                <img src="websiteimages/loveseatsimg.png" alt="">
+                <p>Loveseats</p>
+            </a>
+            <a class="product-category" id="category-sofa" href="">
+                <img src="websiteimages/sofasimg.png" alt="">
+                <p>Sofas</p>
+            </a>
+            <a class="product-category" id="category-bed" href="">
+                <img src="websiteimages/bedsimage.png" alt="">
+                <p>Beds</p>
+            </a>
+            <a class="product-category" id="category-chair" href="">
+                <img src="websiteimages/chairsimg.png" alt="">
+                <p>Chairs</p>
+            </a>
+            <a class="product-category" id="category-ottoman" href="">
+                <img src="websiteimages/ottomanimg.png" alt="">
+                <p>Ottomans</p>
+            </a>
+            <a class="product-category" id="category-custom" href="">
+                <img src="websiteimages/customordersimg.png" alt="">
+                <p>Custom</p>
+            </a>
         </div>
     </div>
-    <div class="socials">
-        <h3>Socials</h3>
-        <div class="img-container d-flex">
-            <a href="mailto:placeholder@test.com"><img src="websiteimages/email-icon.svg" alt="" class="email-icon"></a>     
-            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/facebook_logo.svg" alt=""></a>
-            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/messenger_logo.svg" alt=""></a>
+    <div class="testimonials">
+        <h2 class="testimonials-title">Our Clients' Testimonials</h2>
+        <div class="reviews">
+            <div class="review">
+                <img src="websiteimages/Start quote.png" alt="" class="quote quote-start">
+                <p>Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for
+                    Sargento Upholstery.<br><br><span class="client-name">-JB von Kampfer</span></p>
+                <img src="websiteimages/End quote.png" alt="" class="quote quote-end">
+            </div>
+            <div class="review">
+                <img src="websiteimages/Start quote.png" alt="" class="quote quote-start">
+                <p>Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!<br><br><span
+                        class="client-name">-Albert Mendoza</span></p>
+                <img src="websiteimages/End quote.png" alt="" class="quote quote-end">
+            </div>
         </div>
+        <a href="testimonials.html" class="btn btn-black">More Reviews</a>
     </div>
-    <div class="quicklinks">
-        <h3>Quicklinks</h3>
-        <div class="link-container">
-            <a href="services_craftsmanship.html">Services</a>
-            <a href="services_works.html">Our Works</a>
-            <a href="order.html">Order</a>
-            <a href="testimonials.html">Testimonials</a>
-            <a href="about_us.html">About Us</a>
-            <a href="contact_us.html">Contact Us</a>
+    <div class="about-us">
+        <img src="websiteimages/teampicture.png" alt="" class="team-picture">
+        <h2 class="text-gold">The Sargento Family Business</h2>
+        <p class="business-history">Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has
+            quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made
+            furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market
+            trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to
+            relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the
+            market. This relocation, though not widely recognized, played a crucial role in the continued success of
+            Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a
+            strategic relocation has contributed to the business's resilience in a competitive industry.</p>
+        <a href="about_us.html" class="btn btn-white">Learn More</a>
+    </div>
+    <footer class="footer">
+        <div class="footer-title d-flex">
+            <div class="f-title">
+                <h3 class="text-gold  main-title">Sargento Upholstery</h3>
+                <h3 class=" sub-title">Textile Furniture Service</h3>
+            </div>
         </div>
-    </div>
-</footer>
+        <div class="socials">
+            <h3>Socials</h3>
+            <div class="img-container d-flex">
+                <a href="mailto:placeholder@test.com"><img src="websiteimages/email-icon.svg" alt="" class="email-icon"></a>     
+                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/facebook_logo.svg" alt=""></a>
+                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/messenger_logo.svg" alt=""></a>
+            </div>
+        </div>
+        <div class="quicklinks">
+            <h3>Quicklinks</h3>
+            <div class="link-container">
+                <a href="services_craftsmanship.html">Services</a>
+                <a href="services_works.html">Our Works</a>
+                <a href="order.html">Order</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="about_us.html">About Us</a>
+                <a href="contact_us.html">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+    <script src="js/offcanvas.js"></script>
 </body>
 </html>

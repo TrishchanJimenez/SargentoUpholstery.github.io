@@ -5,56 +5,45 @@
     <title>Sargento Upholstery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles.css" rel='stylesheet'>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
-    <script defer src="js/offcanvas.js"></script>
 </head>
 <body>
-    <header class="nav-bar">
-        <a href="index.html" class="title">
-            <img src="websiteimages/sargento_logo.png" alt="">
-            <div class="h-title">
-                <h1 class="gold-gradient m-0">Sargento Upholstery</h1>
-                <h2 class="m-0">Textile Furniture Service</h2>
-            </div>
+    <header class="header">
+        <a class="business-brand" href="index.html">
+            <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
+            <h1 class="business-name text-gold">Sargento Upholstery</h1>
+            <h2 class="business-category">Textile Furniture Service</h2>
         </a>
-        <div class="navlinks">
-            <a href="services_craftsmanship.html">Services</a>
-            <a href="testimonials.html">Testimonials</a>
-            <a href="contact_us.html">Contact Us</a>
-        </div>
         <nav class="main-menu">
-            <a class="open-btn" href="#"><img src="websiteimages/menu-icon.svg" alt=""></a>
-            <div class="offcanvas-menu">
-                <a class="close-btn" href="#">
-                    <img src="websiteimages/close-icon.svg" alt="">
-                </a>
-                <ul>
+            <img src="websiteimages/menu-icon.svg" alt="" id="open-btn" width="30px" height="30px">
+            <div id="offcanvas-menu">
+                <img src="websiteimages/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
+                <ul class="nav-links">
                     <li><a href="services_craftsmanship.html">Services</a></li>
+                    <li><a href="services_works.html">Our Works</a></li>
+                    <li><a href="order.html">Order</a></li>
                     <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="about_us.html">About Us</a></li>
                     <li><a href="contact_us.html">Contact Us</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-    <img src="websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" div class="hero_image_services_craftmanship">
-    
-    <div class="services_craftmanship_text">
-        <h2>A Commitment to Craftsmanship Excellence</h2>
-        <p>
-            At Sargento Upholstery, our commitment to excellence is evident in every step of our 
-            meticulous craftsmanship. We take pride in the fact that each and every one of our 
+    <img src="websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
+    <div class="intro-section">
+        <h2 class="intro-title">A Commitment to Craftsmanship Excellence</h2>
+        <p class="intro-info">
+            At Sargento Upholstery, our commitment to excellence is evident in every step of our
+            meticulous craftsmanship. We take pride in the fact that each and every one of our
             products is a masterpiece of quality, designed to provide both aesthetics and durability
             that can withstand the test of time.
         </p>
-        <a href="order.html" class="services_craftmanship_CTA">Get Free Quote</a>
+        <a href="order.html" class="btn btn-black">Get Free Quote</a>
     </div>
     <div class="services_craftmanship_card_container">
         <div class="services_craftmanship_card">
             <img src="websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
             <div class="services_craftmanship_card_text"> 
-                <h1 class="gold-gradient">The Foundation of Durability</h1>
+                <h1 class="text-gold">The Foundation of Durability</h1>
                 <p>
                     Our journey into crafting superior furniture begins with 
                     the careful selection of materials, ensuring that only the 
@@ -69,7 +58,7 @@
         </div>
         <div class="services_craftmanship_card big">
             <div class="services_craftmanship_card_text ta-right"> 
-                <h1 class="gold-gradient">Luxurious Comfort</h1>
+                <h1 class="text-gold">Luxurious Comfort</h1>
                 <p>
                     Moving on to the heart of our creations, we employ the 
                     luxuriously comfortable uratex foam. This premium foam 
@@ -84,7 +73,7 @@
         <div class="services_craftmanship_card small">
             <img src="websiteimages/cube.png" alt="wood crafting" div class="services_craftmanship_card_2_image">
             <div class="services_craftmanship_card_text ta-right"> 
-                <h1 class="gold-gradient">Luxurious Comfort</h1>
+                <h1 class="text-gold">Luxurious Comfort</h1>
                 <p>
                     Moving on to the heart of our creations, we employ the 
                     luxuriously comfortable uratex foam. This premium foam 
@@ -98,7 +87,7 @@
         <div class="services_craftmanship_card">
             <img src="websiteimages/fabric cut (1).png" alt="wood crafting" div class="services_craftmanship_card_3_image">
             <div class="services_craftmanship_card_text"> 
-                <h1 class="gold-gradient">Exceptional Fabrics</h1>
+                <h1 class="text-gold">Exceptional Fabrics</h1>
                 <p>
                     But it doesn't end there. Our commitment to quality 
                     extends to the fabrics we use. We insist on utilizing only
@@ -124,18 +113,16 @@
     </div>
     <img src="websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
     <div class="services_craftmanship_hero_image_2">
-        <div>
-            <h1>
-                Explore Our Masterpieces
-            </h1>
-            <a href="services_works.html">See More</a>
-        </div>
+        <h1>
+            Explore Our Masterpieces
+        </h1>
+        <a href="services_works.html" class="btn btn-black">See More</a>
     </div>
     <footer class="footer">
         <div class="footer-title d-flex">
             <div class="f-title">
-                <h3 class="gold-gradient m-0 main-title">Sargento Upholstery</h3>
-                <h3 class="m-0 sub-title">Textile Furniture Service</h3>
+                <h3 class="text-gold  main-title">Sargento Upholstery</h3>
+                <h3 class=" sub-title">Textile Furniture Service</h3>
             </div>
         </div>
         <div class="socials">
@@ -158,5 +145,6 @@
             </div>
         </div>
     </footer>
+    <script src="js/offcanvas.js"></script>
 </body>
 </html>
