@@ -903,6 +903,7 @@ h2.star-rating {
 .selector-container {
     display: flex;
     justify-content: center;
+    margin: 20vh auto 2.5vh;
 }
 
 #type-selector {
@@ -911,6 +912,7 @@ h2.star-rating {
     border-radius: 25px;
     padding: 0.5% 1%;
     font-size: var(--fs-20);
+    margin: 2.5vh;
 }
 
 #color-selector {
@@ -919,20 +921,21 @@ h2.star-rating {
     border-radius: 25px;
     padding: 0.5% 1%;
     font-size: var(--fs-20);
+    margin: 2.5vh;
 }
 
 .gallery-section {
     width: 80%;
     margin: 2% auto;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
 .gallery-item {
-    height: 250px;
-    width: 250px;
-    margin: 2px;
+    width: 23%;
+    aspect-ratio: 1;
+    margin: 1%;
+    object-fit: cover;
 }
 
 .services_works_gallery {
@@ -999,14 +1002,8 @@ h2.star-rating {
 }
 
 .services_works_hero_image_2 h1 {
-    font-size: 48px;
-}
-
-.services_works_hero_image_2 a {
-    color: white;
-    background-color: black;
-    padding: 1% 2%;
-    border-radius: 5px;
+    font-size: var(--fs-48);
+    margin-bottom: 0.25em;
 }
 
 /* END OF SERVICE-WORKS CSS */
