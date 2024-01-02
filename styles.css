@@ -933,9 +933,11 @@ h2.star-rating {
 
 .gallery-item {
     width: 23%;
-    aspect-ratio: 1;
     margin: 1%;
-    object-fit: cover;
+    object-fit: scale-down;
+    aspect-ratio: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .services_works_gallery {
