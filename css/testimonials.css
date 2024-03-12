@@ -1,0 +1,55 @@
+.testimonials-featured-img {
+    width: 100vw;
+    object-fit: cover;
+}
+
+.testimonials-title {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.testimonials-title h2 {
+    font-size: var(--fs-48);
+    font-weight: bold;
+}
+
+.testimonials-title p {
+    font-size: var(--fs-24);
+}
+
+.testimonials-title a {
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+    padding: 1% 2%;
+}
+
+.testimonials-divider {
+    width: 80%;
+    margin: 4% 10% 0 10%;
+    align-self: center;
+}
+
+.star-container {
+    display: flex;
+    justify-content: center;
+}
+
+.star-container img {
+    max-width: 15%;
+    height: auto;
+}
+
+h2.star-rating {
+    text-align: center;
+    font-size: var(--fs-48);
+    font-weight: bold;
+}
+
+.review-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap');
+
+:root {
+    --fs-48: clamp(28px, 3.12vw, 48px);
+    --fs-40: clamp(26px, 2.59vw, 40px);
+    --fs-36: clamp(25px, 2.34vw, 36px);
+    --fs-32: clamp(24px, 2.08vw, 32px);
+    --fs-24: clamp(22px, 1.56vw, 24px);
+    --fs-20: clamp(18px,  1.3vw, 20px);
+    --fs-18: clamp(16px, 1.17vw, 18px);
+    --fs-16: clamp(14px, 0.78vw,16px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Playfair Display', sans-serif;
+}
+
+.text-gold {
+    background: linear-gradient(to bottom,#ffffff, #FFDC5C);
+    -webkit-text-fill-color: transparent; 
+    -webkit-background-clip: text; 
+}
+
+.d-flex {
+    display: flex;
+}
+
+.ta-right {
+    text-align: right;
+}
+
+.btn {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-black {
+    background-color: black;
+    color: white;
+}
+
+.btn-white {
+    background-color: white;
+    color: black;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+    padding: 1em;
+    position: relative;
+}
+
+.business-brand {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 0.5rem;
+    row-gap: 0;
+}
+
+.business-logo {
+    width: 60px;
+    height: 60px;
+    grid-row: 1 / 3;
+    display: flex;
+    align-content: center;
+    margin: auto 0;
+}
+
+.business-name {
+    font-size: var(--fs-48);
+    width: max-content;
+}
+
+.business-category {
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    font-size: var(--fs-18);
+    color: white;
+}
+
+#open-btn, #close-btn {
+    display: none;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links a {
+    color: white;
+    font-weight: bold;
+    font-size: var(--fs-18);
+    padding: 0.25em 0.75em;
+    cursor: pointer;
+}
+
+@media(max-width: 980px) {
+    #open-btn {
+        display: inline;
+    }
+    #close-btn {
+        display: inline;
+    }
+    #offcanvas-menu {
+        padding: 3em;  
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: rgb(26, 2, 43);
+        width: clamp(320px, 40vw, 40vw);
+        height: 100vh;
+        transform: translateX(100%);
+        transition: all .4s ease;
+        z-index: 100;
+    }
+    .nav-links {
+        flex-direction: column;
+        padding: 0.5em 0;
+    }
+    .nav-links li {
+        padding: 1em 0;
+    }
+    .nav-links li a {
+        font-size: var(--fs-36);
+    }
+    #offcanvas-menu.active {
+        transform: translateX(0);
+    }
+}
+
+@media(max-width: 425px) {
+    .header {
+        padding: 0.5em;
+    }
+    .business-brand {
+        grid-template-columns: 1fr;
+    }
+    .business-logo {
+        display: none;
+    }
+}
+
+/* Start of Footer CSS */
+.footer {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    background-color: #111111;
+    padding: 2% 0 0;
+}
+
+.footer-title {
+    width: 33%;
+    height: 120px;
+    float: left;
+    align-items: center;
+    margin-left: 2%;
+    white-space: nowrap;
+}
+
+.footer-title img {
+    width: 85px;
+    height: 85px;
+}
+
+.f-title {
+    margin-top: -3%;
+    margin-left: 1.5%;
+}
+
+.main-title {
+    font-size: var(--fs-48);
+    font-weight: bold;
+}
+
+.sub-title {
+    font-size: var(--fs-24);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: white;
+}
+
+.socials {
+    width: 33%;
+    text-align: center;
+}
+
+.socials h3 {
+    color: white;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.img-container {
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.img-container a {
+    padding: 1.5%;
+}
+
+.img-container a img {
+    height: 50px;
+    width: 50px
+}
+
+.img-container a img.email-icon {
+    height: 60px;
+    width: 60px;
+}
+
+.quicklinks {
+    width: 33%;
+    float: right;
+    text-align: right;
+    color: white;
+    margin: 0 3.8% 0 0;
+}
+
+.quicklinks a {
+    color: white;
+    font-size: 18px;
+    padding: 1% 0;
+}
+
+.quicklinks h3 {
+    font-size: var(--fs-24);
+    font-weight: bold;
+}
+
+.link-container {
+    display: flex;
+    flex-flow: column wrap-reverse;
+    height: 50%;
+}
+
+@media (max-width: 800px) {
+    .footer {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding-bottom: 10%;
+    }
+    .footer-title, .socials, .quicklinks {
+        float: none;
+        display: block;
+        width: 100%;
+    }
+    .f-title {
+        margin-top: 3%;
+        margin-left: 0;
+    }
+    .footer-title {
+        margin-left: 0;
+    }
+    .quicklinks {
+        margin-top: 8%;
+        align-items: center;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .link-container a {
+        padding: 10% 0;
+    }
+}

@@ -1,0 +1,58 @@
+.call_center_dude{
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+}
+
+.contact_us_text_title{
+    text-align: center;
+    font-size: var(--fs-48);
+}
+
+.contact_us_text{
+    display: flex;
+    justify-content: center;
+    margin-left: 10%;
+}
+
+.contact_us_text div {
+    margin: 0 4%;
+}
+
+.contact_us_text h1{
+    font-size: var(--fs-40);
+}
+
+.contact_us_text p{
+    font-size: var(--fs-24);
+}
+
+.map{
+    text-align: center;
+}
+
+.map iframe{   
+    width: 80%;
+}
+
+@media (max-width: 600px) {
+    .map iframe {
+        width: 80%;
+        height: auto;
+    }
+}
+
+@media (max-width: 725px) {
+    .contact_us_text {
+        flex-direction: column;
+        text-align: center;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 800px) {
+    .map iframe {
+        width: 80%;
+        height: 400px;
+    }
+}

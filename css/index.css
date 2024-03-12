@@ -1,0 +1,161 @@
+.featured {
+    background-image: url(/websiteimages/home-featuredimage.jpg);
+    min-height: 90vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.featured-title {
+    color: black;
+    font-size: 2.75rem;
+    width: 80%;
+}
+
+.featured-title span {
+    display: block;
+    font-size: 1.25rem;
+}
+
+.product {
+    background-color: black;
+    padding: 1.5rem 0.75rem;
+    color: white;
+    text-align: center;
+}
+
+.product-category-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25em;
+}
+
+.product-category-intro {
+    font-size: 1rem;
+}
+
+.product-categories {
+    width: 90%;
+    margin: 1.5rem auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.product-category {
+    color: white;
+    position: relative;
+    max-width: 100%;
+}
+
+.product-category img {
+    width: 100%;
+    max-height: 15rem;
+}
+
+.product-category p {
+    font-weight: bold;
+    font-size: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.testimonials {
+    padding: 1.5rem 0;
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.testimonials-title {
+    font-size: var(--fs-32);
+    text-align: center;
+}
+
+.reviews {
+    margin: 1rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.review {
+    position: relative;
+    font-size: var(--fs-20);
+    padding: 1em;
+}
+
+.quote {
+    position: absolute;
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.quote-start {
+    top: 5%;
+    left: 0%;
+}
+
+.quote-end {
+    bottom: 20%;
+    right: 5%;
+}
+
+.client-name {
+    font-weight: bold;
+}
+
+.about-us {
+    background-color: #1E1E1E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+.team-picture {
+    width: 100%;
+    height: 60vh;
+    object-position: top;
+    object-fit: cover;
+}
+
+.about-us h2 {
+    border-bottom: 1px solid white;
+    margin: 0.75em auto;
+    padding-bottom: 0.25em;
+    font-size: var(--fs-36);
+    text-align: center;
+}
+
+.business-history {
+    width: 90%;
+    text-align: justify;
+    margin-bottom: 1em;
+}
+
+@media(max-width: 720px) {
+    .product-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .reviews {
+        grid-template-columns: 1fr;
+    }
+}
+@media(max-width: 425px) {
+    .product-categories {
+        grid-template-columns: 1fr;
+    }
+    .team-picture {
+        display: none;
+    }
+}

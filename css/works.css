@@ -1,0 +1,136 @@
+.services-works-heroimage {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+}
+
+.services_works_text {
+    text-align: center;
+    width: 70%;
+    margin: 0 auto 5%;
+}
+
+.services_works_text h2 {
+    font-weight: bold;
+    font-size: var(--fs-48);
+}
+
+.services_works_text p {
+    font-size: var(--fs-24);
+    margin-bottom: 4%;
+}
+
+.services_works_CTA {
+    padding: 1.5% 3%;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
+
+.selector-container {
+    display: flex;
+    justify-content: center;
+    margin: 20vh auto 2.5vh;
+}
+
+#type-selector {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 0.5% 1%;
+    font-size: var(--fs-20);
+    margin: 2.5vh;
+}
+
+#color-selector {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    padding: 0.5% 1%;
+    font-size: var(--fs-20);
+    margin: 2.5vh;
+}
+
+.gallery-section {
+    width: 80%;
+    margin: 2% auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gallery-item {
+    width: 23%;
+    margin: 1%;
+    object-fit: scale-down;
+    aspect-ratio: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.services_works_gallery {
+    display: flex;
+}
+
+.gallery_main {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+}
+
+.gallery_main_item {
+    position: relative;
+    width: 20%;
+    padding: 2.5%
+}
+
+.gallery_main_item:hover :last-child {
+    opacity: 1;
+    top: 0;
+    left: calc(100% + 25px);
+}
+
+.gallery_main_item_image {
+    width: 100%;
+}
+
+
+.gallery_main_item_overlay {
+    z-index: 1;
+    padding: 0.5vw;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 1);
+    color: #FFFFFF;
+    opacity: 0;
+    border-radius: 15px;
+    width: 150%;
+}
+
+.gallery_main_item_overlay img {
+    width: 100%;
+}
+
+.services_works_text_divider_img {
+    width: 80%;
+    display: block;
+    margin: 0px auto;
+}
+
+.services_works_hero_image_2 {
+    width: 100vw;
+    background-image: url('/websiteimages/services-works-cta-img.jpg');
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    padding: 15% 0;
+}
+
+.services_works_hero_image_2 div {
+    margin: auto;
+}
+
+.services_works_hero_image_2 h1 {
+    font-size: var(--fs-48);
+    margin-bottom: 0.25em;
+}

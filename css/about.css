@@ -1,0 +1,91 @@
+.about-us-featuredimg {
+    width: 100vw;
+    min-height: 300px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.about-us-toptext {
+    margin: 0 auto 5%;
+    text-align: center;
+    width: 70%;
+}
+
+.about-us-toptext h2 {
+    font-size: var(--fs-48);
+}
+
+.about-us-toptext p {
+    font-size: var(--fs-20);
+    margin-bottom: 4%;
+}
+
+.about-us-toptext a {
+    background-color: black;
+    color: white;
+    padding: 2% 4%;
+    border-radius: 5px;
+}
+
+.about-us-history {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5% 0;
+}
+
+.about-us-history * {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.about-us-history h2 {
+    font-size: var(--fs-48);
+    margin-bottom: 2.5%;
+}
+
+.values-philosophy {
+    background-color: #FFDC5C;
+    text-align: center;
+    padding: 1% 0 4%;
+}
+
+.values-philosophy h2 {
+    display: block;
+    font-size: var(--fs-48);
+}
+
+.values-container {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.values-container .values {
+    width: 25%;
+    margin: 0 2.5%;
+    /* text-align: center; */
+}
+
+.values-container h2 {
+    font-size: var(--fs-24);
+}
+
+.values-container p {
+    font-size: var(--fs-16);
+}
+
+@media (max-width: 800px) {
+    .values-container .values {
+        width: 40%;
+        margin: 0 5%;
+    }
+}
+
+@media (max-width: 800px) {
+    .values-container .values {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
