@@ -16,12 +16,12 @@
     <div class="quicklinks">
         <h3>Quicklinks</h3>
         <div class="link-container">
-            <a href="services_craftsmanship.html">Services</a>
-            <a href="services_works.html">Our Works</a>
-            <a href="order.html">Order</a>
-            <a href="testimonials.html">Testimonials</a>
-            <a href="about_us.html">About Us</a>
-            <a href="contact_us.html">Contact Us</a>
+            <a href="services_craftsmanship.php">Services</a>
+            <a href="services_works.php">Our Works</a>
+            <a href="order.php">Order</a>
+            <a href="testimonials.php">Testimonials</a>
+            <a href="about_us.php">About Us</a>
+            <a href="contact_us.php">Contact Us</a>
         </div>
     </div>
 </footer>

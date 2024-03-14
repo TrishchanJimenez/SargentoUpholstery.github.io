@@ -1,5 +1,5 @@
 <header class="header">
-    <a class="business-brand" href="index.html">
+    <a class="business-brand" href="index.php">
         <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
         <h1 class="business-name text-gold">Sargento Upholstery</h1>
         <h2 class="business-category">Textile Furniture Service</h2>
@@ -9,13 +9,13 @@
         <div id="offcanvas-menu">
             <img src="websiteimages/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
             <ul class="nav-links">
-                <li><a href="services_craftsmanship.html">Home</a></li>
-                <li><a href="services_craftsmanship.html">Services</a></li>
-                <li><a href="services_works.html">Our Works</a></li>
-                <li><a href="order.html">Order</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="about_us.html">About Us</a></li>
-                <li><a href="contact_us.html">Contact Us</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="services_craftsmanship.php">Services</a></li>
+                <li><a href="services_works.php">Our Works</a></li>
+                <li><a href="order.php">Order</a></li>
+                <li><a href="testimonials.php">Testimonials</a></li>
+                <li><a href="about_us.php">About Us</a></li>
+                <li><a href="contact_us.php">Contact Us</a></li>
             </ul>
         </div>
     </nav>
