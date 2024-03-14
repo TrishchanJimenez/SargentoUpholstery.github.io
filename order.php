@@ -10,27 +10,7 @@
 </head>
 
 <body>
-    <header class="header">
-        <a class="business-brand" href="index.html">
-            <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
-            <h1 class="business-name text-gold">Sargento Upholstery</h1>
-            <h2 class="business-category">Textile Furniture Service</h2>
-        </a>
-        <nav class="main-menu">
-            <img src="websiteimages/menu-icon.svg" alt="" id="open-btn" width="30px" height="30px">
-            <div id="offcanvas-menu">
-                <img src="websiteimages/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
-                <ul class="nav-links">
-                    <li><a href="services_craftsmanship.html">Services</a></li>
-                    <li><a href="services_works.html">Our Works</a></li>
-                    <li><a href="order.html">Order</a></li>
-                    <li><a href="testimonials.html">Testimonials</a></li>
-                    <li><a href="about_us.html">About Us</a></li>
-                    <li><a href="contact_us.html">Contact Us</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <?php include_once("header.php") ?>
     <img src="websiteimages/orderfeaturedimg.png" alt="" class="order-featured-img">
     <h2 class="order-page-title">Design, Craft, Quote - All in One Place</h2>
     <div class="order-container">
@@ -129,36 +109,7 @@
         <p>See What Our Clients Say</p>
         <a href="testimonials.html">See More</a>
     </div>
-    <footer class="footer">
-        <div class="footer-title d-flex">
-            <div class="f-title">
-                <h3 class="text-gold  main-title">Sargento Upholstery</h3>
-                <h3 class=" sub-title">Textile Furniture Service</h3>
-            </div>
-        </div>
-        <div class="socials">
-            <h3>Socials</h3>
-            <div class="img-container d-flex">
-                <a href="mailto:placeholder@test.com"><img src="websiteimages/email-icon.svg" alt=""
-                        class="email-icon"></a>
-                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/facebook_logo.svg"
-                        alt=""></a>
-                <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/messenger_logo.svg"
-                        alt=""></a>
-            </div>
-        </div>
-        <div class="quicklinks">
-            <h3>Quicklinks</h3>
-            <div class="link-container">
-                <a href="services_craftsmanship.html">Services</a>
-                <a href="services_works.html">Our Works</a>
-                <a href="order.html">Order</a>
-                <a href="testimonials.html">Testimonials</a>
-                <a href="about_us.html">About Us</a>
-                <a href="contact_us.html">Contact Us</a>
-            </div>
-        </div>
-    </footer>
+    <?php include_once("footer.php") ?>
     <script src="js/offcanvas.js"></script>
 </body>
 
