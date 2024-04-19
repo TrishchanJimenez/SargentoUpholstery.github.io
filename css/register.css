@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+}
+
+body{
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.registration{
+    width: 40%;
+    margin: 0 auto 0 auto;
+}
+
+.business-logo{
+    display: block;
+    margin: 5% auto 1% auto ;
+}
+
+.regTitle{
+    text-align: center;
+    padding-bottom: 2%;
+}
+
+.regTitle h1{
+    font-size: var(--fs-32);
+    font-weight: 500;
+}
+
+.regTitle h3{
+    font-weight: 500;
+}
+
+.regForm{
+}
+
+input[type="text"] {
+    width: 100%;
+    height: var(--fs-40);
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+input::placeholder{
+    padding-left: 3%;
+}
+
+.signUpBtn{
+    background-color: black;
+    color: white;
+    padding: 2%;
+    width: 100%;
+    font-size: large;
+    border-radius: 40px;
+    margin-top: 5%;
+}
+
+a{
+    color: black;
+    text-decoration: underline;
+}
