@@ -1,0 +1,142 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling the form container */
+.Form_Container {
+    width: 640px; 
+    height: 581px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1); 
+    border-radius: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid black;
+}
+
+.Form_Container p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 32px; 
+}
+
+.Form_Container form p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px; 
+}
+
+.input[type="text"] {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px; 
+}
+
+
+.Form_Container a {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: black; /* Set the text color to black */
+    float: left; /* Float the element to the left */
+}
+
+.Form_Container form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+.password{
+    display: flex;
+    justify-content: space-between;
+}
+
+.input{
+    border: 1px solid black;
+    width: 528px;
+    height: 56px;
+    border-radius: 12px;
+    margin: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.logo{
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    margin-bottom: -30px;
+    border-color: none;
+}
+
+.Login_button{
+    width: 528px;
+    height: 64px;
+    background-color: black;
+    border-radius: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: white;
+    margin-top: 10px;   
+}
+
+.Login_button:hover{
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: none;
+    transition: 0.5s;
+}
+
+.Create_button{
+    width: 528px;
+    height: 64px; 
+    margin-top: 10px;
+    border-radius: 40px;
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    border: 1px solid black;
+}
+
+.Create_button:hover{
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    transition: 0.5s;
+}
+
+/* Style for the toggle button */
+#togglePassword {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style for the eye icons */
+#eyeClosed,
+#eyeOpen {
+    width: 20px; /* Set width of the eye icons */
+    height: auto; 
+}
+
+.showhide{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.input_wrapper {
+    margin-top: 10px;
+}
