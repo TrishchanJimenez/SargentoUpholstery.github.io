@@ -28,16 +28,18 @@
 
             <label for="password">Password</label><br>
             <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
+            <p class="error_message email"></p>
 
             <label for="confirmPassword">Confirm Password</label><br>
             <input type="password" name="confirmPassword" placeholder="Re enter your password" required>
-            <p>Use 8 or more characters with a mix of letters, numbers & symbols</p>
+            <p class="error_message password hide">Use 8 or more characters with a mix of letters, numbers & symbols</p>
             <input type="submit" value="Sign Up" class="signUpBtn">
         </form>
         </div>
         <br>
-        <p style="text-align: center;" >Already have an account? <a href="login.php">Log In</a></p>
+        <p style="text-align: center;" >Already have an account? <a href="login.php" class="login-link">Log In</a></p>
     </div>
+    <script src="js/register.js"></script>
     <?php
         function sanitizeInput($input) {
             $input = trim($input);
@@ -55,12 +57,14 @@
             $stmt = $conn->prepare("SELECT * FROM usertable WHERE email = ?");
             $stmt->execute([$email]);
             if($stmt->rowCount() > 0) {
-                echo "There is already an account associated with that email";
+                echo "<script> alert('There is already an account associated with that email') </script>";
             } else {
                 $stmt = $conn->prepare("INSERT INTO usertable(name, email, password, user_type) VALUES(?,?,?,?)");
                 $stmt->execute([$name, $email, $hashedPassword, "user"]);
                 echo "Registration Succesful";
                 session_start();
+                $_SESSION['access_type'] = 'user';
+                $_SESSION['id'] = $conn->lastInsertId();
             }
         }
     ?>

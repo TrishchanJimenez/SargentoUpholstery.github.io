@@ -1,6 +1,10 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
 .registration{
     width: 40%;
     margin: 0 auto 0 auto;
+    padding-bottom: 2rem;
 }
 
 .business-logo{
@@ -25,15 +29,18 @@
 .regForm{
 }
 
-input[type="text"] {
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
     width: 100%;
     height: var(--fs-40);
     border-radius: 5px;
     border-width: 1px;
+    border: 1px solid gray;
 }
 
 input::placeholder{
-    padding-left: 3%;
+    margin-left: 1rem;
 }
 
 .signUpBtn{
@@ -44,9 +51,42 @@ input::placeholder{
     font-size: large;
     border-radius: 40px;
     margin-top: 5%;
+    cursor: pointer;
+    border: none;
+}
+
+.signUpBtn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
 }
 
 a{
     color: black;
     text-decoration: underline;
+}
+
+.login-link {
+    color: blue;
+}
+
+.password {
+    font-size: 0.875rem;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.error_message {
+    color: red;
+    animation: shake 0.5s ease-in-out;
+}
+
+.hide {
+    display: none;
 }
