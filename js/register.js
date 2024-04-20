@@ -5,6 +5,10 @@ const registrationForm = document.querySelector('#signUpForm');
 
 const passwordErrorMesssage = document.querySelector(' .password');
 
+const passwordShowToggle = document.querySelector('.toggle-password');
+const toggleImg = document.querySelector('.toggle-img');
+const toggleText = document.querySelector('.toggle-text');
+
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -24,5 +28,19 @@ submitBtn.addEventListener('click', (e) => {
 passwordField.addEventListener('keyup', () => {
     if(!passwordErrorMesssage.classList.contains('hide')) {
         passwordErrorMesssage.classList.add('hide');
+    }
+})
+
+passwordShowToggle.addEventListener('click', () => {
+    passwordShowToggle.classList.toggle('show-pass');
+    
+    if(passwordShowToggle.classList.contains('show-pass')) {
+        toggleImg.src = 'websiteimages/show.svg';
+        toggleText.innerText = "Hide";
+        passwordField.setAttribute('type', 'text');
+    } else {
+        toggleImg.src = 'websiteimages/hide.svg';
+        toggleText.innerText = "Show";
+        passwordField.setAttribute('type', 'password');
     }
 })

@@ -33,10 +33,9 @@ input[type="text"],
 input[type="email"], 
 input[type="password"] {
     width: 100%;
-    height: var(--fs-40);
-    border-radius: 5px;
-    border-width: 1px;
-    border: 1px solid gray;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #111;
 }
 
 input::placeholder{
@@ -44,15 +43,15 @@ input::placeholder{
 }
 
 .signUpBtn{
-    background-color: black;
     color: white;
     padding: 2%;
     width: 100%;
     font-size: large;
-    border-radius: 40px;
     margin-top: 5%;
     cursor: pointer;
     border: none;
+    border-radius: 2.5rem;
+    background: #111;
 }
 
 .signUpBtn:hover {
@@ -89,4 +88,25 @@ a{
 
 .hide {
     display: none;
+}
+
+label[for="password"] {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+        display: flex;
+        align-items: center;
+
+        img {
+            margin-right: 0.125rem;
+            width: 16px;
+            height: 16px;
+        }
+    }
+    
+    .toggle-password {
+        font-size: 0.875rem;
+        cursor: pointer;
+    }
 }

@@ -26,7 +26,13 @@
             <label for="Email">Email</label><br>
             <input type="email" name="email" placeholder="Enter your email address" required><br><br>
 
-            <label for="password">Password</label><br>
+            <label for="password">
+                <span>Password</span>
+                <span class="toggle-password">
+                    <img src="websiteimages/show.svg" alt="" class="toggle-img">
+                    <span class="toggle-text">Show</span>
+                </span>
+            </label>
             <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
             <p class="error_message email"></p>
 
