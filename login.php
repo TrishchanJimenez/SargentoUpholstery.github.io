@@ -62,7 +62,7 @@
         if($user) {
             if(password_verify($password, $user['password'])) {
                 echo "Login Successful";
-                $_SESSION['access_type'] = $user['user'];
+                $_SESSION['access_type'] = $user['user_type'];
                 $_SESSION['id'] = $user['user_id'];
                 // Redirect user to dashboard or any other page
                 header("Location: index.php");
