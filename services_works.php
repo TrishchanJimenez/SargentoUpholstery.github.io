@@ -22,7 +22,7 @@
             commitment to creating furniture that enhances the beauty and comfort of every
             space. Explore our past works and be inspired by the legacy of Sargento Upholstery.
         </p>
-        <a href="order.html" class="btn btn-black">Get Free Quote</a>
+        <a href="order.php" class="btn btn-black">Get Free Quote</a>
     </div>
     <div class="product-gallery">
         <div class="selector-container">
@@ -124,7 +124,7 @@
             <h1>
                 Discover Our Artistry
             </h1>
-            <a href="services_craftsmanship.html" class="btn btn-black">See More</a>
+            <a href="services_craftsmanship.php" class="btn btn-black">See More</a>
         </div>
     </div>
     <?php include_once("footer.php") ?>

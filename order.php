@@ -107,7 +107,7 @@
     </div>
     <div class="order-testimonials-cta">
         <p>See What Our Clients Say</p>
-        <a href="testimonials.html">See More</a>
+        <a href="testimonials.php">See More</a>
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/offcanvas.js"></script>

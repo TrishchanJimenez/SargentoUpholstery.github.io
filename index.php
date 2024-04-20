@@ -14,7 +14,7 @@
             Well-crafted & Timeless
             <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
         </h2>
-        <a href="order.html" class="btn btn-black">Get a free quote</a>
+        <a href="order.php" class="btn btn-black">Get a free quote</a>
     </div>
     <div class="product">
         <h2 class="product-category-title">Our Previous Crafts</h2>
@@ -63,12 +63,13 @@
                 <img src="websiteimages/End quote.png" alt="" class="quote quote-end">
             </div>
         </div>
-        <a href="testimonials.html" class="btn btn-black">More Reviews</a>
+        <a href="testimonials.php" class="btn btn-black">More Reviews</a>
     </div>
     <div class="about-us">
         <img src="websiteimages/teampicture.png" alt="" class="team-picture">
         <h2 class="text-gold">The Sargento Family Business</h2>
-        <p class="business-history">Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has
+        <p class="business-history">
+            Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has
             quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made
             furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market
             trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to
@@ -76,7 +77,7 @@
             market. This relocation, though not widely recognized, played a crucial role in the continued success of
             Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a
             strategic relocation has contributed to the business's resilience in a competitive industry.</p>
-        <a href="about_us.html" class="btn btn-white">Learn More</a>
+        <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/offcanvas.js"></script>

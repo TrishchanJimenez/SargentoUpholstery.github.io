@@ -18,7 +18,7 @@
             products is a masterpiece of quality, designed to provide both aesthetics and durability
             that can withstand the test of time.
         </p>
-        <a href="order.html" class="btn btn-black">Get Free Quote</a>
+        <a href="order.php" class="btn btn-black">Get Free Quote</a>
     </div>
     <div class="services_craftmanship_card_container">
         <div class="services_craftmanship_card">
@@ -97,7 +97,7 @@
         <h1>
             Explore Our Masterpieces
         </h1>
-        <a href="services_works.html" class="btn btn-black">See More</a>
+        <a href="services_works.php" class="btn btn-black">See More</a>
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/offcanvas.js"></script>

@@ -13,7 +13,7 @@
     <div class="testimonials-title">
         <h2>Real Reviews, Real Satisfaction</h2>
         <p>At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.</p>
-        <a href="order.html">Get a Free Quote</a>
+        <a href="order.php">Get a Free Quote</a>
     </div>
     <div class="testimonials-carousel">
     </div>

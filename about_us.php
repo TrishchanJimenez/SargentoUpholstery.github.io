@@ -14,7 +14,7 @@
     <div class="about-us-toptext">
         <h2>Meet the team</h2>
         <p>The proud workers of sargento that handfully perfected their craft in making your dream furniture into reality. They've spend their entire lives practicing, flourishing each individual furniture known for them to be known in the metro. The team also consists of female workers helps the business afloat. With all of the sleepless nights, they've strive for sucess by burning the midnight oil. Mr. Eddie Murphy Sargento, keeping the family business alive with Mrs. Journa Joy Sargento, they've been working and doing the best they can for their family. With these individuals around, Sargento Upholstery will be able to provide the highest quality furniture to suit your every needs.</p>
-        <a href="order.html">Get a Free Quote</a>
+        <a href="order.php">Get a Free Quote</a>
     </div>
     <div class="about-us-history">
         <h2 class="text-gold">History of Sargento Upholstery</h2>
