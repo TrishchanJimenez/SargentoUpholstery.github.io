@@ -16,26 +16,24 @@
         <p>Sign in</p>
         <form method="post">
             <p>Email or mobile phone number</p>
-            <input type="text" name="email" id="email" class="input">
-            <div class="input_wrapper"> <!-- New wrapper for input and show/hide button -->
-                <div class="password">
-                    <p>Your password</p>
-                    <div class="showhide">
-                        <button type="button" id="togglePassword">
-                            <img src="websiteimages/hide.svg" alt="Show Password" id="eyeClosed">
-                            <img src="websiteimages/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
-                        </button>
-                        <span id="showText">Show</span>
-                        <span id="hideText" style="display: none;">Hide</span>
-                    </div>
+            <input type="email" name="email" id="email" class="input" placeholder="Enter email">
+             <!-- New wrapper for input and show/hide button -->
+            <div class="password">
+                <p>Your password</p>
+                <div class="showhide">
+                    <button type="button" id="togglePassword">
+                        <img src="websiteimages/hide.svg" alt="Show Password" id="eyeClosed">
+                        <img src="websiteimages/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
+                    </button>
+                    <span id="showText">Show</span>
+                    <span id="hideText" style="display: none;">Hide</span>
                 </div>
             </div>
-            <input type="password" id="password" name="password" class="input">
-            <a href="forgetpass.html">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
+            <input type="password" id="password" name="password" class="input" placeholder="Enter Password">
+            <a href="forgetpass.html" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
             <input type="submit" value="Log in" class="Login_button">
-            
+            <a href="register.php"><button class="Create_button">Create an account</button></a>
         </form>
-        <a href="register.php"><button class="Create_button">Create an account</button></a>
     </div>
 </body>
 </html>

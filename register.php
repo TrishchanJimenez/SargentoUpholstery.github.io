@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
-    <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
     <div class="registration">
+        <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
         <div class="regTitle">
             <h1>Sign Up</h1>
             <h3>Sign up with your Email Address </h3>
