@@ -32,7 +32,7 @@
             <input type="password" id="password" name="password" class="input" placeholder="Enter Password">
             <a href="forgetpass.html" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
             <input type="submit" value="Log in" class="Login_button">
-            <a href="register.php"><button class="Create_button">Create an account</button></a>
+            <a href="register.php" class="Create_button">Create an Account</a>
         </form>
     </div>
 </body>

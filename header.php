@@ -5,7 +5,11 @@
         <h2 class="business-category">Textile Furniture Service</h2>
     </a>
     <nav class="main-menu">
-        <img src="websiteimages/menu-icon.svg" alt="" id="open-btn" width="30px" height="30px">
+        <div class="nav-icons">
+            <img src="websiteimages/bell-icon.svg" alt="" id="notif-btn" width="36px" height="36px">
+            <img src="websiteimages/account-icon.svg" alt="" id="account-btn" width="36px" height="36px">
+            <img src="websiteimages/menu-icon.svg" alt="" id="open-btn" width="36px" height="36px">
+        </div>
         <div id="offcanvas-menu">
             <img src="websiteimages/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
             <ul class="nav-links">

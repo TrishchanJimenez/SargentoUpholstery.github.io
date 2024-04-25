@@ -80,7 +80,6 @@ input[type="password"] {
 .Create_button{
     color: black;
     padding: 2%;
-    width: 100%;
     font-size: large;
     cursor: pointer;
     border: 1px solid black;
@@ -88,6 +87,8 @@ input[type="password"] {
     background: white;
     margin-top: 1rem;
     margin-bottom: 1.25rem;
+    text-align: center;
+    text-decoration: none;
 }
 
 .Create_button:hover{
