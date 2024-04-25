@@ -26,6 +26,9 @@
             <label for="Email">Email</label><br>
             <input type="email" name="email" placeholder="Enter your email address" required><br><br>
 
+            <label for="contactno">Phone</label><br>
+            <input type="tel" name="contactno" placeholder="Enter your contact no." required><br><br>
+
             <label for="password">
                 <span>Password</span>
                 <span class="toggle-password">
@@ -57,6 +60,7 @@
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $name = sanitizeInput($_POST['name']);
             $email = sanitizeInput($_POST['email']);
+            $contactno = sanitizeInput($_POST['contactno']);
             $password = sanitizeInput($_POST['password']);
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -65,8 +69,8 @@
             if($stmt->rowCount() > 0) {
                 echo "<script> alert('There is already an account associated with that email') </script>";
             } else {
-                $stmt = $conn->prepare("INSERT INTO usertable(name, email, password, user_type) VALUES(?,?,?,?)");
-                $stmt->execute([$name, $email, $hashedPassword, "user"]);
+                $stmt = $conn->prepare("INSERT INTO usertable(name, email, password, contact_number, user_type) VALUES(?,?,?,?)");
+                $stmt->execute([$name, $email, $hashedPassword, $contactno,"user"]);
                 echo "Registration Succesful";
                 session_start();
                 $_SESSION['access_type'] = 'user';
