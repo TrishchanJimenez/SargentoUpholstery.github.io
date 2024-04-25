@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="css/Loginstyles.css">
+    <link rel="stylesheet" href="css/login.css">
     <script src="js/login.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,15 +32,15 @@
             <input type="password" id="password" name="password" class="input" placeholder="Enter Password">
             <a href="forgetpass.html" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
             <input type="submit" value="Log in" class="Login_button">
-            <a href="register.php" class="Create_button">Create an Account</a>
         </form>
+        <a href="register.php"><button class="Create_button">Create an account</button></a>
+        <a href="index.php"><button class="Create_button">Back To Homepage</button></a>
     </div>
 </body>
 </html>
 
 <?php
     include "database_connection.php";
-    session_start();
 
     function sanitizeInput($input) {
         $input = trim($input);
@@ -60,6 +60,7 @@
         if($user) {
             if(password_verify($password, $user['password'])) {
                 echo "Login Successful";
+                session_start();
                 $_SESSION['access_type'] = $user['user_type'];
                 $_SESSION['id'] = $user['user_id'];
                 // Redirect user to dashboard or any other page
