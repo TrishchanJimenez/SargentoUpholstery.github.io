@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,9 +37,9 @@
             <a href="forgetpass.html" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
             <input type="submit" value="Log in" class="Login_button">
         </form>
-        <a href="register.php"><button class="Create_button">Create an account</button></a>
-        <a href="index.php"><button class="Create_button">Back To Homepage</button></a>
+        <a href="register.php" class="Create_button">Create an Account</a>
     </div>
+    <a href="index.php" class="back-button">Back to Homepage</a>
 </body>
 </html>
 

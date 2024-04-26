@@ -32,6 +32,6 @@
             width="1031" height="565" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
     </div>
     <?php include_once("footer.php") ?>
-    <script src="js/offcanvas.js"></script>
+    <script src="js/globals.js"></script>
 </body>
 </html>

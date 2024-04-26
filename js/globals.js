@@ -10,3 +10,11 @@ openBtn.addEventListener('click', (e) => {
 closeBtn.addEventListener('click', (e) => {
     menu.classList.remove('active');
 });
+
+const accountBtn = document.getElementById('account-btn');
+const accountMenu = document.querySelector('.account-menu');
+accountBtn.addEventListener('click', () => {
+    if(accountBtn.parentElement.classList.contains('nav-icons')) {
+        accountMenu.classList.toggle('show');
+    }
+})

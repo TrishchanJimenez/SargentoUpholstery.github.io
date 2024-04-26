@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 :root {
     --fs-48: clamp(28px, 3.12vw, 48px);
@@ -100,6 +101,61 @@ body {
     display: flex;
     gap: 2rem;
     margin-right: 2rem;
+    position: relative;
+}
+
+.account-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-top: 2rem;
+    top: 30%;
+    right: 35%;
+    display: none;
+    /* display: none; */
+    border-radius: 0.85rem;
+    background-color: #34343A;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none;
+    column-gap: 0.25rem;
+}
+
+.account-menu > * {
+    padding: 1rem 0.75rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.account-menu > *:hover {
+    background-color: #797777;
+}
+
+.account-menu a {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.account-menu span {
+    font-family: "Inter", sans-serif;
+    white-space: nowrap;
+    font-weight: medium;
+    font-size: 1.125rem;
+}
+
+.account-menu button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.account-menu.show {
+    display: flex;
 }
 
 #offcanvas-menu {

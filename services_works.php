@@ -128,7 +128,7 @@
         </div>
     </div>
     <?php include_once("footer.php") ?>
-    <script src="js/offcanvas.js"></script>
+    <script src="js/globals.js"></script>
     <script src="js/works.js"></script>
 </body>
 </html>

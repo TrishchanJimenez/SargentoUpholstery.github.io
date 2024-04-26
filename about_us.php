@@ -46,6 +46,6 @@
         </div>
     </div>
     <?php include_once("footer.php") ?>
-    <script src="js/offcanvas.js"></script>
+    <script src="js/globals.js"></script>
 </body>
 </html>
