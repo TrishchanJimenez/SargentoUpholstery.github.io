@@ -11,14 +11,152 @@
 
 <body>
     <?php include_once("header.php") ?>
-    <img src="websiteimages/orderfeaturedimg.png" alt="" class="order-featured-img">
+    <img src="websiteimages/orderfeaturedimg.png" class="order-featured-img">
     <h2 class="order-page-title">Design, Craft, Quote - All in One Place</h2>
     <div class="order-container">
         <div class="order-form">
+            <!--
             <iframe
                 src="https://docs.google.com/forms/d/e/1FAIpQLSeL-lc587Nbvwlzj1wCq5CC16KoTO8GZhp4KkvJRimPfntR-A/viewform?embedded=true"
                 frameborder="0" marginheight="0" marginwidth="0">Loading…
             </iframe>
+            -->
+            <h2 class="quotation-form__title">Quotation Form</h2>
+            <form class="quotation-form" method="post">
+                <div class="quotation-form__input-container">
+                    <label for="orderCategory" class="quotation-form__label">Category:</label>
+                    <select id="orderCategory" name="orderCategory" class="quotation-form__select" onchange="toggleInputs()">
+                        <option value="repair" class="quotation-form__option">Repair</option>
+                        <option value="customized" class="quotation-form__option">Customized</option>
+                    </select>
+                </div>
+
+                <fieldset class="quotation-form__fieldset quotation-form__fieldset--repair">
+                    <legend class="quotation-form__legend">Repair</legend>
+                    <table class="quotation-form__table">
+                        <tr>
+                            <td><label for="orderRepairType" class="quotation-form__label">Type of Furniture to Repair:</label></td>
+                            <td><input type="text" id="orderRepairType" name="orderRepairType" class="quotation-form__input"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="orderRepairPicture" class="quotation-form__label">Picture of Furniture:</label></td>
+                            <td><input type="file" id="orderRepairPicture" name="orderRepairPicture" class="quotation-form__file"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="orderRepairNote" class="quotation-form__label">Note:</label></td>
+                            <td><textarea id="orderRepairNote" name="orderRepairNote" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="orderRepairDeliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
+                            <td><textarea id="orderRepairDeliveryAddress" name="orderRepairDeliveryAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset class="quotation-form__fieldset quotation-form__fieldset--customized" style="display:none;">
+                    <legend class="quotation-form__legend">Customized</legend>
+                    <table class="quotation-form__table">
+                        <tr>
+                            <td><label for="orderCustomType" class="quotation-form__label">Type of Furniture:</label></td>
+                            <td><input type="text" id="orderCustomType" name="orderCustomType" class="quotation-form__input"  ></td>
+                        </tr>
+                        <tr>
+                            <td><label class="quotation-form__label">Dimensions (Height, Width, Depth) in inches:</label></td>
+                            <td>
+                                <input type="number" id="orderCustomHeight" name="orderCustomHeight" class="quotation-form__input quotation-form__input--small" placeholder="Height"  ><br>
+                                <input type="number" id="orderCustomWidth" name="orderCustomWidth" class="quotation-form__input quotation-form__input--small" placeholder="Width"  ><br>
+                                <input type="number" id="orderCustomDepth" name="orderCustomDepth" class="quotation-form__input quotation-form__input--small" placeholder="Depth"  ><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="quotation-form__label">Materials:</label></td>
+                            <td>
+                                <input type="radio" id="plastic" name="orderCustomMaterial" value="Plastic" class="quotation-form__radio"  >
+                                <label for="plastic" class="quotation-form__radio-label">Plastic</label><br>
+                                <input type="radio" id="metal" name="orderCustomMaterial" value="Metal" class="quotation-form__radio"  >
+                                <label for="metal" class="quotation-form__radio-label">Metal</label><br>
+                                <input type="radio" id="wood" name="orderCustomMaterial" value="Wood" class="quotation-form__radio"  >
+                                <label for="wood" class="quotation-form__radio-label">Wood</label><br>
+                                <input type="radio" id="other_material" name="orderCustomMaterial" value="Other" class="quotation-form__radio"  >
+                                <label for="other_material" class="quotation-form__radio-label">Other (Please specify in Note)</label><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="quotation-form__label">Fabric:</label></td>
+                            <td>
+                                <input type="radio" id="cotton" name="orderCustomFabric" value="Cotton" class="quotation-form__radio">
+                                <label for="cotton" class="quotation-form__radio-label">Cotton</label><br>
+                                <input type="radio" id="polyester" name="orderCustomFabric" value="Polyester" class="quotation-form__radio">
+                                <label for="polyester" class="quotation-form__radio-label">Polyester</label><br>
+                                <input type="radio" id="linen" name="orderCustomFabric" value="Linen" class="quotation-form__radio">
+                                <label for="linen" class="quotation-form__radio-label">Linen</label><br>
+                                <input type="radio" id="vinyl" name="orderCustomFabric" value="Vinyl" class="quotation-form__radio">
+                                <label for="vinyl" class="quotation-form__radio-label">Vinyl</label><br>
+                                <input type="radio" id="other_fabric" name="orderCustomFabric" value="Other" class="quotation-form__radio"  >
+                                <label for="other_fabric" class="quotation-form__radio-label">Other (Please specify in Note)</label><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="orderCustomNote" class="quotation-form__label">Note:</label></td>
+                            <td><textarea id="orderCustomNote" name="orderCustomNote" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="orderCustomDeliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
+                            <td><textarea id="orderCustomDeliveryAddress" name="orderCustomDeliveryAddress" class="quotation-form__textarea" rows="4" cols="50"  ></textarea></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <input type="submit" value="Submit" class="quotation-form__submit-button">
+            </form>
+            <script>
+                function toggleInputs() {
+                    var orderCategory = document.getElementById("orderCategory").value;
+                    var repairFieldset = document.querySelector('.quotation-form__fieldset--repair');
+                    var customizedFieldset = document.querySelector('.quotation-form__fieldset--customized');
+                    if (orderCategory === "repair") {
+                        repairFieldset.style.display = "block";
+                        customizedFieldset.style.display = "none";
+                    } else if (orderCategory === "customized") {
+                        customizedFieldset.style.display = "block";
+                        repairFieldset.style.display = "none";
+                    }
+                }
+            </script>
+            <style>
+                .quotation-form__list-item {
+                    margin-bottom: 20px; /* Add margin between input items */
+                }
+
+                .quotation-form__label {
+                    display: block; /* Display labels as block elements */
+                    margin-bottom: 5px; /* Add margin between labels and inputs */
+                    font-weight: bold;
+                }
+
+                .quotation-form__input,
+                .quotation-form__textarea,
+                .quotation-form__file,
+                .quotation-form__select {
+                    padding: 10px; /* Add padding to inputs */
+                    width: 100%; /* Ensure inputs take full width */
+                    box-sizing: border-box; /* Include padding and border in the input's total width */
+                }
+
+                .quotation-form__textarea {
+                    resize: vertical;
+                }
+
+                /* Customize radio labels alignment */
+                .quotation-form__radio-label {
+                    display: inline-block; /* Display radio labels inline */
+                    margin-right: 10px; /* Add margin between radio labels */
+                }
+
+                td {
+                    padding: 2.5vmin;
+                }
+            </style>
         </div>
         <div class="faq-section">
             <h3>Frequently Asked Questions</h3>
@@ -114,3 +252,77 @@
 </body>
 
 </html>
+
+<?php
+/*
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Get the variables from $_POST
+        $orderCategory = $_POST["orderCategory"];
+
+        // Initialize other variables
+        // Both:
+        $orderType = '';
+        $orderNote = '';
+        $orderDeliveryAddress = '';
+        // Customized:
+        $orderCustomDimensions = [];
+        $orderCustomMaterial = '';
+        $orderCustomFabric = '';
+        // Repair:
+        $orderRepairPicture = '';
+
+        // Process variables based on orderCategory
+        switch ($orderCategory) {
+            case "repair":
+                $orderType = $_POST["orderRepairType"];
+                if (isset($_FILES['orderRepairPicture']) && $_FILES['orderRepairPicture']['error'] === UPLOAD_ERR_OK) {
+                    $tmpFilePath = $_FILES['orderRepairPicture']['tmp_name'];
+                    $orderRepairPicture = file_get_contents($tmpFilePath);
+                } else {
+                    echo "Error uploading file.";
+                }
+                $orderNote = $_POST["orderRepairNote"];
+                $orderDeliveryAddress = $_POST["orderRepairDeliveryAddress"];
+                break;
+
+            case "customized":
+                $orderType = $_POST["orderCustomType"];
+                $orderCustomDimensions = array(
+                    $_POST["orderCustomHeight"],
+                    $_POST["orderCustomWidth"],
+                    $_POST["orderCustomDepth"]
+                );
+                $orderCustomMaterial = $_POST["orderCustomMaterial"];
+                $orderCustomFabric = $_POST["orderCustomFabric"];
+                $orderNote = $_POST["orderCustomNote"];
+                $orderDeliveryAddress = $_POST["orderCustomDeliveryAddress"];
+                break;
+
+            default:
+                // Handle default case if needed
+                break;
+        }
+
+        // Define the content to write to the text file
+        $content = "Order Category: $orderCategory\n";
+        $content .= "Order Type: $orderType\n";
+        $content .= "Order Dimensions: " . implode(" x ", $orderCustomDimensions) . "\n";
+        $content .= "Order Material: $orderCustomMaterial\n";
+        $content .= "Order Fabric: $orderCustomFabric\n";
+        $content .= "Order Note: $orderNote\n";
+        $content .= "Order Delivery Address: $orderDeliveryAddress\n";
+        $content .= "Order Repair Picture: " . base64_encode($orderRepairPicture) . "\n";
+
+        // Write the content to a text file
+        $file = 'order_details.txt';
+        file_put_contents($file, $content);
+        if (file_put_contents($file, $content) !== false) {
+            // Provide feedback to the user on success
+            echo '<script>alert("Order details written to ' . $file . '");</script>';
+        } else {
+            // Provide feedback to the user on failure
+            echo '<script>alert("Failed to write order details to ' . $file . '");</script>';
+        }
+    }
+*/
+?>
