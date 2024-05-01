@@ -8,9 +8,9 @@
     <div class="socials">
         <h3>Socials</h3>
         <div class="img-container d-flex">
-            <a href="mailto:placeholder@test.com"><img src="websiteimages/email-icon.svg" alt="" class="email-icon"></a>     
-            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/facebook_logo.svg" alt=""></a>
-            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/messenger_logo.svg" alt=""></a>
+            <a href="mailto:placeholder@test.com"><img src="websiteimages/icons/email-icon.svg" alt="" class="email-icon"></a>     
+            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/icons/facebook_logo.svg" alt=""></a>
+            <a href="https://www.facebook.com/SargentoUpholstery"><img src="websiteimages/icons/messenger_logo.svg" alt=""></a>
         </div>
     </div>
     <div class="quicklinks">

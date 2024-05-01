@@ -32,7 +32,7 @@
             <label for="password">
                 <span>Password</span>
                 <span class="toggle-password">
-                    <img src="websiteimages/show.svg" alt="" class="toggle-img">
+                    <img src="websiteimages/icons/show.svg" alt="" class="toggle-img">
                     <span class="toggle-text">Show</span>
                 </span>
             </label>

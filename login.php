@@ -26,8 +26,8 @@
                 <p>Your password</p>
                 <div class="showhide">
                     <button type="button" id="togglePassword">
-                        <img src="websiteimages/hide.svg" alt="Show Password" id="eyeClosed">
-                        <img src="websiteimages/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
+                        <img src="websiteimages/icons/hide.svg" alt="Show Password" id="eyeClosed">
+                        <img src="websiteimages/icons/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
                     </button>
                     <span id="showText">Show</span>
                     <span id="hideText" style="display: none;">Hide</span>

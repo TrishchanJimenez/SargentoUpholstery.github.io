@@ -35,11 +35,11 @@ passwordShowToggle.addEventListener('click', () => {
     passwordShowToggle.classList.toggle('show-pass');
     
     if(passwordShowToggle.classList.contains('show-pass')) {
-        toggleImg.src = 'websiteimages/show.svg';
+        toggleImg.src = 'websiteimages/icons/show.svg';
         toggleText.innerText = "Hide";
         passwordField.setAttribute('type', 'text');
     } else {
-        toggleImg.src = 'websiteimages/hide.svg';
+        toggleImg.src = 'websiteimages/icons/hide.svg';
         toggleText.innerText = "Show";
         passwordField.setAttribute('type', 'password');
     }
