@@ -11,18 +11,7 @@
     display: flex;
     width: 90%;
     margin: 0 auto;
-}
-
-.order-form {
-    width: 49%;
-    height: 500px;
-    margin-right: 1%;
-    border: 1px solid black;
-}
-
-.order-form form {
-    width: 100%;
-    height: 100%;
+    justify-content: space-between;
 }
 
 .faq-section {
@@ -82,35 +71,87 @@
     }
 }
 
-.quotation-form__list-item {
-    margin-bottom: 20px; /* Add margin between input items */
-}
+/* Order Form Styles */
 
-.quotation-form__label {
-    display: block; /* Display labels as block elements */
-    margin-bottom: 5px; /* Add margin between labels and inputs */
+.order-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .quotation-form__title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .quotation-form__input-container {
+    margin-bottom: 20px;
+  }
+  
+  .quotation-form__label {
     font-weight: bold;
-}
-
-.quotation-form__input,
-.quotation-form__textarea,
-.quotation-form__file,
-.quotation-form__select {
-    padding: 10px; /* Add padding to inputs */
-    width: 100%; /* Ensure inputs take full width */
-    box-sizing: border-box; /* Include padding and border in the input's total width */
-}
-
-.quotation-form__textarea {
-    resize: vertical;
-}
-
-/* Customize radio labels alignment */
-.quotation-form__radio-label {
-    display: inline-block; /* Display radio labels inline */
-    margin-right: 10px; /* Add margin between radio labels */
-}
-
-td {
-    padding: 2.5vmin;
-}
+  }
+  
+  .quotation-form__select,
+  .quotation-form__input,
+  .quotation-form__textarea,
+  .quotation-form__file {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .quotation-form__fieldset {
+    margin-bottom: 20px;
+  }
+  
+  .quotation-form__legend {
+    font-weight: bold;
+  }
+  
+  .quotation-form__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .quotation-form__table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .quotation-form__submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .quotation-form__submit-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .order-form {
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .quotation-form__input,
+    .quotation-form__textarea {
+      font-size: 14px;
+    }
+  }
+  
