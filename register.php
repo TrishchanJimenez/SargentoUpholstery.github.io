@@ -70,7 +70,7 @@
                 echo "<script> alert('There is already an account associated with that email') </script>";
             } else {
                 $stmt = $conn->prepare("INSERT INTO usertable(name, email, password, contact_number, user_type) VALUES(?,?,?,?)");
-                $stmt->execute([$name, $email, $hashedPassword, $contactno,"user"]);
+                $stmt->execute([$name, $email, $hashedPassword, $contactno, "user"]);
                 echo "Registration Succesful";
                 session_start();
                 $_SESSION['access_type'] = 'user';

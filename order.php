@@ -15,12 +15,6 @@
     <h2 class="order-page-title">Design, Craft, Quote - All in One Place</h2>
     <div class="order-container">
         <div class="order-form">
-            <!--
-            <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSeL-lc587Nbvwlzj1wCq5CC16KoTO8GZhp4KkvJRimPfntR-A/viewform?embedded=true"
-                frameborder="0" marginheight="0" marginwidth="0">Loading…
-            </iframe>
-            -->
             <h2 class="quotation-form__title">Quotation Form</h2>
             <form class="quotation-form" method="post">
                 <div class="quotation-form__input-container">
@@ -109,71 +103,24 @@
 
                 <input type="submit" value="Submit" class="quotation-form__submit-button">
             </form>
-            <script>
-                function toggleInputs() {
-                    var orderCategory = document.getElementById("orderCategory").value;
-                    var repairFieldset = document.querySelector('.quotation-form__fieldset--repair');
-                    var customizedFieldset = document.querySelector('.quotation-form__fieldset--customized');
-                    if (orderCategory === "repair") {
-                        repairFieldset.style.display = "block";
-                        customizedFieldset.style.display = "none";
-                    } else if (orderCategory === "customized") {
-                        customizedFieldset.style.display = "block";
-                        repairFieldset.style.display = "none";
-                    }
-                }
-            </script>
-            <style>
-                .quotation-form__list-item {
-                    margin-bottom: 20px; /* Add margin between input items */
-                }
-
-                .quotation-form__label {
-                    display: block; /* Display labels as block elements */
-                    margin-bottom: 5px; /* Add margin between labels and inputs */
-                    font-weight: bold;
-                }
-
-                .quotation-form__input,
-                .quotation-form__textarea,
-                .quotation-form__file,
-                .quotation-form__select {
-                    padding: 10px; /* Add padding to inputs */
-                    width: 100%; /* Ensure inputs take full width */
-                    box-sizing: border-box; /* Include padding and border in the input's total width */
-                }
-
-                .quotation-form__textarea {
-                    resize: vertical;
-                }
-
-                /* Customize radio labels alignment */
-                .quotation-form__radio-label {
-                    display: inline-block; /* Display radio labels inline */
-                    margin-right: 10px; /* Add margin between radio labels */
-                }
-
-                td {
-                    padding: 2.5vmin;
-                }
-            </style>
+            <script src="js/order.js"></script>
         </div>
         <div class="faq-section">
             <h3>Frequently Asked Questions</h3>
             <div class="questions">
                 <span class="questions-title">1. How does the ordering process work?</span>
                 <p>
-                    Our ordering process is simple and convenient. Visit our Order webpage and fill out the embedded
-                    Google Form to provide details about your custom furniture requirements. Once we receive your
-                    submission, our team will review it and get in touch with you to discuss the specifics.
+                    Our ordering process is simple and convenient. Visit our Order webpage and select . Once we receive your submission, our team will 
+                    review it and get in touch with you to discuss the specifics.
                 </p>
             </div>
             <div class="questions">
-                <span class="questions-title">2. What kind of custom furniture can I order?</span>
+                <span class="questions-title">2. What kind of orders can I place?</span>
                 <p>
-                    We specialize in crafting unique, made-to-order furniture pieces. Whether you're looking for a
-                    custom-sized sofa, a personalized dining table, or a unique cleopatra sofa, we can bring your ideas
-                    to life. Feel free to share your design preferences in the order form.
+                    We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order 
+                    furniture pieces. Whether you're looking for a custom-sized sofa, a personalized dining table, 
+                    or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design 
+                    preferences in the order form.
                 </p>
             </div>
             <div class="questions">
