@@ -1,0 +1,38 @@
+.admin-sidebar {
+    background-color: #1E1E1E;
+    width: 17%;
+    height: 100vh;
+}
+
+.admin-sidebar h1 {
+    font-size: var(--fs-36);
+    padding: 2rem 1rem 1rem 2rem;
+}
+
+.admin-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem 1rem 2rem;
+    margin: 0.25rem 0;
+    cursor: pointer;
+}
+
+.admin-link:hover, .admin-link.active {
+    background-color: #FFDC5C;
+}
+
+.admin-link.active span, .admin-link:hover span {
+    color: #111111;
+}
+
+.admin-link.active svg path, .admin-link:hover svg path {
+    stroke: #111;
+}
+
+.admin-link span {
+    font-size: var(--fs-20);
+    color: #C4CAD4;
+    margin-left: 0.6rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+}
