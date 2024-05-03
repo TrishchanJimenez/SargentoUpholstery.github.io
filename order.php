@@ -18,93 +18,199 @@
             <h2 class="quotation-form__title">Quotation Form</h2>
             <form class="quotation-form" method="post">
                 <div class="quotation-form__input-container">
-                    <label for="orderCategory" class="quotation-form__label">Category:</label>
-                    <select id="orderCategory" name="orderCategory" class="quotation-form__select" onchange="toggleInputs()">
+                    <label for="orderType" class="quotation-form__label">Order Type:</label>
+                    <select id="orderType" name="orderType" class="quotation-form__select" onchange="toggleInputs()">
                         <option value="repair" class="quotation-form__option">Repair</option>
-                        <option value="customized" class="quotation-form__option">Customized</option>
+                        <option value="mto" class="quotation-form__option">Made-to-Order (MTO)</option>
                     </select>
                 </div>
 
                 <fieldset class="quotation-form__fieldset quotation-form__fieldset--repair">
-                    <legend class="quotation-form__legend">Repair</legend>
+                    <legend class="quotation-form__legend">Repair Details</legend>
                     <table class="quotation-form__table">
                         <tr>
-                            <td><label for="orderRepairType" class="quotation-form__label">Type of Furniture to Repair:</label></td>
-                            <td><input type="text" id="orderRepairType" name="orderRepairType" class="quotation-form__input"></td>
+                            <td><label class="quotation-form__label">Furniture Pickup Method:</label></td>
+                            <td>
+                                <input type="radio" id="thirdPartyPickup" name="pickupMethod" value="Third Party" class="quotation-form__radio">
+                                <label for="thirdPartyPickup" class="quotation-form__radio-label">Third Party</label><br>
+                                <input type="radio" id="selfPickup" name="pickupMethod" value="Self" class="quotation-form__radio">
+                                <label for="selfPickup" class="quotation-form__radio-label">Self</label>
+                            </td>
+                        </tr>
+                        <tr class="quotation-form__pickup-address">
+                            <td><label for="pickupAddress" class="quotation-form__label">Pickup Address:</label></td>
+                            <td>
+                                <textarea id="pickupAddress" name="pickupAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea><br>
+                                <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
+                                <label for="setPickupAddress" class="quotation-form__checkbox-label">Set Pickup Address As My Current Address</label>
+                            </td>
                         </tr>
                         <tr>
-                            <td><label for="orderRepairPicture" class="quotation-form__label">Picture of Furniture:</label></td>
-                            <td><input type="file" id="orderRepairPicture" name="orderRepairPicture" class="quotation-form__file"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="orderRepairNote" class="quotation-form__label">Note:</label></td>
-                            <td><textarea id="orderRepairNote" name="orderRepairNote" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td><label for="orderRepairDeliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
-                            <td><textarea id="orderRepairDeliveryAddress" name="orderRepairDeliveryAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
+                            <td><label for="repairPicture" class="quotation-form__label">Furniture Reference Image:</label></td>
+                            <td><input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file"></td>
                         </tr>
                     </table>
                 </fieldset>
 
-                <fieldset class="quotation-form__fieldset quotation-form__fieldset--customized" style="display:none;">
-                    <legend class="quotation-form__legend">Customized</legend>
+                <fieldset class="quotation-form__fieldset quotation-form__fieldset--mto" style="display:none;">
+                    <legend class="quotation-form__legend">Made-to-Order (MTO) Details</legend>
                     <table class="quotation-form__table">
                         <tr>
-                            <td><label for="orderCustomType" class="quotation-form__label">Type of Furniture:</label></td>
-                            <td><input type="text" id="orderCustomType" name="orderCustomType" class="quotation-form__input"  ></td>
-                        </tr>
-                        <tr>
-                            <td><label class="quotation-form__label">Dimensions (Height, Width, Depth) in inches:</label></td>
+                            <td><label for="furnitureDimensions" class="quotation-form__label">Furniture Dimensions (in inches):</label></td>
                             <td>
-                                <input type="number" id="orderCustomHeight" name="orderCustomHeight" class="quotation-form__input quotation-form__input--small" placeholder="Height"  ><br>
-                                <input type="number" id="orderCustomWidth" name="orderCustomWidth" class="quotation-form__input quotation-form__input--small" placeholder="Width"  ><br>
-                                <input type="number" id="orderCustomDepth" name="orderCustomDepth" class="quotation-form__input quotation-form__input--small" placeholder="Depth"  ><br>
+                                <input type="number" id="furnitureWidth" name="furnitureWidth" class="quotation-form__input quotation-form__input--small" placeholder="Width"><br>
+                                <input type="number" id="furnitureHeight" name="furnitureHeight" class="quotation-form__input quotation-form__input--small" placeholder="Height"><br>
+                                <input type="number" id="furnitureDepth" name="furnitureDepth" class="quotation-form__input quotation-form__input--small" placeholder="Depth">
                             </td>
                         </tr>
                         <tr>
-                            <td><label class="quotation-form__label">Materials:</label></td>
-                            <td>
-                                <input type="radio" id="plastic" name="orderCustomMaterial" value="Plastic" class="quotation-form__radio"  >
-                                <label for="plastic" class="quotation-form__radio-label">Plastic</label><br>
-                                <input type="radio" id="metal" name="orderCustomMaterial" value="Metal" class="quotation-form__radio"  >
-                                <label for="metal" class="quotation-form__radio-label">Metal</label><br>
-                                <input type="radio" id="wood" name="orderCustomMaterial" value="Wood" class="quotation-form__radio"  >
-                                <label for="wood" class="quotation-form__radio-label">Wood</label><br>
-                                <input type="radio" id="other_material" name="orderCustomMaterial" value="Other" class="quotation-form__radio"  >
-                                <label for="other_material" class="quotation-form__radio-label">Other (Please specify in Note)</label><br>
-                            </td>
+                            <td><label for="furnitureMaterial" class="quotation-form__label">Furniture Material:</label></td>
+                            <td><input type="text" id="furnitureMaterial" name="furnitureMaterial" class="quotation-form__input"></td>
                         </tr>
                         <tr>
-                            <td><label class="quotation-form__label">Fabric:</label></td>
-                            <td>
-                                <input type="radio" id="cotton" name="orderCustomFabric" value="Cotton" class="quotation-form__radio">
-                                <label for="cotton" class="quotation-form__radio-label">Cotton</label><br>
-                                <input type="radio" id="polyester" name="orderCustomFabric" value="Polyester" class="quotation-form__radio">
-                                <label for="polyester" class="quotation-form__radio-label">Polyester</label><br>
-                                <input type="radio" id="linen" name="orderCustomFabric" value="Linen" class="quotation-form__radio">
-                                <label for="linen" class="quotation-form__radio-label">Linen</label><br>
-                                <input type="radio" id="vinyl" name="orderCustomFabric" value="Vinyl" class="quotation-form__radio">
-                                <label for="vinyl" class="quotation-form__radio-label">Vinyl</label><br>
-                                <input type="radio" id="other_fabric" name="orderCustomFabric" value="Other" class="quotation-form__radio"  >
-                                <label for="other_fabric" class="quotation-form__radio-label">Other (Please specify in Note)</label><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="orderCustomNote" class="quotation-form__label">Note:</label></td>
-                            <td><textarea id="orderCustomNote" name="orderCustomNote" class="quotation-form__textarea" rows="4" cols="50"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td><label for="orderCustomDeliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
-                            <td><textarea id="orderCustomDeliveryAddress" name="orderCustomDeliveryAddress" class="quotation-form__textarea" rows="4" cols="50"  ></textarea></td>
+                            <td><label for="furnitureFabric" class="quotation-form__label">Furniture Fabric:</label></td>
+                            <td><input type="text" id="furnitureFabric" name="furnitureFabric" class="quotation-form__input"></td>
                         </tr>
                     </table>
                 </fieldset>
+
+                <div class="quotation-form__input-container">
+                    <label class="quotation-form__label">Delivery Method:</label>
+                    <input type="radio" id="thirdPartyDelivery" name="deliveryMethod" value="Third Party" class="quotation-form__radio">
+                    <label for="thirdPartyDelivery" class="quotation-form__radio-label">Third Party</label>
+                    <input type="radio" id="selfDelivery" name="deliveryMethod" value="Self" class="quotation-form__radio">
+                    <label for="selfDelivery" class="quotation-form__radio-label">Self</label>
+                </div>
+
+                <fieldset class="quotation-form__fieldset quotation-form__fieldset--delivery-address" style="display:none;">
+                    <legend class="quotation-form__legend">Delivery Address</legend>
+                    <table class="quotation-form__table">
+                        <tr>
+                            <td><label for="deliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
+                            <td>
+                                <textarea id="deliveryAddress" name="deliveryAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea><br>
+                                <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
+                                <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set Delivery Address As My Current Address</label>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <div class="quotation-form__input-container">
+                    <label for="furnitureNotes" class="quotation-form__label">Furniture Notes:</label>
+                    <textarea id="furnitureNotes" name="furnitureNotes" class="quotation-form__textarea" rows="4" cols="50"></textarea>
+                </div>
 
                 <input type="submit" value="Submit" class="quotation-form__submit-button">
             </form>
-            <script src="js/order.js"></script>
+            <script>
+                function toggleInputs() {
+                    var orderType = document.getElementById("orderType").value;
+                    var repairFieldset = document.querySelector(".quotation-form__fieldset--repair");
+                    var mtoFieldset = document.querySelector(".quotation-form__fieldset--mto");
+
+                    if (orderType === "repair") {
+                        repairFieldset.style.display = "block";
+                        mtoFieldset.style.display = "none";
+                        clearMTOFields();
+                    } else if (orderType === "mto") {
+                        repairFieldset.style.display = "none";
+                        mtoFieldset.style.display = "block";
+                        clearRepairFields();
+                    }
+                }
+
+                function clearRepairFields() {
+                    document.getElementById("thirdPartyPickup").checked = false;
+                    document.getElementById("selfPickup").checked = false;
+                    document.getElementById("pickupAddress").value = "";
+                    document.getElementById("setPickupAddress").checked = false;
+                    document.getElementById("repairPicture").value = "";
+                }
+
+                function clearMTOFields() {
+                    document.getElementById("furnitureWidth").value = "";
+                    document.getElementById("furnitureHeight").value = "";
+                    document.getElementById("furnitureDepth").value = "";
+                    document.getElementById("furnitureMaterial").value = "";
+                    document.getElementById("furnitureFabric").value = "";
+                }
+
+                // Trigger toggleInputs() initially to ensure correct display
+                toggleInputs();
+            </script>
         </div>
+        <style>
+            /* Order Form Styles */
+            .order-form {
+            width: 100%;
+            height: fit-content;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            }
+
+            .quotation-form__title {
+            text-align: center;
+            }
+
+            .quotation-form__input-container {
+            margin-bottom: 15px;
+            }
+
+            .quotation-form__label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            }
+
+            .quotation-form__select,
+            .quotation-form__input,
+            .quotation-form__textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 3px;
+            margin-bottom: 10px;
+            }
+
+            .quotation-form__textarea {
+            resize: vertical;
+            }
+
+            .quotation-form__checkbox-label {
+            font-weight: normal;
+            }
+
+            .quotation-form__fieldset {
+            margin-bottom: 20px;
+            }
+
+            .quotation-form__table {
+            width: 100%;
+            }
+
+            .quotation-form__radio-label {
+            margin-right: 10px;
+            }
+
+            .quotation-form__submit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            }
+
+            .quotation-form__submit-button:hover {
+            background-color: #45a049;
+            }
+        </style>
         <div class="faq-section">
             <h3>Frequently Asked Questions</h3>
             <div class="questions">

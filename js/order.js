@@ -1,12 +1,16 @@
 function toggleInputs() {
-    var orderCategory = document.getElementById("orderCategory").value;
-    var repairFieldset = document.querySelector('.quotation-form__fieldset--repair');
-    var customizedFieldset = document.querySelector('.quotation-form__fieldset--customized');
-    if (orderCategory === "repair") {
+    var orderType = document.getElementById("orderType").value;
+    var repairFieldset = document.querySelector(".quotation-form__fieldset--repair");
+    var mtoFieldset = document.querySelector(".quotation-form__fieldset--mto");
+    
+    if (orderType === "repair") {
         repairFieldset.style.display = "block";
-        customizedFieldset.style.display = "none";
-    } else if (orderCategory === "customized") {
-        customizedFieldset.style.display = "block";
+        mtoFieldset.style.display = "none";
+    } else if (orderType === "mto") {
         repairFieldset.style.display = "none";
+        mtoFieldset.style.display = "block";
     }
 }
+
+// Initial call to set initial state
+toggleInputs();
