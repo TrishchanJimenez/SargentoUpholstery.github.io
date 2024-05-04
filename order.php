@@ -143,7 +143,7 @@
         <style>
             /* Order Form Styles */
             .order-form {
-            width: 100%;
+            width: 49%;
             height: fit-content;
             margin: 0 auto;
             padding: 20px;
@@ -307,75 +307,76 @@
 </html>
 
 <?php
-/*
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Get the variables from $_POST
-        $orderCategory = $_POST["orderCategory"];
+    session_start();
 
-        // Initialize other variables
-        // Both:
-        $orderType = '';
-        $orderNote = '';
-        $orderDeliveryAddress = '';
-        // Customized:
-        $orderCustomDimensions = [];
-        $orderCustomMaterial = '';
-        $orderCustomFabric = '';
-        // Repair:
-        $orderRepairPicture = '';
+    include_once 'database_connection.php';
 
-        // Process variables based on orderCategory
-        switch ($orderCategory) {
-            case "repair":
-                $orderType = $_POST["orderRepairType"];
-                if (isset($_FILES['orderRepairPicture']) && $_FILES['orderRepairPicture']['error'] === UPLOAD_ERR_OK) {
-                    $tmpFilePath = $_FILES['orderRepairPicture']['tmp_name'];
-                    $orderRepairPicture = file_get_contents($tmpFilePath);
-                } else {
-                    echo "Error uploading file.";
-                }
-                $orderNote = $_POST["orderRepairNote"];
-                $orderDeliveryAddress = $_POST["orderRepairDeliveryAddress"];
-                break;
+    // Select the database
+    $conn->exec("USE $db_name");
 
-            case "customized":
-                $orderType = $_POST["orderCustomType"];
-                $orderCustomDimensions = array(
-                    $_POST["orderCustomHeight"],
-                    $_POST["orderCustomWidth"],
-                    $_POST["orderCustomDepth"]
-                );
-                $orderCustomMaterial = $_POST["orderCustomMaterial"];
-                $orderCustomFabric = $_POST["orderCustomFabric"];
-                $orderNote = $_POST["orderCustomNote"];
-                $orderDeliveryAddress = $_POST["orderCustomDeliveryAddress"];
-                break;
-
-            default:
-                // Handle default case if needed
-                break;
+    // Function to validate form inputs
+    function validateInputs($formData)
+    {
+        // Check if all required fields are present
+        $requiredFields = ['orderType', 'deliveryMethod', 'furnitureNotes'];
+        foreach ($requiredFields as $field) {
+            if (empty($formData[$field])) {
+                return "Please fill in all required fields.";
+            }
         }
 
-        // Define the content to write to the text file
-        $content = "Order Category: $orderCategory\n";
-        $content .= "Order Type: $orderType\n";
-        $content .= "Order Dimensions: " . implode(" x ", $orderCustomDimensions) . "\n";
-        $content .= "Order Material: $orderCustomMaterial\n";
-        $content .= "Order Fabric: $orderCustomFabric\n";
-        $content .= "Order Note: $orderNote\n";
-        $content .= "Order Delivery Address: $orderDeliveryAddress\n";
-        $content .= "Order Repair Picture: " . base64_encode($orderRepairPicture) . "\n";
+        // Validate repair image
+        if ($formData['orderType'] === 'repair') {
+            if (!isset($_FILES['repairPicture']) || $_FILES['repairPicture']['error'] !== UPLOAD_ERR_OK) {
+                return "Please upload a valid repair image.";
+            }
+        }
 
-        // Write the content to a text file
-        $file = 'order_details.txt';
-        file_put_contents($file, $content);
-        if (file_put_contents($file, $content) !== false) {
-            // Provide feedback to the user on success
-            echo '<script>alert("Order details written to ' . $file . '");</script>';
+        // All inputs are valid
+        return "";
+    }
+
+    // Process form submission
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Validate form inputs
+        $validationMessage = validateInputs($_POST);
+        if ($validationMessage === "") {
+            // All inputs are valid, proceed with insertion
+
+            // Extract form data
+            extract($_POST);
+
+            // Insert order details into the orders table
+            $stmt = $conn->prepare("INSERT INTO orders (user_id, order_type, del_method, del_address, note) VALUES (:user_id, :order_type, :del_method, :del_address, :note)");
+            $stmt->execute([
+                'user_id' => $_SESSION['user_id'],
+                'order_type' => $orderType,
+                'del_method' => $deliveryMethod,
+                'del_address' => $deliveryAddress,
+                'note' => $furnitureNotes
+            ]);
+
+            // Get the last inserted order ID
+            $orderId = $conn->lastInsertId();
+
+            // Insert repair image path into the repair table if order type is repair
+            if ($orderType === 'repair') {
+                $repairImagePath = '/repairImages/' . $_FILES['repairPicture']['name'];
+                move_uploaded_file($_FILES['repairPicture']['tmp_name'], __DIR__ . $repairImagePath);
+                $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
+                $stmt->execute([
+                    'order_id' => $orderId,
+                    'pickup_method' => $thirdPartyPickup ?? $selfPickup,
+                    'pickup_address' => $pickupAddress,
+                    'repair_img_path' => $repairImagePath
+                ]);
+            }
+
+            // Output success message to the console
+            echo "<script>console.log('Order submitted successfully!');</script>";
         } else {
-            // Provide feedback to the user on failure
-            echo '<script>alert("Failed to write order details to ' . $file . '");</script>';
+            // Output validation error message to the console
+            echo "<script>console.error('$validationMessage');</script>";
         }
     }
-*/
 ?>
