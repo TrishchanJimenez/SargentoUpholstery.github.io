@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 03, 2024 at 01:50 AM
+-- Generation Time: May 04, 2024 at 05:25 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -45,13 +45,15 @@ CREATE TABLE `mto` (
 CREATE TABLE `orders` (
   `order_id` int NOT NULL,
   `user_id` int NOT NULL,
+  `furniture_type` varchar(32) NOT NULL,
   `order_type` enum('repair','mto') NOT NULL,
   `order_status` enum('pending_first_installment','ready_for_pickup','in_production','pending_second_installment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `del_method` enum('third_party','self') NOT NULL,
-  `del_address` text NOT NULL,
+  `del_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `quoted_price` float NOT NULL,
-  `is_accepted` tinyint(1) NOT NULL DEFAULT '0'
+  `quoted_price` float DEFAULT NULL,
+  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `refusal_reason` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -90,7 +92,7 @@ CREATE TABLE `payment` (
 CREATE TABLE `repair` (
   `order_id` int NOT NULL,
   `pickup_method` enum('third_party','self') NOT NULL,
-  `pickup_address` text NOT NULL,
+  `pickup_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `repair_img_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

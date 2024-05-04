@@ -25,6 +25,11 @@
                     </select>
                 </div>
 
+                <div class="quotation-form__input-container">
+                    <label for="furnitureType" class="quotation-form__label">Furniture Type:</label>
+                    <input type="text" id="furnitureType" name="furnitureType" class="quotation-form__input">
+                </div>
+
                 <fieldset class="quotation-form__fieldset quotation-form__fieldset--repair">
                     <legend class="quotation-form__legend">Repair Details</legend>
                     <table class="quotation-form__table">
@@ -343,10 +348,11 @@
             extract($_POST);
 
             // Insert order details into the orders table
-            $stmt = $conn->prepare("INSERT INTO orders (user_id, order_type, del_method, del_address, note) VALUES (:user_id, :order_type, :del_method, :del_address, :note)");
+            $stmt = $conn->prepare("INSERT INTO orders (user_id, order_type, furniture_type, del_method, del_address, note) VALUES (:user_id, :order_type, :furniture_type, :del_method, :del_address, :note)");
             $stmt->execute([
                 'user_id' => $_SESSION['user_id'],
                 'order_type' => $orderType,
+                'furniture_type' => $furnitureType,
                 'del_method' => $deliveryMethod,
                 'del_address' => $deliveryAddress,
                 'note' => $furnitureNotes
@@ -362,9 +368,19 @@
                 $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
                 $stmt->execute([
                     'order_id' => $orderId,
-                    'pickup_method' => $thirdPartyPickup ?? $selfPickup,
+                    'pickup_method' => $pickupMethod,
                     'pickup_address' => $pickupAddress,
                     'repair_img_path' => $repairImagePath
+                ]);
+            } else if ($orderType === 'mto') {
+                $stmt = $conn->prepare("INSERT INTO mto (order_id, height, width, depth, material, fabric) VALUES (:order_id, :height, :width, :depth, :material, :fabric)");
+                $stmt->execute([
+                    'order_id' => $orderId,
+                    'height' => $furnitureHeight,
+                    'width' => $furnitureWidth,
+                    'depth' => $furnitureDepth,
+                    'material' => $furnitureMaterial,
+                    'fabric' => $furnitureFabric
                 ]);
             }
 
