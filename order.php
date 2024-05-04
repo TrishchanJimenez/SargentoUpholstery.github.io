@@ -31,9 +31,9 @@
                         <tr>
                             <td><label class="quotation-form__label">Furniture Pickup Method:</label></td>
                             <td>
-                                <input type="radio" id="thirdPartyPickup" name="pickupMethod" value="Third Party" class="quotation-form__radio">
+                                <input type="radio" id="thirdPartyPickup" name="pickupMethod" value="third_party" class="quotation-form__radio">
                                 <label for="thirdPartyPickup" class="quotation-form__radio-label">Third Party</label><br>
-                                <input type="radio" id="selfPickup" name="pickupMethod" value="Self" class="quotation-form__radio">
+                                <input type="radio" id="selfPickup" name="pickupMethod" value="self" class="quotation-form__radio">
                                 <label for="selfPickup" class="quotation-form__radio-label">Self</label>
                             </td>
                         </tr>
@@ -76,9 +76,9 @@
 
                 <div class="quotation-form__input-container">
                     <label class="quotation-form__label">Delivery Method:</label>
-                    <input type="radio" id="thirdPartyDelivery" name="deliveryMethod" value="Third Party" class="quotation-form__radio">
+                    <input type="radio" id="thirdPartyDelivery" name="deliveryMethod" value="third_party" class="quotation-form__radio">
                     <label for="thirdPartyDelivery" class="quotation-form__radio-label">Third Party</label>
-                    <input type="radio" id="selfDelivery" name="deliveryMethod" value="Self" class="quotation-form__radio">
+                    <input type="radio" id="selfDelivery" name="deliveryMethod" value="self" class="quotation-form__radio">
                     <label for="selfDelivery" class="quotation-form__radio-label">Self</label>
                 </div>
 
@@ -307,13 +307,9 @@
 </html>
 
 <?php
-    session_start();
-
+    // session_start();
     include_once 'database_connection.php';
-
-    // Select the database
-    $conn->exec("USE $db_name");
-
+    // var_dump($_SESSION);
     // Function to validate form inputs
     function validateInputs($formData)
     {

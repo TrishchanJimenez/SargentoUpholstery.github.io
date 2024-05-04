@@ -9,7 +9,7 @@
         <div class="nav-icons">
             <img src="websiteimages/icons/bell-icon.svg" alt="" id="notif-btn" width="36px" height="36px">
             <?php
-                if(isset($_SESSION['id'])) {
+                if(isset($_SESSION['user_id'])) {
                     echo "<img src='websiteimages/icons/account-icon.svg' alt='' id='account-btn' width='36px' height='36px'>";
                 } else {
                     echo "
@@ -20,14 +20,25 @@
                 }
             ?>
             <div class="account-menu">
-                <a href="my/orders.php">
-                    <img src="websiteimages/icons/order-icon.svg" alt="">
-                    <span>My Orders</span>
-                </a>
-                <a href="my/account.php">
-                    <img src="websiteimages/icons/person-icon.svg" alt="">
-                    <span>Account Settings</span>
-                </a>
+                <?php
+                    if($_SESSION['access_type'] === "admin") {
+                        echo "
+                            <a href='./admin/dashboard.php'>
+                                <img src='websiteimages/icons/person-icon.svg' alt=''>
+                                <span>
+                                    Admin Panel
+                                </span>
+                            </a>
+                        ";
+                    } else {
+                        echo '
+                            <a href="my/orders.php">
+                                <img src="websiteimages/icons/order-icon.svg" alt="">
+                                <span>My Orders</span>
+                            </a>
+                        ';
+                    }
+                ?>
                 <form method="post">
                     <button type="submit" name="logout">
                         <img src="websiteimages/icons/signout-icon.svg" alt="">
@@ -37,6 +48,8 @@
                 <?php
                     if(isset($_POST['logout'])) {
                         session_destroy();
+                        header("Location: ".$_SERVER['PHP_SELF']);
+                        exit();
                     }
                 ?>
             </div>

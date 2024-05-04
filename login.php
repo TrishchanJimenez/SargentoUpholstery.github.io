@@ -57,7 +57,7 @@
         $email = sanitizeInput($_POST['email']);
         $password = sanitizeInput($_POST['password']);
 
-        $stmt = $conn->prepare("SELECT * FROM usertable WHERE email = ?");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -66,7 +66,7 @@
                 echo "Login Successful";
                 session_start();
                 $_SESSION['access_type'] = $user['user_type'];
-                $_SESSION['id'] = $user['user_id'];
+                $_SESSION['user_id'] = $user['user_id'];
                 // Redirect user to dashboard or any other page
                 header("Location: index.php");
                 exit();

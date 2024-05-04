@@ -64,17 +64,18 @@
             $password = sanitizeInput($_POST['password']);
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $conn->prepare("SELECT * FROM usertable WHERE email = ?");
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
             $stmt->execute([$email]);
             if($stmt->rowCount() > 0) {
                 echo "<script> alert('There is already an account associated with that email') </script>";
             } else {
-                $stmt = $conn->prepare("INSERT INTO usertable(name, email, password, contact_number, user_type) VALUES(?,?,?,?)");
-                $stmt->execute([$name, $email, $hashedPassword, $contactno, "user"]);
+                $stmt = $conn->prepare("INSERT INTO users(name, email, password, contact_number, user_type) VALUES(?,?,?,?,?)");
+                $stmt->execute([$name, $email, $hashedPassword, $contactno, "customer"]);
                 echo "Registration Succesful";
                 session_start();
-                $_SESSION['access_type'] = 'user';
-                $_SESSION['id'] = $conn->lastInsertId();
+                $_SESSION['access_type'] = 'customer';
+                $_SESSION['user_id'] = $conn->lastInsertId();
+                header("Location: index.php");
             }
         }
     ?>
