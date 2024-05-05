@@ -12,6 +12,24 @@
     $order_prod_status = isset($_GET['order-prod-status']) ? $_GET['order-prod-status'] : 'default';
     $order_payment_status = isset($_GET['order-payment-status']) ? $_GET['order-payment-status'] : 'default';
     $order_sort = isset($_GET['order-sort']) ? $_GET['order-sort'] : 'default';
+    $current_page = 1;
+    if(isset($_GET['page'])) {
+        $page = $_GET['page'];
+        $current_page = $_GET['previous_page'];
+
+        if($page === "previous") $current_page--;
+        else if($page === "next") $current_page++;
+        else $current_page = (int)$page;
+    }
+
+    $count_query = "
+    SELECT COUNT(*) AS total_records
+    FROM orders O 
+    JOIN users U ON O.user_id = U.user_id
+    JOIN order_date OD ON OD.order_id = O.order_id
+    JOIN payment P ON P.order_id = O.order_id
+    WHERE 1
+    ";
 
     $query = "
         SELECT
@@ -33,33 +51,52 @@
     if (!empty($search_input)) {
         switch($search_type) {
             case "order_id":
+                $count_query .= " AND O.order_id = $search_input";
                 $query .= " AND O.order_id = $search_input";
                 break;
             case "item":
+                $count_query .= " AND O.furniture_type LIKE '%$search_input%'";
                 $query .= " AND item LIKE '%$search_input%'";
                 break;
             case "customer_name":
+                $count_query .= " AND U.name LIKE '%$search_input%'";
                 $query .= " AND customer_name LIKE '%$search_input%'";
                 break;
         }
     }
     if ($order_type !== 'default') {
+        $count_query .= " AND order_type = '$order_type'";
         $query .= " AND order_type = '$order_type'";
     }
     if ($order_prod_status !== 'default') {
+        $count_query .= " AND O.order_status = '$order_prod_status'";
         $query .= " AND prod_status = '$order_prod_status'";
     }
     if ($order_payment_status !== 'default') {
+        $count_query .= " AND payment_status = '$order_payment_status'";
         $query .= " AND payment_status = '$order_payment_status'";
     }
+
+    $count_result = $conn->query($count_query);
+    $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
+
+    // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if ($order_sort !== 'default') {
         $query .= " ORDER BY $order_sort";
     }
 
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
+    $query .= " LIMIT 10";
+    if($current_page !== 1) {
+        $query .= " OFFSET " . (($current_page - 1) * 10);
+    }
+
+    $stmt = $conn->query($query);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $order_count = $stmt->rowCount();
+    $page_count = $total_records < 10 ? 1 : ceil($total_records / 10);
+
+    if($current_page > $page_count) {
+        $current_page = $page_count;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -193,10 +230,34 @@
             <hr class="divider">
             <div class="query-records">
                 <div class="record-count">
-                    Showing <span>1</span> to <span><?= $order_count ?></span> of <span><?= $order_count ?></span> results
+                    Showing <span><?= (($current_page-1) * 10) + 1?></span> to <span><?php 
+                        if($current_page * 10 > $total_records) echo $total_records;
+                        else echo $current_page * 10;
+                    ?></span> of <span><?= $total_records ?></span> results
                 </div>
-                <form class="pagination">
-
+                <form class="pagination" method="get">
+                    <input type="hidden" name="previous_page" <?php echo "value='{$current_page}'"?>>
+                    <button type="submit" name="page" value="previous" class="previous-page page-btn" <?php if($current_page === 1) echo "disabled"?>>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 5.29289C13.0976 5.68342 13.0976 6.31658 12.7071 6.70711L9.41421 10L12.7071 13.2929C13.0976 13.6834 13.0976 14.3166 12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L7.29289 10.7071C6.90237 10.3166 6.90237 9.68342 7.29289 9.29289L11.2929 5.29289C11.6834 4.90237 12.3166 4.90237 12.7071 5.29289Z" fill="#6B7280"/>
+                        </svg>
+                    </button>
+                    <?php
+                        for ($i=1; $i <= $page_count; $i++) { 
+                            $is_active_page = $current_page === $i ? 'active-page' : '';
+                            $disabled = $current_page === $i ? 'disabled' : '';
+                            echo "
+                                <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
+                                    {$i}
+                                </button>
+                            ";
+                        }
+                    ?>
+                    <button type="submit" value="next" name="page" class="next-page page-btn" <?php if($current_page === $page_count) echo "disabled"?>>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.29289 14.7071C6.90237 14.3166 6.90237 13.6834 7.29289 13.2929L10.5858 10L7.29289 6.70711C6.90237 6.31658 6.90237 5.68342 7.29289 5.29289C7.68342 4.90237 8.31658 4.90237 8.70711 5.29289L12.7071 9.29289C13.0976 9.68342 13.0976 10.3166 12.7071 10.7071L8.70711 14.7071C8.31658 15.0976 7.68342 15.0976 7.29289 14.7071Z" fill="#6B7280"/>
+                        </svg>
+                    </button>
                 </form>
             </div>
         </div>
