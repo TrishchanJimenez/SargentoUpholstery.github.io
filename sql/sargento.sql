@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 04, 2024 at 05:25 AM
+-- Generation Time: May 05, 2024 at 06:05 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -47,14 +47,31 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `furniture_type` varchar(32) NOT NULL,
   `order_type` enum('repair','mto') NOT NULL,
-  `order_status` enum('pending_first_installment','ready_for_pickup','in_production','pending_second_installment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `order_status` enum('new_order','pending_first_installment','ready_for_pickup','in_production','pending_second_installment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
   `del_method` enum('third_party','self') NOT NULL,
-  `del_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `del_address` text NOT NULL,
   `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quoted_price` float DEFAULT NULL,
-  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `is_accepted` enum('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
   `refusal_reason` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Triggers `orders`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_payment_and_order_date` AFTER INSERT ON `orders` FOR EACH ROW BEGIN
+    DECLARE p_date DATE;
+    SET p_date = CURRENT_DATE; -- Assuming placement date is current date
+
+    INSERT INTO payment (order_id)
+    VALUES (NEW.order_id); -- Assuming the initial amount is 0
+
+    INSERT INTO order_date (order_id, placement_date, est_completion_date)
+    VALUES (NEW.order_id, p_date, DATE_ADD(p_date, INTERVAL 2 WEEK));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -76,11 +93,11 @@ CREATE TABLE `order_date` (
 
 CREATE TABLE `payment` (
   `order_id` int NOT NULL,
-  `payment_status` enum('unpaid','partially_paid','fully_paid') NOT NULL,
-  `payment_method_first_inst` enum('gcash','paymaya','cash','bank_transfer') NOT NULL,
-  `first_inst_img_path` text NOT NULL,
-  `payment_method_second_inst` enum('gcash','paymaya','cash','bank_transfer') NOT NULL,
-  `second_inst_img_path` text NOT NULL
+  `payment_status` enum('unpaid','partially_paid','fully_paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unpaid',
+  `payment_method_first_inst` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `first_inst_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `payment_method_second_inst` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `second_inst_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -92,7 +109,7 @@ CREATE TABLE `payment` (
 CREATE TABLE `repair` (
   `order_id` int NOT NULL,
   `pickup_method` enum('third_party','self') NOT NULL,
-  `pickup_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `pickup_address` text NOT NULL,
   `repair_img_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
