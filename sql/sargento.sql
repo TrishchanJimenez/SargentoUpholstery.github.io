@@ -47,7 +47,7 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `furniture_type` varchar(32) NOT NULL,
   `order_type` enum('repair','mto') NOT NULL,
-  `order_status` enum('new_order','pending_first_installment','ready_for_pickup','in_production','pending_second_installment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
+  `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
   `del_method` enum('third_party','self') NOT NULL,
   `del_address` text NOT NULL,
   `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
@@ -94,10 +94,10 @@ CREATE TABLE `order_date` (
 CREATE TABLE `payment` (
   `order_id` int NOT NULL,
   `payment_status` enum('unpaid','partially_paid','fully_paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unpaid',
-  `payment_method_first_inst` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `first_inst_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `payment_method_second_inst` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `second_inst_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+  `payment_method_downpayment` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `downpayment_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `payment_method_fullpayment` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fullpayment_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
