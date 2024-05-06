@@ -6,8 +6,8 @@
         $order_id = $_POST['order_id'];
 
         $new_status = str_replace("-", "_", $new_status);
-        if($new_status === "pending_downpayment") $new_status = "pending_first_installment";
-        else if ($new_status === "pending_fullpayment") $new_status = "pending_second_installment";
+        if($new_status === "pending_downpayment") $new_status = "pending_downpayment";
+        else if ($new_status === "pending_fullpayment") $new_status = "pending_fullpayment";
 
         if($status_type === "prod") {
             $stmt = $conn->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?");

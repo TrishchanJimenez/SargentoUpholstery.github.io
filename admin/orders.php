@@ -137,10 +137,10 @@
                     <select name="order-prod-status" id="" class="selector">
                         <option value="default">Prod. Status</option>
                         <option value="new_order">New Order</option>
-                        <option value="pending_first_installment">Pending Downpayment</option>
+                        <option value="pending_downpayment">Pending Downpayment</option>
                         <option value="ready_for_pickup">Ready for Pickup</option>
                         <option value="in_production">In Production</option>
-                        <option value="pending_second_installment">Pending Fullpayment</option>
+                        <option value="pending_fullpayment">Pending Fullpayment</option>
                         <option value="out_for_delivery">Delivering</option>
                         <option value="received">Received</option>
                     </select>
