@@ -142,3 +142,23 @@ function setFilterValues() {
 }
 
 setFilterValues();
+
+const filterForm = document.querySelector('.order-filters');
+const filterSelectors = filterForm.querySelectorAll('select');
+const searchType = filterForm.querySelector('select[name="search-order"]');
+const searchInput = filterForm.querySelector('input[name="search-input"]');
+
+filterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if(searchInput.value === '') {
+        searchType.disabled = true;
+        searchInput.disabled = true;
+    }
+    filterSelectors.forEach((selector) => {
+        if(selector.value === 'default') {
+            selector.disabled = true;
+        }
+    });
+
+    filterForm.submit();
+});
