@@ -29,7 +29,7 @@ tableBody.addEventListener('mousedown', (e) => {
                 statusData.append('new_status', newStatus);
                 statusData.append('status_type', 'prod');
 
-                fetch('./setter/update_status.php', {
+                fetch('/updater/update_status.php', {
                     method: "POST",
                     body: statusData
                 })
@@ -73,7 +73,7 @@ tableBody.addEventListener('mousedown', (e) => {
                 statusData.append('new_status', newStatus);
                 statusData.append('status_type', 'payment');
 
-                fetch('./setter/update_status.php', {
+                fetch('/updater/update_status.php', {
                     method: "POST",
                     body: statusData
                 }).then(res => {

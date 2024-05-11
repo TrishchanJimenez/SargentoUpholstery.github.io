@@ -176,8 +176,6 @@
                             $date = date('M d, Y', strtotime($order['placement_date']));
 
                             $prod_status = str_replace("_", "-", $order['prod_status']);
-                            if($prod_status === "pending-first-installment") $prod_status = "pending-downpayment";
-                            if($prod_status === "pending-second-installment") $prod_status = "pending-fullpayment";
                             $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
 
                             $payment_status = str_replace("_", "-", $order['payment_status']);
