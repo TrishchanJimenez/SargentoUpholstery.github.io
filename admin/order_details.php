@@ -12,14 +12,21 @@
     }
     
     $order_id = $_GET['order-id'];
-    $stmt = $conn->query("SELECT order_type AS type FROM orders WHERE order_id = '$order_id'");
+    $stmt = $conn->query("SELECT order_type FROM orders WHERE order_id = '$order_id'");
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
+    // var_dump($order);
+    $order_type = $order['order_type'];
 
     $query = "
         SELECT *
+        FROM (
+        SELECT *
         FROM orders
+        WHERE order_id = $order_id) AS O
         JOIN $order_type USING(order_id)
-        WHERE order_id = $order_id
+        JOIN order_date USING(order_id)
+        JOIN users USING(user_id)
+        JOIN payment USING(order_id)
     ";
 
     $stmt = $conn->query($query);
@@ -41,7 +48,7 @@
         <hr class="divider">
         <div class="breadcrumb">
             <a href="orders.php">Order </a>
-            <span> / 5</span>
+            <span> / <?= $order['order_id'] ?></span>
         </div>
         <div class="detail">
             <div class="order-information">
@@ -58,7 +65,10 @@
                     <div class="info">
                         <span class="info-name"> ORDER TYPE </span>
                         <span class="info-detail">
-                            <?= $order['order_type'] ?>
+                            <?php
+                                if($order['order_type'] === "mto") echo "MTO";
+                                else echo "Repair"
+                            ?>
                         </span>
                     </div>
                     <div class="info">
@@ -70,14 +80,14 @@
                     <div class="info">
                         <span class="info-name"> ORDER PLACEMENT DATE </span>
                         <span class="info-detail">
-                            <?= $order['placement_date'] ?>
+                            <?= date('M d, Y', strtotime($order['placement_date']))?>
                         </span>
                         </span>
                     </div>
                     <div class="info">
                         <span class="info-name"> EST. DELIVERY DATE </span>
                         <span class="info-detail">
-                            <?= $order['est_completion_date'] ?>
+                            <?= date('M d, Y', strtotime($order['est_completion_date']))?>
                         </span>
                     </div>
                     <div class="info">
@@ -111,7 +121,7 @@
                         </span>
                     </div>
                     <?php
-                        if($order['order_type']) {
+                        if($order['order_type'] === "mto") {
                             echo " 
                             <div class='info'>
                                 <span class='info-name'>
@@ -137,7 +147,7 @@
                         </span>
                     </div>
                     <?php
-                        if($order['order_type']) {
+                        if($order['order_type'] === "repair") {
                             echo " 
                             <div class='info'>
                                 <span class='info-name'>
@@ -159,15 +169,15 @@
                 <div class="info-order-detail customer-info">
                     <div class="info">
                         <span class="info-name">CUSTOMER NAME</span>
-                        <span class="info-detail">Cameron Williams</span>
+                        <span class="info-detail"><?= $order['name'] ?></span>
                     </div>
                     <div class="info">
                         <span class="info-name">EMAIL</span>
-                        <span class="info-detail">cwilliamnson@gmail.com</span>
+                        <span class="info-detail"><?= $order['email'] ?></span>
                     </div>
                     <div class="info">
                         <span class="info-name">CONTACT NO.</span>
-                        <span class="info-detail">+63189912331</span>
+                        <span class="info-detail"><?= $order['contact_number'] ?></span>
                     </div>
                     <div class="info">
                         <span class="info-name">DELIVERY ADDRESS</span>
