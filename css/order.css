@@ -14,6 +14,80 @@
     justify-content: space-between;
 }
 
+.order-form {
+    margin: 2.5vmax;
+    width: 49%;
+    height: fit-content;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+    .quotation-form__title {
+        width: 100%;
+        text-align: center;
+        padding: 1.25vmax;
+    }
+
+    .quotation-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .quotation-form__input-container {
+            margin: 1%;
+            padding: 1.25vmax 0;
+            width: 98%;
+        }
+        
+            .quotation-form__label {
+                width: 100%;
+                font-weight: bold;
+            }
+
+            .quotation-form__select, .quotation-form__input, .quotation-form__textarea, .quotation-form__file {
+                margin: 1.25vmax 0;
+                padding: 0.625vmax;
+                width: 100%;
+            }
+
+            .quotation-form__input--small {
+                margin: 0.625vmax 0;
+            }
+
+            .quotation-form__radio {
+                margin: 2.5vmin 0;
+            }
+
+            .quotation-form__radio-label {
+                margin-right: 10px;
+            }
+
+            .quotation-form__textarea {
+                width: 100%;
+                resize: vertical;
+            }
+
+        .quotation-form__fieldset {
+            width: 100%;
+            padding: 1.25vmax;
+            justify-content: space-between;
+        }
+
+        .quotation-form__submit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .quotation-form__submit-button:hover {
+            background-color: #45a049;
+        }
+
 .faq-section {
     width: 49%;
     margin-left: 1%;
@@ -84,4 +158,3 @@
     font-size: 14px;
   }
 }
-  

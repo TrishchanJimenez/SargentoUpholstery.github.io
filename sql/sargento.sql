@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 05, 2024 at 06:05 AM
+-- Generation Time: May 12, 2024 at 01:59 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -32,8 +32,7 @@ CREATE TABLE `mto` (
   `height` float DEFAULT NULL,
   `width` float DEFAULT NULL,
   `depth` float DEFAULT NULL,
-  `material` varchar(32) DEFAULT NULL,
-  `fabric` varchar(32) DEFAULT NULL
+  `material` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -50,7 +49,7 @@ CREATE TABLE `orders` (
   `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
   `del_method` enum('third_party','self') NOT NULL,
   `del_address` text NOT NULL,
-  `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quoted_price` float DEFAULT NULL,
   `is_accepted` enum('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
   `refusal_reason` text
