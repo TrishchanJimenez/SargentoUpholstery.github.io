@@ -16,7 +16,7 @@
     <div class="order-container">
         <div class="order-form">
             <h2 class="quotation-form__title">Quotation Form</h2>
-            <form class="quotation-form" method="post">
+            <form class="quotation-form" method="post" enctype="multipart/form-data">
                 <!-- Order Type [ ENUM(repair, mto) ] -->
                 <div class="quotation-form__input-container">
                     <label for="order_type" class="quotation-form__label">What type of order do you wish to place?</label>
@@ -104,7 +104,6 @@
 
                 <input type="submit" value="Submit" class="quotation-form__submit-button">
             </form>
-            <script src="js/order.js"></script>
         </div>
         <div class="faq-section">
             <h3>Frequently Asked Questions</h3>
@@ -197,13 +196,12 @@
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
+    <script src="js/order.js"></script>
 </body>
 
 </html>
 
 <?php
-    session_start();
-
     // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
         // Redirect or handle unauthorized access
@@ -232,23 +230,35 @@
         $order_id = $conn->lastInsertId();
 
         // Insert into repair or mto table based on order_type
-        if ($_POST['order_type'] == "repair") {
+        if ($_POST['order_type'] === "repair") {
             // Prepare and bind parameters for repair table
             $stmt = $conn->prepare("INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) 
                                     VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
             $stmt->bindParam(':order_id', $order_id);
             $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
             $stmt->bindParam(':pickup_address', $_POST['pickup_address']);
+
+            if (isset($_FILES["repairPicture"]) && $_FILES["repairPicture"]["error"] == 0) {
+                $target_dir = "uploadedImages/repairImages/";
+                $target_file = $target_dir . basename($_FILES["repairPicture"]["name"]);
+                
+                // Move the uploaded file to the desired directory
+                if (move_uploaded_file($_FILES["repairPicture"]["tmp_name"], $target_file)) {
+                    // File uploaded successfully, save file path to database
+                    $stmt->bindParam(':repair_img_path', $target_file);
+                    // echo "The file ". htmlspecialchars(basename($_FILES["repairPicture"]["name"])). " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                echo "Error uploading file: " . $_FILES["repairPicture"]["error"];
+            }
             
             // Upload image and save path
-            $target_dir = "repairImages/";
-            $target_file = $target_dir . basename($_FILES["repairPicture"]["name"]);
-            move_uploaded_file($_FILES["repairPicture"]["tmp_name"], $target_file);
-            $stmt->bindParam(':repair_img_path', $target_file);
 
             // Execute repair table insertion
             $stmt->execute();
-        } elseif ($_POST['order_type'] == "mto") {
+        } elseif ($_POST['order_type'] === "mto") {
             // Prepare and bind parameters for mto table
             $stmt = $conn->prepare("INSERT INTO `mto` (`order_id`, `height`, `width`, `depth`, `material`) 
                                     VALUES (:order_id, :height, :width, :depth, :material)");
