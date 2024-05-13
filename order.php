@@ -16,206 +16,95 @@
     <div class="order-container">
         <div class="order-form">
             <h2 class="quotation-form__title">Quotation Form</h2>
-            <form class="quotation-form" method="post">
+            <form class="quotation-form" method="post" enctype="multipart/form-data">
+                <!-- Order Type [ ENUM(repair, mto) ] -->
                 <div class="quotation-form__input-container">
-                    <label for="orderType" class="quotation-form__label">Order Type:</label>
-                    <select id="orderType" name="orderType" class="quotation-form__select" onchange="toggleInputs()">
+                    <label for="order_type" class="quotation-form__label">What type of order do you wish to place?</label>
+                    <select id="order_type" name="order_type" class="quotation-form__select" onchange="toggleInputs()">
                         <option value="repair" class="quotation-form__option">Repair</option>
                         <option value="mto" class="quotation-form__option">Made-to-Order (MTO)</option>
                     </select>
                 </div>
 
+                <!-- Furniture Type [ TEXT ] -->
                 <div class="quotation-form__input-container">
-                    <label for="furnitureType" class="quotation-form__label">Furniture Type:</label>
-                    <input type="text" id="furnitureType" name="furnitureType" class="quotation-form__input">
+                    <label for="furniture_type" class="quotation-form__label">What furniture are we working on?</label>
+                    <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair">
                 </div>
 
+                <!-- IF REPAIR -->
                 <fieldset class="quotation-form__fieldset quotation-form__fieldset--repair">
-                    <legend class="quotation-form__legend">Repair Details</legend>
-                    <table class="quotation-form__table">
-                        <tr>
-                            <td><label class="quotation-form__label">Furniture Pickup Method:</label></td>
-                            <td>
-                                <input type="radio" id="thirdPartyPickup" name="pickupMethod" value="third_party" class="quotation-form__radio">
-                                <label for="thirdPartyPickup" class="quotation-form__radio-label">Third Party</label><br>
-                                <input type="radio" id="selfPickup" name="pickupMethod" value="self" class="quotation-form__radio">
-                                <label for="selfPickup" class="quotation-form__radio-label">Self</label>
-                            </td>
-                        </tr>
-                        <tr class="quotation-form__pickup-address">
-                            <td><label for="pickupAddress" class="quotation-form__label">Pickup Address:</label></td>
-                            <td>
-                                <textarea id="pickupAddress" name="pickupAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea><br>
-                                <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
-                                <label for="setPickupAddress" class="quotation-form__checkbox-label">Set Pickup Address As My Current Address</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="repairPicture" class="quotation-form__label">Furniture Reference Image:</label></td>
-                            <td><input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file"></td>
-                        </tr>
-                    </table>
+                    <legend class="quotation-form__legend">Furniture Details: </legend>
+
+                    <!-- pickup_method [ ENUM(third_party, self) ] -->
+                    <div class="quotation-form__input-container">
+                        <label for="pickup_method" class="quotation-form__label">How shall we pick up the furniture to be repaired?</label>
+                        <select id="pickup_method" name="pickup_method" class="quotation-form__select"">
+                            <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                            <option value="self" class="quotation-form__option">I will drop it off at the business location</option>
+                        </select>
+                    </div>
+
+                    <!-- pickup_address [ TEXT ] -->
+                    <div class="quotation-form__input-container">
+                        <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
+                        <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead."></textarea><br>
+                        <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
+                        <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
+                    </div>
+
+                    <!-- repairPicture [ FILE ] -->
+                    <div class="quotation-form__input-container">
+                        <label for="repairPicture" class="quotation-form__label">Please provide a reference image of the furniture:</label>
+                        <input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file">
+                    </div>
                 </fieldset>
 
-                <fieldset class="quotation-form__fieldset quotation-form__fieldset--mto" style="display:none;">
-                    <legend class="quotation-form__legend">Made-to-Order (MTO) Details</legend>
-                    <table class="quotation-form__table">
-                        <tr>
-                            <td><label for="furnitureDimensions" class="quotation-form__label">Furniture Dimensions (in inches):</label></td>
-                            <td>
-                                <input type="number" id="furnitureWidth" name="furnitureWidth" class="quotation-form__input quotation-form__input--small" placeholder="Width"><br>
-                                <input type="number" id="furnitureHeight" name="furnitureHeight" class="quotation-form__input quotation-form__input--small" placeholder="Height"><br>
-                                <input type="number" id="furnitureDepth" name="furnitureDepth" class="quotation-form__input quotation-form__input--small" placeholder="Depth">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="furnitureMaterial" class="quotation-form__label">Furniture Material:</label></td>
-                            <td><input type="text" id="furnitureMaterial" name="furnitureMaterial" class="quotation-form__input"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="furnitureFabric" class="quotation-form__label">Furniture Fabric:</label></td>
-                            <td><input type="text" id="furnitureFabric" name="furnitureFabric" class="quotation-form__input"></td>
-                        </tr>
-                    </table>
+                <!-- IF MTO -->
+                <fieldset class="quotation-form__fieldset quotation-form__fieldset--mto">
+                    <legend class="quotation-form__legend">Furniture Details: </legend>
+
+                    <!-- height, width, depth [ NUMBER ] -->
+                    <div class="quotation-form__input-container">
+                        <label class="quotation-form__label">Furniture Dimensions (in inches):</label>
+                        <input type="number" id="width" name="width" class="quotation-form__input quotation-form__input--small" placeholder="Width"><br>
+                        <input type="number" id="height" name="height" class="quotation-form__input quotation-form__input--small" placeholder="Height"><br>
+                        <input type="number" id="depth" name="depth" class="quotation-form__input quotation-form__input--small" placeholder="Depth">
+                    </div>
+
+                    <!-- material [ TEXT ] -->
+                    <div class="quotation-form__input-container">
+                        <label for="material" class="quotation-form__label">Furniture Material:</label>
+                        <input type="text" id="material" name="material" class="quotation-form__input" placeholder="E.g. wood, plastic, metal">
+                    </div>
                 </fieldset>
 
+                <!-- del_method [ ENUM(third_party, self) ] -->
                 <div class="quotation-form__input-container">
-                    <label class="quotation-form__label">Delivery Method:</label>
-                    <input type="radio" id="thirdPartyDelivery" name="deliveryMethod" value="third_party" class="quotation-form__radio">
-                    <label for="thirdPartyDelivery" class="quotation-form__radio-label">Third Party</label>
-                    <input type="radio" id="selfDelivery" name="deliveryMethod" value="self" class="quotation-form__radio">
-                    <label for="selfDelivery" class="quotation-form__radio-label">Self</label>
+                    <label for="del_method" class="quotation-form__label">How shall we deliver the furniture?</label>
+                    <select id="del_method" name="del_method" class="quotation-form__select"">
+                        <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                        <option value="self" class="quotation-form__option">I will pick it up at the business location</option>
+                    </select>
+                </div>
+                
+                <!-- del_address [ TEXT ] -->
+                <div class="quotation-form__input-container">
+                    <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
+                    <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead."></textarea><br>
+                    <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
+                    <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                 </div>
 
-                <fieldset class="quotation-form__fieldset quotation-form__fieldset--delivery-address" style="display:none;">
-                    <legend class="quotation-form__legend">Delivery Address</legend>
-                    <table class="quotation-form__table">
-                        <tr>
-                            <td><label for="deliveryAddress" class="quotation-form__label">Delivery Address:</label></td>
-                            <td>
-                                <textarea id="deliveryAddress" name="deliveryAddress" class="quotation-form__textarea" rows="4" cols="50"></textarea><br>
-                                <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
-                                <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set Delivery Address As My Current Address</label>
-                            </td>
-                        </tr>
-                    </table>
-                </fieldset>
-
+                <!-- notes [ TEXT ] -->
                 <div class="quotation-form__input-container">
-                    <label for="furnitureNotes" class="quotation-form__label">Furniture Notes:</label>
-                    <textarea id="furnitureNotes" name="furnitureNotes" class="quotation-form__textarea" rows="4" cols="50"></textarea>
+                    <label for="notes" class="quotation-form__label">Furniture Notes:</label>
+                    <textarea id="notes" name="notes" class="quotation-form__textarea" rows="4" cols="50" placeholder="Provide a description of your order"></textarea>
                 </div>
 
                 <input type="submit" value="Submit" class="quotation-form__submit-button">
             </form>
-            <script>
-                function toggleInputs() {
-                    var orderType = document.getElementById("orderType").value;
-                    var repairFieldset = document.querySelector(".quotation-form__fieldset--repair");
-                    var mtoFieldset = document.querySelector(".quotation-form__fieldset--mto");
-
-                    if (orderType === "repair") {
-                        repairFieldset.style.display = "block";
-                        mtoFieldset.style.display = "none";
-                        clearMTOFields();
-                    } else if (orderType === "mto") {
-                        repairFieldset.style.display = "none";
-                        mtoFieldset.style.display = "block";
-                        clearRepairFields();
-                    }
-                }
-
-                function clearRepairFields() {
-                    document.getElementById("thirdPartyPickup").checked = false;
-                    document.getElementById("selfPickup").checked = false;
-                    document.getElementById("pickupAddress").value = "";
-                    document.getElementById("setPickupAddress").checked = false;
-                    document.getElementById("repairPicture").value = "";
-                }
-
-                function clearMTOFields() {
-                    document.getElementById("furnitureWidth").value = "";
-                    document.getElementById("furnitureHeight").value = "";
-                    document.getElementById("furnitureDepth").value = "";
-                    document.getElementById("furnitureMaterial").value = "";
-                    document.getElementById("furnitureFabric").value = "";
-                }
-
-                // Trigger toggleInputs() initially to ensure correct display
-                toggleInputs();
-            </script>
         </div>
-        <style>
-            /* Order Form Styles */
-            .order-form {
-            width: 49%;
-            height: fit-content;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            }
-
-            .quotation-form__title {
-            text-align: center;
-            }
-
-            .quotation-form__input-container {
-            margin-bottom: 15px;
-            }
-
-            .quotation-form__label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            }
-
-            .quotation-form__select,
-            .quotation-form__input,
-            .quotation-form__textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 3px;
-            margin-bottom: 10px;
-            }
-
-            .quotation-form__textarea {
-            resize: vertical;
-            }
-
-            .quotation-form__checkbox-label {
-            font-weight: normal;
-            }
-
-            .quotation-form__fieldset {
-            margin-bottom: 20px;
-            }
-
-            .quotation-form__table {
-            width: 100%;
-            }
-
-            .quotation-form__radio-label {
-            margin-right: 10px;
-            }
-
-            .quotation-form__submit-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            }
-
-            .quotation-form__submit-button:hover {
-            background-color: #45a049;
-            }
-        </style>
         <div class="faq-section">
             <h3>Frequently Asked Questions</h3>
             <div class="questions">
@@ -307,88 +196,88 @@
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
+    <script src="js/order.js"></script>
 </body>
 
 </html>
 
 <?php
-    // session_start();
-    include_once 'database_connection.php';
-    // var_dump($_SESSION);
-    // Function to validate form inputs
-    function validateInputs($formData)
-    {
-        // Check if all required fields are present
-        $requiredFields = ['orderType', 'deliveryMethod', 'furnitureNotes'];
-        foreach ($requiredFields as $field) {
-            if (empty($formData[$field])) {
-                return "Please fill in all required fields.";
-            }
-        }
-
-        // Validate repair image
-        if ($formData['orderType'] === 'repair') {
-            if (!isset($_FILES['repairPicture']) || $_FILES['repairPicture']['error'] !== UPLOAD_ERR_OK) {
-                return "Please upload a valid repair image.";
-            }
-        }
-
-        // All inputs are valid
-        return "";
+    // Check if user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect or handle unauthorized access
+        header("Location: login.php");
+        exit;
     }
 
-    // Process form submission
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Validate form inputs
-        $validationMessage = validateInputs($_POST);
-        if ($validationMessage === "") {
-            // All inputs are valid, proceed with insertion
+    // Include database connection
+    include_once('database_connection.php');
 
-            // Extract form data
-            extract($_POST);
+    if (isset($_POST['submit'])) {
+        // Prepare and bind parameters for orders table
+        $stmt = $conn->prepare("INSERT INTO `orders` (`user_id`, `furniture_type`, `order_type`, `del_method`, `del_address`, `notes`) 
+                                VALUES (:user_id, :furniture_type, :order_type, :del_method, :del_address, :notes)");
+        $stmt->bindParam(':user_id', $_SESSION['user_id']);
+        $stmt->bindParam(':furniture_type', $_POST['furniture_type']);
+        $stmt->bindParam(':order_type', $_POST['order_type']);
+        $stmt->bindParam(':del_method', $_POST['del_method']);
+        $stmt->bindParam(':del_address', $_POST['del_address']);
+        $stmt->bindParam(':notes', $_POST['notes']);
 
-            // Insert order details into the orders table
-            $stmt = $conn->prepare("INSERT INTO orders (user_id, order_type, furniture_type, del_method, del_address, note) VALUES (:user_id, :order_type, :furniture_type, :del_method, :del_address, :note)");
-            $stmt->execute([
-                'user_id' => $_SESSION['user_id'],
-                'order_type' => $orderType,
-                'furniture_type' => $furnitureType,
-                'del_method' => $deliveryMethod,
-                'del_address' => $deliveryAddress,
-                'note' => $furnitureNotes
-            ]);
+        // Execute orders table insertion
+        $stmt->execute();
 
-            // Get the last inserted order ID
-            $orderId = $conn->lastInsertId();
+        // Get the last inserted order_id
+        $order_id = $conn->lastInsertId();
 
-            // Insert repair image path into the repair table if order type is repair
-            if ($orderType === 'repair') {
-                $repairImagePath = '/repairImages/' . $_FILES['repairPicture']['name'];
-                move_uploaded_file($_FILES['repairPicture']['tmp_name'], __DIR__ . $repairImagePath);
-                $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
-                $stmt->execute([
-                    'order_id' => $orderId,
-                    'pickup_method' => $pickupMethod,
-                    'pickup_address' => $pickupAddress,
-                    'repair_img_path' => $repairImagePath
-                ]);
-            } else if ($orderType === 'mto') {
-                $stmt = $conn->prepare("INSERT INTO mto (order_id, height, width, depth, material, fabric) VALUES (:order_id, :height, :width, :depth, :material, :fabric)");
-                $stmt->execute([
-                    'order_id' => $orderId,
-                    'height' => $furnitureHeight,
-                    'width' => $furnitureWidth,
-                    'depth' => $furnitureDepth,
-                    'material' => $furnitureMaterial,
-                    'fabric' => $furnitureFabric
-                ]);
+        // Insert into repair or mto table based on order_type
+        if ($_POST['order_type'] === "repair") {
+            // Prepare and bind parameters for repair table
+            $stmt = $conn->prepare("INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) 
+                                    VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
+            $stmt->bindParam(':pickup_address', $_POST['pickup_address']);
+
+            if (isset($_FILES["repairPicture"]) && $_FILES["repairPicture"]["error"] == 0) {
+                $target_dir = "uploadedImages/repairImages/";
+                $target_file = $target_dir . basename($_FILES["repairPicture"]["name"]);
+                
+                // Move the uploaded file to the desired directory
+                if (move_uploaded_file($_FILES["repairPicture"]["tmp_name"], $target_file)) {
+                    // File uploaded successfully, save file path to database
+                    $stmt->bindParam(':repair_img_path', $target_file);
+                    // echo "The file ". htmlspecialchars(basename($_FILES["repairPicture"]["name"])). " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                echo "Error uploading file: " . $_FILES["repairPicture"]["error"];
             }
+            
+            // Upload image and save path
 
-            // Output success message to the console
-            echo "<script>console.log('Order submitted successfully!');</script>";
+            // Execute repair table insertion
+            $stmt->execute();
+        } elseif ($_POST['order_type'] === "mto") {
+            // Prepare and bind parameters for mto table
+            $stmt = $conn->prepare("INSERT INTO `mto` (`order_id`, `height`, `width`, `depth`, `material`) 
+                                    VALUES (:order_id, :height, :width, :depth, :material)");
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->bindParam(':height', $_POST['height']);
+            $stmt->bindParam(':width', $_POST['width']);
+            $stmt->bindParam(':depth', $_POST['depth']);
+            $stmt->bindParam(':material', $_POST['material']);
+
+            // Execute mto table insertion
+            $stmt->execute();
         } else {
-            // Output validation error message to the console
-            echo "<script>console.error('$validationMessage');</script>";
+            echo "<script>alert('Nangyan pre')</script>";
         }
+
+        // Close statement
+        $stmt = null;
+
+        // Close connection
+        $conn = null;
     }
 ?>
