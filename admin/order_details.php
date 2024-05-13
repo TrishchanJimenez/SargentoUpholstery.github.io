@@ -37,7 +37,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Management</title>
+    <title>Order</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin-orders.css">
 </head>
@@ -91,9 +91,12 @@
                         </span>
                     </div>
                     <div class="info">
-                        <span class="info-name"> QUOTE PRICE </span>
+                        <span class="info-name"> QUOTED PRICE </span>
                         <span class="info-detail">
-                            <?= $order['quoted_price'] ?>
+                            <?php
+                                if(is_null($order['quoted_price'])) echo "N/A";
+                                else echo "₱" . $order['quoted_price'];
+                            ?>
                         </span>
                     </div>
                     <div class="info">
@@ -134,7 +137,7 @@
                             <div class='info'>
                                 <span class='info-name'>DIMENSIONS</span>
                                 <span class='info-detail'>
-                                    {$order['height']} x {$order['width']} x {$order['depth']} 
+                                    {$order['height']} inches(H) x {$order['width']} inches(W) x {$order['depth']} inches(D)
                                 </span>
                             </div>"
                             ;
@@ -143,7 +146,7 @@
                     <div class="info">
                         <span class="info-name"> NOTE </span>
                         <span class="info-detail">
-                            <?= $order['note'] ?>
+                            <?= $order['notes'] ?>
                         </span>
                     </div>
                     <?php
@@ -185,7 +188,71 @@
                     </div>
                 </div>
             </div>
+            <?php
+                if($order['is_accepted'] === "pending") {
+                    echo "<div class='order-action is-new-order'>";
+                } else {
+                    echo "<div class='order-action'>";
+                }
+            ?>
+                <p class="info-title">
+                    ACTIONS
+                </p>
+                <div class="info-order-detail">
+                    <div class="action-buttons">
+                        <input type="button" value="accept order" class="green-button accept-order action-button">
+                        <input type="button" value="reject order" class="red-button reject-order action-button">
+                    </div>
+                    <form action="" method="post">
+                        <input type="hidden" name="order_id" <?= "value={$order_id}" ?>>
+                        <div class="on-reject action-input">
+                            <label for="rejection-reason">Reason for rejection</label>
+                            <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
+                        </div>
+                        <div class="on-accept action-input">
+                            <label for="price">Price for the Order</label>
+                            <input type="number" name="price" class="price-input" placeholder="₱12131" required>
+                        </div>
+                        <div class="on-click">
+                            <input type="submit" value="save" class="green-button action-button">
+                            <input type="button" value="cancel" class="red-button action-button">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="/js/order-detail.js"></script>
 </body>
 </html>
+<?php
+    if(isset($_POST['order_id']) && $_SERVER['REQUEST_METHOD'] === "POST") {
+        $is_accepted = false;
+        $price = 0;
+        $rejection_reason = "";
+        if(isset($_POST['price'])) {
+            $is_accepted = true; 
+            $price = $_POST['price'];
+        } else {
+            $rejection_reason = $_POST['rejection-reason'];
+        }
+        $order_id = $_POST['order_id'];
+
+        if($is_accepted) {
+            $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'accepted', order_status = 'pending_downpayment', quoted_price = :price WHERE order_id = :order_id");
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->execute();
+        } else {
+            $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'rejected', order_status = 'pending_downpayment', refusal_reason = :reason WHERE order_id = :order_id");
+            $stmt->bindParam(':reason', $rejection_reason);
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->execute();
+        }
+        echo "
+            <script>
+                location.reload();
+            <script>
+        ";
+    }
+?>

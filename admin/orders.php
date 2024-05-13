@@ -253,14 +253,57 @@
                         </svg>
                     </button>
                     <?php
-                        for ($i=1; $i <= $page_count; $i++) { 
-                            $is_active_page = $current_page === $i ? 'active-page' : '';
-                            $disabled = $current_page === $i ? 'disabled' : '';
+                        // $start_page = max(1, $current_page - 1); // Start page will be 1 or current_page - 1, whichever is greater
+                        // $end_page = min($page_count, $current_page + 1); // End page will be pag$page_count or current_page + 1, whichever is smaller
+                        // $last_pages = max(1, $page_count - 2); // Calculate the last 3 pages
+                        
+                        // for ($i = $start_page; $i <= $end_page; $i++) {
+                        //     $is_active_page = $current_page === $i ? 'active-page' : '';
+                        //     $disabled = $current_page === $i ? 'disabled' : '';
+                        //     echo "
+                        //         <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
+                        //             {$i}
+                        //         </button>
+                        //     ";
+                        // }
+                        // if ($page_count > 3 && $current_page < $last_pages) {
+                        //     for ($i = $last_pages; $i <= $page_count; $i++) {
+                        //         $is_active_page = $current_page === $i ? 'active-page' : '';
+                        //         $disabled = $current_page === $i ? 'disabled' : '';
+                        //         echo "
+                        //             <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
+                        //                 {$i}
+                        //             </button>
+                        //         ";
+                        //     }
+                        // }
+                        if($current_page > 1) {
                             echo "
-                                <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
-                                    {$i}
+                                <button type='submit' name='page' value='1' class='page-btn'>
+                                    1
                                 </button>
                             ";
+                        }
+                        $has_previous = false;
+                        for ($i = $current_page, $firstPages = 0; $i <= $page_count; $i++, $firstPages++) { 
+                            if(!$has_previous && $current_page > 2) {
+                                $prev = $i - 1;
+                                echo "
+                                    <button type='submit' name='page' value='{$prev}' class='page-btn'>
+                                        {$prev}
+                                    </button>
+                                ";
+                                $has_previous = true;
+                            }
+                            if($firstPages < 3 || $page_count - $i < 3) {
+                                $is_active_page = $current_page === $i ? 'active-page' : '';
+                                $disabled = $current_page === $i ? 'disabled' : '';
+                                echo "
+                                    <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
+                                        {$i}
+                                    </button>
+                                ";
+                            }
                         }
                     ?>
                     <button type="submit" value="<?php echo $current_page + 1 ?>" name="page" class="next-page page-btn" <?php if($current_page === (int)$page_count) echo "disabled"?>>
