@@ -323,82 +323,70 @@
 </html>
 
 <?php
-    // session_start();
-    include_once 'database_connection.php';
-    // var_dump($_SESSION);
-    // Function to validate form inputs
-    function validateInputs($formData)
-    {
-        // Check if all required fields are present
-        $requiredFields = ['order_type', 'del_method', 'notes'];
-        foreach ($requiredFields as $field) {
-            if (empty($formData[$field])) {
-                return "Please fill in all required fields.";
-            }
-        }
+    session_start();
 
-        // Validate repair image
-        if ($formData['order_type'] === 'repair') {
-            if (!isset($_FILES['repairPicture']) || $_FILES['repairPicture']['error'] !== UPLOAD_ERR_OK) {
-                return "Please upload a valid repair image.";
-            }
-        }
-
-        // All inputs are valid
-        return "";
+    // Check if user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect or handle unauthorized access
+        header("Location: login.php");
+        exit;
     }
 
-    // Process form submission
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Validate form inputs
-        $validationMessage = validateInputs($_POST);
-        if ($validationMessage === "") {
-            // All inputs are valid, proceed with insertion
+    // Include database connection
+    require_once 'database_connection.php';
 
-            // Extract form data
-            extract($_POST);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Prepare and bind parameters for orders table
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, furniture_type, order_type, del_method, del_address, notes) 
+                                VALUES (:user_id, :furniture_type, :order_type, :del_method, :del_address, :notes)");
+        $stmt->bindParam(':user_id', $_SESSION['user_id']);
+        $stmt->bindParam(':furniture_type', $_POST['furniture_type']);
+        $stmt->bindParam(':order_type', $_POST['order_type']);
+        $stmt->bindParam(':del_method', $_POST['del_method']);
+        $stmt->bindParam(':del_address', $_POST['del_address']);
+        $stmt->bindParam(':notes', $_POST['notes']);
 
-            // Insert order details into the orders table
-            $stmt = $conn->prepare("INSERT INTO orders (user_id, order_type, furniture_type, del_method, del_address, notes) VALUES (:user_id, :order_type, :furniture_type, :del_method, :del_address, :notes)");
-            $stmt->execute([
-                'user_id' => $_SESSION['user_id'],
-                'order_type' => $order_type,
-                'furniture_type' => $furniture_type,
-                'del_method' => $del_method,
-                'del_address' => $del_address,
-                'notes' => $notes
-            ]);
+        // Execute orders table insertion
+        $stmt->execute();
 
-            // Get the last inserted order ID
-            $orderId = $conn->lastInsertId();
+        // Get the last inserted order_id
+        $order_id = $conn->lastInsertId();
 
-            // Insert repair image path into the repair table if order type is repair
-            if ($order_type === 'repair') {
-                $repair_img_path = '/repairImages/' . $_FILES['repairPicture']['name'];
-                move_uploaded_file($_FILES['repairPicture']['tmp_name'], __DIR__ . $repair_img_path);
-                $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
-                $stmt->execute([
-                    'order_id' => $orderId,
-                    'pickup_method' => $pickup_method,
-                    'pickup_address' => $pickup_address,
-                    'repair_img_path' => $repair_img_path
-                ]);
-            } else if ($order_type === 'mto') {
-                $stmt = $conn->prepare("INSERT INTO mto (order_id, height, width, depth, material) VALUES (:order_id, :height, :width, :depth, :material)");
-                $stmt->execute([
-                    'order_id' => $orderId,
-                    'height' => $height,
-                    'width' => $width,
-                    'depth' => $depth,
-                    'material' => $material
-                ]);
-            }
+        // Insert into repair or mto table based on order_type
+        if ($_POST['order_type'] == "repair") {
+            // Prepare and bind parameters for repair table
+            $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) 
+                                    VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
+            $stmt->bindParam(':pickup_address', $_POST['pickup_address']);
+            
+            // Upload image and save path
+            $target_dir = "repairImages/";
+            $target_file = $target_dir . basename($_FILES["repairPicture"]["name"]);
+            move_uploaded_file($_FILES["repairPicture"]["tmp_name"], $target_file);
+            $stmt->bindParam(':repair_img_path', $target_file);
 
-            // Output success message to the console
-            echo "<script>console.log('Order submitted successfully!');</script>";
-        } else {
-            // Output validation error message to the console
-            echo "<script>console.error('$validationMessage');</script>";
+            // Execute repair table insertion
+            $stmt->execute();
+        } elseif ($_POST['order_type'] == "mto") {
+            // Prepare and bind parameters for mto table
+            $stmt = $conn->prepare("INSERT INTO mto (order_id, height, width, depth, material) 
+                                    VALUES (:order_id, :height, :width, :depth, :material)");
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->bindParam(':height', $_POST['height']);
+            $stmt->bindParam(':width', $_POST['width']);
+            $stmt->bindParam(':depth', $_POST['depth']);
+            $stmt->bindParam(':material', $_POST['material']);
+
+            // Execute mto table insertion
+            $stmt->execute();
         }
+
+        // Close statement
+        $stmt = null;
+
+        // Close connection
+        $conn = null;
     }
 ?>
