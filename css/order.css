@@ -1,17 +1,21 @@
-.order-featured-img {
-    width: 100vw;
+.featured-banner {
+    background-image: url(websiteimages/orderfeaturedimg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    padding: 15% 0;
 }
 
-.order-page-title {
+.order-page__title {
     text-align: center;
     font-size: var(--fs-48);
 }
 
-.order-container {
+.order-page__content {
     display: flex;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
-    justify-content: space-between;
 }
 
 .order-form {
@@ -25,10 +29,16 @@
 }
 
 .quotation-form__title {
-    width: 100%;
+    font-size: var(--fs-48);
     text-align: center;
-    padding: 1.25vmax;
+    padding: 2.5vmin 0;
 }
+
+/* 
++------------------------+
+|     Quotation Form     |
++------------------------+
+*/
 
 .quotation-form {
     display: flex;
@@ -88,24 +98,48 @@
     background-color: #45a049;
 }
 
-.faq-section {
+/* 
++-------------+
+|     FAQ     |
++-------------+
+*/
+
+.faq {
+    margin: 2.5vmax;
     width: 49%;
-    margin-left: 1%;
+    height: fit-content;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
-.faq-section h3 {
+.faq__title {
     font-size: var(--fs-48);
     text-align: center;
+    padding: 2.5vmin 0;
 }
 
-.questions-title {
+.faq__item {
+    padding: 2.5vmin 0;
+}
+
+.faq__question {
     font-weight: bold;
     font-size: var(--fs-24);
+    padding: 2.5vmin 0;
 }
 
-.questions p {
+.faq__answer {
     font-size: var(--fs-20);
+    padding: 2.5vmin;
 }
+
+/* 
++-----------------------------+
+|     CTA to Testimonials     |
++-----------------------------+
+*/
 
 .order-testimonials-cta {
     background-image: url(/websiteimages/orderfooterimg.png);
