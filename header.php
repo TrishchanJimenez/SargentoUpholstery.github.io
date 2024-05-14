@@ -32,7 +32,7 @@
                         ";
                     } else {
                         echo '
-                            <a href="my/orders.php">
+                            <a href="user_orders.php">
                                 <img src="websiteimages/icons/order-icon.svg" alt="">
                                 <span>My Orders</span>
                             </a>

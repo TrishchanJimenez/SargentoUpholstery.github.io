@@ -28,13 +28,13 @@
       margin: 1% auto 0 auto;
       display: flex; /* Use flexbox */
       justify-content: space-evenly; /* Evenly space the buttons */
+      border-bottom: 20px solid #FFDC5C;
     }
 
     .tab-button {
       cursor: pointer;
       padding: 10px 15px;
       border: none;
-      border-bottom: 10px solid #FFDC5C;
       background-color: #F8F7F1;
       border-radius: 5px 5px 0 0;
       font-size: 25px;
@@ -83,53 +83,97 @@
       height: 200px;
       background-color: #FDFDFD;
       box-shadow: 0px 4px 4px 0px #00000040;
-      margin: 50px auto 0 auto;
-      display: flex;
-      align-items: center;
-      column-gap: 50px;
-      justify-content: space-evenly;
+    }
+    .status-header{
+      font-family: Playfair Display;
+      margin: 30px 0 0 0 ;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 26.66px;
+      text-align: left;
+
     }
     .item-description{
       font-family: Inter;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 500;
       line-height: 24px;
       text-align: left;
+      width: 200px;
     }
     .price-to-pay{
       font-family: Inter;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 500;
       line-height: 24px;
       text-align: left;
+      width: 200px;
     }
     .deliver-pickup-address{
       font-family: Inter;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 500;
       line-height: 30px;
       text-align: left;
+      width: 300px;
+    }
+    .order-type{
+      font-family: Inter;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 30px;
+      text-align: left;
+      width: 150px;
     }
     .order-status{
       font-family: Inter;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 500;
       line-height: 30px;
       text-align: left;
+      width: 150px;
     }
     .img-order{
       width: 200px;
       height: 150px;
     }
+
+    table{
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td{
+      padding: 2%;
+    }
+    th {
+      text-align: left !important;
+      padding: 2%;
+    }
     /* tab 5 */
     .tabLabels{
-      display: flex;
-      justify-content: space-evenly;
-      margin: 2% 0 0 0 ;
-      font-family: 'Playfair Display';
+      width: 90%;
+      margin: 30px auto 0 auto;
+    }
+    /* tab 7 */
+    .received-button{
+      font-family: Playfair Display;
       font-size: 20px;
       font-weight: 700;
-    }
+      line-height: 26.66px;
+      text-align: left;
+      background-color: violet;
+      cursor: pointer;
+      padding: 20px 25px;
+      border: none;
+      background-color: #F8F7F1;
+      border-radius: 5px 5px 0 0;
+      font-size: 25px;
+      font-family: 'Playfair Display';
+      font-weight: 700;
+      box-shadow: 0px 4px 4px 0px #00000040;
+      background-color: #D9D9D9;
+      border-radius: 25px;
+        }
     </style>
 </head>
 <body>
@@ -145,8 +189,6 @@
     <div id="tab-buttons">
       <button class="tab-button" onclick="openTab(event, 'tab1')">All Orders</button>
       <button class="tab-button" onclick="openTab(event, 'tab2')">Pending</button>
-      <button class="tab-button" onclick="openTab(event, 'tab3')">Repair</button>
-      <button class="tab-button" onclick="openTab(event, 'tab4')">Customize</button>
       <button class="tab-button" onclick="openTab(event, 'tab5')">To be delivered</button>
       <button class="tab-button" onclick="openTab(event, 'tab6')">On Delivery</button>
       <button class="tab-button" onclick="openTab(event, 'tab7')">Received</button>
@@ -157,44 +199,175 @@
 
   <!-- Tab content -->
   <div id="tab-content">
-    <div id="tab1" class="tab active">Content of Tab 1</div>
-    <div id="tab2" class="tab">Content of Tab 2</div>
-    <div id="tab3" class="tab">Content of Tab 3</div>
-    <div id="tab4" class="tab">
-      <div class="tabLabels">
-            <div class="labels">Item</div>
-            <div class="labels">Item description</div>
-            <div class="labels">Price to pay</div>
-            <div class="labels">Deliver and pick-up address</div>
-            <div class="labels">Status</div>
-      </div>
-      <div class="order-container">
-        <img src="websiteimages/carouselimg2.jpg" alt="" class="img-order">
-        <div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div>
-        <div class="price-to-pay"><p>₱6,000</p></div>
-        <div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div>
-        <div class="order-status"><p>Pending</p></div>
-      </div>
+    <div id="tab1" class="tab active">
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Price to pay</th>
+          <th>Deliver and pick-up address</th>
+          <th>Order type</th>
+          <th>Status</th> 
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Custom</div></td>
+          <td><div class="order-status"><p>Pending</p></div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Repair</div></td>
+          <td><div class="order-status"><p>Pending</p></div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Made to Order</div></td>
+          <td><div class="order-status"><p>Pending</p></div></td>
+        </tr>
+      </table>
     </div>
+
+    <div id="tab2" class="tab">
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Price to pay</th>
+          <th>Deliver and pick-up address</th>
+          <th>Order Type</th>
+
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Custom</div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Made to order</div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="order-type">Repair</div></td>
+
+        </tr>
+      </table>
+    </div>
+
     <div id="tab5" class="tab">
-      <div class="tabLabels">
-          <div class="labels">Item</div>
-          <div class="labels">Item description</div>
-          <div class="labels">Price to pay</div>
-          <div class="labels">Delivary address</div>
-          <div class="labels">Proof of payment</div>
-      </div>
-    <?php 
-      echo'<form id ="proof-payment-form" enctype ="multipart/form-data">
-        <input type="file" id="fileInput" name="attachment" accept="image,application/pdf">
-        <input type="submit" value="Upload Attachment">
-            </form>
-        ';
-    ?>
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Price to pay</th>
+          <th>Delivery address</th>
+          <th>Proof Of Payment  </th> 
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="received-status"><button class="received-button">Add Attachments</button></div></td>
+        </tr>
+      </table>
     </div>
-    <div id="tab6" class="tab">Content of Tab 6</div>
-    <div id="tab7" class="tab">Content of Tab 7</div>
-    <div id="tab8" class="tab">Content of Tab 8</div>
+    </div>
+
+    <div id="tab6" class="tab">
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Price to pay</th>
+          <th>Delivery address</th>
+          <th>Received</th> 
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="received-status"><button class="received-button">Received</button></div></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="tab7" class="tab">
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Price to pay</th>
+          <th>Delivery address</th>
+          <th>Received</th> 
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+          <td><div class="received-status"><button class="received-button">Click here to review</button></div></td>
+        </tr>
+      </table>
+    </div>
+    <div id="tab8" class="tab">
+    <table class="tabLabels">
+        <tr class="status-header">
+          <th>Item</th>
+          <th>Item description</th>
+          <th>Downpayment</th>
+          <th>Delivery address</th>
+        </tr>
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+        </tr>
+      </table>
+      <table class="tabLabels">
+        <tr  class="order-container">
+          <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+          <td><div class="item-description"><p>x1 Gray sofa with broken leather skin</p></div></td>
+          <td><div class="price-to-pay"><p>₱6,000</p></div></td>
+          <td><div class="deliver-pickup-address"><p>89 D Champaca St. Western Bicutan Taguig City</p></div></td>
+x`        </tr>
+      </table>
+    </div>
   </div>
   <script>
     // Function to open a specific tab
