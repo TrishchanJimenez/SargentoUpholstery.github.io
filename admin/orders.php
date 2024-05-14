@@ -75,6 +75,8 @@
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
         $query .= " ORDER BY $order_sort";
+    } else {
+        $query .= " ORDER BY order_id";
     }
 
     $query .= " LIMIT 10";
@@ -180,7 +182,8 @@
 
                             $payment_status = str_replace("_", "-", $order['payment_status']);
                             $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
-                            $pickupOption = $order_type === "repair" ? "<option value='ready-for-pickup'>Ready For Pickup</option>" : ""; 
+                            $pickupOption = $order['order_type'] === "repair" ? "<option value='ready-for-pickup'>Ready For Pickup</option>" : ""; 
+                            $newOrderOption = $order['prod_status'] === "new_order" ? "<option value='new-order'>New Order</option>" : "";
                             $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
                             echo "
                             <tr data-id='{$order['order_id']}'>
@@ -193,8 +196,8 @@
                                 <td class='prod-status status'>
                                     <span data-prod-status='{$prod_status}'>{$prod_status_text}</span>
                                     <select name='select-prod-status' id=''>
+                                        {$newOrderOption}
                                         <option value='pending-downpayment'>Pending Downpayment</option>
-                                        <option value='ready-for-pickup'>Ready For Pickup</option>
                                         {$pickupOption}
                                         <option value='pending-fullpayment'>Pending Fullpayment</option>
                                         <option value='out-for-delivery'>Out For Delivery</option>
