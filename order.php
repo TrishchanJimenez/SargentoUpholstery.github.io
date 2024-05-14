@@ -28,7 +28,7 @@
                 <!-- Furniture Type [ TEXT ] -->
                 <div class="quotation-form__input-container">
                     <label for="furniture_type" class="quotation-form__label">What furniture are we working on?</label>
-                    <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair" required>
+                    <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair">
                 </div>
 
                 <!-- IF REPAIR -->
@@ -47,7 +47,7 @@
                     <!-- pickup_address [ TEXT ] -->
                     <div class="quotation-form__input-container">
                         <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
-                        <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead." required></textarea><br>
+                        <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead."></textarea><br>
                         <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
                         <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                     </div>
@@ -66,15 +66,15 @@
                     <!-- height, width, depth [ NUMBER ] -->
                     <div class="quotation-form__input-container">
                         <label class="quotation-form__label">Furniture Dimensions (in inches):</label>
-                        <input type="number" id="width" name="width" class="quotation-form__input quotation-form__input--small" placeholder="Width" required><br>
-                        <input type="number" id="height" name="height" class="quotation-form__input quotation-form__input--small" placeholder="Height" required><br>
-                        <input type="number" id="depth" name="depth" class="quotation-form__input quotation-form__input--small" placeholder="Depth" required>
+                        <input type="number" id="width" name="width" class="quotation-form__input quotation-form__input--small" placeholder="Width"><br>
+                        <input type="number" id="height" name="height" class="quotation-form__input quotation-form__input--small" placeholder="Height"><br>
+                        <input type="number" id="depth" name="depth" class="quotation-form__input quotation-form__input--small" placeholder="Depth">
                     </div>
 
                     <!-- material [ TEXT ] -->
                     <div class="quotation-form__input-container">
                         <label for="material" class="quotation-form__label">Furniture Material:</label>
-                        <input type="text" id="material" name="material" class="quotation-form__input" placeholder="E.g. wood, plastic, metal" required>
+                        <input type="text" id="material" name="material" class="quotation-form__input" placeholder="E.g. wood, plastic, metal">
                     </div>
                 </fieldset>
 
@@ -90,7 +90,7 @@
                 <!-- del_address [ TEXT ] -->
                 <div class="quotation-form__input-container">
                     <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
-                    <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead." required></textarea><br>
+                    <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead."></textarea><br>
                     <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
                     <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                 </div>
@@ -209,11 +209,11 @@
     }
 
     // Include database connection
-    require_once 'database_connection.php';
+    include_once('database_connection.php');
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['submit'])) {
         // Prepare and bind parameters for orders table
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, furniture_type, order_type, del_method, del_address, notes) 
+        $stmt = $conn->prepare("INSERT INTO `orders` (`user_id`, `furniture_type`, `order_type`, `del_method`, `del_address`, `notes`) 
                                 VALUES (:user_id, :furniture_type, :order_type, :del_method, :del_address, :notes)");
         $stmt->bindParam(':user_id', $_SESSION['user_id']);
         $stmt->bindParam(':furniture_type', $_POST['furniture_type']);
@@ -231,7 +231,7 @@
         // Insert into repair or mto table based on order_type
         if ($_POST['order_type'] === "repair") {
             // Prepare and bind parameters for repair table
-            $stmt = $conn->prepare("INSERT INTO repair (order_id, pickup_method, pickup_address, repair_img_path) 
+            $stmt = $conn->prepare("INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) 
                                     VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
             $stmt->bindParam(':order_id', $order_id);
             $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
@@ -259,7 +259,7 @@
             $stmt->execute();
         } elseif ($_POST['order_type'] === "mto") {
             // Prepare and bind parameters for mto table
-            $stmt = $conn->prepare("INSERT INTO mto (order_id, height, width, depth, material) 
+            $stmt = $conn->prepare("INSERT INTO `mto` (`order_id`, `height`, `width`, `depth`, `material`) 
                                     VALUES (:order_id, :height, :width, :depth, :material)");
             $stmt->bindParam(':order_id', $order_id);
             $stmt->bindParam(':height', $_POST['height']);
@@ -269,6 +269,8 @@
 
             // Execute mto table insertion
             $stmt->execute();
+        } else {
+            echo "<script>alert('Nangyan pre')</script>";
         }
 
         // Close statement
