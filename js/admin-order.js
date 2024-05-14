@@ -46,7 +46,13 @@ tableBody.addEventListener('mousedown', (e) => {
             selector.addEventListener('blur', (e) => {
                 // console.log('change')
                 status.dataset.prodStatus = selector.value;
-                status.innerText = selector.value.split('-').join(' ');
+
+                if(status.dataset.prodStatus === '') {
+                    status.dataset.prodStatus = 'new-order';
+                    status.innerText = 'New Order';
+                } else {
+                    status.innerText = selector.value.split('-').join(' ');
+                }
                 target.classList.remove('active');
                 target.classList.add('status');
             })
@@ -87,9 +93,13 @@ tableBody.addEventListener('mousedown', (e) => {
                 }).catch(error => {console.error('Error: ', error)})
             })
             selector.addEventListener('blur', (e) => {
-                status.dataset.payment = selector.value;
-                status.innerText = selector.value.split('-').join(' ');
-
+                if(status.dataset.prodStatus === '') {
+                    status.dataset.payment = 'unpaid';
+                    status.innerText = 'Unpaid';
+                } else {
+                    status.dataset.payment = selector.value;
+                    status.innerText = selector.value.split('-').join(' ');
+                }
                 target.classList.remove('active');
                 target.classList.add('active');
                 // console.log('change')

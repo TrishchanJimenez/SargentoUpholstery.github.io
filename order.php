@@ -15,7 +15,6 @@
     <h2 class="order-page-title">Design, Craft, Quote - All in One Place</h2>
     <div class="order-container">
         <div class="order-form">
-            <h2 class="quotation-form__title">Quotation Form</h2>
             <form class="quotation-form" method="post" enctype="multipart/form-data">
                 <!-- Order Type [ ENUM(repair, mto) ] -->
                 <div class="quotation-form__input-container">
