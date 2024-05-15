@@ -1,10 +1,12 @@
 <?php
     require '../database_connection.php';
     session_start();
-    if(!(!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== "admin")) {
-        header("Location: ../index.php");
-        exit();
-    }
+    // var_dump($_SESSION);
+    // if(!isset($_SESSION['user_type']) || $_SESSION['access_type'] === "customer"){
+    //     // echo "test";
+    //     header("Location: ../index.php");
+    //     exit();
+    // }
 
     $search_type = $_GET['search-order'] ?? '';
     $search_input = $_GET['search-input'] ?? '';
