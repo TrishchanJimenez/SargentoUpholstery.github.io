@@ -54,7 +54,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    z-index: 100; /* Ensure a higher z-index to bring the button forward */
+    z-index: 50; /* Ensure a higher z-index to bring the button forward */
     pointer-events: auto; /* Enable pointer events on the button */
 }
 
@@ -171,7 +171,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    z-index: 100; /* Ensure a higher z-index to bring the button forward */
+    z-index: 50; /* Ensure a higher z-index to bring the button forward */
     pointer-events: auto; /* Enable pointer events on the button */
     cursor: pointer;
 }
@@ -195,8 +195,9 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    z-index: 100; /* Ensure a higher z-index to bring the button forward */
+    z-index: 50; /* Ensure a higher z-index to bring the button forward */
     pointer-events: auto; /* Enable pointer events on the button */
+    cursor: pointer;
 }
 
 .im{

@@ -1,54 +1,3 @@
-    // Function to open the edit modal and populate form fields with existing data
-    function editFurniture(category, color, imgPath, worksId) {
-        // Open the edit modal (assuming you have a modal with ID 'editModal')
-        openEditModal();
-            console.log('Editing furniture with:', category, color, imgPath, worksId);
-        
-                // Populate form fields with existing furniture data
-                document.getElementById('edit_category').value = category;
-                document.getElementById('edit_color').value = color;
-
-                // Display the existing furniture image in a preview (assuming you have an image container with ID 'editImagePreview')
-                var imagePreview = '<img src="' + imgPath + '" alt="Furniture Image" style="max-width: 100px;">';
-                document.getElementById('editImagePreview').innerHTML = imagePreview;
-
-                // Add event listener to the submit button inside the edit modal
-                document.getElementById('editSubmitButton').onclick = function() {
-                    // Retrieve updated values from form fields
-                    var updatedCategory = document.getElementById('edit_category').value;
-                    var updatedColor = document.getElementById('edit_color').value;
-
-                    // Perform validation or additional logic if needed
-
-                    // Prepare data to send via AJAX (assuming you use AJAX for updating)
-                    var formData = new FormData();
-                    formData.append('category', updatedCategory);
-                    formData.append('color', updatedColor);
-                    formData.append('works_id', worksId); // Include the works_id for identifying the specific furniture
-
-                    // Send AJAX request to update the furniture data
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'update_furniture.php', true);
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            // Handle successful response (e.g., close modal, refresh page)
-                            closeModal(); // Close the edit modal
-                            window.location.reload(); // Refresh the page to reflect changes
-                        } else {
-                            // Handle error or display error message
-                            console.error('Error updating furniture: ' + xhr.responseText);
-                            // Optionally display an error message to the user
-                        }
-                    };
-                    xhr.onerror = function() {
-                        console.error('Network error occurred');
-                        // Display an error message to the user
-                    };
-                    xhr.send(formData); // Send the form data via AJAX
-                };
-            }
-
-
 // Function to handle file selection and display image previews
 function handleFileSelect(event) {
     const fileList = event.target.files;
@@ -198,6 +147,57 @@ function setEditFurnitureId(furnitureId) {
     if (editFurnitureIdInput) {
         editFurnitureIdInput.value = furnitureId;
     }
+}
+
+
+
+function editFurniture(category, color, imgPath, worksId) {
+    // Assuming you have a modal for editing furniture details
+    // Set values in the modal fields based on the passed parameters
+    document.getElementById('editCategory').value = category;
+    document.getElementById('editColor').value = color;
+    document.getElementById('currentImage').src = imgPath;
+    document.getElementById('editFurnitureId').value = worksId;
+
+    // Display the edit modal (assuming modal is displayed via CSS)
+    document.getElementById('editModal').style.display = 'block';
+}
+
+function editcancelbutton() {
+    // Hide the edit modal when cancel button is clicked
+    document.getElementById('editModal').style.display = 'none';
+}
+
+
+function deleteFurniture(worksId) {
+    // Confirm deletion with the user (optional)
+    if (!confirm("Are you sure you want to delete this furniture?")) {
+        return; // User cancelled deletion
+    }
+    
+    // AJAX request to delete furniture
+    fetch('../admin/delete_furniture.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `works_id=${worksId}`
+    })
+    .then(response => {
+        if (response.ok) {
+            // Furniture deleted successfully
+            console.log('Furniture deleted successfully');
+            // Perform additional actions if needed (e.g., update UI)
+        } else {
+            // Error handling
+            console.error('Failed to delete furniture');
+            // Display error message or handle accordingly
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting furniture:', error);
+        // Handle fetch error (e.g., network issue)
+    });
 }
 
 
