@@ -499,7 +499,57 @@ th {
     ?>  
     </div>
     <div id="tab8" class="tab">
-    
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "sargento_1";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $database);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Query to select data from the database
+    $sql = "SELECT furniture_type, quoted_price, del_address, order_type FROM orders WHERE order_status = 'cancelled'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Output the table header outside the loop
+        echo '
+        <table class="tabLabels">
+            <tr class="status-header">
+                <th>Item</th>
+                <th>Item description</th>
+                <th>Price to pay</th>
+                <th>Deliver and pick-up address</th>
+            </tr>';
+
+        // Output data of each row
+        while ($row = $result->fetch_assoc()) {
+            // Output the table rows inside the loop with additional classes for styling
+            echo '
+            <tr class="order-container">
+                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+                <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
+                <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
+                <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
+            </tr>';
+            // Add spacing between order-container elements
+            echo '<tr class="order-container-space"><td colspan="6"></td></tr>';
+        }
+
+        // Close the table outside the loop
+        echo '</table>';
+    } else {
+        echo "0 results";
+    }
+    // Close connection
+    $conn->close();
+    ?> 
     </div>
 </div>
 <script>
