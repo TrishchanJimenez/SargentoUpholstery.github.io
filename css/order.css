@@ -28,12 +28,10 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-}
-
-.quotation-form__title {
-    font-size: var(--fs-48);
-    text-align: center;
-    padding: 2.5vmin 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 
@@ -42,15 +40,23 @@
 +------------------------+
 */
 
+.quotation-form__title {
+    font-size: var(--fs-48);
+    text-align: center;
+    padding: 2.5vmin 0;
+}
+
 .quotation-form {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .quotation-form__fieldset {
     width: 100%;
     padding: 1.25vmax;
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -104,17 +110,36 @@
     resize: vertical;
 }
 
-.quotation-form__submit-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.quotation-form__navigation {
+    text-align: center;
+    margin-top: 20px;
 }
 
-.quotation-form__submit-button:hover {
-    background-color: #45a049;
+.quotation-form__prev-button, .quotation-form__next-button, .quotation-form__submit-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.quotation-form__prev-button:hover, .quotation-form__next-button:hover, .quotation-form__submit-button:hover {
+    background-color: #0056b3;
+}
+
+.quotation-form__submit-button {
+    display: none;
+}
+
+.quotation-form__fieldset:first-child {
+    display: flex;
+}
+
+.quotation-form__prev-button {
+    display: none;
 }
 
 /* 

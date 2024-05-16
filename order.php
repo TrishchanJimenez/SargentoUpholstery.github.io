@@ -128,7 +128,7 @@
                 <div class="quotation-form__navigation">
                     <button type="button" class="quotation-form__prev-button" onclick="prevFieldset()">Previous</button>
                     <button type="button" class="quotation-form__next-button" onclick="nextFieldset()">Next</button>
-                    <input type="submit" value="Submit" class="quotation-form__submit-button">
+                    <input type="submit" value="Submit Quotation Form" class="quotation-form__submit-button">
                 </div>
             </form>
         </div>

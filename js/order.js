@@ -25,8 +25,11 @@ function updateShippingAddressOnBillingChange() {
     });
 }
 
-// Fieldset //
 const fieldsets = document.querySelectorAll('.quotation-form__fieldset');
+const prevButton = document.querySelector('.quotation-form__prev-button');
+const nextButton = document.querySelector('.quotation-form__next-button');
+const submitButton = document.querySelector('.quotation-form__submit-button');
+
 let currentFieldsetIndex = 0;
 
 function showFieldset(index) {
@@ -37,6 +40,20 @@ function showFieldset(index) {
             fieldset.style.display = 'none';
         }
     });
+
+    if (index === 0) {
+        prevButton.style.display = 'none';
+        nextButton.style.display = 'inline-block';
+        submitButton.style.display = 'none';
+    } else if (index === fieldsets.length - 1) {
+        prevButton.style.display = 'inline-block';
+        nextButton.style.display = 'none';
+        submitButton.style.display = 'inline-block';
+    } else {
+        prevButton.style.display = 'inline-block';
+        nextButton.style.display = 'inline-block';
+        submitButton.style.display = 'none';
+    }
 }
 
 function nextFieldset() {
@@ -54,7 +71,6 @@ function prevFieldset() {
 }
 
 showFieldset(currentFieldsetIndex);
-// Fieldset //
 
 function toggleInputs() {
     var order_type = document.getElementById("order_type").value;
