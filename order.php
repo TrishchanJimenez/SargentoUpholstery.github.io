@@ -18,10 +18,7 @@
     </div>
     <div class="order-page__content">
         <div class="order-form">
-<<<<<<< Updated upstream
-=======
             <h1 class="quotation-form__title">Quotation Form</h1>
->>>>>>> Stashed changes
             <form class="quotation-form" method="post" enctype="multipart/form-data">
                 <!-- Order Type [ ENUM(repair, mto) ] -->
                 <div class="quotation-form__input-container">
