@@ -49,6 +49,7 @@
                     <table class="order-table">
                         <thead>
                             <tr>
+                                <th class="hidden">Works id</th>
                                 <th>Furniture Type</th>
                                 <th>Furniture Color</th>
                                 <th>Picture</th>
@@ -59,6 +60,7 @@
                             <!-- Display existing gallery images here -->
                             <?php foreach ($works as $index => $work) : ?>
                                 <tr>
+                                    <td class="hidden"><?php echo ($work['works_id'])?></td>
                                     <td><?php echo ucfirst($work['category']); ?></td>
                                     <td><?php echo ucfirst($work['color']); ?></td>
                                     <td>
@@ -83,7 +85,8 @@
                                                 Edit
                                             </button>
 
-                                            <button class="delete">
+                                            <?php $works_id = isset($work['works_id']) ? htmlspecialchars($work['works_id']) : ''; ?>
+                                            <button class="delete" onclick="deleteFurniture('<?php echo $works_id; ?>')">
                                                 <img src="../websiteimages/icons/cancel.png" class="del">
                                                 Delete      
                                             </button>
@@ -99,7 +102,7 @@
 
     </div>
 
-
+     
     <!-- Modal for Add Furniture -->
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -131,33 +134,21 @@
     </div>
 
 
+    
     <!-- Modal for editing -->
-    <?php
-    $id = $_GET['works_id'];
-    if($id){
-        include("../database_connection.php");
-        $sqlEdit = "SELECT * FROM posts WHERE works_id = $id";
-        $result = mysqli_query($conn, $sqlEdit);
-    }else{
-        echo "No post found";
-    }
-
-    ?>
+    <?php $works_id = isset($work['works_id']) ? htmlspecialchars($work['works_id']) : ''; ?>
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="editcancelbutton()">&times;</span>
             <h2>Edit Furniture</h2>
             <form id="editForm" action="update_furniture.php" method="post" class="forms" enctype="multipart/form-data">
-                
-                <?php while($data = mysqli_fetch_array($result)){ ?>
-
                 <input type="hidden" id="editFurnitureId" name="editFurnitureId">
                 <label for="editCategory">Category:</label><br>
-                <input type="text" id="editCategory" name="editCategory" class="input" value='<?php echo $data['category']; ?>' required><br>
+                <input type="text" id="editCategory" name="editCategory" class="input" value='<?php echo $work['category']; ?>' required><br>
                 <label for="editColor">Color:</label><br>
-                <input type="text" id="editColor" name="editColor" class="input" value='<?php echo $data['color']; ?>'  required><br>
+                <input type="text" id="editColor" name="editColor" class="input" value='<?php echo $work['color']; ?>'  required><br><br>
                 <!-- Current Image -->
-                <img src="<?php echo $data['img_path']; ?>" id="currentImage" width="150" height="150"><br>
+                <img src="<?php echo $work['img_path']; ?>" id="currentImage" width="150" height="150"><br>
                 <!-- File input for new image upload -->
                 <label for="editFileInput" class="fileLabel">Select New Image:</label>
                 <input type="file" id="editFileInput" name="editFile" accept="image/*" class="Images_button"><br>
@@ -173,9 +164,6 @@
                         Cancel
                     </button>
                 </div>
-                <?php 
-                }
-                ?>
             </form>
         </div>
     </div>
