@@ -34,7 +34,7 @@
                 </div>
             </div>
             <input type="password" id="password" name="password" class="input" placeholder="Enter Password">
-            <a href="forgetpass.html" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
+            <a href="forgot_password.php" class="forgotpass">Forgot password</a> <!-- Moved the "Forgot password" link after the "Log in" button -->
             <input type="submit" value="Log in" class="Login_button">
         </form>
         <a href="register.php" class="Create_button">Create an Account</a>
