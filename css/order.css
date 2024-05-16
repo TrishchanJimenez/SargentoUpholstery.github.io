@@ -3,6 +3,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     padding: 15% 0;
 }
@@ -14,13 +15,14 @@
 
 .order-page__content {
     display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 0 auto;
 }
 
 .order-form {
-    margin: 2.5vmax;
-    width: 49%;
+    margin: 2.5vh 5vw;
+    width: 90vw;
     height: fit-content;
     padding: 20px;
     border: 1px solid #ccc;
@@ -42,18 +44,41 @@
 
 .quotation-form {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.quotation-form__fieldset {
+    width: 100%;
+    padding: 1.25vmax;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quotation-form__input-container-group {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.quotation-form__input-container-group--repair, .quotation-form__input-container-group--mto {
+    width: 98%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .quotation-form__input-container {
     margin: 1%;
-    padding: 1.25vmax 0;
-    width: 98%;
+    padding: 1.25vmin 0;
+    width: 47%;
 }
 
 .quotation-form__label {
     width: 100%;
     font-weight: bold;
+    font-size: var(--fs-24);
 }
 
 .quotation-form__select, .quotation-form__input, .quotation-form__textarea, .quotation-form__file {
@@ -77,12 +102,6 @@
 .quotation-form__textarea {
     width: 100%;
     resize: vertical;
-}
-
-.quotation-form__fieldset {
-    width: 100%;
-    padding: 1.25vmax;
-    justify-content: space-between;
 }
 
 .quotation-form__submit-button {

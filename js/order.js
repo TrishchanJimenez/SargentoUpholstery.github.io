@@ -1,15 +1,73 @@
+function copyBillingAddress() {
+    const billingAddress = document.getElementById('billing_address').value;
+    const shippingAddressField = document.getElementById('shipping_address');
+    const sameAsBilling = document.getElementById('same_as_billing').checked;
+
+    if (sameAsBilling) {
+        shippingAddressField.value = billingAddress;
+        shippingAddressField.setAttribute('readonly', 'readonly');
+    } else {
+        shippingAddressField.value = '';
+        shippingAddressField.removeAttribute('readonly');
+    }
+}
+
+function updateShippingAddressOnBillingChange() {
+    const billingAddressInput = document.getElementById('billing_address');
+    const sameAsBillingCheckbox = document.getElementById('same_as_billing');
+
+    billingAddressInput.addEventListener('input', function () {
+        if (sameAsBillingCheckbox.checked) {
+            const billingAddress = billingAddressInput.value;
+            const shippingAddressField = document.getElementById('shipping_address');
+            shippingAddressField.value = billingAddress;
+        }
+    });
+}
+
+// Fieldset //
+const fieldsets = document.querySelectorAll('.quotation-form__fieldset');
+let currentFieldsetIndex = 0;
+
+function showFieldset(index) {
+    fieldsets.forEach((fieldset, idx) => {
+        if (idx === index) {
+            fieldset.style.display = 'flex';
+        } else {
+            fieldset.style.display = 'none';
+        }
+    });
+}
+
+function nextFieldset() {
+    if (currentFieldsetIndex < fieldsets.length - 1) {
+        currentFieldsetIndex++;
+        showFieldset(currentFieldsetIndex);
+    }
+}
+
+function prevFieldset() {
+    if (currentFieldsetIndex > 0) {
+        currentFieldsetIndex--;
+        showFieldset(currentFieldsetIndex);
+    }
+}
+
+showFieldset(currentFieldsetIndex);
+// Fieldset //
+
 function toggleInputs() {
     var order_type = document.getElementById("order_type").value;
-    var repairFieldset = document.querySelector(".quotation-form__fieldset--repair");
-    var mtoFieldset = document.querySelector(".quotation-form__fieldset--mto");
+    var repairInputContainerField = document.querySelector(".quotation-form__input-container-group--repair");
+    var mtoInputContainerField = document.querySelector(".quotation-form__input-container-group--mto");
 
     if (order_type === "repair") {
-        repairFieldset.style.display = "block";
-        mtoFieldset.style.display = "none";
+        repairInputContainerField.style.display = "flex";
+        mtoInputContainerField.style.display = "none";
         clearMTOFields();
     } else if (order_type === "mto") {
-        repairFieldset.style.display = "none";
-        mtoFieldset.style.display = "block";
+        repairInputContainerField.style.display = "none";
+        mtoInputContainerField.style.display = "flex";
         clearRepairFields();
     }
 }
@@ -53,3 +111,4 @@ function clearMTOFields() {
 
 // Trigger toggleInputs() initially to ensure correct display
 toggleInputs();
+updateShippingAddressOnBillingChange();

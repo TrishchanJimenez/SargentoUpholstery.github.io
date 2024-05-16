@@ -19,93 +19,117 @@
     <div class="order-page__content">
         <div class="order-form">
             <h1 class="quotation-form__title">Quotation Form</h1>
+            <p>Request a quote to get custom pricing. Please take a moment to fill in the form.</p>
             <form class="quotation-form" method="post" enctype="multipart/form-data">
-                <!-- Order Type [ ENUM(repair, mto) ] -->
-                <div class="quotation-form__input-container">
-                    <label for="order_type" class="quotation-form__label">What type of order do you wish to place?</label>
-                    <select id="order_type" name="order_type" class="quotation-form__select" onchange="toggleInputs()">
-                        <option value="repair" class="quotation-form__option">Repair</option>
-                        <option value="mto" class="quotation-form__option">Made-to-Order (MTO)</option>
-                    </select>
-                </div>
+                <fieldset class="quotation-form__fieldset" id="personal_info">
+                    <legend class="quotation-form__legend">Personal Information: </legend>
+                    <div class="quotation-form__input-container-group">
+                        <!-- Customer Name [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="customer_name" class="quotation-form__label">Full Name:</label>
+                            <input type="text" id="customer_name" name="customer_name" class="quotation-form__input" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <!-- Contact Information [ PHONE, EMAIL ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="contact_phone" class="quotation-form__label">Phone Number:</label>
+                            <input type="tel" id="contact_phone" name="contact_phone" class="quotation-form__input" placeholder="Enter your phone number" required>
+                        </div>
 
-                <!-- Furniture Type [ TEXT ] -->
-                <div class="quotation-form__input-container">
-                    <label for="furniture_type" class="quotation-form__label">What furniture are we working on?</label>
-                    <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair">
-                </div>
-
-                <!-- IF REPAIR -->
-                <fieldset class="quotation-form__fieldset quotation-form__fieldset--repair">
-                    <legend class="quotation-form__legend">Furniture Details: </legend>
-
-                    <!-- pickup_method [ ENUM(third_party, self) ] -->
-                    <div class="quotation-form__input-container">
-                        <label for="pickup_method" class="quotation-form__label">How shall we pick up the furniture to be repaired?</label>
-                        <select id="pickup_method" name="pickup_method" class="quotation-form__select"">
-                            <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
-                            <option value="self" class="quotation-form__option">I will drop it off at the business location</option>
-                        </select>
+                        <div class="quotation-form__input-container">
+                            <label for="contact_email" class="quotation-form__label">Email Address:</label>
+                            <input type="email" id="contact_email" name="contact_email" class="quotation-form__input" placeholder="Enter your email address" required>
+                        </div>
                     </div>
 
-                    <!-- pickup_address [ TEXT ] -->
-                    <div class="quotation-form__input-container">
-                        <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
-                        <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead."></textarea><br>
-                        <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
-                        <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
-                    </div>
+                    <div class="quotation-form__input-container-group">
+                        <!-- Billing Address [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="billing_address" class="quotation-form__label">Shipping Address:</label>
+                            <textarea id="billing_address" name="billing_address" class="quotation-form__textarea" rows="4" placeholder="Enter your billing address" required></textarea>
+                        </div>
 
-                    <!-- repairPicture [ FILE ] -->
-                    <div class="quotation-form__input-container">
-                        <label for="repairPicture" class="quotation-form__label">Please provide a reference image of the furniture:</label>
-                        <input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file">
+                        <!-- Shipping Address [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="shipping_address" class="quotation-form__label">Shipping Address (if different):</label>
+                            <textarea id="shipping_address" name="shipping_address" class="quotation-form__textarea" rows="4" placeholder="Enter your shipping address"></textarea>
+                            <br>
+                            <input type="checkbox" id="same_as_billing" name="same_as_billing" class="quotation-form__checkbox" onclick="copyBillingAddress()">
+                            <label for="same_as_billing" class="quotation-form__checkbox-label">Same as billing address</label>
+                        </div>
                     </div>
                 </fieldset>
-
-                <!-- IF MTO -->
-                <fieldset class="quotation-form__fieldset quotation-form__fieldset--mto">
-                    <legend class="quotation-form__legend">Furniture Details: </legend>
-
-                    <!-- height, width, depth [ NUMBER ] -->
-                    <div class="quotation-form__input-container">
-                        <label class="quotation-form__label">Furniture Dimensions (in inches):</label>
-                        <input type="number" id="width" name="width" class="quotation-form__input quotation-form__input--small" placeholder="Width"><br>
-                        <input type="number" id="height" name="height" class="quotation-form__input quotation-form__input--small" placeholder="Height"><br>
-                        <input type="number" id="depth" name="depth" class="quotation-form__input quotation-form__input--small" placeholder="Depth">
-                    </div>
-
-                    <!-- material [ TEXT ] -->
-                    <div class="quotation-form__input-container">
-                        <label for="material" class="quotation-form__label">Furniture Material:</label>
-                        <input type="text" id="material" name="material" class="quotation-form__input" placeholder="E.g. wood, plastic, metal">
+                <fieldset class="quotation-form__fieldset" id="order_details">
+                    <legend class="quotation-form__legend">Order Details</legend>
+                    <div class="quotation-form__input-container-group">
+                        <!-- Order Type [ ENUM(repair, mto) ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="order_type" class="quotation-form__label">What type of order do you wish to place?</label>
+                            <select id="order_type" name="order_type" class="quotation-form__select" onchange="toggleInputs()">
+                                <option value="repair" class="quotation-form__option">Repair</option>
+                                <option value="mto" class="quotation-form__option">Made-to-Order (MTO)</option>
+                            </select>
+                        </div>
+                        <!-- Furniture Type [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="furniture_type" class="quotation-form__label">What furniture are we working on?</label>
+                            <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair">
+                        </div>
+                        <!-- notes [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="notes" class="quotation-form__label">Furniture Notes:</label>
+                            <textarea id="notes" name="notes" class="quotation-form__textarea" rows="4" cols="50" placeholder="Provide a description of your order"></textarea>
+                        </div>
+                        <!-- repairPicture [ FILE ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="repairPicture" class="quotation-form__label">Please provide a reference image of the furniture:</label>
+                            <input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file">
+                        </div>
                     </div>
                 </fieldset>
-
-                <!-- del_method [ ENUM(third_party, self) ] -->
-                <div class="quotation-form__input-container">
-                    <label for="del_method" class="quotation-form__label">How shall we deliver the furniture?</label>
-                    <select id="del_method" name="del_method" class="quotation-form__select"">
-                        <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
-                        <option value="self" class="quotation-form__option">I will pick it up at the business location</option>
-                    </select>
+                <fieldset class="quotation-form__fieldset" id="delivery_details">
+                    <legend class="quotation-form__legend">Delivery Details</legend>
+                    <div class="quotation-form__input-container-group--repair">
+                        <!-- pickup_method [ ENUM(third_party, self) ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="pickup_method" class="quotation-form__label">How shall we pick up the furniture to be repaired?</label>
+                            <select id="pickup_method" name="pickup_method" class="quotation-form__select"">
+                                <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                                <option value="self" class="quotation-form__option">I will drop it off at the business location</option>
+                            </select>
+                        </div>
+                        <!-- pickup_address [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
+                            <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead."></textarea><br>
+                            <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
+                            <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
+                        </div>
+                    </div>
+                    <div class="quotation-form__input-container-group">
+                        <!-- del_method [ ENUM(third_party, self) ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="del_method" class="quotation-form__label">How shall we deliver the furniture?</label>
+                            <select id="del_method" name="del_method" class="quotation-form__select"">
+                                <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                                <option value="self" class="quotation-form__option">I will pick it up at the business location</option>
+                            </select>
+                        </div>
+                        
+                        <!-- del_address [ TEXT ] -->
+                        <div class="quotation-form__input-container">
+                            <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
+                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead."></textarea><br>
+                            <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
+                            <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="quotation-form__navigation">
+                    <button type="button" class="quotation-form__prev-button" onclick="prevFieldset()">Previous</button>
+                    <button type="button" class="quotation-form__next-button" onclick="nextFieldset()">Next</button>
+                    <input type="submit" value="Submit" class="quotation-form__submit-button">
                 </div>
-                
-                <!-- del_address [ TEXT ] -->
-                <div class="quotation-form__input-container">
-                    <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
-                    <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead."></textarea><br>
-                    <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
-                    <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
-                </div>
-
-                <!-- notes [ TEXT ] -->
-                <div class="quotation-form__input-container">
-                    <label for="notes" class="quotation-form__label">Furniture Notes:</label>
-                    <textarea id="notes" name="notes" class="quotation-form__textarea" rows="4" cols="50" placeholder="Provide a description of your order"></textarea>
-                </div>
-
-                <input type="submit" value="Submit" class="quotation-form__submit-button">
             </form>
         </div>
         <div class="faq">
