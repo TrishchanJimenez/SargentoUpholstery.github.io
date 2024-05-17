@@ -1,18 +1,27 @@
+<?php
+    require './database_connection.php';
+    if(isset($_GET['expired'])) {
+        echo "Your token has expired please place request another reset token";
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
+    <link rel="stylesheet" href="css/forgot-password.css">
 </head>
 <body>
-    <form action="" method="post">
-        <input type="email" name="email" id="">
-        <input type="submit" value="Send" name="submitEmail">
+    <form action="" method="post" class="forgot-password-form">
+        <p class="forgot-title">Forgot Your Password?</p>
+        <label for="email" class="label">Email Address</label>
+        <input type="email" name="email" id="" placeholder="Enter email address" required>
+        <p class="email-notif">Email has been sent. Please check your email</p>
+        <input type="submit" value="Send Reset Link" name="submitEmail" class="sendButton">
     </form>
+    <script src="js/reset_password.js"></script>
     <?php
-        require './database_connection.php';
-        
         if(isset($_POST['submitEmail'])) {
             $email = $_POST["email"];
     
@@ -20,6 +29,7 @@
     
             $token_hash = hash("sha256", $token);
     
+            date_default_timezone_set('Asia/Manila');
             $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
     
             $sql = "INSERT INTO reset_tokens VALUES(?, ?, ?)";
@@ -30,12 +40,12 @@
             if ($stmt->rowCount() > 0) {
                 $mail = require __DIR__ . "/mailer.php";
     
-                $mail->setFrom("trishchanjimenez@gmail.com");
+                $mail->setFrom("noreply.sargento@gmail.com");
                 $mail->addAddress($email);
                 $mail->Subject = "Password Reset";
                 $mail->Body = <<<END
     
-                Click <a href="http://sargentoupholstery.test/reset_password.php?token=$token">here</a> 
+                Click <a href="http://sargentoupholstery.test/reset_password.php?token=$token_hash">here</a> 
                 to reset your password.
     
                 END;
@@ -46,7 +56,7 @@
                     echo "Message could not be sent. Mailer error: {$mail->ErrorInfo}";
                 }
             }
-            echo "Message sent, please check your inbox.";
+            echo "<script>showEmailNotif()</script>";
         }
     ?>
 </body>

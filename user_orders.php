@@ -194,7 +194,7 @@ th {
     </style>
 </head>
 <body>
-<?php include_once("header.php") ?>
+    <?php require "header.php" ?>
 
 <div class="order-header">
     <p>My Orders</p>
@@ -606,5 +606,6 @@ document.getElementById('addAttachmentButton').addEventListener('click', functio
             document.getElementById('fileInput').click(); // Trigger the click event of the file input
         });         
 </script>
+  <script src="/js/globals.js"></script>
 </body>
 </html>

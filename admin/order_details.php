@@ -174,7 +174,7 @@
                                         PICTURE
                                     </span>
                                     <span class='info-detail'>
-                                        <img src='/{$order['repair_img_path']}' alt=''>
+                                        <img src='/{$order['repair_img_path']}' alt='' class='repair-img'>
                                     </span>
                                 </div>"
                                 ;
