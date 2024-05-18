@@ -1,6 +1,5 @@
 <?php
     session_start();
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,8 +64,12 @@
             if(password_verify($password, $user['password'])) {
                 echo "Login Successful";
                 session_start();
-                $_SESSION['access_type'] = $user['user_type'];
                 $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['access_type'] = $user['user_type'];
+                $_SESSION['user_address'] = $user['user_address'];
+                $_SESSION['contact_number'] = $user['contact_number'];
                 // Redirect user to dashboard or any other page
                 header("Location: index.php");
                 exit();

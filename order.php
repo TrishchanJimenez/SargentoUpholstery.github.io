@@ -1,3 +1,18 @@
+<?php
+    session_start();
+    // Check if user is logged in
+    if (!isset($_SESSION['user_id'])) {
+        // Redirect or handle unauthorized access
+        header("Location: login.php");
+        exit;
+    } else {
+        $autofill_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
+        $autofill_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+        $autofill_customer_address = isset($_SESSION['user_address']) ? $_SESSION['user_address'] : '';
+        $autofill_contact_number = isset($_SESSION['contact_number']) ? $_SESSION['contact_number'] : '';
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,35 +42,23 @@
                         <!-- Customer Name [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="customer_name" class="quotation-form__label">Full Name:</label>
-                            <input type="text" id="customer_name" name="customer_name" class="quotation-form__input" placeholder="Enter your full name" required>
+                            <input type="text" id="customer_name" name="customer_name" class="quotation-form__input quotation-form__input--readonly" placeholder="Enter your full name" value="<?php echo htmlspecialchars($autofill_name); ?>" required readonly>
                         </div>
                         
                         <!-- Contact Information [ PHONE, EMAIL ] -->
                         <div class="quotation-form__input-container">
                             <label for="contact_phone" class="quotation-form__label">Phone Number:</label>
-                            <input type="tel" id="contact_phone" name="contact_phone" class="quotation-form__input" placeholder="Enter your phone number" required>
+                            <input type="tel" id="contact_phone" name="contact_phone" class="quotation-form__input quotation-form__input--readonly" placeholder="Enter your phone number" value="<?php echo htmlspecialchars($autofill_contact_number); ?>" required readonly>
                         </div>
 
                         <div class="quotation-form__input-container">
                             <label for="contact_email" class="quotation-form__label">Email Address:</label>
-                            <input type="email" id="contact_email" name="contact_email" class="quotation-form__input" placeholder="Enter your email address" required>
+                            <input type="email" id="contact_email" name="contact_email" class="quotation-form__input quotation-form__input--readonly" placeholder="Enter your email address" value="<?php echo htmlspecialchars($autofill_email); ?>" required readonly>
                         </div>
-                    </div>
-
-                    <div class="quotation-form__input-container-group">
-                        <!-- Billing Address [ TEXT ] -->
-                        <div class="quotation-form__input-container">
-                            <label for="billing_address" class="quotation-form__label">Shipping Address:</label>
-                            <textarea id="billing_address" name="billing_address" class="quotation-form__textarea" rows="4" placeholder="Enter your billing address" required></textarea>
-                        </div>
-
                         <!-- Shipping Address [ TEXT ] -->
                         <div class="quotation-form__input-container">
-                            <label for="shipping_address" class="quotation-form__label">Shipping Address (if different):</label>
-                            <textarea id="shipping_address" name="shipping_address" class="quotation-form__textarea" rows="4" placeholder="Enter your shipping address"></textarea>
-                            <br>
-                            <input type="checkbox" id="same_as_billing" name="same_as_billing" class="quotation-form__checkbox" onclick="copyBillingAddress()">
-                            <label for="same_as_billing" class="quotation-form__checkbox-label">Same as billing address</label>
+                            <label for="shipping_address" class="quotation-form__label">Shipping Address:</label>
+                            <textarea id="shipping_address" name="shipping_address" class="quotation-form__textarea" rows="4" placeholder="Enter your shipping address" value="<?php echo htmlspecialchars($autofill_customer_address); ?>" required></textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -134,87 +137,89 @@
         </div>
         <div class="faq">
             <h1 class="faq__title">Frequently Asked Questions</h1>
-            <div class="faq__item">
-                <span class="faq__question">1. How does the ordering process work?</span>
-                <p class="faq__answer">
-                    Our ordering process is simple and convenient. Visit our Order webpage and select . Once we receive your submission, our team will 
-                    review it and get in touch with you to discuss the specifics.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">2. What kind of orders can I place?</span>
-                <p class="faq__answer">
-                    We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order 
-                    furniture pieces. Whether you're looking for a custom-sized sofa, a personalized dining table, 
-                    or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design 
-                    preferences in the order form.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">3. Can I customize the materials used in my furniture?</span>
-                <p class="faq__answer">
-                    We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order 
-                    furniture pieces. Whether you're looking for a custom-sized sofa, a personalized dining table, 
-                    or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design 
-                    preferences in the order form.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">4. What information should I provide in the order form?</span>
-                <p class="faq__answer">
-                    The order form is designed to capture all the necessary details for your custom furniture. Please
-                    provide information such as dimensions, preferred materials, color preferences, and any specific
-                    design elements you have in mind. The more details you provide, the better we can tailor the
-                    furniture to your liking.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">5. How long does it take to receive my custom furniture?</span>
-                <p class="faq__answer">
-                    The production time for custom furniture varies based on the complexity of the design and the
-                    materials chosen. Our team will provide you with a timeline once we review your order. Rest assured,
-                    we strive to complete orders in a timely manner without compromising on quality.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">6. Is there a deposit required for custom orders?</span>
-                <p class="faq__answer">
-                    Yes, a deposit is required to initiate the production of your custom furniture. The exact amount
-                    will be communicated to you once we review your order. The remaining balance will be due upon
-                    completion, prior to delivery or pickup.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">7. Can I make changes to my order after submission?</span>
-                <p class="faq__answer">
-                    We understand that preferences may evolve. If you need to make changes to your order, please contact
-                    us as soon as possible. We will do our best to accommodate changes, although some
-                    modifications may affect the timeline and cost.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">8. Do you offer delivery services?</span>
-                <p class="faq__answer">
-                    Yes, we offer delivery services for your convenience. The delivery cost will be calculated based on
-                    your location. Alternatively, you can arrange to pick up your custom furniture directly from our
-                    workshop.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">9. What is your return policy for custom orders?</span>
-                <p class="faq__answer">
-                    Since each piece is made to order based on your specific requirements, we do not accept returns on
-                    custom furniture. However, we are committed to ensuring your satisfaction, and we will address any
-                    issues or concerns to the best of our ability.
-                </p>
-            </div>
-            <div class="faq__item">
-                <span class="faq__question">10. How can I contact customer support for further assistance?</span>
-                <p class="faq__answer">
-                    If you have any questions or need assistance, please reach out to us via the
-                    contact information provided on our website. We're here to help you throughout the custom furniture
-                    ordering process.
-                </p>
+            <div class="faq__list">
+                <div class="faq__item">
+                    <span class="faq__question">1. How does the ordering process work?</span>
+                    <p class="faq__answer">
+                        Our ordering process is simple and convenient. Visit our Order webpage and select . Once we receive your submission, our team will 
+                        review it and get in touch with you to discuss the specifics.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">2. What kind of orders can I place?</span>
+                    <p class="faq__answer">
+                        We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order 
+                        furniture pieces. Whether you're looking for a custom-sized sofa, a personalized dining table, 
+                        or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design 
+                        preferences in the order form.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">3. Can I customize the materials used in my furniture?</span>
+                    <p class="faq__answer">
+                        We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order 
+                        furniture pieces. Whether you're looking for a custom-sized sofa, a personalized dining table, 
+                        or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design 
+                        preferences in the order form.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">4. What information should I provide in the order form?</span>
+                    <p class="faq__answer">
+                        The order form is designed to capture all the necessary details for your custom furniture. Please
+                        provide information such as dimensions, preferred materials, color preferences, and any specific
+                        design elements you have in mind. The more details you provide, the better we can tailor the
+                        furniture to your liking.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">5. How long does it take to receive my custom furniture?</span>
+                    <p class="faq__answer">
+                        The production time for custom furniture varies based on the complexity of the design and the
+                        materials chosen. Our team will provide you with a timeline once we review your order. Rest assured,
+                        we strive to complete orders in a timely manner without compromising on quality.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">6. Is there a deposit required for custom orders?</span>
+                    <p class="faq__answer">
+                        Yes, a deposit is required to initiate the production of your custom furniture. The exact amount
+                        will be communicated to you once we review your order. The remaining balance will be due upon
+                        completion, prior to delivery or pickup.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">7. Can I make changes to my order after submission?</span>
+                    <p class="faq__answer">
+                        We understand that preferences may evolve. If you need to make changes to your order, please contact
+                        us as soon as possible. We will do our best to accommodate changes, although some
+                        modifications may affect the timeline and cost.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">8. Do you offer delivery services?</span>
+                    <p class="faq__answer">
+                        Yes, we offer delivery services for your convenience. The delivery cost will be calculated based on
+                        your location. Alternatively, you can arrange to pick up your custom furniture directly from our
+                        workshop.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">9. What is your return policy for custom orders?</span>
+                    <p class="faq__answer">
+                        Since each piece is made to order based on your specific requirements, we do not accept returns on
+                        custom furniture. However, we are committed to ensuring your satisfaction, and we will address any
+                        issues or concerns to the best of our ability.
+                    </p>
+                </div>
+                <div class="faq__item">
+                    <span class="faq__question">10. How can I contact customer support for further assistance?</span>
+                    <p class="faq__answer">
+                        If you have any questions or need assistance, please reach out to us via the
+                        contact information provided on our website. We're here to help you throughout the custom furniture
+                        ordering process.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -230,17 +235,12 @@
 </html>
 
 <?php
-    // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        // Redirect or handle unauthorized access
-        header("Location: login.php");
-        exit;
-    }
-
     // Include database connection
     include_once('database_connection.php');
 
     if (isset($_POST['submit'])) {
+        print_r($_SESSION);
+
         // Prepare and bind parameters for orders table
         $stmt = $conn->prepare("INSERT INTO `orders` (`user_id`, `furniture_type`, `order_type`, `del_method`, `del_address`, `notes`) 
                                 VALUES (:user_id, :furniture_type, :order_type, :del_method, :del_address, :notes)");
@@ -298,8 +298,6 @@
 
             // Execute mto table insertion
             $stmt->execute();
-        } else {
-            echo "<script>alert('Nangyan pre')</script>";
         }
 
         // Close statement

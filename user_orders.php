@@ -82,7 +82,7 @@ input[type="submit"]:hover {
 /* tab 4 */
 .order-container {
     width: 90%;
-    height: 200px;
+    height: 150px;
     background-color: #FDFDFD;
     box-shadow: 0px 4px 4px 0px #00000040;
 }
@@ -191,6 +191,36 @@ th {
     background-color: #D9D9D9;
     border-radius: 25px;
 }
+/* file upload css */
+.file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .file-upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-upload-button {
+            padding: 20px 25px;
+            background-color: #D9D9D9;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: Playfair Display;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 26.66px;
+        }
+        .file-upload-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -240,12 +270,12 @@ th {
         echo '
         <table class="tabLabels">
             <tr class="status-header">
-                <th>Item</th>
                 <th>Item description</th>
                 <th>Quoted Price</th>
                 <th>Deliver and pick-up address</th>
                 <th>Order type</th>
                 <th>Status</th> 
+                <th>Details</th>
             </tr>';
 
         // Output data of each row
@@ -253,12 +283,16 @@ th {
             // Output the table rows inside the loop with additional classes for styling
             echo '
             <tr class="order-container">
-                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                 <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                 <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                 <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
                 <td><div class="order-type"><p>' . $row["order_type"] . '</p></div></td>
                 <td><div class="order-status"><p>' . $row["is_accepted"] . '</p></div></td>
+                <td class="chevron-right">
+                                    <a href="order_details.php?order-id={$order["order_id"]}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+                                    </a>
+                                </td>
             </tr>';
             // Add spacing between order-container elements
             echo '<tr class="order-container-space"><td colspan="6"></td></tr>';
@@ -300,11 +334,11 @@ th {
         echo '
         <table class="tabLabels">
             <tr class="status-header">
-                <th>Item</th>
                 <th>Item description</th>
-                <th>Price to pay</th>
+                <th>Quoted Price</th>
                 <th>Deliver and pick-up address</th>
                 <th>Order type</th>
+                <th>Details</th>
             </tr>';
 
         // Output data of each row
@@ -312,11 +346,15 @@ th {
             // Output the table rows inside the loop with additional classes for styling
             echo '
             <tr class="order-container">
-                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                 <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                 <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                 <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
                 <td><div class="order-type"><p>' . $row["order_type"] . '</p></div></td>
+                <td class="chevron-right">
+                                    <a href="order_details.php?order-id={$order["order_id"]}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+                                    </a>
+                </td>
             </tr>';
             // Add spacing between order-container elements
             echo '<tr class="order-container-space"><td colspan="6"></td></tr>';
@@ -348,7 +386,7 @@ th {
         }
 
         // Query to select data from the database
-        $sql = "SELECT furniture_type, quoted_price, del_address FROM orders WHERE order_status ='pending_downpayment'";
+        $sql = "SELECT furniture_type, quoted_price, del_address FROM orders WHERE order_status ='pending_fullpayment'"; 
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -356,11 +394,11 @@ th {
             echo '
             <table class="tabLabels">
                 <tr class="status-header">
-                    <th>Item</th>
                     <th>Item description</th>
                     <th>Quoted Price</th>
                     <th>Deliver and pick-up address</th>
                     <th>Proof of payment</th>
+                    <th>Details</th>
                 </tr>';
 
             // Output data of each row
@@ -368,11 +406,18 @@ th {
                 // Output the table rows inside the loop with additional classes for styling
                 echo '
                 <tr class="order-container">
-                    <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                     <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                     <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                     <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
-                    <td><div class="received-status"><button id="addAttachmentButton">Add Attachments</button><input type="file" id="fileInput" multiple></div></td>
+                    <td><div class="received-status"><div class="file-upload-wrapper">
+                    <button class="file-upload-button" onclick="document.getElementById("fileUpload").click();">Upload File</button>
+                    <input type="file" id="fileUpload" class="file-upload-input" onchange="handleFileUpload()">
+                </div></td>
+                    <td class="chevron-right">
+                                    <a href="order_details.php?order-id={$order["order_id"]}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+                                    </a>
+                </td>
                 </tr>';
                 // Add spacing between order-container elements
                 echo '<tr class="order-container-space"><td colspan="6"></td></tr>';
@@ -411,11 +456,11 @@ th {
         echo '
         <table class="tabLabels">
             <tr class="status-header">
-                <th>Item</th>
                 <th>Item description</th>
                 <th>Price to pay</th>
                 <th>Deliver and pick-up address</th>
                 <th>Received</th>
+                <th>Details</th>
             </tr>';
 
         // Output data of each row
@@ -423,11 +468,15 @@ th {
             // Output the table rows inside the loop with additional classes for styling
             echo '
             <tr class="order-container">
-                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                 <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                 <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                 <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
-                <td><div class="order-type"><p><button class="received-button">Received</button></p></div></td>
+                <td><div class="order-type"><p></p></div></td>
+                <td class="chevron-right">
+                                    <a href="order_details.php?order-id={$order["order_id"]}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+                                    </a>
+                </td>
             </tr>';
             // Add spacing between order-container elements
             echo '<tr class="order-container-space"><td colspan="6"></td></tr>';
@@ -600,11 +649,13 @@ document.getElementById('attachmentForm').addEventListener('submit', function(ev
         alert('Please select a file.');
     }
 });
-
-// add attachment button 
-document.getElementById('addAttachmentButton').addEventListener('click', function() {
-            document.getElementById('fileInput').click(); // Trigger the click event of the file input
-        });         
+       //file upload
+       function handleFileUpload() {
+            const fileInput = document.getElementById('fileUpload');
+            if (fileInput.files.length > 0) {
+                alert(`Selected file: ${fileInput.files[0].name}`);
+            }
+        }
 </script>
   <script src="/js/globals.js"></script>
 </body>

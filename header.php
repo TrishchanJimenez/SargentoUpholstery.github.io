@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+?>
 <header class="header">
     <a class="business-brand" href="index.php">
         <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
