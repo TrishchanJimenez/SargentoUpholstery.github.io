@@ -51,6 +51,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .quotation-form__fieldset {
@@ -94,7 +95,7 @@
 }
 
 .quotation-form__input--readonly {
-    background-color: #111;
+    background-color: #EEE;
 }
 
 .quotation-form__radio {
