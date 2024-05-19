@@ -52,11 +52,8 @@ function toggleInputs() {
 
     if (order_type === "repair") {
         repairInputContainerField.style.display = "flex";
-        mtoInputContainerField.style.display = "none";
-        clearMTOFields();
     } else if (order_type === "mto") {
         repairInputContainerField.style.display = "none";
-        mtoInputContainerField.style.display = "flex";
         clearRepairFields();
     }
 }
@@ -75,4 +72,3 @@ function clearRepairFields() {
 
 // Trigger toggleInputs() initially to ensure correct display
 toggleInputs();
-updateShippingAddressOnBillingChange();

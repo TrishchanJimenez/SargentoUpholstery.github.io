@@ -22,12 +22,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="css/alert.css">
 </head>
 
 <body>
     <?php 
     include_once("header.php");
-    include_once("alert_template.php");
     ?>
     <div class="featured-banner">
         <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
@@ -233,58 +233,86 @@
 <?php
     // Include database connection
     include_once('database_connection.php');
-    include_once("alert_template.php");
+    include_once("alert.php");
 
-    if (isset($_POST['submit'])) {
+    function sanitize_input($data) {
+        return htmlspecialchars(strip_tags($data));
+    }
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
-            // Prepare and bind parameters for orders table
-            $stmt = $conn->prepare("INSERT INTO `orders` (`user_id`, `furniture_type`, `order_type`, `ref_img_path`, `del_method`, `del_address`, `notes`) 
-            VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)");
-            $stmt->bindParam(':user_id', $_SESSION['user_id']);
-            $stmt->bindParam(':furniture_type', $_POST['furniture_type']);
-            $stmt->bindParam(':order_type', $_POST['order_type']);
-            $stmt->bindParam(':ref_img_path', $_POST['ref_img_path']);
-            $stmt->bindParam(':del_method', $_POST['del_method']);
-            $stmt->bindParam(':del_address', $_POST['del_address']);
-            $stmt->bindParam(':notes', $_POST['notes']);
-            if (isset($_FILES['referenceImage']) && $_FILES['referenceImage']['error'] == 0) {
-                $target_dir = 'uploadedImages/referenceImages/';
+            // Sanitize inputs
+            $order_type = sanitize_input($_POST['order_type']);
+            $furniture_type = sanitize_input($_POST['furniture_type']);
+            $notes = sanitize_input($_POST['notes']);
+            $del_method = sanitize_input($_POST['del_method']);
+            $del_address = sanitize_input($_POST['del_address']);
+            $pickup_method = isset($_POST['pickup_method']) ? sanitize_input($_POST['pickup_method']) : null;
+            $pickup_address = isset($_POST['pickup_address']) ? sanitize_input($_POST['pickup_address']) : null;
+        
+            // Handle file upload
+            $ref_img_path = null;
+            $uploadOk = 1;
+            if (isset($_FILES["referenceImage"]) && $_FILES["referenceImage"]["error"] == 0) {
+                $target_dir = "uploadedImages/";
                 $target_file = $target_dir . basename($_FILES["referenceImage"]["name"]);
-                
-                // Move the uploaded file to the desired directory
-                if (move_uploaded_file($_FILES["referenceImage"]["tmp_name"], $target_file)) {
-                    // File uploaded successfully, save file path to database
-                    $stmt->bindParam(':ref_img_path', $target_file);
-                    // echo "The file ". htmlspecialchars(basename($_FILES["referenceImage"]["name"])). " has been uploaded.";
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+                // Check if image file is a JPG
+                if ($imageFileType != "jpg") {
+                    $uploadOk = 0;
+                    echo "Sorry, only JPG files are allowed.";
+                    sendAlert("error", "Sorry, only JPG files are allowed.");
+                }
+
+                // Check if $uploadOk is set to 0 by an error
+                if ($uploadOk && move_uploaded_file($_FILES["referenceImage"]["tmp_name"], $target_file)) {
+                    $ref_img_path = $target_file;
                 } else {
+                    echo "Sorry, there was an error uploading your file.";
                     sendAlert("error", "Sorry, there was an error uploading your file.");
+                    $uploadOk = 0;
                 }
             } else {
-                sendAlert("error", "Error uploading file: " . $_FILES["referenceImage"]["error"])
+                $uploadOk = 0;
+                echo "File upload is required.";
+                sendAlert("warning", "File upload is required.");
             }
-            // Execute orders table insertion
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
+        }
+    
+        try {
+            // Insert into orders table
+            $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':user_id', $_SESSION["user_id"]);
+            $stmt->bindParam(':furniture_type', $furniture_type);
+            $stmt->bindParam(':order_type', $order_type);
+            $stmt->bindParam(':ref_img_path', $ref_img_path);
+            $stmt->bindParam(':del_method', $del_method);
+            $stmt->bindParam(':del_address', $del_address);
+            $stmt->bindParam(':notes', $notes);
             $stmt->execute();
-
-            // Get the last inserted order_id
+    
             $order_id = $conn->lastInsertId();
-            // Insert into repair or mto table based on order_type
-            if ($_POST['order_type'] === "repair") {
-                // Prepare and bind parameters for repair table
-                $stmt = $conn->prepare("INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) 
-                                        VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
+    
+            // Insert into pickup table if order_type is "repair"
+            if ($order_type === 'repair') {
+                $query = "INSERT INTO pickup (order_id, pickup_method, pickup_address) VALUES (:order_id, :pickup_method, :pickup_address)";
+                $stmt = $conn->prepare($query);
                 $stmt->bindParam(':order_id', $order_id);
-                $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
-                $stmt->bindParam(':pickup_address', $_POST['pickup_address']);
-                // Upload image and save path
-                // Execute repair table insertion
+                $stmt->bindParam(':pickup_method', $pickup_method);
+                $stmt->bindParam(':pickup_address', $pickup_address);
                 $stmt->execute();
             }
-        } catch (Exception $e) {
-            throw $e;
+    
+            echo "Order placed successfully.";
+            sendAlert("success", "Order placed successfully.");
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
         }
-        // Close statement
-        $stmt = null;
-        // Close connection
-        $conn = null;
     }
 ?>
