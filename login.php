@@ -16,9 +16,9 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <div class="form_container">
-            <img src="websiteimages/sargento_logo.png" alt="" class="logo">
+            <img src="/websiteimages/sargento_logo.png" alt="" class="logo">
             <p>Sign in</p>
             <form method="post">
                 <p>Email or mobile phone number</p>
@@ -28,8 +28,8 @@
                     <p>Your password</p>
                     <div class="showhide">
                         <button type="button" id="togglePassword">
-                            <img src="websiteimages/icons/hide.svg" alt="Show Password" id="eyeClosed">
-                            <img src="websiteimages/icons/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
+                            <img src="/websiteimages/icons/hide.svg" alt="Show Password" id="eyeClosed">
+                            <img src="/websiteimages/icons/show.svg" alt="Hide Password" id="eyeOpen" style="display: none;">
                         </button>
                         <span id="showText">Show</span>
                         <span id="hideText" style="display: none;">Hide</span>

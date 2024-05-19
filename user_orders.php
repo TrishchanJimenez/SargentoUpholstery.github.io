@@ -528,7 +528,7 @@ th {
             // Output the table rows inside the loop with additional classes for styling
             echo '
             <tr class="order-container">
-                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+                <td><img src="/websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                 <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                 <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                 <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
@@ -582,7 +582,7 @@ th {
             // Output the table rows inside the loop with additional classes for styling
             echo '
             <tr class="order-container">
-                <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
+                <td><img src="/websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
                 <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
                 <td><div class="price-to-pay"><p>' ."₱". $row["quoted_price"] . '</p></div></td>
                 <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>

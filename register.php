@@ -13,9 +13,9 @@
 </head>
 <body>
     <div class="registration-container">
-        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <div class="registration">
-            <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
+            <img src="/websiteimages/sargento_logo.png" alt="" class="business-logo">
             <div class="regTitle">
                 <h1>Sign Up</h1>
                 <h3>Sign up with your Email Address </h3>
@@ -34,7 +34,7 @@
                 <label for="password">
                     <span>Password</span>
                     <span class="toggle-password">
-                        <img src="websiteimages/icons/show.svg" alt="" class="toggle-img">
+                        <img src="/websiteimages/icons/show.svg" alt="" class="toggle-img">
                         <span class="toggle-text">Show</span>
                     </span>
                 </label>

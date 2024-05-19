@@ -22,27 +22,27 @@
             that have created our story in the Upholstery industry.</p>
         <div class="product-categories">
             <a class="product-category" id="category-loveseat">
-                <img src="websiteimages/loveseatsimg.png" alt="">
+                <img src="/websiteimages/loveseatsimg.png" alt="">
                 <p>Loveseats</p>
             </a>
             <a class="product-category" id="category-sofa">
-                <img src="websiteimages/sofasimg.png" alt="">
+                <img src="/websiteimages/sofasimg.png" alt="">
                 <p>Sofas</p>
             </a>
             <a class="product-category" id="category-bed">
-                <img src="websiteimages/bedsimage.png" alt="">
+                <img src="/websiteimages/bedsimage.png" alt="">
                 <p>Beds</p>
             </a>
             <a class="product-category" id="category-armchair">
-                <img src="websiteimages/chairsimg.png" alt="">
+                <img src="/websiteimages/chairsimg.png" alt="">
                 <p>Chairs</p>
             </a>
             <a class="product-category" id="category-ottoman">
-                <img src="websiteimages/ottomanimg.png" alt="">
+                <img src="/websiteimages/ottomanimg.png" alt="">
                 <p>Ottomans</p>
             </a>
             <a class="product-category" id="category-custom">
-                <img src="websiteimages/customordersimg.png" alt="">
+                <img src="/websiteimages/customordersimg.png" alt="">
                 <p>Custom</p>
             </a>
         </div>
@@ -51,22 +51,22 @@
         <h2 class="testimonials-title">Our Clients' Testimonials</h2>
         <div class="reviews">
             <div class="review">
-                <img src="websiteimages/Start quote.png" alt="" class="quote quote-start">
+                <img src="/websiteimages/Start quote.png" alt="" class="quote quote-start">
                 <p>Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for
                     Sargento Upholstery.<br><br><span class="client-name">-JB von Kampfer</span></p>
-                <img src="websiteimages/End quote.png" alt="" class="quote quote-end">
+                <img src="/websiteimages/End quote.png" alt="" class="quote quote-end">
             </div>
             <div class="review">
-                <img src="websiteimages/Start quote.png" alt="" class="quote quote-start">
+                <img src="/websiteimages/Start quote.png" alt="" class="quote quote-start">
                 <p>Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!<br><br><span
                         class="client-name">-Albert Mendoza</span></p>
-                <img src="websiteimages/End quote.png" alt="" class="quote quote-end">
+                <img src="/websiteimages/End quote.png" alt="" class="quote quote-end">
             </div>
         </div>
         <a href="testimonials.php" class="btn btn-black">More Reviews</a>
     </div>
     <div class="about-us">
-        <img src="websiteimages/teampicture.png" alt="" class="team-picture">
+        <img src="/websiteimages/teampicture.png" alt="" class="team-picture">
         <h2 class="text-gold">The Sargento Family Business</h2>
         <p class="business-history">
             Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has

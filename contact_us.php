@@ -9,7 +9,7 @@
 </head>
 <body>
     <?php include_once("header.php") ?>
-    <img src="websiteimages/callcenterdude.png" div class="call_center_dude">
+    <img src="/websiteimages/callcenterdude.png" div class="call_center_dude">
     <h1 class="contact_us_text_title">Get In Touch With Us</h1>
     <div class="contact_us_text">
         <div class="contact_info">

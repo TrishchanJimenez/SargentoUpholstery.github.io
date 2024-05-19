@@ -9,7 +9,7 @@
 </head>
 <body>
     <?php include_once("header.php") ?>
-    <img src="websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
+    <img src="/websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
     <div class="intro-section">
         <h2 class="intro-title">A Commitment to Craftsmanship Excellence</h2>
         <p class="intro-info">
@@ -22,7 +22,7 @@
     </div>
     <div class="services_craftmanship_card_container">
         <div class="services_craftmanship_card">
-            <img src="websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
+            <img src="/websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
             <div class="services_craftmanship_card_text"> 
                 <h1 class="text-gold">The Foundation of Durability</h1>
                 <p>
@@ -49,10 +49,10 @@
                     ensures your comfort and satisfaction for years to come. 
                 </p>
             </div>
-            <img src="websiteimages/cube.png" alt="wood crafting" div class="services_craftmanship_card_2_image">
+            <img src="/websiteimages/cube.png" alt="wood crafting" div class="services_craftmanship_card_2_image">
         </div>
         <div class="services_craftmanship_card small">
-            <img src="websiteimages/cube.png" alt="wood crafting" div class="services_craftmanship_card_2_image">
+            <img src="/websiteimages/cube.png" alt="wood crafting" div class="services_craftmanship_card_2_image">
             <div class="services_craftmanship_card_text ta-right"> 
                 <h1 class="text-gold">Luxurious Comfort</h1>
                 <p>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="services_craftmanship_card">
-            <img src="websiteimages/fabric cut (1).png" alt="wood crafting" div class="services_craftmanship_card_3_image">
+            <img src="/websiteimages/fabric cut (1).png" alt="wood crafting" div class="services_craftmanship_card_3_image">
             <div class="services_craftmanship_card_text"> 
                 <h1 class="text-gold">Exceptional Fabrics</h1>
                 <p>
@@ -92,7 +92,7 @@
             elegance.
         </p>
     </div>
-    <img src="websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
+    <img src="/websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
     <div class="services_craftmanship_hero_image_2">
         <h1>
             Explore Our Masterpieces

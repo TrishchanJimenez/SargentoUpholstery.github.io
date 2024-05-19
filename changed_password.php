@@ -22,9 +22,9 @@
 </head>
 <body>
     <div class="container">
-        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <div class="forgot-password-form">
-            <img src="websiteimages/icons/check-circle.svg" alt="" width="80px" height="80px">
+            <img src="/websiteimages/icons/check-circle.svg" alt="" width="80px" height="80px">
             <p class="forgot-title changed-title">Password has been Reset</p>
             <a href="login.php">Login Now ></a>
         </div>

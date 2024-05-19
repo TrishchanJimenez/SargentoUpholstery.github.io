@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <form action="" method="post" class="forgot-password-form">
             <p class="forgot-title">Forgot Your Password?</p>
             <label for="email" class="label">Email Address</label>

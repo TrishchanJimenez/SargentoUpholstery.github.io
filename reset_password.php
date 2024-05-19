@@ -38,7 +38,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <form action="changed_password.php" method="POST" class="forgot-password-form change-password-form">
             <p class="forgot-title">Reset Password</p>
             <input type="hidden" name="user-id" <?php "value='{$user['user_id']}'" ?>>
