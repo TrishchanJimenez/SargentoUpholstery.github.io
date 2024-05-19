@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/alert.css">
     <script src="js/login.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +47,8 @@
 </html>
 
 <?php
-    include "database_connection.php";
+    include_once('database_connection.php');
+    include_once("alert.php");
 
     function sanitizeInput($input) {
         $input = trim($input);
@@ -77,10 +79,10 @@
                 header("Location: index.php");
                 exit();
             } else {
-                echo "<script> alert('Incorrect password'); </script>";
+                sendAlert("error", "Incorrect password. Please try again.");
             }
         } else {
-            echo "<script> alert('User not found'); </script>";
+            sendAlert("error", "Email unknown. Please enter a registered email or sign up.");
         }
     }
 ?>

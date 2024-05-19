@@ -22,12 +22,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="css/alert.css">
 </head>
 
 <body>
     <?php 
     include_once("header.php");
-    include_once("alert_template.php");
     ?>
     <div class="featured-banner">
         <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
@@ -233,7 +233,7 @@
 <?php
     // Include database connection
     include_once('database_connection.php');
-    include_once("alert_template.php");
+    include_once("alert.php");
 
     function sanitize_input($data) {
         return htmlspecialchars(strip_tags($data));
