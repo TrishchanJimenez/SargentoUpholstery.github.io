@@ -433,3 +433,7 @@ input[type="number"] {
 .info-detail img {
     border-radius: 0.5rem;
 }
+
+.repair-img {
+    width: 100%;
+}

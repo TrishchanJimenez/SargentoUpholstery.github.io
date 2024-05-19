@@ -27,7 +27,7 @@
                 <?php
                     if($_SESSION['access_type'] === "admin") {
                         echo "
-                            <a href='./admin/dashboard.php'>
+                            <a href='/admin/dashboard.php'>
                                 <img src='websiteimages/icons/person-icon.svg' alt=''>
                                 <span>
                                     Admin Panel
@@ -36,7 +36,7 @@
                         ";
                     } else {
                         echo '
-                            <a href="user_orders.php">
+                            <a href="/user_orders.php">
                                 <img src="websiteimages/icons/order-icon.svg" alt="">
                                 <span>My Orders</span>
                             </a>
@@ -62,13 +62,13 @@
         <div id="offcanvas-menu">
             <img src="websiteimages/icons/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
             <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="services_craftsmanship.php">Services</a></li>
-                <li><a href="services_works.php">Our Works</a></li>
-                <li><a href="order.php">Order</a></li>
-                <li><a href="testimonials.php">Testimonials</a></li>
-                <li><a href="about_us.php">About Us</a></li>
-                <li><a href="contact_us.php">Contact Us</a></li>
+                <li><a href="/index.php">Home</a></li>
+                <li><a href="/services_craftsmanship.php">Services</a></li>
+                <li><a href="/services_works.php">Our Works</a></li>
+                <li><a href="/order.php">Order</a></li>
+                <li><a href="/testimonials.php">Testimonials</a></li>
+                <li><a href="/about_us.php">About Us</a></li>
+                <li><a href="/contact_us.php">Contact Us</a></li>
             </ul>
         </div>
     </nav>

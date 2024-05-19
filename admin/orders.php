@@ -8,6 +8,8 @@
     //     exit();
     // }
 
+    if(isset($_POST))
+
     $search_type = $_GET['search-order'] ?? '';
     $search_input = $_GET['search-input'] ?? '';
     $order_type = $_GET['order-type'] ?? '';
@@ -162,6 +164,7 @@
             <table class="order-table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Order Id</th>
                         <th>Customer Name</th>
                         <th>Item</th>
@@ -189,6 +192,7 @@
                             $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
                             echo "
                             <tr data-id='{$order['order_id']}'>
+                                <td><input type='checkbox' name='' id=''></td>
                                 <td>{$order['order_id']}</td>
                                 <td>{$order['customer_name']}</td>
                                 <td>{$order['item']}</td>

@@ -224,7 +224,7 @@ th {
     </style>
 </head>
 <body>
-<?php include_once("header.php") ?>
+    <?php require "header.php" ?>
 
 <div class="order-header">
     <p>My Orders</p>
@@ -657,5 +657,6 @@ document.getElementById('attachmentForm').addEventListener('submit', function(ev
             }
         }
 </script>
+  <script src="/js/globals.js"></script>
 </body>
 </html>
