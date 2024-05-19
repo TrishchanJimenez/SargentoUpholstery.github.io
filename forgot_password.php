@@ -13,13 +13,16 @@
     <link rel="stylesheet" href="css/forgot-password.css">
 </head>
 <body>
-    <form action="" method="post" class="forgot-password-form">
-        <p class="forgot-title">Forgot Your Password?</p>
-        <label for="email" class="label">Email Address</label>
-        <input type="email" name="email" id="" placeholder="Enter email address" required>
-        <p class="email-notif">Email has been sent. Please check your email</p>
-        <input type="submit" value="Send Reset Link" name="submitEmail" class="sendButton">
-    </form>
+    <div class="container">
+        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <form action="" method="post" class="forgot-password-form">
+            <p class="forgot-title">Forgot Your Password?</p>
+            <label for="email" class="label">Email Address</label>
+            <input type="email" name="email" id="" placeholder="Enter email address" required>
+            <p class="email-notif">Email Sent. Please check your inbox</p>
+            <input type="submit" value="Send Reset Link" name="submitEmail" class="sendButton">
+        </form>
+    </div>
     <script src="js/reset_password.js"></script>
     <?php
         if(isset($_POST['submitEmail'])) {
@@ -40,7 +43,7 @@
             if ($stmt->rowCount() > 0) {
                 $mail = require __DIR__ . "/mailer.php";
     
-                $mail->setFrom("noreply.sargento@gmail.com");
+                $mail->setFrom("noreply.sargento@gmail.com", "Sargento Upholstery");
                 $mail->addAddress($email);
                 $mail->Subject = "Password Reset";
                 $mail->Body = <<<END

@@ -18,7 +18,20 @@ showCheckbox.addEventListener('change', (e) => {
     }
 })
 
+const errorMessage = document.querySelector('.error-message');
+
 changePasswordForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-})
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        e.preventDefault();
+        errorMessage.style.display = 'block';
+        // alert('The passwords do not match.');
+    }
+});
+
+passwordInput.addEventListener('input', () => {
+    errorMessage.style.display = 'none';
+});
+
+confirmPasswordInput.addEventListener('input', () => {
+    errorMessage.style.display = 'none';
+});

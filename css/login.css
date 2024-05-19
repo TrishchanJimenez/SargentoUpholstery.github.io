@@ -1,37 +1,46 @@
 /* Styling the form container */
 body {
     font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.Form_Container {
+.login-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.splash-image {
+    width: 100%;
+    height: 100vh;
+}
+
+.form_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 1); 
     border-radius: 24px;
-    max-width: 0 auto;
-    border: 1px solid black;
-    margin: 2rem 30%  0.75rem;
 }
 
-.Form_Container > p {
+.form_container > p {
     font-size: 2rem;
     font-weight: 500;
     margin: 0 auto;
 }
 
-.Form_Container a {
+.form_container a {
     color: black; /* Set the text color to black */
 }
 
-.Form_Container form {
+.form_container form {
     display: flex;
     flex-direction: column;
     width: 90%;
 }
 
-.Form_Container form > p {
+.form_container form > p {
     font-weight: normal;
     font-size: 1rem;
     margin: 1.25rem 0 0.25rem;
@@ -53,11 +62,11 @@ body {
 
 input:not([type="submit"]) {
     padding: 1rem 1.125rem;
-    border-radius: 0.75rem;
-    border: 1px solid #111;
+    border-radius: 0.5rem;
+    border: 2px solid #111;
 }
 
-.Login_button{
+.login_button{
     color: white;
     padding: 2%;
     width: 100%;
@@ -68,14 +77,14 @@ input:not([type="submit"]) {
     background: #111;
 }
 
-.Login_button:hover{
+.login_button:hover{
     background-color: white;
     color: black;
     border: 1px solid black;
     transition: 0.25s;
 }
 
-.Create_button{
+.create_button{
     color: black;
     width: 85%;
     padding: 2%;
@@ -91,7 +100,7 @@ input:not([type="submit"]) {
     font-weight: none;
 }
 
-.Create_button:hover{
+.create_button:hover{
     cursor: pointer;
     background-color: black;
     color: white;

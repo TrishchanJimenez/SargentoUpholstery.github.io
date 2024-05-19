@@ -37,36 +37,26 @@
     <link rel="stylesheet" href="css/forgot-password.css">
 </head>
 <body>
-    <form action="changed_password.php" method="POST" class="forgot-password-form change-password-form">
-        <p class="forgot-title">Set your New Password</p>
-        <input type="hidden" name="user-id" <?= "value='{$user['user_id']}'" ?>>
-        <label for="new-password">
-            New Password
-        </label>
-        <input type="password" name="new-password" id="" placeholder="Enter your new Password">
-        <label for="new-password">
-            Confirm New Password
-        </label>
-        <input type="password" name="confirm-password" id="" placeholder="Confirm Password">
-        <div class="show-pass-checkbox">
-            <input type="checkbox" name="show-password" id=""><span>Show Password</span>
-        </div>
-        <input type="submit" value="Reset" name="submit-new" class="sendButton">
-    </form>
-    <?php
-        if(isset($_POST['submit-new'])) {
-            $password = $_POST['new-password'];
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE users SET password = :password WHERE user_id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":password", $password);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            $is_updated = $stmt->rowCount() === 1;
-            echo $is_updated;
-            // if($is_updated) echo "Password Changed";
-        }
-    ?>
+    <div class="container">
+        <img src="websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <form action="changed_password.php" method="POST" class="forgot-password-form change-password-form">
+            <p class="forgot-title">Reset Password</p>
+            <input type="hidden" name="user-id" <?php "value='{$user['user_id']}'" ?>>
+            <label for="new-password">
+                New Password
+            </label>
+            <input type="password" name="new-password" id="" placeholder="Enter your new Password" required>
+            <label for="new-password">
+                Confirm New Password
+            </label>
+            <input type="password" name="confirm-password" id="" placeholder="Confirm Password" required>
+            <div class="show-pass-checkbox">
+                <input type="checkbox" name="show-password" id=""><span>Show Password</span>
+            </div>
+            <p class="error-message">Passwords Do Not Match</p>
+            <input type="submit" value="Reset Password" name="submit-new" class="sendButton">
+        </form>
+    </div>
     <script src="js/reset_password.js"></script>
 </body>
 </html>
