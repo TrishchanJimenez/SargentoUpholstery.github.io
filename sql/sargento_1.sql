@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 19, 2024 at 08:10 AM
+-- Generation Time: May 14, 2024 at 04:12 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sargento_1`
 --
+CREATE DATABASE IF NOT EXISTS `sargento_1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `sargento_1`;
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,6 @@ CREATE TABLE `orders` (
   `furniture_type` varchar(32) NOT NULL,
   `order_type` enum('repair','mto') NOT NULL,
   `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
-  `ref_img_path` tinytext,
   `del_method` enum('third_party','self') NOT NULL,
   `del_address` text NOT NULL,
   `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
@@ -87,50 +88,47 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `order_status`, `ref_img_path`, `del_method`, `del_address`, `notes`, `quoted_price`, `is_accepted`, `refusal_reason`, `last_updated`) VALUES
-(1, 1, 'Table', 'repair', 'pending_downpayment', NULL, 'third_party', '123 Main St.', 'Needs repair for broken leg', 1230, 'accepted', NULL, '2024-05-14 03:53:45'),
-(2, 2, 'Chair', 'repair', 'new_order', NULL, 'self', '456 Elm St.', 'Seat needs reupholstering', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(3, 3, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', '789 Oak St.', 'Door hinge needs fixing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(4, 4, 'Shelf', 'repair', 'new_order', NULL, 'self', '101 Pine St.', 'Cracked wood needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(5, 5, 'Bed', 'repair', 'new_order', NULL, 'third_party', '111 Cedar St.', 'Frame needs strengthening', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(6, 6, 'Desk', 'repair', 'new_order', NULL, 'self', '222 Maple St.', 'Drawer is stuck', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(7, 7, 'Table', 'repair', 'new_order', NULL, 'third_party', '333 Birch St.', 'Legs are wobbly', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(8, 8, 'Chair', 'repair', 'new_order', NULL, 'self', '444 Walnut St.', 'Backrest needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(9, 9, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', '555 Ash St.', 'Drawer is off track', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(10, 10, 'Shelf', 'repair', 'new_order', NULL, 'self', '666 Sycamore St.', 'Shelves are sagging', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(11, 11, 'Bed', 'repair', 'new_order', NULL, 'third_party', '777 Cedar St.', 'Headboard needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(12, 12, 'Desk', 'repair', 'new_order', NULL, 'self', '888 Pine St.', 'Surface has scratches', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(13, 13, 'Table', 'repair', 'new_order', NULL, 'third_party', '999 Elm St.', 'Needs refinishing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(14, 14, 'Chair', 'repair', 'new_order', NULL, 'self', '1010 Maple St.', 'Legs are uneven', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(15, 15, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', '1111 Birch St.', 'Handle needs replacing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(16, 16, 'Shelf', 'repair', 'new_order', NULL, 'self', '1212 Walnut St.', 'Bracket is loose', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(17, 17, 'Bed', 'repair', 'new_order', NULL, 'third_party', '1313 Ash St.', 'Side rail needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(18, 18, 'Desk', 'repair', 'new_order', NULL, 'self', '1414 Sycamore St.', 'Drawer is missing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(19, 19, 'Table', 'repair', 'new_order', NULL, 'third_party', '1515 Cedar St.', 'Top needs refinishing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(20, 20, 'Chair', 'repair', 'new_order', NULL, 'self', '1616 Pine St.', 'Seat is cracked', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
-(21, 1, 'Table', 'mto', 'new_order', NULL, 'third_party', '123 Main St.', 'Custom table design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(22, 2, 'Chair', 'mto', 'new_order', NULL, 'self', '456 Elm St.', 'Custom chair color: blue', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(23, 3, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', '789 Oak St.', 'Extra shelf required', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(24, 4, 'Shelf', 'mto', 'new_order', NULL, 'self', '101 Pine St.', 'Custom shelf design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(25, 5, 'Bed', 'mto', 'new_order', NULL, 'third_party', '111 Cedar St.', 'Custom bed headboard', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(26, 6, 'Desk', 'mto', 'new_order', NULL, 'self', '222 Maple St.', 'Custom desk size', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(27, 7, 'Table', 'mto', 'new_order', NULL, 'third_party', '333 Birch St.', 'Custom table material: hardwood', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(28, 8, 'Chair', 'mto', 'new_order', NULL, 'self', '444 Walnut St.', 'Custom chair upholstery: leather', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(29, 9, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', '555 Ash St.', 'Custom cabinet size', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(30, 10, 'Shelf', 'mto', 'new_order', NULL, 'self', '666 Sycamore St.', 'Custom shelf color: white', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(31, 11, 'Bed', 'mto', 'new_order', NULL, 'third_party', '777 Cedar St.', 'Custom bed storage: drawers', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(32, 12, 'Desk', 'mto', 'new_order', NULL, 'self', '888 Pine St.', 'Custom desk material: glass top', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(33, 13, 'Table', 'mto', 'new_order', NULL, 'third_party', '999 Elm St.', 'Custom table design: round', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(34, 14, 'Chair', 'mto', 'new_order', NULL, 'self', '1010 Maple St.', 'Custom chair height: bar stool', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(35, 15, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', '1111 Birch St.', 'Custom cabinet color: black', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(36, 16, 'Shelf', 'mto', 'new_order', NULL, 'self', '1212 Walnut St.', 'Custom shelf size: 3 shelves', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(37, 17, 'Bed', 'mto', 'new_order', NULL, 'third_party', '1313 Ash St.', 'Custom bed headboard design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(38, 18, 'Desk', 'mto', 'new_order', NULL, 'self', '1414 Sycamore St.', 'Custom desk size: 5ft x 2.5ft', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(39, 19, 'Table', 'mto', 'new_order', NULL, 'third_party', '1515 Cedar St.', 'Custom table material: marble top', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(40, 20, 'Chair', 'mto', 'new_order', NULL, 'self', '1616 Pine St.', 'Custom chair upholstery: fabric', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
-(41, 22, 'pusong nangungulila', 'repair', 'new_order', 'uploadedImages/3.25.2024 First date.jpg', 'third_party', '456 ipsum st.', 'miss ko na sya', NULL, 'pending', NULL, '2024-05-19 07:56:33'),
-(42, 22, 'Puso kong nangungulila', 'repair', 'new_order', 'uploadedImages/3.25.2024 First date.jpg', 'third_party', '456 ipsum st.', 'Miss ko na siya', NULL, 'pending', NULL, '2024-05-19 08:06:17'),
-(43, 22, 'Puso kong nangungulila', 'repair', 'new_order', 'uploadedImages/3.25.2024 First date.jpg', 'third_party', '456 ipsum st.', 'Miss ko na siya', NULL, 'pending', NULL, '2024-05-19 08:07:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `order_status`, `del_method`, `del_address`, `notes`, `quoted_price`, `is_accepted`, `refusal_reason`, `last_updated`) VALUES
+(1, 1, 'Table', 'repair', 'pending_downpayment', 'third_party', '123 Main St.', 'Needs repair for broken leg', 1230, 'accepted', NULL, '2024-05-14 03:53:45'),
+(2, 2, 'Chair', 'repair', 'new_order', 'self', '456 Elm St.', 'Seat needs reupholstering', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(3, 3, 'Cabinet', 'repair', 'new_order', 'third_party', '789 Oak St.', 'Door hinge needs fixing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(4, 4, 'Shelf', 'repair', 'new_order', 'self', '101 Pine St.', 'Cracked wood needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(5, 5, 'Bed', 'repair', 'new_order', 'third_party', '111 Cedar St.', 'Frame needs strengthening', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(6, 6, 'Desk', 'repair', 'new_order', 'self', '222 Maple St.', 'Drawer is stuck', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(7, 7, 'Table', 'repair', 'new_order', 'third_party', '333 Birch St.', 'Legs are wobbly', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(8, 8, 'Chair', 'repair', 'new_order', 'self', '444 Walnut St.', 'Backrest needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(9, 9, 'Cabinet', 'repair', 'new_order', 'third_party', '555 Ash St.', 'Drawer is off track', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(10, 10, 'Shelf', 'repair', 'new_order', 'self', '666 Sycamore St.', 'Shelves are sagging', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(11, 11, 'Bed', 'repair', 'new_order', 'third_party', '777 Cedar St.', 'Headboard needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(12, 12, 'Desk', 'repair', 'new_order', 'self', '888 Pine St.', 'Surface has scratches', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(13, 13, 'Table', 'repair', 'new_order', 'third_party', '999 Elm St.', 'Needs refinishing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(14, 14, 'Chair', 'repair', 'new_order', 'self', '1010 Maple St.', 'Legs are uneven', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(15, 15, 'Cabinet', 'repair', 'new_order', 'third_party', '1111 Birch St.', 'Handle needs replacing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(16, 16, 'Shelf', 'repair', 'new_order', 'self', '1212 Walnut St.', 'Bracket is loose', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(17, 17, 'Bed', 'repair', 'new_order', 'third_party', '1313 Ash St.', 'Side rail needs repair', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(18, 18, 'Desk', 'repair', 'new_order', 'self', '1414 Sycamore St.', 'Drawer is missing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(19, 19, 'Table', 'repair', 'new_order', 'third_party', '1515 Cedar St.', 'Top needs refinishing', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(20, 20, 'Chair', 'repair', 'new_order', 'self', '1616 Pine St.', 'Seat is cracked', NULL, 'pending', NULL, '2024-05-14 00:49:52'),
+(21, 1, 'Table', 'mto', 'new_order', 'third_party', '123 Main St.', 'Custom table design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(22, 2, 'Chair', 'mto', 'new_order', 'self', '456 Elm St.', 'Custom chair color: blue', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(23, 3, 'Cabinet', 'mto', 'new_order', 'third_party', '789 Oak St.', 'Extra shelf required', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(24, 4, 'Shelf', 'mto', 'new_order', 'self', '101 Pine St.', 'Custom shelf design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(25, 5, 'Bed', 'mto', 'new_order', 'third_party', '111 Cedar St.', 'Custom bed headboard', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(26, 6, 'Desk', 'mto', 'new_order', 'self', '222 Maple St.', 'Custom desk size', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(27, 7, 'Table', 'mto', 'new_order', 'third_party', '333 Birch St.', 'Custom table material: hardwood', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(28, 8, 'Chair', 'mto', 'new_order', 'self', '444 Walnut St.', 'Custom chair upholstery: leather', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(29, 9, 'Cabinet', 'mto', 'new_order', 'third_party', '555 Ash St.', 'Custom cabinet size', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(30, 10, 'Shelf', 'mto', 'new_order', 'self', '666 Sycamore St.', 'Custom shelf color: white', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(31, 11, 'Bed', 'mto', 'new_order', 'third_party', '777 Cedar St.', 'Custom bed storage: drawers', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(32, 12, 'Desk', 'mto', 'new_order', 'self', '888 Pine St.', 'Custom desk material: glass top', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(33, 13, 'Table', 'mto', 'new_order', 'third_party', '999 Elm St.', 'Custom table design: round', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(34, 14, 'Chair', 'mto', 'new_order', 'self', '1010 Maple St.', 'Custom chair height: bar stool', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(35, 15, 'Cabinet', 'mto', 'new_order', 'third_party', '1111 Birch St.', 'Custom cabinet color: black', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(36, 16, 'Shelf', 'mto', 'new_order', 'self', '1212 Walnut St.', 'Custom shelf size: 3 shelves', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(37, 17, 'Bed', 'mto', 'new_order', 'third_party', '1313 Ash St.', 'Custom bed headboard design', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(38, 18, 'Desk', 'mto', 'new_order', 'self', '1414 Sycamore St.', 'Custom desk size: 5ft x 2.5ft', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(39, 19, 'Table', 'mto', 'new_order', 'third_party', '1515 Cedar St.', 'Custom table material: marble top', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
+(40, 20, 'Chair', 'mto', 'new_order', 'self', '1616 Pine St.', 'Custom chair upholstery: fabric', NULL, 'pending', NULL, '2024-05-14 00:52:14');
 
 --
 -- Triggers `orders`
@@ -215,9 +213,7 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 (37, '2024-05-14', '0000-00-00'),
 (38, '2024-05-14', '0000-00-00'),
 (39, '2024-05-14', '0000-00-00'),
-(40, '2024-05-14', '0000-00-00'),
-(42, '2024-05-19', '0000-00-00'),
-(43, '2024-05-19', '0000-00-00');
+(40, '2024-05-14', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -278,18 +274,15 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 (37, 'unpaid', NULL, NULL, NULL, NULL),
 (38, 'unpaid', NULL, NULL, NULL, NULL),
 (39, 'unpaid', NULL, NULL, NULL, NULL),
-(40, 'unpaid', NULL, NULL, NULL, NULL),
-(41, 'unpaid', NULL, NULL, NULL, NULL),
-(42, 'unpaid', NULL, NULL, NULL, NULL),
-(43, 'unpaid', NULL, NULL, NULL, NULL);
+(40, 'unpaid', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pickup`
+-- Table structure for table `repair`
 --
 
-CREATE TABLE `pickup` (
+CREATE TABLE `repair` (
   `order_id` int NOT NULL,
   `pickup_method` enum('third_party','self') NOT NULL,
   `pickup_address` text NOT NULL,
@@ -297,10 +290,10 @@ CREATE TABLE `pickup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `pickup`
+-- Dumping data for table `repair`
 --
 
-INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) VALUES
+INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) VALUES
 (1, 'third_party', '123 Main Street', 'uploadedImages/repairImages/repimg1.jpg'),
 (2, 'third_party', '456 Elm Street', 'uploadedImages/repairImages/repimg2.jpg'),
 (3, 'self', '789 Oak Avenue', 'uploadedImages/repairImages/repimg3.jpg'),
@@ -387,28 +380,27 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_address`, `contact_number`) VALUES
-(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', 'Sms Building 1320 Filmore Street Corner Gil Puyat Street 1200', '09123456789'),
-(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '1045 Aurora Blvd. cor., Katipunan Ave., Q.C. 1108', '09234567890'),
-(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', 'ROOM 106 C C H Building 136 Alfaro Street Salcedo Village 1227', '09345678901'),
-(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', 'Metrobank Building, North National Road', '09456789012'),
-(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', '1512 C.M. Recto Ave. Sta. Cruz', '09567890123'),
-(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', '1238 EDSA, Balintawak', '09678901234'),
-(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', '358 R. Magsaysay Avenue', '09789012345'),
-(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', 'Unit 13-01 Angeles Livelihood Project', '09890123456'),
-(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', '24 Alabama 1100', '09901234567'),
-(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', 'Infront of Public Market', '09112345678'),
-(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', '57 National Highway', '09223456789'),
-(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', '19 Diamond Road Caloocan Industrial', '09334567890'),
-(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', 'Makati Cinema Square Pasong Tamo 1200', '09445678901'),
-(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', 'Post #1 Tabon', '09556789012'),
-(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', 'Rm. 202 Ferros Building, 176 Salcedo Street, Legaspi Village', '09667890123'),
-(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', 'MAG Controls Warehouse Laros Subdivision', '09778901234'),
-(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', '6032 Villena Street', '09889012345'),
-(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', '2709 Rizal Avenue 1000', '09990123456'),
-(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '#1120 Rizal Avenue, East Tapinac', '09101234567'),
-(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', 'Lot 14-16 Citihomes, Molino 4', '09212345678'),
-(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', 'Blk 68 Lot 41 Lapu-Lapu St., Upper Bicutan, Taguig City', '09994068816'),
-(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$cRPDPJrwGAEaPWO6Dn15ruxUQfYxZzVhm1gGmKCGQTjyvldXOluZa', 'customer', NULL, '09310585762');
+(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', NULL, '09123456789'),
+(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', NULL, '09234567890'),
+(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', NULL, '09345678901'),
+(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', NULL, '09456789012'),
+(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', NULL, '09567890123'),
+(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', NULL, '09678901234'),
+(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', NULL, '09789012345'),
+(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', NULL, '09890123456'),
+(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', NULL, '09901234567'),
+(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', NULL, '09112345678'),
+(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', NULL, '09223456789'),
+(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', NULL, '09334567890'),
+(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', NULL, '09445678901'),
+(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', NULL, '09556789012'),
+(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', NULL, '09667890123'),
+(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', NULL, '09778901234'),
+(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', NULL, '09889012345'),
+(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', NULL, '09990123456'),
+(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', NULL, '09101234567'),
+(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', NULL, '09212345678'),
+(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', NULL, '09123412014');
 
 --
 -- Indexes for dumped tables
@@ -440,9 +432,9 @@ ALTER TABLE `payment`
   ADD KEY `order_id_fk_payment` (`order_id`);
 
 --
--- Indexes for table `pickup`
+-- Indexes for table `repair`
 --
-ALTER TABLE `pickup`
+ALTER TABLE `repair`
   ADD KEY `order_id_fk_repair` (`order_id`);
 
 --
@@ -473,7 +465,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -491,7 +483,7 @@ ALTER TABLE `review_images`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
@@ -522,9 +514,9 @@ ALTER TABLE `payment`
   ADD CONSTRAINT `order_id_fk_payment` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `pickup`
+-- Constraints for table `repair`
 --
-ALTER TABLE `pickup`
+ALTER TABLE `repair`
   ADD CONSTRAINT `order_id_fk_repair` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
