@@ -9,7 +9,7 @@
 </head>
 <body>
     <?php include_once("header.php") ?>
-    <img src="websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
+    <img src="/websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
     <div class="intro-section">
         <h2 class="intro-title">Past Creations: A Showcase of Artisan Furniture</h2>
         <p class="intro-info">
@@ -118,7 +118,7 @@
             <img src="productimages/sofa22.jpg" alt="" class="gallery-item orange sofa">
         </div>
     </div>
-    <img src="websiteimages/Divider.png" div class="services_works_text_divider_img">
+    <img src="/websiteimages/Divider.png" div class="services_works_text_divider_img">
     <div class="services_works_hero_image_2">
         <div>
             <h1>

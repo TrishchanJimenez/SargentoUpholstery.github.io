@@ -80,63 +80,51 @@ function cancelButton(){
 }
 
 //For auto reloads
-    // Function to reload the page when a pagination link is clicked
-    function handlePageChange() {
-        document.querySelectorAll('.pagination a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default link behavior
+// Function to reload the page when a pagination link is clicked
+function handlePageChange() {
+    document.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
 
-                // Get the href attribute of the clicked link
-                const href = this.getAttribute('href');
+            // Get the href attribute of the clicked link
+            const href = this.getAttribute('href');
 
-                // Perform a page reload with the new URL
-                window.location.href = href;
-            });
+            // Perform a page reload with the new URL
+            window.location.href = href;
         });
-    }
+    });
+}
 
-    // Call the function to handle page changes
-    handlePageChange();
+// Call the function to handle page changes
+handlePageChange();
+// Function to open the edit modal
+function openEditModal() {
+    document.getElementById('editModal').style.display = 'block';
+}
+
+// Function to close the edit modal
+function closeeditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
 
 
+function reseteditForm() {
+    const form = document.getElementById('editForm');
+    if (form) {
+        form.reset(); // Reset the form
 
-
-
-
-
-
-        
-
-
-
-    // Function to open the edit modal
-    function openEditModal() {
-        document.getElementById('editModal').style.display = 'block';
-    }
-
-    // Function to close the edit modal
-    function closeeditModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
-    
-    
-    function reseteditForm() {
-        const form = document.getElementById('editForm');
-        if (form) {
-            form.reset(); // Reset the form
-    
-            // Clear file input previews if applicable
-            const imagePreviews = document.getElementById('imagePreviews');
-            if (imagePreviews) {
-                imagePreviews.innerHTML = ''; // Clear image previews
-            }
+        // Clear file input previews if applicable
+        const imagePreviews = document.getElementById('imagePreviews');
+        if (imagePreviews) {
+            imagePreviews.innerHTML = ''; // Clear image previews
         }
     }
+}
 
-    function editcancelbutton(){
-        closeeditModal();
-        reseteditForm();
-    }
+function editcancelbutton(){
+    closeeditModal();
+    reseteditForm();
+}
 
     // JavaScript function to set the editFurnitureId value
 function setEditFurnitureId(furnitureId) {

@@ -1,12 +1,27 @@
 body {
     font-family: 'Poppins', sans-serif;
 }
+
+.registration-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+    overflow: auto;
+}
+
+.splash-image {
+    position: sticky;
+    top: 0;    
+    width: 100%;
+    height: 100vh;
+}
+
 .registration{
-    width: 40%;
-    margin: 5rem auto;
+    align-self: center;
+    padding: 0rem 2rem;
+    width: 100%;
     padding: 2.5rem 3.5rem;
     border-radius: 25px;
-    border: 1px solid black;
 }
 
 .business-logo{
@@ -34,8 +49,8 @@ body {
 input:not([type="submit"]) {
     width: 100%;
     padding: 1rem 1.25rem;
-    border-radius: 0.75rem;
-    border: 1px solid #111;
+    border-radius: 0.5rem;
+    border: 2px solid #111;
 }
 
 input::placeholder{

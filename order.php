@@ -22,12 +22,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="css/alert.css">
 </head>
 
 <body>
-    <?php include_once("header.php") ?>
-    <!-- <img src="websiteimages/orderfeaturedimg.png" class="order-featured-img">
-    <h2 class="order-page-title">Design, Craft, Quote - All in One Place</h2> -->
+    <?php 
+    include_once("header.php");
+    ?>
     <div class="featured-banner">
         <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
     </div>
@@ -55,11 +56,6 @@
                             <label for="contact_email" class="quotation-form__label">Email Address:</label>
                             <input type="email" id="contact_email" name="contact_email" class="quotation-form__input quotation-form__input--readonly" placeholder="Enter your email address" value="<?php echo htmlspecialchars($autofill_email); ?>" required readonly>
                         </div>
-                        <!-- Shipping Address [ TEXT ] -->
-                        <div class="quotation-form__input-container">
-                            <label for="shipping_address" class="quotation-form__label">Shipping Address:</label>
-                            <textarea id="shipping_address" name="shipping_address" class="quotation-form__textarea" rows="4" placeholder="Enter your shipping address" value="<?php echo htmlspecialchars($autofill_customer_address); ?>" required></textarea>
-                        </div>
                     </div>
                 </fieldset>
                 <fieldset class="quotation-form__fieldset" id="order_details">
@@ -68,7 +64,7 @@
                         <!-- Order Type [ ENUM(repair, mto) ] -->
                         <div class="quotation-form__input-container">
                             <label for="order_type" class="quotation-form__label">What type of order do you wish to place?</label>
-                            <select id="order_type" name="order_type" class="quotation-form__select" onchange="toggleInputs()">
+                            <select id="order_type" name="order_type" class="quotation-form__select" onchange="toggleInputs()" required>
                                 <option value="repair" class="quotation-form__option">Repair</option>
                                 <option value="mto" class="quotation-form__option">Made-to-Order (MTO)</option>
                             </select>
@@ -76,17 +72,17 @@
                         <!-- Furniture Type [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="furniture_type" class="quotation-form__label">What furniture are we working on?</label>
-                            <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair">
+                            <input type="text" id="furniture_type" name="furniture_type" class="quotation-form__input" placeholder="E.g. sofa, bed, chair" required>
                         </div>
                         <!-- notes [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="notes" class="quotation-form__label">Furniture Notes:</label>
-                            <textarea id="notes" name="notes" class="quotation-form__textarea" rows="4" cols="50" placeholder="Provide a description of your order"></textarea>
+                            <textarea id="notes" name="notes" class="quotation-form__textarea" rows="4" cols="50" placeholder="Provide a description of your order" required></textarea>
                         </div>
-                        <!-- repairPicture [ FILE ] -->
+                        <!-- referenceImage [ FILE ] -->
                         <div class="quotation-form__input-container">
-                            <label for="repairPicture" class="quotation-form__label">Please provide a reference image of the furniture:</label>
-                            <input type="file" id="repairPicture" name="repairPicture" accept=".jpg" class="quotation-form__file">
+                            <label for="referenceImage" class="quotation-form__label">Please provide a reference image of the furniture:</label>
+                            <input type="file" id="referenceImage" name="referenceImage" accept=".jpg" class="quotation-form__file" required>
                         </div>
                     </div>
                 </fieldset>
@@ -96,15 +92,15 @@
                         <!-- pickup_method [ ENUM(third_party, self) ] -->
                         <div class="quotation-form__input-container">
                             <label for="pickup_method" class="quotation-form__label">How shall we pick up the furniture to be repaired?</label>
-                            <select id="pickup_method" name="pickup_method" class="quotation-form__select"">
-                                <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                            <select id="pickup_method" name="pickup_method" class="quotation-form__select">
+                                <option value="third_party" class="quotation-form__option">Third-party delivery service</option>
                                 <option value="self" class="quotation-form__option">I will drop it off at the business location</option>
                             </select>
                         </div>
                         <!-- pickup_address [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
-                            <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here. If you have selected 'self-pickup method' option, enter 'N/A' instead."></textarea><br>
+                            <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here."></textarea><br>
                             <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
                             <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                         </div>
@@ -113,8 +109,8 @@
                         <!-- del_method [ ENUM(third_party, self) ] -->
                         <div class="quotation-form__input-container">
                             <label for="del_method" class="quotation-form__label">How shall we deliver the furniture?</label>
-                            <select id="del_method" name="del_method" class="quotation-form__select"">
-                                <option value="third_party" class="quotation-form__option">Through a third-party delivery service</option>
+                            <select id="del_method" name="del_method" class="quotation-form__select" required>
+                                <option value="third_party" class="quotation-form__option">Third-party delivery service</option>
                                 <option value="self" class="quotation-form__option">I will pick it up at the business location</option>
                             </select>
                         </div>
@@ -122,7 +118,7 @@
                         <!-- del_address [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
-                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here. If you have selected 'self-delivery method' option, enter 'N/A' instead."></textarea><br>
+                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here." required></textarea><br>
                             <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
                             <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                         </div>
@@ -237,73 +233,104 @@
 <?php
     // Include database connection
     include_once('database_connection.php');
+    include_once("alert.php");
+    include_once("notif.php");
 
-    if (isset($_POST['submit'])) {
-        print_r($_SESSION);
+    function sanitize_input($data) {
+        return htmlspecialchars(strip_tags($data));
+    }
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        try { // Preparing values to be inserted
+            // Sanitize inputs
+            $order_type = sanitize_input($_POST['order_type']);
+            $furniture_type = sanitize_input($_POST['furniture_type']);
+            $notes = sanitize_input($_POST['notes']);
+            $del_method = sanitize_input($_POST['del_method']);
+            $del_address = sanitize_input($_POST['del_address']);
+            $pickup_method = isset($_POST['pickup_method']) ? sanitize_input($_POST['pickup_method']) : null;
+            $pickup_address = isset($_POST['pickup_address']) ? sanitize_input($_POST['pickup_address']) : null;
+        
+            // Handle file upload
+            $ref_img_path = null;
+            $uploadOk = 1;
+            if (isset($_FILES["referenceImage"]) && $_FILES["referenceImage"]["error"] == 0) {
+                $target_dir = "uploadedImages/";
+                $target_file = $target_dir . basename($_FILES["referenceImage"]["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Prepare and bind parameters for orders table
-        $stmt = $conn->prepare("INSERT INTO `orders` (`user_id`, `furniture_type`, `order_type`, `del_method`, `del_address`, `notes`) 
-                                VALUES (:user_id, :furniture_type, :order_type, :del_method, :del_address, :notes)");
-        $stmt->bindParam(':user_id', $_SESSION['user_id']);
-        $stmt->bindParam(':furniture_type', $_POST['furniture_type']);
-        $stmt->bindParam(':order_type', $_POST['order_type']);
-        $stmt->bindParam(':del_method', $_POST['del_method']);
-        $stmt->bindParam(':del_address', $_POST['del_address']);
-        $stmt->bindParam(':notes', $_POST['notes']);
+                // Check if image file is a JPG
+                if ($imageFileType != "jpg") {
+                    $uploadOk = 0;
+                    echo "Sorry, only JPG files are allowed.";
+                    sendAlert("error", "Sorry, only JPG files are allowed.");
+                }
 
-        // Execute orders table insertion
-        $stmt->execute();
-
-        // Get the last inserted order_id
-        $order_id = $conn->lastInsertId();
-
-        // Insert into repair or mto table based on order_type
-        if ($_POST['order_type'] === "repair") {
-            // Prepare and bind parameters for repair table
-            $stmt = $conn->prepare("INSERT INTO `repair` (`order_id`, `pickup_method`, `pickup_address`, `repair_img_path`) 
-                                    VALUES (:order_id, :pickup_method, :pickup_address, :repair_img_path)");
-            $stmt->bindParam(':order_id', $order_id);
-            $stmt->bindParam(':pickup_method', $_POST['pickup_method']);
-            $stmt->bindParam(':pickup_address', $_POST['pickup_address']);
-
-            if (isset($_FILES["repairPicture"]) && $_FILES["repairPicture"]["error"] == 0) {
-                $target_dir = "uploadedImages/repairImages/";
-                $target_file = $target_dir . basename($_FILES["repairPicture"]["name"]);
-                
-                // Move the uploaded file to the desired directory
-                if (move_uploaded_file($_FILES["repairPicture"]["tmp_name"], $target_file)) {
-                    // File uploaded successfully, save file path to database
-                    $stmt->bindParam(':repair_img_path', $target_file);
-                    // echo "The file ". htmlspecialchars(basename($_FILES["repairPicture"]["name"])). " has been uploaded.";
+                // Check if $uploadOk is set to 0 by an error
+                if ($uploadOk && move_uploaded_file($_FILES["referenceImage"]["tmp_name"], $target_file)) {
+                    $ref_img_path = $target_file;
                 } else {
                     echo "Sorry, there was an error uploading your file.";
+                    sendAlert("error", "Sorry, there was an error uploading your file.");
+                    $uploadOk = 0;
                 }
             } else {
-                echo "Error uploading file: " . $_FILES["repairPicture"]["error"];
+                $uploadOk = 0;
+                echo "File upload is required.";
+                sendAlert("warning", "File upload is required.");
             }
-            
-            // Upload image and save path
-
-            // Execute repair table insertion
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
+        }
+    
+        try { // Inserting the values
+            // Insert into orders table
+            $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':user_id', $_SESSION["user_id"]);
+            $stmt->bindParam(':furniture_type', $furniture_type);
+            $stmt->bindParam(':order_type', $order_type);
+            $stmt->bindParam(':ref_img_path', $ref_img_path);
+            $stmt->bindParam(':del_method', $del_method);
+            $stmt->bindParam(':del_address', $del_address);
+            $stmt->bindParam(':notes', $notes);
             $stmt->execute();
-        } elseif ($_POST['order_type'] === "mto") {
-            // Prepare and bind parameters for mto table
-            $stmt = $conn->prepare("INSERT INTO `mto` (`order_id`, `height`, `width`, `depth`, `material`) 
-                                    VALUES (:order_id, :height, :width, :depth, :material)");
-            $stmt->bindParam(':order_id', $order_id);
-            $stmt->bindParam(':height', $_POST['height']);
-            $stmt->bindParam(':width', $_POST['width']);
-            $stmt->bindParam(':depth', $_POST['depth']);
-            $stmt->bindParam(':material', $_POST['material']);
-
-            // Execute mto table insertion
-            $stmt->execute();
+    
+            $order_id = $conn->lastInsertId();
+    
+            // Insert into pickup table if order_type is "repair"
+            if ($order_type === 'repair') {
+                $query = "INSERT INTO pickup (order_id, pickup_method, pickup_address) VALUES (:order_id, :pickup_method, :pickup_address)";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':order_id', $order_id);
+                $stmt->bindParam(':pickup_method', $pickup_method);
+                $stmt->bindParam(':pickup_address', $pickup_address);
+                $stmt->execute();
+            }
+    
+            echo "Order placed successfully.";
+            sendAlert("success", "Order placed successfully.");
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
         }
 
-        // Close statement
-        $stmt = null;
+        try {
+            // Create a new notification message
+            $notif_msg = "New quotation form submitted by: " . $_SESSION['name']; // Customize the message as needed
 
-        // Close connection
-        $conn = null;
+            // Call the createNotif function
+            if (createNotif($_SESSION['user_id'], $notif_msg)) {
+                // Notification created successfully
+                echo "Notification created successfully";
+            } else {
+                // Failed to create notification
+                echo "Failed to create notification";
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
+        }
     }
 ?>

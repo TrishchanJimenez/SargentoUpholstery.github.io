@@ -1,0 +1,99 @@
+.profile-title {
+    color: #000;
+    font-size: 2.25rem;
+    font-weight: 700;
+    width: 70%;
+    margin: 2rem auto 0;
+    text-align: center;
+    border: 1px solid #878787;
+    padding: 1.5rem 0;
+    border-top-left-radius: 0.5rem; /* Adjust as needed */
+    border-top-right-radius: 0.5rem; /* Adjust as needed */
+}
+
+.profile-container {
+    font-family: "Inter", sans-serif;
+    width: 70%;
+    margin: 0 auto 2rem;
+    border: 1px solid #111;
+    border-top: 0px;
+    border-collapse: collapse!important;
+
+    td {
+        padding: 1.5rem 3rem;
+        font-size: 1.5rem;
+        border-bottom: 1px solid #878787;
+        align-self: start;
+    }
+
+    td:first-child {
+        width: 1%;
+        white-space: nowrap;
+        vertical-align: top;
+        border-right: 1px solid #878787;
+    }
+
+    td:nth-child(2):not(.address-container) {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    tr:first-child {
+        border-top: 0px;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        outline: none;
+    }
+}
+
+.profile-container td[data-type]:has(input) {
+    /* border: 1px solid blue; */
+}
+
+.address {
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0; 
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+
+    .action-icons {
+        display: flex;
+        gap: 0.5rem;
+
+        img {
+            cursor: pointer;
+        }
+    }
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+}
+
+.edit-icon {
+    cursor: pointer;
+}
+
+.add-address {
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0; 
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+
+    &:hover {
+        background-color: #a7a7a7;
+    }
+}

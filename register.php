@@ -12,41 +12,44 @@
     <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
-    <div class="registration">
-        <img src="websiteimages/sargento_logo.png" alt="" class="business-logo">
-        <div class="regTitle">
-            <h1>Sign Up</h1>
-            <h3>Sign up with your Email Address </h3>
-        </div> 
-        <div class="regForm">
-        <form action="" method="post" id="signUpForm">
-            <label for="name">Name</label><br>
-            <input type="text" name="name" id="name" placeholder="Enter your name" required><br><br>
-
-            <label for="Email">Email</label><br>
-            <input type="email" name="email" placeholder="Enter your email address" required><br><br>
-
-            <label for="contactno">Phone</label><br>
-            <input type="tel" name="contactno" placeholder="Enter your contact no." required><br><br>
-
-            <label for="password">
-                <span>Password</span>
-                <span class="toggle-password">
-                    <img src="websiteimages/icons/show.svg" alt="" class="toggle-img">
-                    <span class="toggle-text">Show</span>
-                </span>
-            </label>
-            <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
-            <p class="error_message email"></p>
-
-            <label for="confirmPassword">Confirm Password</label><br>
-            <input type="password" name="confirmPassword" placeholder="Re enter your password" required>
-            <p class="error_message password hide">Use 8 or more characters with a mix of letters, numbers & symbols</p>
-            <input type="submit" value="Sign Up" class="signUpBtn">
-        </form>
+    <div class="registration-container">
+        <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
+        <div class="registration">
+            <img src="/websiteimages/sargento_logo.png" alt="" class="business-logo">
+            <div class="regTitle">
+                <h1>Sign Up</h1>
+                <h3>Sign up with your Email Address </h3>
+            </div> 
+            <div class="regForm">
+            <form action="" method="post" id="signUpForm">
+                <label for="name">Name</label><br>
+                <input type="text" name="name" id="name" placeholder="Enter your name" required><br><br>
+    
+                <label for="Email">Email</label><br>
+                <input type="email" name="email" placeholder="Enter your email address" required><br><br>
+    
+                <label for="contactno">Phone</label><br>
+                <input type="tel" name="contactno" placeholder="Enter your contact no." required><br><br>
+    
+                <label for="password">
+                    <span>Password</span>
+                    <span class="toggle-password">
+                        <img src="/websiteimages/icons/show.svg" alt="" class="toggle-img">
+                        <span class="toggle-text">Show</span>
+                    </span>
+                </label>
+                <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
+                <p class="error_message email"></p>
+    
+                <label for="confirmPassword">Confirm Password</label><br>
+                <input type="password" name="confirmPassword" placeholder="Re enter your password" required>
+                <p class="error_message password hide">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+                <input type="submit" value="Sign Up" class="signUpBtn">
+            </form>
+            </div>
+            <br>
+            <p style="text-align: center;" >Already have an account? <a href="login.php" class="login-link">Log In</a></p>
         </div>
-        <br>
-        <p style="text-align: center;" >Already have an account? <a href="login.php" class="login-link">Log In</a></p>
     </div>
     <script src="js/register.js"></script>
     <?php
