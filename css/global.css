@@ -7,9 +7,9 @@
     --fs-36: clamp(25px, 2.34vw, 36px);
     --fs-32: clamp(24px, 2.08vw, 32px);
     --fs-24: clamp(22px, 1.56vw, 24px);
-    --fs-20: clamp(18px,  1.3vw, 20px);
+    --fs-20: clamp(18px, 1.3vw, 20px);
     --fs-18: clamp(16px, 1.17vw, 18px);
-    --fs-16: clamp(14px, 0.78vw,16px);
+    --fs-16: clamp(14px, 0.78vw, 16px);
 }
 
 * {
@@ -24,9 +24,9 @@ body {
 }
 
 .text-gold {
-    background: linear-gradient(to bottom,#ffffff, #FFDC5C);
-    -webkit-text-fill-color: transparent; 
-    -webkit-background-clip: text; 
+    background: linear-gradient(to bottom, #ffffff, #FFDC5C);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
 }
 
 .d-flex {
@@ -120,13 +120,13 @@ body {
     column-gap: 0.25rem;
 }
 
-.account-menu > * {
+.account-menu>* {
     padding: 1rem 0.75rem;
     cursor: pointer;
     border-radius: 0.5rem;
 }
 
-.account-menu > *:hover {
+.account-menu>*:hover {
     background-color: #797777;
 }
 
@@ -165,7 +165,7 @@ body {
 
 #offcanvas-menu.active {
     display: block;
-    padding: 3em;  
+    padding: 3em;
     position: fixed;
     top: 0;
     right: 0;
@@ -215,9 +215,11 @@ body {
     .header {
         padding: 0.5em;
     }
+
     .business-brand {
         grid-template-columns: 1fr;
     }
+
     .business-logo {
         display: none;
     }
@@ -327,18 +329,24 @@ body {
         text-align: center;
         padding-bottom: 10%;
     }
-    .footer-title, .socials, .quicklinks {
+
+    .footer-title,
+    .socials,
+    .quicklinks {
         float: none;
         display: block;
         width: 100%;
     }
+
     .f-title {
         margin-top: 3%;
         margin-left: 0;
     }
+
     .footer-title {
         margin-left: 0;
     }
+
     .quicklinks {
         margin-top: 8%;
         align-items: center;
@@ -346,7 +354,112 @@ body {
         display: flex;
         flex-direction: column;
     }
+
     .link-container a {
         padding: 10% 0;
     }
+}
+
+/* ---------- Notif ---------- */
+
+.notif {
+    position: relative;
+    display: inline-block;
+}
+
+.notif__bell {
+    /* Adjust as needed */
+    width: 36px;
+    height: 36px;
+}
+
+.notif__dot {
+    position: absolute;
+    top: 0px;
+    /* Adjust to position the dot vertically */
+    right: 0px;
+    /* Adjust to position the dot horizontally */
+    width: 8px;
+    /* Adjust the size of the dot */
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+/* Media query for different screen sizes */
+@media (max-width: 768px) {
+    .notif__bell {
+        /* Adjust size for smaller screens */
+        width: 30px;
+        height: 30px;
+    }
+
+    .notif__dot {
+        /* Adjust dot size for smaller screens */
+        width: 6px;
+        height: 6px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .notif__bell {
+        /* Adjust size for medium screens */
+        width: 34px;
+        height: 34px;
+    }
+
+    .notif__dot {
+        /* Adjust dot size for medium screens */
+        width: 7px;
+        height: 7px;
+    }
+}
+
+
+
+.notif__container {
+    display: inline-block;
+    position: relative;
+}
+
+.notif__bell {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+}
+
+.notif__dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+#notifContainer {
+    display: none;
+    position: absolute;
+    top: 50px;
+    /* Adjust as needed */
+    right: 10px;
+    /* Adjust as needed */
+    width: 300px;
+    /* Adjust as needed */
+    max-height: 200px;
+    /* Adjust as needed */
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: black;
+}
+
+.notif__message {
+    margin-bottom: 10px;
+}
+
+.notif__message.unread {
+    font-weight: bold;
 }
