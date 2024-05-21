@@ -79,6 +79,7 @@
             strategic relocation has contributed to the business's resilience in a competitive industry.</p>
         <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
+    <?php include_once("chat.php") ?>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
     <script src="js/productlink.js"></script>

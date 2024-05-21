@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 20, 2024 at 02:52 AM
+-- Generation Time: May 21, 2024 at 10:00 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `sargento_1`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chats`
+--
+
+CREATE TABLE `chats` (
+  `chat_id` int NOT NULL,
+  `sender_id` int DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `message` text,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `chats`
+--
+
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`) VALUES
+(1, 22, 22, 'imissyou', '2024-05-21 04:43:35'),
+(2, 22, 22, 'mwa', '2024-05-21 04:43:36'),
+(3, 23, 22, 'imissyou2bbk', '2024-05-21 04:56:33'),
+(4, 22, 22, 'jkjkjk', '2024-05-21 04:57:20'),
+(5, 22, 22, 'l,l,l', '2024-05-21 04:57:23'),
+(6, 23, 22, 'justine joven casiano\r\n', '2024-05-21 04:58:17'),
+(7, 23, 22, 'oyoy', '2024-05-21 05:00:56'),
+(8, 22, 22, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2024-05-21 05:02:26'),
+(9, 22, 22, 'putanginamo', '2024-05-21 07:09:38');
 
 -- --------------------------------------------------------
 
@@ -42,7 +71,8 @@ CREATE TABLE `notifs` (
 
 INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES
 (1, 23, 'Test message -- hello!', '2024-05-20 02:26:34', 1, NULL),
-(2, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-20 02:46:29', 0, NULL);
+(2, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-20 10:10:30', 1, NULL),
+(3, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-21 07:09:19', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +144,8 @@ INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `or
 (41, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 Ipsum Blvd.', 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-19 09:55:45'),
 (42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 Ipsum Blvd.', 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-19 09:57:07'),
 (43, 22, 'Sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 ipsum st.', 'wasak na siya pre', NULL, 'pending', NULL, '2024-05-20 02:43:59'),
-(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', '573 Colorado St.', 'minor scratch', NULL, 'pending', NULL, '2024-05-20 02:46:29');
+(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', '573 Colorado St.', 'minor scratch', NULL, 'pending', NULL, '2024-05-20 02:46:29'),
+(45, 22, 'Broken table ', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', '7990 united states of ipsum', 'Legs are broken', NULL, 'pending', NULL, '2024-05-21 07:09:01');
 
 --
 -- Triggers `orders`
@@ -203,7 +234,8 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 (41, '2024-05-19', '0000-00-00'),
 (42, '2024-05-19', '0000-00-00'),
 (43, '2024-05-20', '0000-00-00'),
-(44, '2024-05-20', '0000-00-00');
+(44, '2024-05-20', '0000-00-00'),
+(45, '2024-05-21', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -268,7 +300,8 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 (41, 'unpaid', NULL, NULL, NULL, NULL),
 (42, 'unpaid', NULL, NULL, NULL, NULL),
 (43, 'unpaid', NULL, NULL, NULL, NULL),
-(44, 'unpaid', NULL, NULL, NULL, NULL);
+(44, 'unpaid', NULL, NULL, NULL, NULL),
+(45, 'unpaid', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -309,7 +342,8 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address`) VALUES
 (20, 'self', '123 Fir Road'),
 (42, 'third_party', '123 Lorem St.'),
 (43, 'third_party', '123 lorem st.'),
-(44, 'third_party', '1928 McKinley Drv.');
+(44, 'third_party', '1928 McKinley Drv.'),
+(45, 'third_party', '123 lorem st.');
 
 -- --------------------------------------------------------
 
@@ -405,6 +439,13 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_
 --
 
 --
+-- Indexes for table `chats`
+--
+ALTER TABLE `chats`
+  ADD PRIMARY KEY (`chat_id`),
+  ADD KEY `chat_sender_id_fk` (`sender_id`);
+
+--
 -- Indexes for table `notifs`
 --
 ALTER TABLE `notifs`
@@ -461,16 +502,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `chats`
+--
+ALTER TABLE `chats`
+  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `notifs`
 --
 ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -493,6 +540,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `chats`
+--
+ALTER TABLE `chats`
+  ADD CONSTRAINT `chat_sender_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `notifs`
