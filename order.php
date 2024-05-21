@@ -22,7 +22,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/order.css">
-    <link rel="stylesheet" href="css/alert.css">
 </head>
 
 <body>
@@ -234,7 +233,6 @@
     // Include database connection
     include_once('database_connection.php');
     include_once("alert.php");
-    include_once("notif.php");
 
     function sanitize_input($data) {
         return htmlspecialchars(strip_tags($data));

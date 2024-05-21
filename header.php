@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if (isset($_SESSION['user_id'])) {
     // Include database connection file
     include_once("database_connection.php");
+    include_once("notif.php");
 
     // Fetch all records from notifs table where user_id matches session user_id
     $user_id = $_SESSION['user_id'];
