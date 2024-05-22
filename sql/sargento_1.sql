@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 21, 2024 at 10:00 AM
+-- Generation Time: May 22, 2024 at 10:25 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `sargento_1`
 --
+CREATE DATABASE IF NOT EXISTS `sargento_1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `sargento_1`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addresses`
+--
+
+CREATE TABLE IF NOT EXISTS `addresses` (
+  `address_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`address_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES
+(1, 21, '123 Rizal, Taguig City'),
+(7, 22, '1123 Rizal Taguig City');
 
 -- --------------------------------------------------------
 
@@ -27,13 +50,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `chats`
 --
 
-CREATE TABLE `chats` (
-  `chat_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `chats` (
+  `chat_id` int NOT NULL AUTO_INCREMENT,
   `sender_id` int DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
   `message` text,
-  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`chat_id`),
+  KEY `chat_sender_id_fk` (`sender_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chats`
@@ -53,17 +78,100 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contents`
+--
+
+CREATE TABLE IF NOT EXISTS `contents` (
+  `content_id` varchar(255) NOT NULL,
+  `page` varchar(50) NOT NULL,
+  `content_text` text,
+  `image` text,
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `contents`
+--
+
+INSERT INTO `contents` (`content_id`, `page`, `content_text`, `image`) VALUES
+('ABOUTHEADERTEXT', 'about_us', 'The proud workers of sargento that handfully perfected their craft in making your dream furniture into reality. They\\\'ve spend their entire lives practicing, flourishing each individual furniture known for them to be known in the metro. The team also consists of female workers helps the business afloat. With all of the sleepless nights, they\\\'ve strive for sucess by burning the midnight oil. Mr. Eddie Murphy Sargento, keeping the family business alive with Mrs. Journa Joy Sargento, they\\\'ve been working and doing the best they can for their family. With these individuals around, Sargento Upholstery will be able to provide the highest quality furniture to suit your every needs.', NULL),
+('ABOUTHEADERTITLE', 'about_us', 'Meet the team', NULL),
+('ABOUTHISTORYTEXT', 'about_us', 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery.', NULL),
+('ABOUTHISTORYTITLE', 'about_us', 'History of Sargento Upholstery', NULL),
+('ABOUTVALUESSUBHEADING1', 'about_us', 'Quality Materials', NULL),
+('ABOUTVALUESSUBHEADING2', 'about_us', 'Craftsmanship Excellence', NULL),
+('ABOUTVALUESSUBHEADING3', 'about_us', 'Heritage and Innovationa', NULL),
+('ABOUTVALUESSUBHEADING4', 'about_us', 'Customer-Centric', NULL),
+('ABOUTVALUESSUBTEXT1', 'about_us', 'Emphasizing the importance of using high-grade materials in our products.', NULL),
+('ABOUTVALUESSUBTEXT2', 'about_us', 'Focusing on the artistry and skill involved in creating our goods or services.', NULL),
+('ABOUTVALUESSUBTEXT3', 'about_us', 'Balancing tradition with a forward-thinking approach, acknowledging both history and modern advancements.', NULL),
+('ABOUTVALUESSUBTEXT4', 'about_us', 'Prioritizing our customers needs and satisfaction at the core of our business practices.', NULL),
+('ABOUTVALUESTITLE', 'about_us', 'Our Values & Philosophy', NULL),
+('BUSIADD', 'contact_us', 'Blk 68 Lot 41 Lapu-Lapu St., Upper Bicutan, Taguig City', NULL),
+('BUSIHRS', 'contact_us', '8:00 AM - 5:00 PM', NULL),
+('CPNNUM', 'contact_us', '0999 - 406 - 8816', NULL),
+('CRAFTSCARDTEXT1', 'services_craftsmanship', 'Our journey into crafting superior furniture begins with the careful selection of materials, ensuring that only the finest components are used. For the sturdy frame and foundation of our pieces, we rely on treated palochina wood, a choice renowned for its remarkable durability and exceptional robustness. This wood is not just any wood; it\'s a testament to our dedication to creating furniture that is built to last.', NULL),
+('CRAFTSCARDTEXT2', 'services_craftsmanship', 'Moving on to the heart of our creations, we employ the luxuriously comfortable uratex foam. This premium foam is carefully chosen to provide a plush and supportive seating experience, allowing you to sink into your furniture while still enjoying the firm support that ensures your comfort and satisfaction for years to come.fasdfasaf', NULL),
+('CRAFTSCARDTEXT3', 'services_craftsmanship', 'But it doesnt end there. Our commitment to quality extends to the fabrics we use. We insist on utilizing only the best, such as RGC fabric and German leather, both celebrated for their exceptional texture, enduring beauty, and ability to withstand wear and tear gracefully. These materials not only add to the aesthetic appeal of our pieces but also ensure that your furniture retains its allure and resilience even after years of use.', NULL),
+('CRAFTSCARDTITLE1', 'services_craftsmanship', 'The Foundation of Durability', NULL),
+('CRAFTSCARDTITLE2', 'services_craftsmanship', 'Luxurious Comfort', NULL),
+('CRAFTSCARDTITLE3', 'services_craftsmanship', 'Exceptional Fabrics', NULL),
+('CRAFTSFOOTERTEXT', 'services_craftsmanship', 'This meticulous and selective process of material sourcing and crafting guarantees that each creation that bears the Sargento Upholstery name is not just a piece of furniture; it is a work of art, meticulously built with a devotion to quality, beauty, and longevity. We take great pride in creating furniture that not only fulfills its purpose but enriches the spaces and lives it graces, turning every room into a masterpiece of comfort and elegance.', NULL),
+('CRAFTSHEADERTEXT', 'services_craftsmanship', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
+('CRAFTSHEADERTITLE', 'services_craftsmanship', 'A Commitment to Craftsmanship Excellence', NULL),
+('HOMEABOUTTEXT', 'home', 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a strategic relocation has contributed to the business\'s resilience in a competitive industry.', NULL),
+('HOMEABOUTTITLE', 'home', 'The Sargento Family Business', NULL),
+('HOMECRAFTSTEXT', 'home', 'Take a tour of our successes as we consider the turning points and contributions that have created our story in the Upholstery industry', NULL),
+('HOMECRAFTSTITLE', 'home', 'Our Previous Crafts', NULL),
+('MAILADD', 'contact_us', 'sargentoupholstery@gmail.com', NULL),
+('WORKSHEADERTEXT', 'services_works', 'At Sargento Upholstery, we take pride in our rich history of crafting exquisite furniture pieces that stand the test of time. Over the years, we have had the privilege of working on a diverse range of projects, from elegant sofas and armchairs to custom-designed furniture for commercial spaces. Our portfolio showcases our dedication to quality craftsmanship, attention to detail, and timeless design. Each piece tells a story of artistry and passion, reflecting our commitment to creating furniture that enhances the beauty and comfort of every space. Explore our past works and be inspired by the legacy of Sargento Upholstery.', NULL),
+('WORKSHEADERTITLE', 'services_works', 'Past Creations: A Showcase of Artisan Furniture', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faqs`
+--
+
+CREATE TABLE IF NOT EXISTS `faqs` (
+  `faq_id` int NOT NULL AUTO_INCREMENT,
+  `question` text NOT NULL,
+  `answer` text NOT NULL,
+  PRIMARY KEY (`faq_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `faqs`
+--
+
+INSERT INTO `faqs` (`faq_id`, `question`, `answer`) VALUES
+(1, 'How does the ordering process work?', 'Our ordering process is simple and convenient. Visit our Order webpage and select . Once we receive your submission, our team will review it and get in touch with you to discuss the specifics.'),
+(2, 'What kind of orders can I place?', 'We specialize in repair worn-down furniture fabrics as well as crafting unique, made-to-order furniture pieces. Whether you\'re looking for a custom-sized sofa, a personalized dining table, or a unique cleopatra sofa, we can bring your ideas to life. Feel free to share your design preferences in the order form.'),
+(3, 'Can I customize the materials used in my furniture?', 'Yes, you can customize the materials used in your furniture. We offer a variety of materials to choose from. You can specify your material preferences in the order form.'),
+(4, 'What information should I provide in the order form?', 'The order form is designed to capture all the necessary details for your custom furniture. Please provide information such as dimensions, preferred materials, color preferences, and any specific design elements you have in mind. The more details you provide, the better we can tailor the furniture to your liking.'),
+(5, 'How long does it take to receive my custom furniture?', 'The production time for custom furniture varies based on the complexity of the design and the materials chosen. Our team will provide you with a timeline once we review your order. Rest assured, we strive to complete orders in a timely manner without compromising on quality.'),
+(6, 'Is there a deposit required for custom orders?', 'Yes, a deposit is required to initiate the production of your custom furniture. The exact amount will be communicated to you once we review your order. The remaining balance will be due upon completion, prior to delivery or pickup.'),
+(7, 'Can I make changes to my order after submission?', 'We understand that preferences may evolve. If you need to make changes to your order, please contact us as soon as possible. We will do our best to accommodate changes, although some modifications may affect the timeline and cost.'),
+(8, 'Do you offer delivery services?', 'Yes, we offer delivery services for your convenience. The delivery cost will be calculated based on your location. Alternatively, you can arrange to pick up your custom furniture directly from our workshop.'),
+(9, 'What is your return policy for custom orders?', 'Since each piece is made to order based on your specific requirements, we do not accept returns on custom furniture. However, we are committed to ensuring your satisfaction, and we will address any issues or concerns to the best of our ability.'),
+(10, 'How can I contact customer support for further assistance?', 'If you have any questions or need assistance, please reach out to us via the contact information provided on our website. We\'re here to help you throughout the custom furniture ordering process.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notifs`
 --
 
-CREATE TABLE `notifs` (
-  `notif_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `notifs` (
+  `notif_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `notif_msg` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_read` tinyint(1) DEFAULT '0',
-  `redirect_link` tinytext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `redirect_link` tinytext,
+  PRIMARY KEY (`notif_id`),
+  KEY `notifs_user_id_fk` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `notifs`
@@ -80,8 +188,8 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `order_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `orders` (
+  `order_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `furniture_type` varchar(32) NOT NULL,
   `order_type` enum('repair','mto') NOT NULL,
@@ -93,8 +201,10 @@ CREATE TABLE `orders` (
   `quoted_price` float DEFAULT NULL,
   `is_accepted` enum('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
   `refusal_reason` text,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`order_id`),
+  KEY `user_id_fk` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
@@ -180,10 +290,11 @@ DELIMITER ;
 -- Table structure for table `order_date`
 --
 
-CREATE TABLE `order_date` (
+CREATE TABLE IF NOT EXISTS `order_date` (
   `order_id` int NOT NULL,
   `placement_date` date NOT NULL,
-  `est_completion_date` date NOT NULL
+  `est_completion_date` date NOT NULL,
+  KEY `order_id_fk_order_date` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -243,13 +354,14 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 -- Table structure for table `payment`
 --
 
-CREATE TABLE `payment` (
+CREATE TABLE IF NOT EXISTS `payment` (
   `order_id` int NOT NULL,
   `payment_status` enum('unpaid','partially_paid','fully_paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unpaid',
   `downpayment_method` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpayment_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `fullpayment_method` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fullpayment_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+  `fullpayment_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  KEY `order_id_fk_payment` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -309,10 +421,11 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 -- Table structure for table `pickup`
 --
 
-CREATE TABLE `pickup` (
+CREATE TABLE IF NOT EXISTS `pickup` (
   `order_id` int NOT NULL,
   `pickup_method` enum('third_party','self') NOT NULL,
-  `pickup_address` text NOT NULL
+  `pickup_address` text NOT NULL,
+  KEY `order_id_fk_repair` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -348,18 +461,49 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reset_tokens`
+--
+
+CREATE TABLE IF NOT EXISTS `reset_tokens` (
+  `email` varchar(50) DEFAULT NULL,
+  `token_hash` varchar(64) DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `reset_tokens`
+--
+
+INSERT INTO `reset_tokens` (`email`, `token_hash`, `expires_at`) VALUES
+('trishchanjimenez01@gmail.com', 'c4a852181bc05cea5314de6d365ba60fe86c2fefb323a0e6532a34ea3140b597', '2024-05-14 09:16:59'),
+('trishchanjimenez06@gmail.com', '9c60c2620e6614cb8c372e4745d31461ae0ccedb9cfd728cccff2eac8d7d22ba', '2024-05-14 09:52:23'),
+('trishchanjimenez01@gmail.com', 'eecc50628fb7d52c8ff71441070943110dcd176c672c18c9233e4488e93b867a', '2024-05-15 02:25:15'),
+('trishchanjimenez01@gmail.com', '57f4e38202b655d5cbd8271b8935348f995f7d5d33839c531ff5850aeee03bd2', '2024-05-16 10:56:25'),
+('trishchanjimenez01@gmail.com', 'a96f20700301030dc219d814ce47b9d02184ee893babc99d61406f108390fb8d', '2024-05-16 11:09:52'),
+('trishchanjimenez01@gmail.com', 'a2a9a633eaae6213f4d62a216e2a164e01b2233c6978e17e710f6946ecd5d831', '2024-05-16 19:21:51'),
+('trishchanjimenez01@gmail.com', '768bedfe04a41b5cb076e18a6272679c2cb8a61b754a05d746853c6637b776d4', '2024-05-16 20:09:30'),
+('', '651d22a2c87f7582137d8fb0ff1e794f65f46b1368f1f4746eebd937b8e132a2', '2024-05-16 23:28:21'),
+('', '1325da0d509185843266301a45411f9e2c6ad673f4565c74445b15e0eb4bae77', '2024-05-16 23:28:47'),
+('trishchanjimenez01@gmail.com', '16a69176a03deaef932d2d2037e7523e21bc99f42a9ed0b2ae0ddf84669d077c', '2024-05-16 23:29:05'),
+('trishchanjimenez01@gmail.com', 'fca74f9c325f9e9ed9409ba228e80d23bc76b062b60f5b41308595c6c98f9cbf', '2024-05-19 10:42:38');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reviews`
 --
 
-CREATE TABLE `reviews` (
-  `review_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `reviews` (
+  `review_id` int NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL,
   `rating` int NOT NULL,
   `comment` text,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reply` text,
-  `reply_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `reply_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`review_id`),
+  KEY `order_review_fk` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `reviews`
@@ -383,10 +527,12 @@ INSERT INTO `reviews` (`review_id`, `order_id`, `rating`, `comment`, `date`, `re
 -- Table structure for table `review_images`
 --
 
-CREATE TABLE `review_images` (
-  `image_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `review_images` (
+  `image_id` int NOT NULL AUTO_INCREMENT,
   `review_id` int NOT NULL,
-  `path` text NOT NULL
+  `path` text NOT NULL,
+  PRIMARY KEY (`image_id`),
+  KEY `image_review_fk` (`review_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -395,15 +541,16 @@ CREATE TABLE `review_images` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `user_id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_type` enum('customer','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_address` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
@@ -434,108 +581,82 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_
 (22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', NULL, '09052669619'),
 (23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', NULL, '09123456789');
 
---
--- Indexes for dumped tables
---
+-- --------------------------------------------------------
 
 --
--- Indexes for table `chats`
---
-ALTER TABLE `chats`
-  ADD PRIMARY KEY (`chat_id`),
-  ADD KEY `chat_sender_id_fk` (`sender_id`);
-
---
--- Indexes for table `notifs`
---
-ALTER TABLE `notifs`
-  ADD PRIMARY KEY (`notif_id`),
-  ADD KEY `notifs_user_id_fk` (`user_id`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_id`),
-  ADD KEY `user_id_fk` (`user_id`);
-
---
--- Indexes for table `order_date`
---
-ALTER TABLE `order_date`
-  ADD KEY `order_id_fk_order_date` (`order_id`);
-
---
--- Indexes for table `payment`
---
-ALTER TABLE `payment`
-  ADD KEY `order_id_fk_payment` (`order_id`);
-
---
--- Indexes for table `pickup`
---
-ALTER TABLE `pickup`
-  ADD KEY `order_id_fk_repair` (`order_id`);
-
---
--- Indexes for table `reviews`
---
-ALTER TABLE `reviews`
-  ADD PRIMARY KEY (`review_id`),
-  ADD KEY `order_review_fk` (`order_id`);
-
---
--- Indexes for table `review_images`
---
-ALTER TABLE `review_images`
-  ADD PRIMARY KEY (`image_id`),
-  ADD KEY `image_review_fk` (`review_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Table structure for table `works`
 --
 
---
--- AUTO_INCREMENT for table `chats`
---
-ALTER TABLE `chats`
-  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+CREATE TABLE IF NOT EXISTS `works` (
+  `works_id` int NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `img_path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`works_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- AUTO_INCREMENT for table `notifs`
+-- Dumping data for table `works`
 --
-ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
-
---
--- AUTO_INCREMENT for table `reviews`
---
-ALTER TABLE `reviews`
-  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `review_images`
---
-ALTER TABLE `review_images`
-  MODIFY `image_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+INSERT INTO `works` (`works_id`, `category`, `color`, `img_path`) VALUES
+(5, 'armchair', 'purple', '/websiteimages/galleryimages/armchair2.png'),
+(6, 'armchair', 'black', '/websiteimages/galleryimages/armchair3.png'),
+(7, 'armchair', 'gray', '/websiteimages/galleryimages/armchair4.png'),
+(8, 'armchair', 'black', '/websiteimages/galleryimages/armchair5.png'),
+(9, 'armchair', 'black', '/websiteimages/galleryimages/armchair6.png'),
+(10, 'armchair', 'gray', '/websiteimages/galleryimages/armchair7.png'),
+(11, 'armchair', 'black', '/websiteimages/galleryimages/armchair8.png'),
+(12, 'armchair', 'pink', '/websiteimages/galleryimages/armchair9.png'),
+(13, 'armchair', 'brown', '/websiteimages/galleryimages/armchair10.jpg'),
+(14, 'armchair', 'gray', '/websiteimages/galleryimages/armchair11.jpg'),
+(15, 'armchair', 'brown', '/websiteimages/galleryimages/armchair12.jpg'),
+(16, 'bed', 'brown', '/websiteimages/galleryimages/bed1.jpg'),
+(17, 'chair', 'red', '/websiteimages/galleryimages/chair1.png'),
+(18, 'chair', 'white', '/websiteimages/galleryimages/chair2.png'),
+(19, 'cleopatra', 'red', '/websiteimages/galleryimages/cleopatra1.png'),
+(20, 'cleopatra', 'cyan', '/websiteimages/galleryimages/cleopatra2.png'),
+(21, 'cleopatra', 'white', '/websiteimages/galleryimages/cleopatra3.png'),
+(22, 'cleopatra', 'red', '/websiteimages/galleryimages/cleopatra4.png'),
+(23, 'cleopatra', 'pink', '/websiteimages/galleryimages/cleopatra5.png'),
+(24, 'cleopatra', 'white', '/websiteimages/galleryimages/cleopatra6.png'),
+(25, 'custom', 'brown', '/websiteimages/galleryimages/custom1.jpg'),
+(26, 'custom', 'white', '/websiteimages/galleryimages/custom2.jpg'),
+(27, 'custom', 'brown', '/websiteimages/galleryimages/custom3.jpg'),
+(28, 'custom', 'black', '/websiteimages/galleryimages/custom4.jpg'),
+(29, 'custom', 'brown', '/websiteimages/galleryimages/custom5.jpg'),
+(30, 'custom', 'yellow', '/websiteimages/galleryimages/custom6.jpg'),
+(31, 'custom', 'black', '/websiteimages/galleryimages/custom7.jpg'),
+(32, 'custom', 'gray', '/websiteimages/galleryimages/custom8.jpg'),
+(33, 'custom', 'white', '/websiteimages/galleryimages/custom9.jpg'),
+(34, 'custom', 'blue', '/websiteimages/galleryimages/custom10.jpg'),
+(35, 'loveseat', 'red', '/websiteimages/galleryimages/loveseat1.png'),
+(36, 'loveseat', 'gray', '/websiteimages/galleryimages/loveseat2.png'),
+(37, 'loveseat', 'red', '/websiteimages/galleryimages/loveseat3.png'),
+(38, 'loveseat', 'white', '/websiteimages/galleryimages/loveseat4.png'),
+(39, 'loveseat', 'brown', '/websiteimages/galleryimages/loveseat5.jpg'),
+(40, 'loveseat', 'blue', '/websiteimages/galleryimages/loveseat6.jpg'),
+(41, 'sofa', 'gray', '/websiteimages/galleryimages/sofa1.png'),
+(42, 'sofa', 'orange', '/websiteimages/galleryimages/sofa2.png'),
+(43, 'sofa', 'white', '/websiteimages/galleryimages/sofa3.png'),
+(44, 'sofa', 'blue', '/websiteimages/galleryimages/sofa4.png'),
+(45, 'sofa', 'white', '/websiteimages/galleryimages/sofa5.png'),
+(46, 'sofa', 'blue', '/websiteimages/galleryimages/sofa6.png'),
+(47, 'sofa', 'red', '/websiteimages/galleryimages/sofa7.png'),
+(48, 'sofa', 'blue', '/websiteimages/galleryimages/sofa8.png'),
+(49, 'sofa', 'purple', '/websiteimages/galleryimages/sofa9.png'),
+(50, 'sofa', 'white', '/websiteimages/galleryimages/sofa10.png'),
+(51, 'sofa', 'cyan', '/websiteimages/galleryimages/sofa11.png'),
+(52, 'sofa', 'white', '/websiteimages/galleryimages/sofa12.png'),
+(53, 'sofa', 'orange', '/websiteimages/galleryimages/sofa13.png'),
+(54, 'sofa', 'black', '/websiteimages/galleryimages/sofa14.png'),
+(55, 'sofa', 'blue', '/websiteimages/galleryimages/sofa15.png'),
+(56, 'sofa', 'white', '/websiteimages/galleryimages/sofa16.png'),
+(57, 'sofa', 'cyan', '/websiteimages/galleryimages/sofa17.png'),
+(58, 'sofa', 'brown', '/websiteimages/galleryimages/sofa18.jpg'),
+(59, 'sofa', 'red', '/websiteimages/galleryimages/sofa19.jpg'),
+(60, 'sofa', 'black', '/websiteimages/galleryimages/sofa20.jpg'),
+(66, 'Sofa', 'Blue', '/websiteimages/galleryimages/repimg6.jpg');
 
 --
 -- Constraints for dumped tables
