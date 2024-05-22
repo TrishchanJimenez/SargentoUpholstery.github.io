@@ -23,10 +23,10 @@
         SELECT *
         FROM orders
         WHERE order_id = $order_id) AS O
-        JOIN $order_type USING(order_id)
         JOIN order_date USING(order_id)
         JOIN users USING(user_id)
         JOIN payment USING(order_id)
+        LEFT JOIN pickup USING(order_id)
     ";
 
     $stmt = $conn->query($query);
@@ -45,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/admin-orders.css">
+    <link rel="stylesheet" href="../css/admin/orders.css">
 </head>
 <body class="orders">
     <?php require 'sidebar.php' ?>
@@ -147,7 +147,7 @@
                             </span>
                         </div>
                         <?php
-                            if($order['order_type'] === "repair") {
+                            if(!is_null($order['ref_img_path'])) {
                                 echo " 
                                 <div class='info'>
                                     <span class='info-name'>
