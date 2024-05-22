@@ -58,8 +58,6 @@
     pointer-events: auto; /* Enable pointer events on the button */
 }
 
-
-
 .order-table {
     width: 100%;
     table-layout: fixed; /* Ensure fixed layout for consistent column widths */
@@ -81,8 +79,6 @@
     background-color: #FFF;
 }
 
-
-
 .order-table th {
     letter-spacing: 0.0375rem;
     text-transform: uppercase;
@@ -99,9 +95,7 @@
     color: #000;
     font-family: "Inter", sans-serif;
     font-size: 20px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
 }
 
 .order-table td img {
@@ -110,9 +104,6 @@
     display: block; /* Remove default inline behavior */
     border-radius: 8px; /* Optional: Add border radius to images */
 }
-
-
-
 
 .drop-area {
     width: 50%;

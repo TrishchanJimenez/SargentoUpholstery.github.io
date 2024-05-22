@@ -1,4 +1,8 @@
 /* Styles for the modal container */
+* {
+    font-family: "Poppins", sans-serif;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -24,6 +28,24 @@
     border-radius: 8px;
     overflow-y: auto; /* Enable vertical scrolling */
     max-height: 80%; /* Limit the maximum height to allow scrolling */
+    scrollbar-width: 2px;
+    scrollbar-color: gray;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 2px; /* Adjust as needed */
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Adjust as needed */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #888; /* Adjust as needed */
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Adjust as needed */
 }
 
 /* Close button styles */
@@ -43,16 +65,15 @@
 }
 
 /* Center the modal vertically and horizontally */
-.modal:before {
+/* .modal:before {
     content: "";
     display: inline-block;
     height: 100%;
     vertical-align: middle;
     margin-right: -0.25em; /* Adjust to ensure vertical alignment */
-}
+/* } * */
 
 .modal-content {
-    display: inline-block;
     vertical-align: middle;
 }
 
@@ -109,9 +130,11 @@ input[type="file"] {
 }
 
 .input{
-    border-radius: 12px;
+    border-radius: 0.75rem;
+    border: 2px solid #000;
     width: 100%;
-    height: 45px;
+    color: #000;
+    font-size: 1.5rem;
 }
 
 input[type="text"] {

@@ -175,19 +175,19 @@
 }
 
 .faq__item {
-    margin: 2.5% 5%;
+    margin: 1.25% 5%;
     width: 40%;
 }
 
 .faq__question {
     font-weight: bold;
     font-size: var(--fs-24);
-    padding: 2.5vmin 0;
+    padding: 2.5vmin 0 0;
 }
 
 .faq__answer {
     font-size: var(--fs-20);
-    padding: 2.5vmin;
+    padding: 1.25vmin 0 2.5vmin;
 }
 
 /* 

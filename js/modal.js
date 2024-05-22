@@ -34,32 +34,15 @@ function handleFileSelect(event) {
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
 // Function to open modal dialog
+const addFurnitureModal = document.getElementById('myModal');
 function openModal() {
-    document.getElementById('myModal').style.display = 'block';
+    addFurnitureModal.style.display = 'block';
 }
 
 // Function to close modal dialog
 function closeModal() {
-    document.getElementById('myModal').style.display = 'none';
+    addFurnitureModal.style.display = 'none';
 }
-
-// Function to open modal dialog centered on the screen
-function openModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'block';
-
-    // Center the modal vertically and horizontally
-    modal.querySelector('.modal-content').style.top = '50%';
-    modal.querySelector('.modal-content').style.left = '50%';
-    modal.querySelector('.modal-content').style.transform = 'translate(-50%, -50%)';
-}
-
-// Function to close modal dialog
-function closeModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'none';
-}
-
 
 function resetForm() {
     const form = document.getElementById('addForm');
@@ -103,30 +86,11 @@ function openEditModal() {
 }
 
 // Function to close the edit modal
-function closeeditModal() {
-    document.getElementById('editModal').style.display = 'none';
+function closeEditModal() {
+    editModal.style.display = 'none';
 }
 
-
-function reseteditForm() {
-    const form = document.getElementById('editForm');
-    if (form) {
-        form.reset(); // Reset the form
-
-        // Clear file input previews if applicable
-        const imagePreviews = document.getElementById('imagePreviews');
-        if (imagePreviews) {
-            imagePreviews.innerHTML = ''; // Clear image previews
-        }
-    }
-}
-
-function editcancelbutton(){
-    closeeditModal();
-    reseteditForm();
-}
-
-    // JavaScript function to set the editFurnitureId value
+// JavaScript function to set the editFurnitureId value
 function setEditFurnitureId(furnitureId) {
     // Find the hidden input element by its ID
     var editFurnitureIdInput = document.getElementById('editFurnitureId');
@@ -137,25 +101,43 @@ function setEditFurnitureId(furnitureId) {
     }
 }
 
+const editModal = document.getElementById('editModal');
+const categoryEditor = document.getElementById('editCategory');
+const colorEditor = document.getElementById('editColor');
+const imageEditor = document.getElementById('currentImage');
+const editForm = editModal.querySelector('form');
 
-
-function editFurniture(category, color, imgPath, worksId) {
+function editFurniture(worksId) {
+    // Display the edit modal (assuming modal is displayed via CSS)
+    editModal.style.display = 'block';
     // Assuming you have a modal for editing furniture details
     // Set values in the modal fields based on the passed parameters
-    document.getElementById('editCategory').value = category;
-    document.getElementById('editColor').value = color;
-    document.getElementById('currentImage').src = imgPath;
-    document.getElementById('editFurnitureId').value = worksId;
-
-    // Display the edit modal (assuming modal is displayed via CSS)
-    document.getElementById('editModal').style.display = 'block';
+    fetch(`get_furniture.php?works_id=${worksId}`, {
+        method: 'GET',
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to fetch furniture data');
+        }
+    })
+    .then(data => {
+    // Update the modal fields with the fetched data
+    categoryEditor.value = data.category;
+    colorEditor.value = data.color.charAt(0).toUpperCase() + data.color.slice(1).toLowerCase();
+    imageEditor.src = data.image;
+    });
 }
+
+editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+});
 
 function editcancelbutton() {
     // Hide the edit modal when cancel button is clicked
     document.getElementById('editModal').style.display = 'none';
 }
-
 
 function deleteFurniture(worksId) {
     // Confirm deletion with the user (optional)
@@ -164,7 +146,7 @@ function deleteFurniture(worksId) {
     }
     
     // AJAX request to delete furniture
-    fetch('../admin/delete_furniture.php', {
+    fetch('delete_furniture.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -187,9 +169,3 @@ function deleteFurniture(worksId) {
         // Handle fetch error (e.g., network issue)
     });
 }
-
-
-
-
-
-    

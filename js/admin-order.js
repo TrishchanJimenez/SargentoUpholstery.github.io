@@ -14,6 +14,7 @@ tableBody.addEventListener('mousedown', (e) => {
             const status = target.querySelector('span[data-prod-status]');
 
             selector.value = status.dataset.prodStatus;
+            const pastStatus = status.dataset.prodStatus;
     
             selector.addEventListener('change', (e) => {
                 // console.log('change')
@@ -23,39 +24,63 @@ tableBody.addEventListener('mousedown', (e) => {
                 target.classList.add('status');
 
                 const newStatus = status.dataset.prodStatus;
+                const statuses = {
+                    "new-order": "New Order",
+                    "pending-downpayment": "Pending Downpayment",
+                    "ready-for-pickup": "Ready for Pickup",
+                    "in-production": "In Production",
+                    "pending-fullpayment": "Pending Fullpayment",
+                    "out-for-delivery": "Out for Delivery",
+                    "received": "Received"
+                };
 
-                const statusData = new FormData();
-                statusData.append('order_id', orderId);
-                statusData.append('new_status', newStatus);
-                statusData.append('status_type', 'prod');
+                const statusKeys = Object.keys(statuses);
+                const currentIndex = statusKeys.indexOf(newStatus);
+                const pastIndex = statusKeys.indexOf(pastStatus);
+                const previousStatuses = statusKeys.slice(pastIndex, currentIndex);
 
-                fetch('/updater/update_status.php', {
-                    method: "POST",
-                    body: statusData
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error('Network response was not ok');
+                console.log(previousStatuses);
+                if (previousStatuses.length >= 2) {
+                    const confirmation = confirm("Are you sure you want to skip multiple stages?");
+                    if (!confirmation) {
+                        return;
                     }
-                    return res.json();
-                }).then(data => {
-                    // Handle the response data here
-                    // console.log('Response:', data);
-                }).catch(error => {console.error('Error: ', error)})
-            })
-            selector.addEventListener('blur', (e) => {
-                // console.log('change')
-                status.dataset.prodStatus = selector.value;
-
-                if(status.dataset.prodStatus === '') {
-                    status.dataset.prodStatus = 'new-order';
-                    status.innerText = 'New Order';
-                } else {
-                    status.innerText = selector.value.split('-').join(' ');
                 }
-                target.classList.remove('active');
-                target.classList.add('status');
+
+                // Continue with the rest of the code...
+
+                // const statusData = new FormData();
+                // statusData.append('order_id', orderId);
+                // statusData.append('new_status', newStatus);
+                // statusData.append('status_type', 'prod');
+                // console.log(statusData);
+                  // fetch('/api/update_status.php', {
+                //     method: "POST",
+                //     body: statusData
+                // })
+                // .then(res => {
+                //     if (!res.ok) {
+                //         throw new Error('Network response was not ok');
+                //     }
+                //     return res.json();
+                // }).then(data => {
+                //     // Handle the response data here
+                //     console.log('Response:', data);
+                // }).catch(error => {console.error('Error: ', error)})
             })
+            // selector.addEventListener('blur', (e) => {
+            //     // console.log('change')
+            //     status.dataset.prodStatus = selector.value;
+
+            //     if(status.dataset.prodStatus === '') {
+            //         status.dataset.prodStatus = 'new-order';
+            //         status.innerText = 'New Order';
+            //     } else {
+            //         status.innerText = selector.value.split('-').join(' ');
+            //     }
+            //     target.classList.remove('active');
+            //     target.classList.add('status');
+            // })
         } else if(target.classList.contains('payment-status')) {
             const selector = target.querySelector('select[name=select-payment-status]'); 
             const status = target.querySelector('span[data-payment]');
@@ -79,7 +104,7 @@ tableBody.addEventListener('mousedown', (e) => {
                 statusData.append('new_status', newStatus);
                 statusData.append('status_type', 'payment');
 
-                fetch('/updater/update_status.php', {
+                fetch('/api/update_status.php', {
                     method: "POST",
                     body: statusData
                 }).then(res => {
@@ -171,4 +196,84 @@ filterForm.addEventListener('submit', (e) => {
     });
 
     filterForm.submit();
+});
+
+let lastSelectedCheckbox = null;
+const multipleSelector = document.querySelector('.selected-multiple');  
+const selectedCountDisplay = multipleSelector.querySelector('.selected-count');
+const multipleSelectorCloseBtn = multipleSelector.querySelector('.close-icon');
+
+tableBody.addEventListener('click', (e) => {
+    const checkbox = e.target.closest('input[type="checkbox"]');
+    if (checkbox && e.shiftKey && lastSelectedCheckbox) {
+        const checkboxes = Array.from(tableBody.querySelectorAll('input[type="checkbox"]'));
+        const startIndex = checkboxes.indexOf(lastSelectedCheckbox);
+        const endIndex = checkboxes.indexOf(checkbox);
+        const [start, end] = startIndex < endIndex ? [startIndex, endIndex] : [endIndex, startIndex];
+        checkboxes.slice(start, end + 1).forEach((cb) => {
+            cb.checked = true;
+        });
+    } 
+    else if (checkbox && !checkbox.checked && lastSelectedCheckbox && e.shiftKey) {
+        const checkboxes = Array.from(tableBody.querySelectorAll('input[type="checkbox"]'));
+        const startIndex = checkboxes.indexOf(lastSelectedCheckbox);
+        const endIndex = checkboxes.indexOf(checkbox);
+        const [start, end] = startIndex < endIndex ? [startIndex, endIndex] : [endIndex, startIndex];
+        checkboxes.slice(start, end + 1).forEach((cb) => {
+            cb.checked = false;
+        });
+    }
+    if (checkbox) {
+        const selectedCheckboxes = Array.from(tableBody.querySelectorAll('input[type="checkbox"]:checked'));
+        console.log(selectedCheckboxes.length);
+        if(multipleSelector.style.display !== 'flex' && selectedCheckboxes.length > 0) {
+            multipleSelector.style.display = 'flex';
+        } else if(selectedCheckboxes.length === 0) {
+            multipleSelector.style.display = 'none';
+        }
+        selectedCountDisplay.innerText = selectedCheckboxes.length;
+    }
+    lastSelectedCheckbox = checkbox;
+});
+
+multipleSelectorCloseBtn.addEventListener('click', (e) => {
+    const selectedCheckboxes = Array.from(tableBody.querySelectorAll('input[type="checkbox"]:checked'));
+    selectedCheckboxes.forEach((cb) => {
+        cb.checked = false;
+    });
+    multipleSelector.style.display = 'none';
+    selectedCountDisplay.innerText = 0;
+});
+
+const advanceNextBtn = document.querySelector('.advance-next');
+advanceNextBtn.addEventListener('click', (e) => {
+    const selectedCheckboxes = Array.from(tableBody.querySelectorAll('input[type="checkbox"]:checked'));
+    const orderIds = selectedCheckboxes.map((cb) => cb.closest('tr').dataset.id);
+    const statusData = new FormData();
+    if (orderIds.length > 0) {
+        const confirmDialog = confirm("Are you sure you want to advance these orders?");
+        if (confirmDialog) {
+            // Proceed with advancing the orders
+            orderIds.forEach(id => statusData.append('order_id[]', id));
+            statusData.append('status_type', 'prod');
+            statusData.append('is_multiple', true);
+            console.log(statusData);
+            fetch('/api/update_status.php', {
+                method: "POST",
+                body: statusData
+            }).then(res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // console.log(res.text());
+                return res.json();
+            }).then(data => {
+                // Handle the response data here
+                console.log('Response:', data);
+                // window.location.reload();
+            }).catch(error => {
+                console.error('Error: ', error);
+            });
+        }
+    }
 });

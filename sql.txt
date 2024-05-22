@@ -1,0 +1,22 @@
+COUNT OF NEW ORDERS THIS DAY VS YESTERDAY
+SELECT
+    (SELECT COUNT(*) FROM orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND placement_date = CURDATE()) AS today,
+    (SELECT COUNT(*) FROM Orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND placement_date = CURDATE() - INTERVAL 1 DAY) AS yesterday;
+
+COUNT OF NEW ORDERS THIS WEEK VS LAST WEEK
+SELECT 
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1)) AS current_week,
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS last_week;
+
+COUNT OF NEW ORDERS THIS MONTH VS LAST MONTH
+SELECT 
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE())) AS current_month,
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE MONTH(placement_date) = MONTH(CURDATE()) - 1 AND YEAR(placement_date) = YEAR(CURDATE())) AS last_month;

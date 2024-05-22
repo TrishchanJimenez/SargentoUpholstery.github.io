@@ -1,30 +1,35 @@
 const typeSelector = document.getElementById('type-selector');
 const colorSelector = document.getElementById('color-selector');
+const galleryImages = document.querySelectorAll('.gallery-item');
 
 function filterGallery() {
     const typeFilter = typeSelector.value;
     const colorFilter = colorSelector.value;
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    galleryItems.forEach((product) => {
-        let typeMatch = typeFilter === 'all' || product.classList.contains(typeFilter);
-        let colorMatch = colorFilter === 'all' || product.classList.contains(colorFilter);
+
+    // console.log(galleryImages);
+    galleryImages.forEach((image) => {
+        // console.log(image);
+        let typeMatch = typeFilter === 'all' || image.dataset.category === typeFilter;
+        let colorMatch = colorFilter === 'all' || image.dataset.color === colorFilter;
+        // console.log(typeMatch, colorMatch);
         if (typeMatch && colorMatch) {
-            product.style.display = 'inline-block';
+            // console.log(image.parentElement);
+            image.style.display = 'inline';
         } else {
-            product.style.display = 'none';
+            image.style.display = 'none';
         }
     });
 }
 
-const productGallery = document.querySelector('.product-gallery');
+// const productGallery = document.querySelector('.product-gallery');
 
-const checkURLParams = () => {
-    if (window.location.search !== '') {
-        const category = window.location.search.split('=')[1];
-        productGallery.scrollIntoView();
-        typeSelector.value = category;
-        filterGallery();
-    }
-}
+// const checkURLParams = () => {
+//     if (window.location.search !== '') {
+//         const category = window.location.search.split('=')[1];
+//         productGallery.scrollIntoView();
+//         typeSelector.value = category;
+//         filterGallery();
+//     }
+// }
 
-checkURLParams();
+// checkURLParams();

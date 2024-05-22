@@ -9,6 +9,10 @@
 .admin-sidebar h1 {
     font-size: var(--fs-36);
     padding: 2rem 1rem 1rem 2rem;
+    
+    * {
+        font-family: "Playfair Display", sans-serif !important;
+    }
 }
 
 .admin-link {

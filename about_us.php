@@ -8,40 +8,49 @@
     <link rel="stylesheet" href="css/about.css">
 </head>
 <body>
-    <?php include_once("header.php") ?>
-    
+    <?php
+        include_once("header.php");
+        require 'database_connection.php';
+        $sql = "SELECT * FROM contents WHERE page = 'about_us'";
+        $stmt = $conn->query($sql);
+        $contents = $stmt->fetchAll();
+        $contentsById = [];
+        foreach ($contents as $content) {
+            $contentsById[$content['content_id']] = $content;
+        }
+    ?>
     <img src="/websiteimages/teampicture.png" alt="" class="about-us-featuredimg">
-    <div class="about-us-toptext">
-        <h2>Meet the team</h2>
-        <p>The proud workers of sargento that handfully perfected their craft in making your dream furniture into reality. They've spend their entire lives practicing, flourishing each individual furniture known for them to be known in the metro. The team also consists of female workers helps the business afloat. With all of the sleepless nights, they've strive for sucess by burning the midnight oil. Mr. Eddie Murphy Sargento, keeping the family business alive with Mrs. Journa Joy Sargento, they've been working and doing the best they can for their family. With these individuals around, Sargento Upholstery will be able to provide the highest quality furniture to suit your every needs.</p>
-        <a href="order.php">Get a Free Quote</a>
+    <div class="about-us-container">
+        <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= $contentsById["ABOUTHEADERTITLE"]["content_text"] ?></h2>
+        <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= $contentsById["ABOUTHEADERTEXT"]["content_text"] ?></p>
+        <a href="order.php" class="btn btn-black">Get a Free Quote</a>
     </div>
-    <div class="about-us-history">
-        <h2 class="text-gold">History of Sargento Upholstery</h2>
-        <p>Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery.</p>
+    <div class="about-us-history about-us-container">
+        <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=$contentsById["ABOUTHISTORYTITLE"]["content_text"]?></h2>
+        <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=$contentsById["ABOUTHISTORYTEXT"]["content_text"]?></p>
     </div>
-    <div class="values-philosophy">
-        <h2>Our Values & Philosophy</h2>
+    <div class="values-philosophy about-us-container">
+        <h2 class="long-text editable" data-id="ABOUTVALUESTITLE"><?=$contentsById["ABOUTVALUESTITLE"]["content_text"]?></h2>
         <div class="values-container">
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3>Quality Materials</h3>
-                <p>Emphasizing the importance of using high-grade materials in our products.</p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING1"><?=$contentsById["ABOUTVALUESSUBHEADING1"]["content_text"]?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT1"><?=$contentsById["ABOUTVALUESSUBTEXT1"]["content_text"]?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3>Craftsmanship Excellence</h3>
-                <p>Focusing on the artistry and skill involved in creating our goods or services.</p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING2"><?=$contentsById["ABOUTVALUESSUBHEADING2"]["content_text"]?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT2"><?=$contentsById["ABOUTVALUESSUBTEXT2"]["content_text"]?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3>Heritage and Innovation</h3>
-                <p>Balancing tradition with a forward-thinking approach, acknowledging both history and modern advancements.</p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING3"><?=$contentsById["ABOUTVALUESSUBHEADING3"]["content_text"]?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT3"><?=$contentsById["ABOUTVALUESSUBTEXT3"]["content_text"]?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3>Customer-Centric</h3>
-                <p>Prioritizing our customer's needs and satisfaction at the core of our business practices.</p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING4"><?=$contentsById["ABOUTVALUESSUBHEADING4"]["content_text"]?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT4"><?=$contentsById["ABOUTVALUESSUBTEXT4"]["content_text"]?></p>
             </div>
         </div>
     </div>

@@ -9,15 +9,20 @@
 </head>
 <body>
     <?php include_once("header.php") ?>
+    <?php
+        require 'database_connection.php';
+        $sql = "SELECT * FROM contents WHERE page = 'services_craftsmanship'";
+        $stmt = $conn->query($sql);
+        $contents = $stmt->fetchAll();
+        $contentsById = [];
+        foreach ($contents as $content) {
+            $contentsById[$content['content_id']] = $content;
+        }
+    ?>
     <img src="/websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
     <div class="intro-section">
-        <h2 class="intro-title">A Commitment to Craftsmanship Excellence</h2>
-        <p class="intro-info">
-            At Sargento Upholstery, our commitment to excellence is evident in every step of our
-            meticulous craftsmanship. We take pride in the fact that each and every one of our
-            products is a masterpiece of quality, designed to provide both aesthetics and durability
-            that can withstand the test of time.
-        </p>
+        <h2 class="intro-title"><?= $contentsById["CRAFTSHEADERTITLE"]["content_text"] ?></h2>
+        <p class="intro-info"><?= $contentsById["CRAFTSHEADERTEXT"]["content_text"] ?></p>
         <a href="order.php" class="btn btn-black">Get Free Quote</a>
     </div>
     <div class="services_craftmanship_card_container">

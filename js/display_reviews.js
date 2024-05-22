@@ -13,7 +13,7 @@ reviewContainer.addEventListener('click', (e) => {
             e.preventDefault();
             const replyData = new FormData(replyForm);
             const review = target.closest('.review');
-            fetch('/updater/submit_reply.php', {
+            fetch('/api/submit_reply.php', {
                 method: "POST",
                 body: replyData
             })
