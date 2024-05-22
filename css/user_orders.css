@@ -26,10 +26,12 @@ body {
     border: none;
     background-color: #F8F7F1;
     border-radius: 5px 5px 0 0;
-    font-size: 25px;
+    font-size: 35px;
     font-family: 'Playfair Display';
     font-weight: 700;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 20px;
     }
     .item-box {
     cursor: pointer;
@@ -39,10 +41,8 @@ body {
     background-color: #FFDC5C;
     }
     .order-header {
-    margin-left: 50px;
-    margin-top: 70px;
-    margin: 70px 0 20px 50px;
-    font-size: 36px;
+    padding: 3% 0 0 4%;
+    font-size: 50px;
     font-weight: 700;
     }
     /* tab 4 */
@@ -56,59 +56,24 @@ body {
     height: 20px; /* Adjust this value as needed */
     }
     .status-header {
-    font-family: Playfair Display;
-    margin: 30px 0 0 0 ;
-    font-size: 20px;
+    font-family: Inter;
+    margin-top: 20px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 26.66px;
-    text-align: left;
+    justify-content: space-evenly;
     }
-    .item-description {
+    .tab-table{
     font-family: Inter;
     font-size: 22px;
     font-weight: 500;
     line-height: 24px;
     text-align: left;
     width: 200px;
-    }
-    .price-to-pay {
-    font-family: Inter;
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 24px;
-    text-align: left;
-    width: 200px;
-    }
-    .deliver-pickup-address {
-    font-family: Inter;
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 30px;
-    text-align: left;
-    width: 300px;
-    }
-    .order-type {
-    font-family: Inter;
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 30px;
-    text-align: left;
-    width: 150px;
-    }
-    .order-status {
-    font-family: Inter;
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 30px;
-    text-align: left;
-    width: 150px;
-    }
-    .img-order {
-    width: 200px;
-    height: 150px;
     }
     table {
     width: 100%;
+    margin-top: 20px;
     border-collapse: collapse;
     }
     td {
@@ -121,7 +86,7 @@ body {
     /* tab 5 */
     .tabLabels {
     width: 90%;
-    margin: 30px auto 0 auto;
+    margin: 20px auto 0 auto;
     }
     #fileInput {
     display: none; /* Hide the file input */
@@ -148,13 +113,12 @@ body {
     .review-button{
     padding: 20px 25px;
     border: none;
-    background-color: #F8F7F1;
+    background-color: #FFDC5C;
     border-radius: 5px 5px 0 0;
     font-size: 25px;
     font-family: 'Playfair Display';
     font-weight: 700;
     box-shadow: 0px 4px 4px 0px #00000040;
-    background-color: #FFDC5C;
     border-radius: 25px;
     }
     /* file upload css */
