@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/alert.css">
 <?php
 function sendAlert($messageType, $message) {
     // success, error, warning, info

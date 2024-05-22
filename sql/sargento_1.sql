@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 19, 2024 at 09:59 AM
+-- Generation Time: May 21, 2024 at 10:00 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -24,42 +24,55 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mto`
+-- Table structure for table `chats`
 --
 
-CREATE TABLE `mto` (
-  `order_id` int NOT NULL,
-  `height` float NOT NULL,
-  `width` float NOT NULL,
-  `depth` float NOT NULL,
-  `material` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+CREATE TABLE `chats` (
+  `chat_id` int NOT NULL,
+  `sender_id` int DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `message` text,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `mto`
+-- Dumping data for table `chats`
 --
 
-INSERT INTO `mto` (`order_id`, `height`, `width`, `depth`, `material`) VALUES
-(21, 46.18, 30.39, 43.4, 'Wood'),
-(22, 35.84, 38.99, 37.42, 'Blue fabric'),
-(23, 20.13, 18.42, 21.68, 'Shelves'),
-(24, 43.17, 20.79, 44.45, 'Wood'),
-(25, 29.88, 46.05, 10.6, 'Wood'),
-(26, 24.85, 42.43, 47.63, 'Glass'),
-(27, 20.85, 31.37, 44.29, 'Hardwood'),
-(28, 37.32, 43.75, 16.78, 'Leather'),
-(29, 22.68, 13.02, 27.1, 'Wood'),
-(30, 46.41, 20.75, 34.55, 'White'),
-(31, 20.47, 28.69, 32.05, 'Wood'),
-(32, 24.17, 14.72, 31.09, 'Glass'),
-(33, 21.29, 43.17, 21.96, 'Wood'),
-(34, 10.32, 15.72, 37.65, 'Wood'),
-(35, 11.06, 12.37, 18.68, 'Black'),
-(36, 46.3, 45.44, 38.29, 'Wood'),
-(37, 45.12, 20.74, 38.34, 'Wood'),
-(38, 39.48, 32.39, 33.49, 'Wood'),
-(39, 20.3, 31.04, 44.27, 'Marble'),
-(40, 38.24, 48.39, 37.23, 'Fabric');
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`) VALUES
+(1, 22, 22, 'imissyou', '2024-05-21 04:43:35'),
+(2, 22, 22, 'mwa', '2024-05-21 04:43:36'),
+(3, 23, 22, 'imissyou2bbk', '2024-05-21 04:56:33'),
+(4, 22, 22, 'jkjkjk', '2024-05-21 04:57:20'),
+(5, 22, 22, 'l,l,l', '2024-05-21 04:57:23'),
+(6, 23, 22, 'justine joven casiano\r\n', '2024-05-21 04:58:17'),
+(7, 23, 22, 'oyoy', '2024-05-21 05:00:56'),
+(8, 22, 22, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2024-05-21 05:02:26'),
+(9, 22, 22, 'putanginamo', '2024-05-21 07:09:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifs`
+--
+
+CREATE TABLE `notifs` (
+  `notif_id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `notif_msg` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_read` tinyint(1) DEFAULT '0',
+  `redirect_link` tinytext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `notifs`
+--
+
+INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES
+(1, 23, 'Test message -- hello!', '2024-05-20 02:26:34', 1, NULL),
+(2, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-20 10:10:30', 1, NULL),
+(3, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-21 07:09:19', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -129,7 +142,10 @@ INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `or
 (39, 19, 'Table', 'mto', 'new_order', NULL, 'third_party', '1515 Cedar St.', 'Custom table material: marble top', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
 (40, 20, 'Chair', 'mto', 'new_order', NULL, 'self', '1616 Pine St.', 'Custom chair upholstery: fabric', NULL, 'pending', NULL, '2024-05-14 00:52:14'),
 (41, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 Ipsum Blvd.', 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-19 09:55:45'),
-(42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 Ipsum Blvd.', 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-19 09:57:07');
+(42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 Ipsum Blvd.', 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-19 09:57:07'),
+(43, 22, 'Sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', '456 ipsum st.', 'wasak na siya pre', NULL, 'pending', NULL, '2024-05-20 02:43:59'),
+(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', '573 Colorado St.', 'minor scratch', NULL, 'pending', NULL, '2024-05-20 02:46:29'),
+(45, 22, 'Broken table ', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', '7990 united states of ipsum', 'Legs are broken', NULL, 'pending', NULL, '2024-05-21 07:09:01');
 
 --
 -- Triggers `orders`
@@ -216,7 +232,10 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 (39, '2024-05-14', '0000-00-00'),
 (40, '2024-05-14', '0000-00-00'),
 (41, '2024-05-19', '0000-00-00'),
-(42, '2024-05-19', '0000-00-00');
+(42, '2024-05-19', '0000-00-00'),
+(43, '2024-05-20', '0000-00-00'),
+(44, '2024-05-20', '0000-00-00'),
+(45, '2024-05-21', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -279,7 +298,10 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 (39, 'unpaid', NULL, NULL, NULL, NULL),
 (40, 'unpaid', NULL, NULL, NULL, NULL),
 (41, 'unpaid', NULL, NULL, NULL, NULL),
-(42, 'unpaid', NULL, NULL, NULL, NULL);
+(42, 'unpaid', NULL, NULL, NULL, NULL),
+(43, 'unpaid', NULL, NULL, NULL, NULL),
+(44, 'unpaid', NULL, NULL, NULL, NULL),
+(45, 'unpaid', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -318,7 +340,10 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address`) VALUES
 (18, 'third_party', '321 Willow Avenue'),
 (19, 'third_party', '987 Spruce Lane'),
 (20, 'self', '123 Fir Road'),
-(42, 'third_party', '123 Lorem St.');
+(42, 'third_party', '123 Lorem St.'),
+(43, 'third_party', '123 lorem st.'),
+(44, 'third_party', '1928 McKinley Drv.'),
+(45, 'third_party', '123 lorem st.');
 
 -- --------------------------------------------------------
 
@@ -406,17 +431,26 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_
 (19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', NULL, '09101234567'),
 (20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', NULL, '09212345678'),
 (21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', NULL, '09123412014'),
-(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', NULL, '09052669619');
+(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', NULL, '09052669619'),
+(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', NULL, '09123456789');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `mto`
+-- Indexes for table `chats`
 --
-ALTER TABLE `mto`
-  ADD KEY `order_id_fk_mto` (`order_id`);
+ALTER TABLE `chats`
+  ADD PRIMARY KEY (`chat_id`),
+  ADD KEY `chat_sender_id_fk` (`sender_id`);
+
+--
+-- Indexes for table `notifs`
+--
+ALTER TABLE `notifs`
+  ADD PRIMARY KEY (`notif_id`),
+  ADD KEY `notifs_user_id_fk` (`user_id`);
 
 --
 -- Indexes for table `orders`
@@ -468,10 +502,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `chats`
+--
+ALTER TABLE `chats`
+  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `notifs`
+--
+ALTER TABLE `notifs`
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -489,17 +535,23 @@ ALTER TABLE `review_images`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `mto`
+-- Constraints for table `chats`
 --
-ALTER TABLE `mto`
-  ADD CONSTRAINT `order_id_fk_mto` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `chats`
+  ADD CONSTRAINT `chat_sender_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `notifs`
+--
+ALTER TABLE `notifs`
+  ADD CONSTRAINT `notifs_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`

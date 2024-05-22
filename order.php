@@ -22,7 +22,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/order.css">
-    <link rel="stylesheet" href="css/alert.css">
 </head>
 
 <body>
@@ -171,7 +170,7 @@
     }
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        try {
+        try { // Preparing values to be inserted
             // Sanitize inputs
             $order_type = sanitize_input($_POST['order_type']);
             $furniture_type = sanitize_input($_POST['furniture_type']);
@@ -214,7 +213,7 @@
             sendAlert("error", "Error: " . $e->getMessage());
         }
     
-        try {
+        try { // Inserting the values
             // Insert into orders table
             $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)";
             $stmt = $conn->prepare($query);
@@ -241,6 +240,23 @@
     
             echo "Order placed successfully.";
             sendAlert("success", "Order placed successfully.");
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            sendAlert("error", "Error: " . $e->getMessage());
+        }
+
+        try {
+            // Create a new notification message
+            $notif_msg = "New quotation form submitted by: " . $_SESSION['name']; // Customize the message as needed
+
+            // Call the createNotif function
+            if (createNotif($_SESSION['user_id'], $notif_msg)) {
+                // Notification created successfully
+                echo "Notification created successfully";
+            } else {
+                // Failed to create notification
+                echo "Failed to create notification";
+            }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             sendAlert("error", "Error: " . $e->getMessage());

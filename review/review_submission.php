@@ -40,8 +40,8 @@
                     <span class="star" data-value="5">&#9733;</span>
                 </div><br><br>
             </div>
-            <label for="comment">Review:</label><br>
-            <textarea id="comment" name="review" rows="4" cols="50" required></textarea><br><br>
+            <label for="review">Review:</label><br>
+            <textarea id="review" name="review" rows="4" cols="50" required></textarea><br><br>
             <label for="images">Additional Images:</label>
             <div class="file-drop" id="imagesDrop" onclick="document.getElementById('images').click();">
                 <span>Drag and drop additional images here or click to select (multiple)</span>

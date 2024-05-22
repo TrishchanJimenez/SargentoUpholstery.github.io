@@ -103,7 +103,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/admin-orders.css">
+    <link rel="stylesheet" href="../css/admin/orders.css">
 </head>
 <body>
     <div class="orders">
@@ -323,6 +323,6 @@
             </div>
         </div>
     </div>
-    <script src="../js/admin-order.js"></script>
+    <script src="../js/admin/order.js"></script>
 </body>
 </html>

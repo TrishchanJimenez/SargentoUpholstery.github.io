@@ -1,0 +1,12 @@
+.order-details-header{
+    font-family: 'Playfair Display';
+    font: bold;
+    font-size: 30px;
+    margin: 40px 0 40px 40px;
+}
+.row1{
+    border: 5px solid black; 
+  border-radius: 5px; 
+  margin: auto; 
+  text-align: center;
+}
