@@ -7,7 +7,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #007bff;
+    background-color: #FFDC5C;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,9 +16,24 @@
     z-index: 1000; /* Ensure the button is above other elements */
 }
 
+.chat-button:hover {
+    background-color: #FFC62E; /* Change the background color on hover */
+    transform: scale(1.1); /* Scale up the button slightly on hover */
+    animation: pulse 0.5s infinite alternate; /* Add pulsating animation */
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
 .chat-button__image {
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
     object-fit: contain;
     pointer-events: none; /* Allow clicking through the image to the button */
 }
@@ -36,6 +51,7 @@
     display: none;
     flex-direction: column;
     z-index: 999; /* Ensure the chat window is above other elements but below the button */
+    font-family: "Inter", sans-serif;
 }
 
 .chat-window__header {
@@ -43,8 +59,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFDC5C;
+    color: #000;
     border-bottom: 1px solid #ccc;
 }
 
@@ -55,7 +71,7 @@
 .chat-window__close {
     background: none;
     border: none;
-    color: #fff;
+    color: #000;
     font-size: 20px;
     cursor: pointer;
 }
@@ -85,8 +101,8 @@
 .chat-window__input-button {
     padding: 10px;
     border: none;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFDC5C;
+    color: #000;
     cursor: pointer;
 }
 
@@ -129,8 +145,8 @@
 
 /* Message alignment for current user */
 .message.right {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFDC5C;
+    color: #000;
     align-self: flex-end;
 }
 

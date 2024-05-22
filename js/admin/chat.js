@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching customers:', error));
     }
-
+    
     // Function to fetch messages for a specific customer
     function fetchMessages(customerId) {
         currentCustomerId = customerId;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Populate messages
                 data.forEach(message => {
                     const messageElement = document.createElement('div');
-                    messageElement.textContent = message.message;
+                    messageElement.innerHTML = message.message; // Change textContent to innerHTML
                     messageElement.className = 'admin-chat__message';
                     messagesContainer.appendChild(messageElement);
                 });

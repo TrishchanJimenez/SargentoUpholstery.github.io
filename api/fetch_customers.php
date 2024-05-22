@@ -2,34 +2,22 @@
     // Include database connection
     include_once("../database_connection.php");
 
-    // Fetch customers and their latest messages
+    // Fetch customers who have sent or received messages
     $query = "
         SELECT 
             u.user_id, 
-            u.name AS customer_name, 
-            MAX(m.message) AS message, 
-            MAX(m.timestamp) AS timestamp
+            u.name AS customer_name
         FROM 
             users u
-                LEFT JOIN 
-            (
-                SELECT 
-                    sender_id, 
-                    customer_id, 
-                    message, 
-                    timestamp
-                FROM 
-                    chats
-                ORDER BY 
-                    timestamp DESC
-            ) m 
-                ON u.user_id = m.customer_id
         WHERE 
-            u.user_type = 'customer'
-        GROUP BY 
-            u.user_id
+            u.user_type = 'customer' AND 
+            EXISTS (
+                SELECT 1
+                FROM chats c
+                WHERE c.customer_id = u.user_id OR c.sender_id = u.user_id
+            )
         ORDER BY 
-            MAX(m.timestamp) DESC
+            u.name ASC
     ";
     $stmt = $conn->prepare($query);
     $stmt->execute();

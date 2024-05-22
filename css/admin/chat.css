@@ -2,9 +2,13 @@
 
 /* Global styles */
 .admin-chat__body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+.admin-chat *,
+.admin-chat__main-content * {
+    font-family: "Inter", sans-serif;
 }
 
 .admin-chat {
