@@ -35,6 +35,12 @@
             </svg>
             <span>CMS</span>
         </a>
+        <a href="./chat.php" class="admin-link" id="chatSystemLink">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Chat system icon SVG code here -->
+            </svg>
+            <span>Chat</span>
+        </a>
     </ul>
     <ul class="admin-extra">
         <a href="../index.php" class="admin-link">
