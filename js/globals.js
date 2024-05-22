@@ -16,6 +16,11 @@ const accountMenu = document.querySelector('.account-menu');
 accountBtn.addEventListener('click', () => {
     if (accountBtn.parentElement.classList.contains('nav-icons')) {
         accountMenu.classList.toggle('show');
+        
+        // Close notifications if open
+        if (notifContainer.style.display === "block") {
+            notifContainer.style.display = "none";
+        }
     }
 })
 
@@ -40,6 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     bellIcon.addEventListener("click", function () {
         notifContainer.style.display = notifContainer.style.display === "block" ? "none" : "block";
+
+        // Close account menu if open
+        if (accountMenu.classList.contains('show')) {
+            accountMenu.classList.remove('show');
+        }
     });
 });
 
@@ -63,17 +73,17 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: `notif_id=${notifId}`
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to mark notif as read");
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log(data); // Output success message
-            })
-            .catch(error => {
-                console.error(error); // Log error message
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to mark notif as read");
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(data); // Output success message
+        })
+        .catch(error => {
+            console.error(error); // Log error message
+        });
     }
 });

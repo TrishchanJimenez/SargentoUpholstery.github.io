@@ -80,7 +80,16 @@
         <p class="business-history"><?= $contentsById["HOMEABOUTTEXT"]["content_text"] ?></p>
         <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
-    <?php include_once("chat.php") ?>
+    <?php 
+        // Start session if not already started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if (isset($_SESSION['user_id'])) {
+            include_once("chat.php");
+        }
+    ?>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
     <script src="js/productlink.js"></script>

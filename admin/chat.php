@@ -10,10 +10,10 @@
     // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message']) && isset($_POST['customer_id'])) {
         // Sanitize input to prevent SQL injection
-        $message = htmlspecialchars($_POST['message']);
-        $customer_id = htmlspecialchars($_POST['customer_id']);
+        $message = $_POST['message'];
+        $customer_id = $_POST['customer_id'];
         $sender_id = $_SESSION['user_id'];
-
+        
         // Prepare and execute SQL query to insert message into database
         $sql = "INSERT INTO `chats` (`sender_id`, `customer_id`, `message`) VALUES (:sender_id, :customer_id, :message)";
         $stmt = $conn->prepare($sql);
@@ -38,6 +38,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title class="admin-chat__title">Admin Chat</title>
+    <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin/chat.css">
 </head>
 <body class="admin-chat__body">
@@ -62,7 +63,6 @@
                 <div class="admin-chat__chat-window">
                     <h2 class="admin-chat__chat-heading">Chat with Customer</h2>
                     <div class="admin-chat__messages">
-                        <!-- Chat messages will be displayed here -->
                     </div>
                     <form id="message-form" class="admin-chat__message-form" method="post">
                         <input type="text" id="message-input" class="admin-chat__message-input" placeholder="Type a message...">
