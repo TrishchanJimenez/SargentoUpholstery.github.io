@@ -42,8 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Populate messages
                 data.forEach(message => {
                     const messageElement = document.createElement('div');
-                    messageElement.innerHTML = message.message; // Change textContent to innerHTML
-                    messageElement.className = 'admin-chat__message';
+                    messageElement.textContent = message.message;
+                    messageElement.className = message.sender_id === currentCustomerId ? 
+                    'admin-chat__message customer' : 
+                    'admin-chat__message admin'; // Apply different classes based on sender_id
                     messagesContainer.appendChild(messageElement);
                 });
             })
