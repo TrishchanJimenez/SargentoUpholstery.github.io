@@ -107,7 +107,8 @@
                     <?php
                     if (isset($_POST['logout'])) {
                         session_destroy();
-                        header("Location: " . $_SERVER['PHP_SELF']);
+                        // header("Location: " . $_SERVER['PHP_SELF']);
+                        header("Location: login.php");
                         exit();
                     }
                 ?>
