@@ -26,6 +26,12 @@
             }
         }
     }
+
+    if (isset($_POST['logout'])) {
+        // header("Location: login.php");
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/api/logout.php');
+        exit();
+    }
 ?>
 <header class="header">
     <a class="business-brand" href="/index.php">
@@ -52,12 +58,21 @@
                     ";
                     foreach ($notif_list as $notif) {
                         $is_read = $notif['is_read'] ? "" : "unread";
+                        $redirect_link = $notif['redirect_link'];
+                        $notif_msg = htmlspecialchars($notif['notif_msg'], ENT_QUOTES, 'UTF-8'); // Sanitize output
                         echo "
                             <div class='notif__message $is_read' data-notif-id='{$notif['notif_id']}'>
-                                <span class='notif__text'>{$notif['notif_msg']}</span>
+                                <a class='notif__redirect-link' href='" . $redirect_link . "'>
+                                    <span class='notif__text'>{$notif_msg}</span>
+                                </a>
                                 <div class='notif__divider'></div>
                                 <button class='mark-read-btn' title='Mark as Read'>
-                                    <img src='/websiteimages/icons/mark-read-icon.svg' alt='Mark as Read' width='16px' height='16px'>
+                                    <svg class='mark-read-img--unread' xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='#5f6368'>
+                                        <path d='M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h404q-4 20-4 40t4 40H160l320 200 146-91q14 13 30.5 22.5T691-572L480-440 160-640v400h640v-324q23-5 43-14t37-22v360q0 33-23.5 56.5T800-160H160Zm0-560v480-480Zm600 80q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Z'/>
+                                    </svg>
+                                    <svg class='mark-read-img--read' xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='#5f6368' style='display: none;'>
+                                        <path d='M638-80 468-250l56-56 114 114 226-226 56 56L638-80ZM480-520l320-200H160l320 200Zm0 80L160-640v400h206l80 80H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v174l-80 80v-174L480-440Zm0 0Zm0-80Zm0 80Z'/>
+                                    </svg>
                                 </button>
                             </div>
                         ";
@@ -74,6 +89,7 @@
                     ";
                 }
             ?>
+
             <div class="account-menu">
                 <?php
                     if ($_SESSION['access_type'] === "admin") {
@@ -91,7 +107,7 @@
                                 <img src='/websiteimages/icons/person-icon.svg' alt=''>
                                 <span>My Account</span>
                             </a>
-                            <a href='/my/orders.php'>
+                            <a href='/my/user_orders.php'>
                                 <img src='/websiteimages/icons/order-icon.svg' alt=''>
                                 <span>My Orders</span>
                             </a>
@@ -104,14 +120,6 @@
                         <span>Log Out</span>
                     </button>
                 </form>
-                    <?php
-                    if (isset($_POST['logout'])) {
-                        session_destroy();
-                        // header("Location: login.php");
-                        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/login.php');
-                        exit();
-                    }
-                ?>
             </div>
             <img src="/websiteimages/icons/menu-icon.svg" alt="" id="open-btn" width="36px" height="36px">
         </div>

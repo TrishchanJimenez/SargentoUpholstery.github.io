@@ -15,8 +15,6 @@
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
-
-    // print_r($stmt->fetch(PDO::FETCH_ASSOC));
 ?>
 
 <link rel="stylesheet" href="css/chat.css">
@@ -35,14 +33,32 @@
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $sender_id = $row['sender_id'];
                 $message = $row['message'];
-                $timestamp = $row['timestamp'];
+                $timestamp = strtotime($row['timestamp']); // Convert timestamp to UNIX timestamp
+
+                // Calculate time difference relative to current time
+                $time_diff = time() - $timestamp;
+                $time_ago = '';
+
+                if ($time_diff < 60) {
+                    $time_ago = 'Just now';
+                } elseif ($time_diff < 3600) {
+                    $time_ago = floor($time_diff / 60) . ' minutes ago';
+                } elseif ($time_diff < 86400) {
+                    $time_ago = floor($time_diff / 3600) . ' hours ago';
+                } elseif ($time_diff < 604800) {
+                    $time_ago = floor($time_diff / 86400) . ' days ago';
+                } elseif ($time_diff < 2592000) {
+                    $time_ago = floor($time_diff / 604800) . ' weeks ago';
+                } else {
+                    $time_ago = date('F j, Y', $timestamp); // Default to standard date format for older messages
+                }
 
                 // Determine message alignment based on sender_id
                 $messageClass = ($sender_id == $user_id) ? 'right' : 'left';
 
-                // Output message with proper alignment
+                // Output message with proper alignment and formatted timestamp
                 echo "<div class='message " . $messageClass . "'>";
-                echo "<span class='timestamp'>" . $timestamp . "</span>";
+                echo "<span class='timestamp'>" . $time_ago . "</span>";
                 echo "<p>" . $message . "</p>";
                 echo "</div>";
             }

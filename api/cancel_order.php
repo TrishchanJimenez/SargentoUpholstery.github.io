@@ -16,7 +16,7 @@
         $order_id = $_POST['order_id'];
 
         // Update the `order_status` to 'received'
-        $sql = "UPDATE orders SET order_status = 'cancelled' WHERE order_id = ?";
+        $sql = "UPDATE orders SET is_cancelled = 1 WHERE order_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $order_id); // "i" denotes the type (integer) of the parameter
 
@@ -26,7 +26,7 @@
             // Close connection
             $conn->close();
             // Redirect to the original page
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/my/orders.php');
+            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/my/user_orders.php');
             exit();
         } else {
             echo "Error updating record: " . $stmt->error;

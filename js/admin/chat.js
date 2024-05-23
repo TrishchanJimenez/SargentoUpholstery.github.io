@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching customers:', error));
     }
-    
+
     // Function to fetch messages for a specific customer
     function fetchMessages(customerId) {
         currentCustomerId = customerId;
@@ -44,12 +44,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     const messageElement = document.createElement('div');
                     messageElement.textContent = message.message;
                     messageElement.className = message.sender_id === currentCustomerId ? 
-                    'admin-chat__message customer' : 
-                    'admin-chat__message admin'; // Apply different classes based on sender_id
+                        'admin-chat__message customer' : 
+                        'admin-chat__message admin'; // Apply different classes based on sender_id
+                    const timestampElement = document.createElement('span');
+                    timestampElement.textContent = formatTimestamp(message.timestamp);
+                    timestampElement.className = 'admin-chat__message-timestamp';
                     messagesContainer.appendChild(messageElement);
+                    messageElement.appendChild(timestampElement);
                 });
             })
             .catch(error => console.error('Error fetching messages:', error));
+    }
+
+    // Function to format timestamp into human-readable format
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const currentDate = new Date();
+        const diff = currentDate - date;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        if (days > 0) {
+            return days === 1 ? 'Yesterday' : `${days} days ago`;
+        } else if (hours > 0) {
+            return hours === 1 ? 'An hour ago' : `${hours} hours ago`;
+        } else if (minutes > 0) {
+            return minutes === 1 ? 'A minute ago' : `${minutes} minutes ago`;
+        } else {
+            return 'Just now';
+        }
     }
 
     // Event listener for sending a message

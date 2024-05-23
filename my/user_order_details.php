@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 $order_id = $_GET['order-id'];
 
 // Use prepared statements to prevent SQL injection
-$stmt = $conn->prepare("SELECT order_type FROM orders WHERE order_id = ?");
+$stmt = $conn->prepare("SELECT order_type, is_cancelled, is_accepted, order_status, order_id, refusal_reason, is_cancelled FROM orders WHERE order_id = ?");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -57,25 +57,15 @@ $payment_status_text = ucwords(str_replace("_", " ", $order_details['payment_sta
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
-    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="/css/global.css">
     <style>
 body{
     background-color: #F8F7F1;
 }
-.back-button {
-    background-color: #FFDC5C; /* Blue background */
-    color: black; /* White text */
-    font-family: 'Playfair Display';
-    border: none; /* No border */
-    padding: 10px 20px; /* Some padding */
-    text-align: center; /* Centered text */
-    text-decoration: none; /* No underline */
-    display: inline-block; /* Make the button inline */
-    font-size: 16px; /* Increase font size */
-    margin: 10px 0 0 10px; /* Some margin */
-    cursor: pointer; /* Pointer/hand icon */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth transition */
+
+.back-button-img{
+    width: 50px;
+    margin: 25px 0 0px 30px;
 }
 
 .back-button:hover {
@@ -155,11 +145,47 @@ body{
     margin: 40px 0 0 0 ;
     font-family: Inter;
 }
+.rejected-reason{
+    width: 50%;
+    margin: 3% auto 0 auto;
+    height: auto; /* Changed from fixed height */
+    background-color: #FDFDFD;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    font-family: Inter;
+    font-size: 18px;
+}
+.rejected-header{
+    font-family: 'Playfair Display';
+    color: #FFDC5C;
+    background-color: BLACK;
+    padding: 3%;
+}
+.text-field{
+    padding-top: 4%;
+    padding-bottom: 4%;
+    margin: 0 auto 0 auto;
+    text-align: center;
+    width: 80%;
+}
+.review-button{
+    padding: 20px 25px;
+    border: none;
+    background-color: #FFDC5C;
+    border-radius: 5px 5px 0 0;
+    font-size: 25px;
+    font-family: 'Playfair Display';
+    font-weight: 700;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    border-radius: 25px;
+    margin-top: 20px ;
+    }
     </style>
 </head>
 <body>
-<?php include_once("header.php"); ?>
-<button class="back-button" onclick="goBack()">Go Back</button>
+<?php include_once("../header.php"); ?>
+<a href="javascript:void(0);" onclick="goBack()">
+    <img src="\websiteimages\back.png" alt="Go Back" class="back-button-img">
+</a>
 
     <div class="order-details-header">
         <h2>ORDER DETAILS</h2>
@@ -213,31 +239,91 @@ body{
                 </tr>
                 <tr>
                     <td class="content"><p><?php echo htmlspecialchars($payment_status_text); ?></p></td>
-                    <td class="content"><p><?php echo htmlspecialchars($prod_status_text); ?></p></td>
+                    <td class="content"><p><?php 
+                    if($order['is_cancelled'] == 1){
+                        echo'Cancelled';
+                    }else{
+                        if($order['order_status'] === 'pending_fullpayment'){
+                            echo'Waiting For Verification';
+                        }else{
+                            if($order['order_status'] === 'ready_for_pickup'){
+                                echo'Ready For Pickup';
+                            }else{
+                                if($order['is_accepted'] =='rejected'){
+                                    echo'Rejected';
+                                }else{
+                                    if($order['order_status'] ==='received'){
+                                        echo'Received';
+                                    }else{
+                                        if($order['order_status'] === 'in_production'){
+                                            echo'In Production';
+                                        }else{
+                                            if($order['is_accepted'] === 'pending'){
+                                                echo'Pending';
+                                            }else if($order['is_accepted'] === 'accepted'){
+                                                echo'Accepted';
+                                            }else{
+                                                if($order['is_cancelled'] === 0){
+                                                    echo htmlspecialchars($prod_status_text);
+                                                }else{
+                                                    echo'Cancelled';
+                                                }
+                                            }
+                                        }
+                                    }
+                                } 
+                            }  
+                        }   
+                    }
+                    
+                    ?></p></td>
                 </tr>
         </table>
     </div>
-    <div class="right-side">
-    <div class="order-details-container-right">
-    <div class="">
-        <div class="order-details-container-header-right">
-            <h2>ORDER IMAGE</h2>
+        <div class="right-side">
+            <div class="order-details-container-right">
+            <div class="">
+                <div class="order-details-container-header-right">
+                    <h2>ORDER IMAGE</h2>
+                </div>
+                <div class="order-details-image">
+                        <img src="<?php echo $image_path; ?>" alt="Order Image">
+                </div>
+            </div>
+            </div>
+            <?php 
+                if($order['order_status'] === 'received'){
+                    echo'
+                        <form action="review/Review_Submission.php" method="post">
+                           <input type="hidden" name="order_id" value="' . $order["order_id"] . '">
+                           <button type="submit" class="review-button">Review</button>
+                        </form>
+                                   ';
+                }else if($order['is_cancelled'] == 0){
+                    echo'
+                        <form action="/api/cancel_order.php" method="post">
+                            <input type="hidden" name="order_id" value="' . $order["order_id"] .'"> <!-- Fixed $row to $order_id -->
+                            <button type="submit" class="cancel-order-button">Cancel Order</button>
+                        </form>';
+                }
+            ?>
         </div>
-        <div class="order-details-image">
-                <img src="<?php echo $image_path; ?>" alt="Order Image">
-        </div>
-    </div>
-    </div>
-    <form action="cancel_order.php" method="post">
-    <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order_id); ?>"> <!-- Fixed $row to $order_id -->
-    <button type="submit" class="cancel-order-button">Cancel Order</button>
-    </form>
-    </div>
-
-
     </div>
     
+    <?php
+        if($order['is_accepted'] === 'rejected'){
+            echo'<div class="rejected-reason">
+                    <div class="rejected-header">
+                        <h2>REFUSAL REASON</h2>
+                    </div>
+                    <div class="text-field">
+                    <p>' . $order["refusal_reason"] . '</p>
+                    </div>
+            </div>';
+        }
+    ?>
 
+    
 </body>
 </html>
 <script>

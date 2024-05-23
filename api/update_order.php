@@ -26,7 +26,7 @@
             // Close connection
             $conn->close();
             // Redirect to the original page
-            header("Location: orders.php#tab6");
+            header("Location: /my/user_orders.php#tab6");
             exit();
         } else {
             echo "Error updating record: " . $stmt->error;

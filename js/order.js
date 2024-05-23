@@ -62,12 +62,10 @@ function clearRepairFields() {
     // document.getElementById("thirdPartyPickup").checked = false;
     // document.getElementById("selfPickup").checked = false;
     document.getElementById("pickup_address").value = "";
-    document.getElementById("setPickupAddress").checked = false;
 
     // document.getElementById("thirdPartyPickup").required = false;
     // document.getElementById("selfPickup").required = false;
     document.getElementById("pickup_address").required = false;
-    document.getElementById("setPickupAddress").required = false;
 }
 
 

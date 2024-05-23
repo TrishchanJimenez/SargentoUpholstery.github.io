@@ -28,6 +28,14 @@
 <body>
     <?php 
     include_once("header.php");
+    include_once('database_connection.php');
+
+    // GET ALL ADDRESS OF THE USER
+    $sql = "SELECT * FROM addresses WHERE user_id = :user_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':user_id', $_SESSION['user_id']);
+    $stmt->execute();
+    $addresses = $stmt->fetchAll(); 
     ?>
     <div class="featured-banner">
         <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
@@ -89,7 +97,7 @@
                         <!-- referenceImage [ FILE ] -->
                         <div class="quotation-form__input-container">
                             <label for="referenceImage" class="quotation-form__label">Please provide a reference image of the furniture:</label>
-                            <input type="file" id="referenceImage" name="referenceImage" accept=".jpg" class="quotation-form__file" required>
+                            <input type="file" id="referenceImage" name="referenceImage" accept=".jpg" class="quotation-form__file">
                         </div>
                     </div>
                 </fieldset>
@@ -110,9 +118,13 @@
                         <!-- pickup_address [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="pickup_address" class="quotation-form__label">Where shall we pick up the furniture to be repaired?</label>
-                            <textarea id="pickup_address" name="pickup_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the pickup address here."></textarea><br>
-                            <input type="checkbox" id="setPickupAddress" name="setPickupAddress" class="quotation-form__checkbox">
-                            <label for="setPickupAddress" class="quotation-form__checkbox-label">Set as my current address</label>
+                            <input list="address-options" id="pickup_address" name="pickup_address" class="quotation-form__textarea" placeholder="Enter the pickup address here.">
+                            <datalist id="address-options">
+                                <?php foreach ($addresses as $address) { ?>
+                                    <option value="<?php echo $address["address"] ?>"><?= htmlspecialchars($address["address"]) ?></option>
+                                <?php } ?>
+                            </datalist>
+                            <input type="hidden" name="pickup_address_id">
                         </div>
                     </div>
                     <div class="quotation-form__input-container-group">
@@ -128,9 +140,7 @@
                         <!-- del_address [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
-                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here."required></textarea><br>
-                            <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
-                            <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
+                            <input list="address-options" id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here." required><br>
                         </div>
                     </div>
                 </fieldset>
@@ -146,7 +156,6 @@
             <h1 class="faq__title">Frequently Asked Questions</h1>
             <ol class="faq__list">
                 <?php
-                    include_once('database_connection.php');
                     $sql = "SELECT * FROM faqs";
                     $stmt = $conn->query($sql);
                     $faqs = $stmt->fetchAll();
@@ -175,6 +184,7 @@
 <?php
     // Include database connection
     include_once("alert.php");
+    include_once("api/CheckAddress.php");
 
     function sanitize_input($data) {
         return htmlspecialchars(strip_tags($data));
@@ -187,9 +197,7 @@
             $furniture_type = sanitize_input($_POST['furniture_type']);
             $notes = sanitize_input($_POST['notes']);
             $del_method = sanitize_input($_POST['del_method']);
-            $del_address = sanitize_input($_POST['del_address']);
-            $pickup_method = isset($_POST['pickup_method']) ? sanitize_input($_POST['pickup_method']) : null;
-            $pickup_address = isset($_POST['pickup_address']) ? sanitize_input($_POST['pickup_address']) : null;
+            $del_address_id = getAddressId(trim($_POST['del_address']), $conn, $_SESSION['user_id']);
         
             // Handle file upload
             $ref_img_path = null;
@@ -226,14 +234,34 @@
     
         try { // Inserting the values
             // Insert into orders table
-            $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)";
+            $query = "
+                INSERT INTO 
+                    orders (
+                        user_id, 
+                        furniture_type, 
+                        order_type, 
+                        ref_img_path, 
+                        del_method, 
+                        del_address_id, 
+                        notes
+                    ) 
+                VALUES (
+                    :user_id, 
+                    :furniture_type, 
+                    :order_type, 
+                    :ref_img_path, 
+                    :del_method, 
+                    :del_address_id, 
+                    :notes
+                )
+            ";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':user_id', $_SESSION["user_id"]);
             $stmt->bindParam(':furniture_type', $furniture_type);
             $stmt->bindParam(':order_type', $order_type);
             $stmt->bindParam(':ref_img_path', $ref_img_path);
             $stmt->bindParam(':del_method', $del_method);
-            $stmt->bindParam(':del_address', $del_address);
+            $stmt->bindParam(':del_address_id', $del_address_id);
             $stmt->bindParam(':notes', $notes);
             $stmt->execute();
     
@@ -241,11 +269,26 @@
     
             // Insert into pickup table if order_type is "repair"
             if ($order_type === 'repair') {
-                $query = "INSERT INTO pickup (order_id, pickup_method, pickup_address) VALUES (:order_id, :pickup_method, :pickup_address)";
+                $pickup_method = isset($_POST['pickup_method']) ? sanitize_input($_POST['pickup_method']) : null;
+                $pickup_address_id = isset($_POST['pickup_address']) ? getAddressId(sanitize_input(trim($_POST['pickup_address'])), $conn, $_SESSION['user_id']) : null;
+
+                $query = "
+                    INSERT INTO 
+                        pickup (
+                            order_id, 
+                            pickup_method, 
+                            pickup_address_id
+                        ) 
+                    VALUES (
+                        :order_id, 
+                        :pickup_method, 
+                        :pickup_address_id
+                    )
+                ";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':order_id', $order_id);
                 $stmt->bindParam(':pickup_method', $pickup_method);
-                $stmt->bindParam(':pickup_address', $pickup_address);
+                $stmt->bindParam(':pickup_address_id', $pickup_address_id);
                 $stmt->execute();
             }
     
@@ -258,10 +301,10 @@
 
         try {
             // Create a new notification message
-            $notif_msg = "New quotation form submitted by: " . $_SESSION['name']; // Customize the message as needed
+            $notif_msg = "You have successfully placed a quote request. Please await confirmation of order."; // Customize the message as needed
 
             // Call the createNotif function
-            if (createNotif($_SESSION['user_id'], $notif_msg)) {
+            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/user_orders.php")) {
                 // Notification created successfully
                 echo "Notification created successfully";
             } else {
