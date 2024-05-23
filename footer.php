@@ -25,3 +25,13 @@
         </div>
     </div>
 </footer>
+<?php
+    // Start session if not already started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (isset($_SESSION['user_id']) && $_SESSION['access_type'] == 'customer') {
+        include_once("chat.php");
+    }
+?>
