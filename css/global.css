@@ -382,13 +382,15 @@ body {
 }
 
 /* Notification message styling */
-.notif__message {
+.notif__message > .notif__redirect-link {
     display: flex;
     align-items: center;
     padding: 10px;
+    border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     position: relative;
     color: black;
+    max-width: fit-content;
 }
 
 .notif__message.unread {
@@ -398,6 +400,7 @@ body {
 .notif__text {
     flex: 1 0 80%;
     padding-right: 10px;
+    width: 70%;
 }
 
 .notif__divider {
@@ -411,23 +414,47 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    flex: 0 0 20%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    width: 25%;
 }
 
-.mark-read-btn img {
+.mark-read-img {
     display: inline-block;
     vertical-align: middle;
 }
 
+.mark-read-img--unread {
+    display: inline-block;
+}
+
+.mark-read-img--read {
+    display: none;
+}
+
+.notif__message.unread .mark-read-img--unread {
+    display: inline-block;
+}
+
+.notif__message.unread .mark-read-img--read {
+    display: none;
+}
+
+.notif__message:not(.unread) .mark-read-img--unread {
+    display: none;
+}
+
+.notif__message:not(.unread) .mark-read-img--read {
+    display: inline-block;
+}
+
+
 /* Tooltip styling */
-.mark-read-btn[title]:hover::after {
+/* .mark-read-btn[title]:hover::after {
     content: attr(title);
     position: absolute;
-    bottom: 125%; /* Position above the button */
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
     background: #333;
@@ -453,4 +480,4 @@ body {
     z-index: 10;
     opacity: 1;
     transition: opacity 0.2s;
-}
+} */

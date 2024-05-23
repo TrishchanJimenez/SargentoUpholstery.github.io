@@ -111,25 +111,35 @@
 }
 
 .admin-chat__message {
-    margin-bottom: 0.75rem;
-    padding: 0.75rem 1rem;
-    background-color: #F9FAFB;
-    border-radius: 0.375rem;
-    border: 1px solid var(--gray-300, #D1D5DB);
-    width: fit-content;
-    max-width: 70%;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    word-wrap: break-word; /* Enable word wrapping */
+    white-space: pre-wrap; /* Preserve line breaks */
+    overflow-wrap: break-word; /* Ensure long words are wrapped */
+    display: flex;
+    flex-direction: column;
 }
 
 .admin-chat__message.customer {
-    text-align: left;
+    background-color: #f0f0f0;
+    color: #000;
     align-self: flex-start;
-    background-color: #DCF8C6; /* Light green */
+    text-align: left;
 }
 
 .admin-chat__message.admin {
-    text-align: right;
+    background-color: #FFDC5C;
+    color: #000;
     align-self: flex-end;
-    background-color: #C1DAF8; /* Light blue */
+    text-align: right;
+}
+
+.admin-chat__message-timestamp {
+    padding-top: 5px;
+    font-size: 9px;
+    color: #666;
 }
 
 .admin-chat__message-form {

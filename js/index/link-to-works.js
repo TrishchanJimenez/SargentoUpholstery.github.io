@@ -1,5 +1,5 @@
 const productContainer = document.querySelector('.product-categories');
-let url = "./services_works.html";
+let url = "./services_works.php";
 
 productContainer.addEventListener('click', (e) => {
     if(e.target.closest('a') !== null) {
