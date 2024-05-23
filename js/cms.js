@@ -3,9 +3,25 @@ const allTabs = document.querySelectorAll('.tab');
 const allTabButtons = document.querySelectorAll('.tab-button');
 const currentTab = document.querySelector('.active-tab'); 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const lastTab = sessionStorage.getItem('lastTab');
+    if (lastTab) {
+        const tabToActivate = document.querySelector(`[data-tab="${lastTab}"]`);
+        if (tabToActivate) {
+            tabToActivate.click();
+        } 
+    } else {
+        const homeTab = document.querySelector('[data-tab="home"]');
+        if (homeTab) {
+            homeTab.click();
+        }
+    }
+});
+
 tabSelector.addEventListener('click', (e) => {
     if (!e.target.classList.contains('tab-button')) return;
     const tabName = e.target.dataset.tab;
+    sessionStorage.setItem('lastTab', tabName);
     allTabs.forEach(tab => {
         if (tab.dataset.page === tabName) {
             tab.classList.add('active');
@@ -24,13 +40,19 @@ tabSelector.addEventListener('click', (e) => {
 
 const modal = document.querySelector('.modal-background');
 const modalTitle = modal.querySelector('.edit-title');
-const imageUpload = modal.querySelector('#fileInput');
-const imagePreview = modal.querySelector('#image-preview');
 const longTextArea = modal.querySelector('textarea[name="content_text"]');
 
 const editShortTextForm = modal.querySelector('form[name="edit-short-text"]');
 const editLongTextForm = modal.querySelector('form[name="edit-long-text"]');
 const editFaqForm = modal.querySelector('form[name="edit-faq"]');
+const editGalleryForm = modal.querySelector('form[name="add-gallery-image"]');
+const editImageForm = modal.querySelector('form[name="edit-website-image"]');
+
+const imageUploadGallery = editGalleryForm.querySelector('#fileInput');
+const imagePreviewGallery = editGalleryForm.querySelector('#image-preview');
+
+const imageUploadWebsite = editImageForm.querySelector('#fileInput');
+const imagePreviewWebsite = editImageForm.querySelector('#image-preview');
 
 const textPlaceholder = editShortTextForm.querySelector('input[type="text"]');
 
@@ -39,6 +61,7 @@ const answerInput = modal.querySelector('textarea[name="faq-answer"]');
 
 const submitFaqBtn = editFaqForm.querySelector(' .btn-save');
 const deleteFaqBtn = editFaqForm.querySelector(' .btn-delete');
+const backTopBtn = document.querySelector('.back-to-top');
 
 let longTextEdit;
 let shortTextEdit;
@@ -46,6 +69,8 @@ let faqItem;
 let content_id;
 let faq_id;
 let clickedFaqOption;
+let modalIsOpen;
+let imageToEdit;
 
 currentTab.addEventListener('click', (e) => {
     // IF GALLERY ITEM
@@ -55,7 +80,7 @@ currentTab.addEventListener('click', (e) => {
         // IF ADD IMAGE
         if(galleryItem.classList.contains('add-image')) {
             modalTitle.innerText = "Add Gallery Image";
-            imageUpload.required = true;
+            imageUploadGallery.required = true;
             openModal();
             addGalleryImageForm.addEventListener('submit', (e) => {
                 e.preventDefault(); 
@@ -103,8 +128,8 @@ currentTab.addEventListener('click', (e) => {
                 console.log(data);
                 categoryText.value = data.category;
                 colorText.value = data.color;
-                imagePreview.src = data.img_path;
-                imageUpload.required = false;
+                imagePreviewGallery.src = data.img_path;
+                imageUploadGallery.required = false;
             });
             openModal();
             addGalleryImageForm.addEventListener('submit', (e) => {
@@ -158,14 +183,14 @@ currentTab.addEventListener('click', (e) => {
             }
         }
      
-        imageUpload.addEventListener('change', (e) => {
+        imageUploadGallery.addEventListener('change', (e) => {
             console.log('upload');
-            const file = imageUpload.files;
+            const file = imageUploadGallery.files;
             if (file) {
                 console.log('test');
                 const fileReader = new FileReader();
                 fileReader.onload = event => {
-                    imagePreview.setAttribute('src', event.target.result);
+                    imagePreviewGallery.setAttribute('src', event.target.result);
                 }
                 fileReader.readAsDataURL(file[0]);
             }
@@ -216,15 +241,44 @@ currentTab.addEventListener('click', (e) => {
         editFaqForm.removeEventListener('submit', handleFaqFormSubmit);
         editFaqForm.addEventListener('submit', handleFaqFormSubmit);
     }
+
+    imageToEdit = e.target.closest('.image-edit');
+    if(imageToEdit !== null) {
+        displayForm('edit-website-image');
+        modalTitle.innerText = "Edit Image";
+        content_id = imageToEdit.dataset.id;
+        imagePreviewWebsite.src = imageToEdit.querySelector('img').src; 
+        openModal();
+
+        imageUploadWebsite.addEventListener('change', (e) => {
+            console.log('upload');
+            const file = imageUploadWebsite.files;
+            if (file) {
+                console.log('test');
+                const fileReader = new FileReader();
+                fileReader.onload = event => {
+                    imagePreviewWebsite.setAttribute('src', event.target.result);
+                }
+                fileReader.readAsDataURL(file[0]);
+            }
+        });
+
+        editImageForm.removeEventListener('submit', handleImageFormSubmit);
+        editImageForm.addEventListener('submit', handleImageFormSubmit);
+    }
 });
 
 function openModal() {
     modal.style.display = 'block';
-    imagePreview.src = '';
+    imagePreviewGallery.src = '';
+    backTopBtn.style.display = 'none';
+    modalIsOpen = true;
 }
 
 function closeModal() {
     modal.style.display = "none";
+    modalIsOpen = false;
+    checkTopBtnPosition();
 }
 
 function cancelModal() {
@@ -369,7 +423,7 @@ function handleFaqFormSubmit(e) {
         // console.log(response.text());
         return response.json();
     }).then(data => {
-        // console.log(data);
+        console.log(data);
     });
     if (clickedButton === 'save') {
         faqItem.querySelector('.faq__question').innerText = questionInput.value;
@@ -377,5 +431,39 @@ function handleFaqFormSubmit(e) {
     } else {
         faqItem.remove();
     }
+
+    imageToEdit.querySelector('img').src = imagePreviewWebsite.src;
     closeModal();
+}
+
+function handleImageFormSubmit(e) {
+    e.preventDefault(); 
+    const imageData = new FormData();    
+    imageData.append('content_id', content_id);
+    console.log(imageData);
+    fetch('/api/Content.php', {
+        method: 'POST',
+        body: imageData
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log(response.text());
+        return response.json();
+    }).then(data => {
+        console.log(data);
+    });
+}
+
+backTopBtn.addEventListener('click', function() {
+    window.scrollTo(0, 0);
+});
+
+window.addEventListener('scroll', checkTopBtnPosition);
+function checkTopBtnPosition() {
+    if (window.pageYOffset > window.innerHeight && !modalIsOpen) {
+        backTopBtn.style.display = 'block';
+    } else {
+        backTopBtn.style.display = 'none';
+    }
 }

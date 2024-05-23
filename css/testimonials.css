@@ -16,6 +16,7 @@
 
 .testimonials-title p {
     font-size: var(--fs-24);
+    margin-bottom: 2rem;
 }
 
 .testimonials-title a {

@@ -27,8 +27,8 @@
         <a href="order.php" class="btn btn-black">Get a free quote</a>
     </div>
     <div class="product">
-        <h2 class="product-category-title"><?= $contentsById["HOMECRAFTSTITLE"]["content_text"] ?></h2>
-        <p class="product-category-intro"><?= $contentsById["HOMECRAFTSTEXT"]["content_text"] ?></p>
+        <h2 class="product-category-title"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMECRAFTSTITLE"]["content_text"])) ?></h2>
+        <p class="product-category-intro"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMECRAFTSTEXT"]["content_text"])) ?></p>
         <div class="product-categories">
             <a class="product-category" id="category-loveseat">
                 <img src="/websiteimages/loveseatsimg.png" alt="">
@@ -57,18 +57,19 @@
         </div>
     </div>
     <div class="testimonials">
-        <h2 class="testimonials-title">Our Clients' Testimonials</h2>
+        <h2 class="testimonials-title"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMETESTIMONIALTITLE"]["content_text"])) ?></h2>
         <div class="reviews">
             <div class="review">
                 <img src="/websiteimages/Start quote.png" alt="" class="quote quote-start">
-                <p>Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for
-                    Sargento Upholstery.<br><br><span class="client-name">-JB von Kampfer</span></p>
+                <p>
+                    <p><?= stripslashes(htmlspecialchars_decode($contentsById["HOMETESTIMONIALCOMMENT1"]["content_text"])) ?></p>
+                    <br><br><span class="client-name"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMETESTIMONIALAUTHOR1"]["content_text"])) ?></span></p>
                 <img src="/websiteimages/End quote.png" alt="" class="quote quote-end">
             </div>
             <div class="review">
                 <img src="/websiteimages/Start quote.png" alt="" class="quote quote-start">
-                <p>Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!<br><br><span
-                        class="client-name">-Albert Mendoza</span></p>
+                <p><?= stripslashes(htmlspecialchars_decode($contentsById["HOMETESTIMONIALCOMMENT2"]["content_text"])) ?></p>
+                <br><br><span class="client-name"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMETESTIMONIALAUTHOR2"]["content_text"])) ?></span></p>
                 <img src="/websiteimages/End quote.png" alt="" class="quote quote-end">
             </div>
         </div>
@@ -76,8 +77,8 @@
     </div>
     <div class="about-us">
         <img src="/websiteimages/teampicture.png" alt="" class="team-picture">
-        <h2 class="text-gold"><?= $contentsById["HOMEABOUTTITLE"]["content_text"] ?></h2>
-        <p class="business-history"><?= $contentsById["HOMEABOUTTEXT"]["content_text"] ?></p>
+        <h2 class="text-gold"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMEABOUTTITLE"]["content_text"])) ?></h2>
+        <p class="business-history"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMEABOUTTEXT"]["content_text"])) ?></p>
         <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
     <?php 
