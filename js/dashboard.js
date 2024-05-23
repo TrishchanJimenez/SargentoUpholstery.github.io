@@ -14,7 +14,7 @@ function openstats(tabName) {
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
-    document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).style.display = "flex";
 }
 
 
@@ -122,7 +122,7 @@ function openstats(tabName) {
                 for (var i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].style.display = "none";
                 }
-                document.getElementById(tabName).style.display = "block";
+                document.getElementById(tabName).style.display = "flex";
         
                 // Update charts based on selected tab
                 switch (tabName) {
