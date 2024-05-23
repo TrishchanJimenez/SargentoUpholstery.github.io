@@ -226,7 +226,27 @@
     
         try { // Inserting the values
             // Insert into orders table
-            $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address, :notes)";
+            $query = "
+                INSERT INTO 
+                    orders (
+                        user_id, 
+                        furniture_type, 
+                        order_type, 
+                        ref_img_path, 
+                        del_method, 
+                        del_address, 
+                        notes
+                    ) 
+                VALUES (
+                    :user_id, 
+                    :furniture_type, 
+                    :order_type, 
+                    :ref_img_path, 
+                    :del_method, 
+                    :del_address, 
+                    :notes
+                )
+            ";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':user_id', $_SESSION["user_id"]);
             $stmt->bindParam(':furniture_type', $furniture_type);
@@ -241,7 +261,19 @@
     
             // Insert into pickup table if order_type is "repair"
             if ($order_type === 'repair') {
-                $query = "INSERT INTO pickup (order_id, pickup_method, pickup_address) VALUES (:order_id, :pickup_method, :pickup_address)";
+                $query = "
+                    INSERT INTO 
+                        pickup (
+                            order_id, 
+                            pickup_method, 
+                            pickup_address
+                        ) 
+                    VALUES (
+                        :order_id, 
+                        :pickup_method, 
+                        :pickup_address
+                    )
+                ";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':order_id', $order_id);
                 $stmt->bindParam(':pickup_method', $pickup_method);
@@ -258,10 +290,10 @@
 
         try {
             // Create a new notification message
-            $notif_msg = "New quotation form submitted by: " . $_SESSION['name']; // Customize the message as needed
+            $notif_msg = "You have successfully placed a quote request. Please await confirmation of order."; // Customize the message as needed
 
             // Call the createNotif function
-            if (createNotif($_SESSION['user_id'], $notif_msg)) {
+            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/orders.php")) {
                 // Notification created successfully
                 echo "Notification created successfully";
             } else {
