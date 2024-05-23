@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 $order_id = $_GET['order-id'];
 
 // Use prepared statements to prevent SQL injection
-$stmt = $conn->prepare("SELECT order_type FROM orders WHERE order_id = ?");
+$stmt = $conn->prepare("SELECT order_type, is_cancelled, is_accepted, order_status, refusal_reason FROM orders WHERE order_id = ?");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -155,6 +155,28 @@ body{
     margin: 40px 0 0 0 ;
     font-family: Inter;
 }
+.rejected-reason{
+    width: 50%;
+    margin: 3% auto 0 auto;
+    height: auto; /* Changed from fixed height */
+    background-color: #FDFDFD;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    font-family: Inter;
+    font-size: 18px;
+}
+.rejected-header{
+    font-family: 'Playfair Display';
+    color: #FFDC5C;
+    background-color: BLACK;
+    padding: 3%;
+}
+.text-field{
+    padding-top: 4%;
+    padding-bottom: 4%;
+    margin: 0 auto 0 auto;
+    text-align: center;
+    width: 80%;
+}
     </style>
 </head>
 <body>
@@ -213,31 +235,74 @@ body{
                 </tr>
                 <tr>
                     <td class="content"><p><?php echo htmlspecialchars($payment_status_text); ?></p></td>
-                    <td class="content"><p><?php echo htmlspecialchars($prod_status_text); ?></p></td>
+                    <td class="content"><p><?php 
+                    if($order['order_status'] === 'pending_fullpayment'){
+                        echo'Waiting For Verification';
+                    }else{
+                        if($order['order_status'] === 'ready_for_pickup'){
+                            echo'Ready For Pickup';
+                        }else{
+                            if($order['is_accepted'] =='rejected'){
+                                echo'Rejected';
+                            }else{
+                                if($order['order_status'] ==='received'){
+                                    echo'Received';
+                                }else{
+                                    if($order['order_status'] === 'in_production'){
+                                        echo'In Production';
+                                    }else{
+                                        if($order['is_accepted'] === 'pending'){
+                                            echo'Pending';
+                                        }else if($order['is_accepted'] === 'accepted'){
+                                            echo'Accepted';
+                                        }else{
+                                            if($order['is_cancelled'] === 0){
+                                                echo htmlspecialchars($prod_status_text);
+                                            }else{
+                                                echo'Cancelled';
+                                            }
+                                        }
+                                    }
+                                }
+                            } 
+                        }  
+                    }   
+                    ?></p></td>
                 </tr>
         </table>
     </div>
-    <div class="right-side">
-    <div class="order-details-container-right">
-    <div class="">
-        <div class="order-details-container-header-right">
-            <h2>ORDER IMAGE</h2>
+        <div class="right-side">
+            <div class="order-details-container-right">
+            <div class="">
+                <div class="order-details-container-header-right">
+                    <h2>ORDER IMAGE</h2>
+                </div>
+                <div class="order-details-image">
+                        <img src="<?php echo $image_path; ?>" alt="Order Image">
+                </div>
+            </div>
+            </div>
+                <form action="cancel_order.php" method="post">
+                <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order_id); ?>"> <!-- Fixed $row to $order_id -->
+                <button type="submit" class="cancel-order-button">Cancel Order</button>
+                </form>
         </div>
-        <div class="order-details-image">
-                <img src="<?php echo $image_path; ?>" alt="Order Image">
-        </div>
-    </div>
-    </div>
-    <form action="cancel_order.php" method="post">
-    <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order_id); ?>"> <!-- Fixed $row to $order_id -->
-    <button type="submit" class="cancel-order-button">Cancel Order</button>
-    </form>
-    </div>
-
-
     </div>
     
+    <?php
+        if($order['is_accepted'] === 'rejected'){
+            echo'<div class="rejected-reason">
+                    <div class="rejected-header">
+                        <h2>REFUSAL REASON</h2>
+                    </div>
+                    <div class="text-field">
+                    <p>' . $order["refusal_reason"] . '</p>
+                    </div>
+            </div>';
+        }
+    ?>
 
+    
 </body>
 </html>
 <script>
