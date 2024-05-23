@@ -68,5 +68,54 @@ function clearRepairFields() {
     document.getElementById("pickup_address").required = false;
 }
 
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const setPickupAddressCheckbox = document.getElementById("setPickupAddress");
+    const pickupAddressTextarea = document.getElementById("pickup_address");
+    const setDeliveryAddressCheckbox = document.getElementById("setDeliveryAddress");
+    const deliveryAddressTextarea = document.getElementById("del_address");
+
+    function fetchUserAddress(callback) {
+        fetch('/api/get_user_details.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.address) {
+                    callback(data.address);
+                } else {
+                    alert("No address found in user details.");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+                alert("Failed to fetch user details.");
+            });
+    }
+
+    setPickupAddressCheckbox.addEventListener("change", function() {
+        if (this.checked) {
+            fetchUserAddress(address => {
+                pickupAddressTextarea.value = address;
+                pickupAddressTextarea.readOnly = true;
+            });
+        } else {
+            pickupAddressTextarea.value = '';
+            pickupAddressTextarea.readOnly = false;
+        }
+    });
+
+    setDeliveryAddressCheckbox.addEventListener("change", function() {
+        if (this.checked) {
+            fetchUserAddress(address => {
+                deliveryAddressTextarea.value = address;
+                deliveryAddressTextarea.readOnly = true;
+            });
+        } else {
+            deliveryAddressTextarea.value = '';
+            deliveryAddressTextarea.readOnly = false;
+        }
+    });
+});
+
 // Trigger toggleInputs() initially to ensure correct display
 toggleInputs();

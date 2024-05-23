@@ -47,11 +47,15 @@
 }
 
 .quotation-form {
+    margin: 5vh 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 90%;
+    * {
+        font-family: "Inter", sans-serif;
+    }
 }
 
 .quotation-form__fieldset {
@@ -60,6 +64,10 @@
     display: none;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.quotation-form__description {
+    padding: 2.5vmin;
 }
 
 .quotation-form__input-container-group {

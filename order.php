@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
         // Redirect or handle unauthorized access
@@ -8,7 +10,6 @@
     } else {
         $autofill_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
         $autofill_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-        $autofill_customer_address = isset($_SESSION['user_address']) ? $_SESSION['user_address'] : '';
         $autofill_contact_number = isset($_SESSION['contact_number']) ? $_SESSION['contact_number'] : '';
     }
 ?>
@@ -45,7 +46,11 @@
             <p>Request a quote to get custom pricing. Please take a moment to fill in the form.</p>
             <form class="quotation-form" method="post" enctype="multipart/form-data">
                 <fieldset class="quotation-form__fieldset" id="personal_info">
-                    <legend class="quotation-form__legend">Personal Information: </legend>
+                    <legend class="quotation-form__legend">Personal Information </legend>
+                    <p class="quotation-form__description">
+                        Please review the following personal information and ensure all details are correct.
+                        If you wish to change details, <a href="my/account.php">click here</a>.
+                    </p>
                     <div class="quotation-form__input-container-group">
                         <!-- Customer Name [ TEXT ] -->
                         <div class="quotation-form__input-container">
@@ -67,6 +72,9 @@
                 </fieldset>
                 <fieldset class="quotation-form__fieldset" id="order_details">
                     <legend class="quotation-form__legend">Order Details</legend>
+                    <p class="quotation-form__description">
+                        Please provide details and instructions about your order.
+                    </p>
                     <div class="quotation-form__input-container-group">
                         <!-- Order Type [ ENUM(repair, mto) ] -->
                         <div class="quotation-form__input-container">
@@ -95,6 +103,9 @@
                 </fieldset>
                 <fieldset class="quotation-form__fieldset" id="delivery_details">
                     <legend class="quotation-form__legend">Delivery Details</legend>
+                    <p class="quotation-form__description">
+                        Please provide details about the transportation of your furniture.
+                    </p>
                     <div class="quotation-form__input-container-group--repair">
                         <!-- pickup_method [ ENUM(third_party, self) ] -->
                         <div class="quotation-form__input-container">
@@ -140,6 +151,7 @@
                 </div>
             </form>
         </div>
+        <script src="js/order.js"></script>
         <div class="faq">
             <h1 class="faq__title">Frequently Asked Questions</h1>
             <ol class="faq__list">
@@ -165,7 +177,6 @@
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
-    <script src="js/order.js"></script>
 </body>
 
 </html>
@@ -223,7 +234,27 @@
     
         try { // Inserting the values
             // Insert into orders table
-            $query = "INSERT INTO orders (user_id, furniture_type, order_type, ref_img_path, del_method, del_address_id, notes) VALUES (:user_id, :furniture_type, :order_type, :ref_img_path, :del_method, :del_address_id, :notes)";
+            $query = "
+                INSERT INTO 
+                    orders (
+                        user_id, 
+                        furniture_type, 
+                        order_type, 
+                        ref_img_path, 
+                        del_method, 
+                        del_address_id, 
+                        notes
+                    ) 
+                VALUES (
+                    :user_id, 
+                    :furniture_type, 
+                    :order_type, 
+                    :ref_img_path, 
+                    :del_method, 
+                    :del_address_id, 
+                    :notes
+                )
+            ";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':user_id', $_SESSION["user_id"]);
             $stmt->bindParam(':furniture_type', $furniture_type);
@@ -241,7 +272,19 @@
                 $pickup_method = isset($_POST['pickup_method']) ? sanitize_input($_POST['pickup_method']) : null;
                 $pickup_address_id = isset($_POST['pickup_address']) ? getAddressId(sanitize_input(trim($_POST['pickup_address'])), $conn, $_SESSION['user_id']) : null;
 
-                $query = "INSERT INTO pickup (order_id, pickup_method, pickup_address_id) VALUES (:order_id, :pickup_method, :pickup_address_id)";
+                $query = "
+                    INSERT INTO 
+                        pickup (
+                            order_id, 
+                            pickup_method, 
+                            pickup_address_id
+                        ) 
+                    VALUES (
+                        :order_id, 
+                        :pickup_method, 
+                        :pickup_address_id
+                    )
+                ";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':order_id', $order_id);
                 $stmt->bindParam(':pickup_method', $pickup_method);
@@ -258,10 +301,10 @@
 
         try {
             // Create a new notification message
-            $notif_msg = "New quotation form submitted by: " . $_SESSION['name']; // Customize the message as needed
+            $notif_msg = "You have successfully placed a quote request. Please await confirmation of order."; // Customize the message as needed
 
             // Call the createNotif function
-            if (createNotif($_SESSION['user_id'], $notif_msg)) {
+            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/orders.php")) {
                 // Notification created successfully
                 echo "Notification created successfully";
             } else {

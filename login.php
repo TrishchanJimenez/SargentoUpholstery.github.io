@@ -60,9 +60,31 @@
         $email = sanitizeInput($_POST['email']);
         $password = sanitizeInput($_POST['password']);
 
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$email]);
+        $query = "
+            SELECT 
+                * 
+            FROM 
+                users 
+            WHERE 
+                email = :email";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
         $user = $stmt->fetch();
+
+        $query = "
+            SELECT 
+                address 
+            FROM 
+                addresses
+            WHERE 
+                user_id = :user_id
+            LIMIT 1
+        ";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':user_id', $user['user_id']);
+        $stmt->execute();
+        $address = $stmt->fetch();
 
         if($user) {
             if(password_verify($password, $user['password'])) {
@@ -82,5 +104,7 @@
         } else {
             sendAlert("error", "Email unknown. Please enter a registered email or sign up.");
         }
+
+
     }
 ?>
