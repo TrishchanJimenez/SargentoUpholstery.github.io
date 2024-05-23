@@ -14,7 +14,7 @@ body {
     }
     /* Style for tab buttons */
     .tab-container {
-    width: 80%;
+    width: 90%;
     margin: 1% auto 0 auto;
     display: flex; /* Use flexbox */
     justify-content: space-evenly; /* Evenly space the buttons */
@@ -26,7 +26,7 @@ body {
     border: none;
     background-color: #F8F7F1;
     border-radius: 5px 5px 0 0;
-    font-size: 35px;
+    font-size: 25px;
     font-family: 'Playfair Display';
     font-weight: 700;
     margin-right: 5px;

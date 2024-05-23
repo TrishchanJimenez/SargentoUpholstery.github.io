@@ -26,7 +26,7 @@
             // Close connection
             $conn->close();
             // Redirect to the original page
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/my/orders.php');
+            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/my/user_orders.php');
             exit();
         } else {
             echo "Error updating record: " . $stmt->error;

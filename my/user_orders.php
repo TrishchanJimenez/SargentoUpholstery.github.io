@@ -3,13 +3,13 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="css/global.css">
-      <link rel="stylesheet" href="css/user_orders.css">
-      <script src="js/user_orders.js"></script>
+      <link rel="stylesheet" href="/css/global.css">
+      <link rel="stylesheet" href="/css/user_orders.css">
+      <script src="/js/user_orders.js"></script>
       <title>Document</title>
    </head>
    <body>
-      <?php include_once("header.php") ?>
+      <?php include_once("../header.php") ?>
       <div class="order-header">
          <p>My Orders</p>
       </div>
@@ -47,7 +47,7 @@
                   }
                   
                   // Query to select data from the database
-                  $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id";
+                  $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status, is_cancelled FROM orders WHERE user_id = $user_id";
                   $result = $conn->query($sql);
                   
                   
@@ -69,30 +69,34 @@
                         $prod_status = str_replace("_", "-", $row['order_status']);
                     $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
                         $display_status = '';
-                        if($row['order_status'] === 'pending_fullpayment'){
-                            $display_status = 'Waiting For Verification';
+                        if($row['is_cancelled'] == 1){
+                            $display_status = 'Cancelled';
                         }else{
-                            if($row['order_status'] === 'ready_for_pickup'){
-                                $display_status ='Ready For Pickup';
+                            if($row['order_status'] === 'pending_fullpayment'){
+                                $display_status = 'Waiting For Verification';
                             }else{
-                                if ($row['is_accepted'] == 'rejected') {
-                                    $display_status = 'Rejected';
-                                } else {
-                                    if ($row['order_status'] === 'received') {
-                                        $display_status = 'Received';
+                                if($row['order_status'] === 'ready_for_pickup'){
+                                    $display_status ='Ready For Pickup';
+                                }else{
+                                    if ($row['is_accepted'] == 'rejected') {
+                                        $display_status = 'Rejected';
                                     } else {
-                                        if($row['order_status'] === 'in_production'){
-                                            $display_status = 'In Production';
-                                        }else{
-                                            if ($row['is_accepted'] === 'pending') {
-                                                $display_status = 'Pending';
-                                            } else if ($row['is_accepted'] === 'accepted') {
-                                                $display_status = 'Accepted';
-                                            } else {
-                                                if ($row['is_cancelled'] == 0) {
-                                                    $display_status = htmlspecialchars($prod_status_text);
+                                        if ($row['order_status'] === 'received') {
+                                            $display_status = 'Received';
+                                        } else {
+                                            if($row['order_status'] === 'in_production'){
+                                                $display_status = 'In Production';
+                                            }else{
+                                                if ($row['is_accepted'] === 'pending') {
+                                                    $display_status = 'Pending';
+                                                } else if ($row['is_accepted'] === 'accepted') {
+                                                    $display_status = 'Accepted';
                                                 } else {
-                                                    $display_status = 'Cancelled';
+                                                    if ($row['is_cancelled'] == 0) {
+                                                        $display_status = htmlspecialchars($prod_status_text);
+                                                    } else {
+                                                        $display_status = 'Cancelled';
+                                                    }
                                                 }
                                             }
                                         }
@@ -100,6 +104,7 @@
                                 }
                             }
                         }
+                        
                           echo '
                           <!DOCTYPE html>
                            <html lang="en">
@@ -511,7 +516,7 @@
                            <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                            <td>
                                <div class="tab-table">
-                                   <form action="update_order.php" method="post">
+                                   <form action="/api/update_order.php" method="post">
                                        <input type="hidden" name="order_id" value="' . $row["order_id"] . '">
                                        <button type="submit" class="received-button">Received</button>
                                    </form>
@@ -636,29 +641,49 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT furniture_type, quoted_price, del_address, order_type FROM orders WHERE order_status = 'cancelled' AND user_id = $user_id";
+               $sql = "SELECT furniture_type, quoted_price, del_address, order_type,order_id FROM orders WHERE is_cancelled = 1 AND user_id = $user_id";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
                    // Output the table header outside the loop
                    echo '
-                   <table class="tabLabels">
-                       <tr class="status-header">
-                           <th>Item</th>
-                           <th>Item description</th>
-                           <th>Price to pay</th>
-                           <th>Delivery address</th>
-                       </tr>';
+                      <table class="tabLabels">
+                          <tr class="status-header">
+                              <th>Item description</th>
+                              <th>Quoted Price</th>
+                              <th>Delivery address</th>
+                              <th>Order type</th>
+                              <th>Details</th>
+                          </tr>';
                
                    // Output data of each row
                    while ($row = $result->fetch_assoc()) {
                        // Output the table rows inside the loop with additional classes for styling
                        echo '
-                       <tr class="order-container">
-                           <td><img src="websiteimages/carouselimg2.jpg" alt="" class="img-order"></td>
-                           <td><div class="item-description"><p>' . $row["furniture_type"] . '</p></div></td>
-                           <td><div class="price-to-pay"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>                           <td><div class="deliver-pickup-address"><p>' . $row["del_address"] . '</p></div></td>
-                       </tr>';
+                          <!DOCTYPE html>
+                           <html lang="en">
+                           <head>
+                               <meta charset="UTF-8">
+                               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                               <title>Document</title>
+                           </head>
+                           <body>
+                               <tr class="order-container" data-id="' . $row["order_id"] . '">
+                              <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
+                              <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
+                              <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                              <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
+                              <td class="myTable">
+                                  <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
+                                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280">
+                                          <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+                                      </svg>
+                                  </a>
+                              </td>
+                          </tr>  
+                           </body>
+                           </html>
+                          ';
                        // Add spacing between order-container elements
                        echo '<tr class="order-container-space"></tr>';
                    }

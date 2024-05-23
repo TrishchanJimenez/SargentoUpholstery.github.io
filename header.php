@@ -107,7 +107,7 @@
                                 <img src='/websiteimages/icons/person-icon.svg' alt=''>
                                 <span>My Account</span>
                             </a>
-                            <a href='/my/orders.php'>
+                            <a href='/my/user_orders.php'>
                                 <img src='/websiteimages/icons/order-icon.svg' alt=''>
                                 <span>My Orders</span>
                             </a>
