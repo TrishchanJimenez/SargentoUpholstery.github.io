@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const deliveryAddressTextarea = document.getElementById("del_address");
 
     function fetchUserAddress(callback) {
-        fetch('get_user_details.php')
+        fetch('/api/get_user_details.php')
             .then(response => response.json())
             .then(data => {
                 if (data.address) {
