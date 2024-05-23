@@ -301,7 +301,7 @@ body{
                                    ';
                 }else if($order['is_cancelled'] == 0){
                     echo'
-                        <form action="cancel_order.php" method="post">
+                        <form action="/api/cancel_order.php" method="post">
                             <input type="hidden" name="order_id" value="' . $order["order_id"] .'"> <!-- Fixed $row to $order_id -->
                             <button type="submit" class="cancel-order-button">Cancel Order</button>
                         </form>';
