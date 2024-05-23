@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = chatInput.value.trim();
         if (message !== '') {
             // Fetch API request to insert the message into the database
-            fetch('insert_message.php', {
+            fetch('send_message.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

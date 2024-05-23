@@ -8,14 +8,22 @@
     <link rel="stylesheet" href="css/testimonials.css">
 </head>
 <body>
-    <?php include_once("header.php") ?>
+    <?php
+        include_once("header.php");
+        require 'database_connection.php';
+        $sql = "SELECT * FROM contents WHERE page = 'testimonials'";
+        $stmt = $conn->query($sql);
+        $contents = $stmt->fetchAll();
+        $contentsById = [];
+        foreach ($contents as $content) {
+            $contentsById[$content['content_id']] = $content;
+        }
+    ?>
     <img src="/websiteimages/testimonialsfeaturedimg.png" alt="" class="testimonials-featured-img">
     <div class="testimonials-title">
-        <h2>Real Reviews, Real Satisfaction</h2>
-        <p>At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.</p>
+        <h2><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERTITLE"]["content_text"])) ?></h2>
+        <p><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERSUBTEXT"]["content_text"])) ?></p>
         <a href="order.php">Get a Free Quote</a>
-    </div>
-    <div class="testimonials-carousel">
     </div>
     <img src="/websiteimages/Divider.png" class="testimonials-divider">
     <h2 class="star-rating">Our Average Star Rating</h2>

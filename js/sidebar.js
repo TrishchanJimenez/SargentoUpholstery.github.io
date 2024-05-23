@@ -14,6 +14,9 @@ function highlightActivePage() {
         if(element.dataset.page === "orders" && currentPage === "order_details") {
             element.classList.add('active');
         }
+        if(element.dataset.page === "content" && currentPage === "cms") {
+            element.classList.add('active');
+        }
     })
 }
 

@@ -47,11 +47,15 @@
 }
 
 .quotation-form {
+    margin: 5vh 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 90%;
+    * {
+        font-family: "Inter", sans-serif;
+    }
 }
 
 .quotation-form__fieldset {
@@ -60,6 +64,10 @@
     display: none;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.quotation-form__description {
+    padding: 2.5vmin;
 }
 
 .quotation-form__input-container-group {
@@ -175,19 +183,19 @@
 }
 
 .faq__item {
-    margin: 2.5% 5%;
+    margin: 1.25% 5%;
     width: 40%;
 }
 
 .faq__question {
     font-weight: bold;
     font-size: var(--fs-24);
-    padding: 2.5vmin 0;
+    padding: 2.5vmin 0 0;
 }
 
 .faq__answer {
     font-size: var(--fs-20);
-    padding: 2.5vmin;
+    padding: 1.25vmin 0 2.5vmin;
 }
 
 /* 

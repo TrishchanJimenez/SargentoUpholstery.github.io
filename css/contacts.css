@@ -12,7 +12,8 @@
 .contact_us_text{
     display: flex;
     justify-content: center;
-    margin-left: 10%;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .contact_us_text div {
@@ -21,10 +22,13 @@
 
 .contact_us_text h1{
     font-size: var(--fs-40);
+    white-space: nowrap;
 }
 
 .contact_us_text p{
+    width: 100%;
     font-size: var(--fs-24);
+    word-wrap: break-word;
 }
 
 .map{

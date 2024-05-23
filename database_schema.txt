@@ -1,0 +1,115 @@
+Users Table:
++----------------+--------------------------+------+-----+---------+----------------+
+| Field          | Type                     | Null | Key | Default | Extra          |
++----------------+--------------------------+------+-----+---------+----------------+
+| user_id        | int                      | NO   | PRI | NULL    | auto_increment |
+| name           | varchar(255)             | YES  |     | NULL    |                |
+| email          | varchar(255)             | NO   |     | NULL    |                |
+| password       | char(255)                | NO   |     | NULL    |                |
+| user_type      | enum('customer','admin') | NO   |     | NULL    |                |
+| user_address   | varchar(120)             | YES  |     | NULL    |                |
+| contact_number | varchar(11)              | NO   |     | NULL    |                |
++----------------+--------------------------+------+-----+---------+----------------+
+
+Addresses Table:
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| address_id | int          | NO   | PRI | NULL    |       |
+| user_id    | int          | NO   |     | NULL    |       |
+| address    | varchar(255) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+
+Contents Table:
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| content_id   | varchar(255) | NO   | PRI | NULL    |       |
+| page         | varchar(50)  | NO   |     | NULL    |       |
+| content_text | text         | YES  |     | NULL    |       |
+| image        | text         | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+
+content_id
+TESTIMONIALHEADERTITLE
+TESTIMONIALHEADERSUBTEXT
+
+page
+testimonials
+
+content_text
+Real Reviews, Real Satisfaction
+At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.
+
+<?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"]))?>
+["content_text"]
+<?php
+    $sql = "SELECT * FROM contents WHERE page = 'services_works'";
+    $stmt = $conn->query($sql);
+    $contents = $stmt->fetchAll();
+    $contentsById = [];
+    foreach ($contents as $content) {
+        $contentsById[$content['content_id']] = $content;
+    }
+?>
+
+Faqs Table;
++----------+------+------+-----+---------+----------------+
+| Field    | Type | Null | Key | Default | Extra          |
++----------+------+------+-----+---------+----------------+
+| faq_id   | int  | NO   | PRI | NULL    | auto_increment |
+| question | text | NO   |     | NULL    |                |
+| answer   | text | NO   |     | NULL    |                |
++----------+------+------+-----+---------+----------------+
+
+
+Orders Table:
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field          | Type                                                                                                                           | Null | Key | Default           | Extra                                         |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| order_id       | int                                                                                                                            | NO   | PRI | NULL              | auto_increment                                |
+| user_id        | int                                                                                                                            | NO   | MUL | NULL              |                                               |
+| furniture_type | varchar(32)                                                                                                                    | NO   |     | NULL              |                                               |
+| order_type     | enum('repair','mto')                                                                                                           | NO   |     | NULL              |                                               |
+| order_status   | enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') | NO   |     | new_order         |                                               |
+| del_method     | enum('third_party','self')                                                                                                     | NO   |     | NULL              |                                               |
+| del_address    | text                                                                                                                           | NO   |     | NULL              |                                               |
+| notes          | text                                                                                                                           | YES  |     | NULL              |                                               |
+| quoted_price   | float                                                                                                                          | YES  |     | NULL              |                                               |
+| is_accepted    | enum('pending','accepted','rejected')                                                                                          | NO   |     | pending           |                                               |
+| refusal_reason | text                                                                                                                           | YES  |     | NULL              |                                               |
+| last_updated   | timestamp                                                                                                                      | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATE() - INTERVAL 1 DAY) AS yesterday;
+D on update CURRENT_TIMESTAMP |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+
+Order_date Table:
++---------------------+------+------+-----+---------+-------+
+| Field               | Type | Null | Key | Default | Extra |
++---------------------+------+------+-----+---------+-------+
+| order_id            | int  | NO   | MUL | NULL    |       |
+| placement_date      | date | NO   |     | NULL    |       |
+| est_completion_date | date | NO   |     | NULL    |       |
++---------------------+------+------+-----+---------+-------+
+
+COUNT OF NEW ORDERS THIS DAY VS YESTERDAY
+SELECT
+    (SELECT COUNT(*) FROM orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND placement_date = CURDATE()) AS today,
+    (SELECT COUNT(*) FROM Orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND placement_date = CURDATE() - INTERVAL 1 DAY) AS yesterday;
+
+COUNT OF NEW ORDERS THIS WEEK VS LAST WEEK
+SELECT 
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1)) AS current_week,
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS last_week;
+
+COUNT OF NEW ORDERS THIS MONTH VS LAST MONTH
+SELECT 
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE())) AS current_month,
+    (SELECT COUNT(*) FROM Orders 
+     JOIN Order_date ON Orders.order_id = Order_date.order_id 
+     WHERE MONTH(placement_date) = MONTH(CURDATE()) - 1 AND YEAR(placement_date) = YEAR(CURDATE())) AS last_month;

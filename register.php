@@ -75,10 +75,10 @@
                 $stmt = $conn->prepare("INSERT INTO users(name, email, password, contact_number, user_type) VALUES(?,?,?,?,?)");
                 $stmt->execute([$name, $email, $hashedPassword, $contactno, "customer"]);
                 echo "Registration Succesful";
-                session_start();
+               /*  session_start();
                 $_SESSION['access_type'] = 'customer';
-                $_SESSION['user_id'] = $conn->lastInsertId();
-                header("Location: index.php");
+                $_SESSION['user_id'] = $conn->lastInsertId(); */
+                header("Location: login.php");
             }
         }
     ?>

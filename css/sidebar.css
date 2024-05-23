@@ -9,6 +9,10 @@
 .admin-sidebar h1 {
     font-size: var(--fs-36);
     padding: 2rem 1rem 1rem 2rem;
+    
+    * {
+        font-family: "Playfair Display", sans-serif !important;
+    }
 }
 
 .admin-link {
@@ -27,8 +31,29 @@
     color: #111111;
 }
 
-.admin-link.active svg path, .admin-link:hover svg path {
+.admin-link:not(.fill-icon).active svg path, .admin-link:not(.fill-icon):hover svg path {
     stroke: #111;
+}
+
+.admin-link.fill-icon {
+    svg:first-of-type {
+        display: inline;
+    }
+
+    svg:nth-child(2) {
+        display: none;
+    }
+}
+
+.admin-link.fill-icon.active,
+.admin-link.fill-icon:hover {
+    svg:first-of-type {
+        display: none;
+    }
+
+    svg:nth-child(2) {
+        display: inline;
+    }
 }
 
 .admin-link span {

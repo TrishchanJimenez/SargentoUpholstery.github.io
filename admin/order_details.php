@@ -23,10 +23,10 @@
         SELECT *
         FROM orders
         WHERE order_id = $order_id) AS O
-        JOIN $order_type USING(order_id)
         JOIN order_date USING(order_id)
         JOIN users USING(user_id)
         JOIN payment USING(order_id)
+        LEFT JOIN pickup USING(order_id)
     ";
 
     $stmt = $conn->query($query);
@@ -45,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/admin-orders.css">
+    <link rel="stylesheet" href="../css/admin/orders.css">
 </head>
 <body class="orders">
     <?php require 'sidebar.php' ?>
@@ -61,8 +61,8 @@
                 <div class="order-information">
                     <p class="info-title">
                         ORDER INFORMATION   
+                        <div class="info-order-detail">
                     </p>
-                    <div class="info-order-detail">
                         <div class="info">
                             <span class="info-name"> ORDER ID </span>
                             <span class="info-detail">
@@ -140,26 +140,6 @@
                                 </select>
                             </span>
                         </div>
-                        <?php
-                            if($order['order_type'] === "mto") {
-                                echo " 
-                                <div class='info'>
-                                    <span class='info-name'>
-                                        MATERIALS
-                                    </span>
-                                    <span class='info-detail'>
-                                        {$order['material']}
-                                    </span>
-                                </div>
-                                <div class='info'>
-                                    <span class='info-name'>DIMENSIONS</span>
-                                    <span class='info-detail'>
-                                        {$order['height']} inches(H) x {$order['width']} inches(W) x {$order['depth']} inches(D)
-                                    </span>
-                                </div>"
-                                ;
-                            }
-                        ?>
                         <div class="info">
                             <span class="info-name"> NOTE </span>
                             <span class="info-detail">
@@ -167,7 +147,7 @@
                             </span>
                         </div>
                         <?php
-                            if($order['order_type'] === "repair") {
+                            if(!is_null($order['ref_img_path'])) {
                                 echo " 
                                 <div class='info'>
                                     <span class='info-name'>
@@ -183,7 +163,35 @@
                     </div>
                 </div>
                 <div class="payment-information">
-                    
+                    <p class="info-title">
+                        PAYMENTS   
+                    </p>
+                    <div class="info-order-detail payment-info">
+                        <div class="info">
+                            <span class="info-name"> DOWNPAYMENT </span>
+                            <span class="info-detail">
+                                <?= "₱" . $order['downpayment'] ?>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <span class="info-name"> FULLPAYMENT </span>
+                            <span class="info-detail">
+                                <?= "₱" . $order['fullpayment'] ?>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <span class="info-name"> PAYMENT STATUS </span>
+                            <span class="info-detail">
+                                <?= $payment_status_text ?>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <span class="info-name"> PAYMENT DATE </span>
+                            <span class="info-detail">
+                                <?= date('M d, Y', strtotime($order['payment_date'])) ?>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="right">
@@ -234,6 +242,8 @@
                             <div class="on-accept action-input">
                                 <label for="price">Price for the Order</label>
                                 <input type="number" name="price" class="price-input" placeholder="₱12131" required>
+                                <label for="price-reason">Reason for price</label>
+                                <textarea name="price-reason" rows="3" placeholder="Write reason here..." class="price-reason-input" required></textarea>
                             </div>
                             <div class="on-click">
                                 <input type="submit" value="save" class="green-button action-button">

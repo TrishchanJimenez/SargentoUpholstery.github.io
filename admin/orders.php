@@ -103,7 +103,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/admin-orders.css">
+    <link rel="stylesheet" href="../css/admin/orders.css">
 </head>
 <body>
     <div class="orders">
@@ -161,6 +161,11 @@
                 </div>
                 <input type="submit" value="Filter">
             </form>
+            <div class="selected-multiple">
+                <img src="/websiteimages/icons/close-icon-gray.svg" alt="" class="close-icon">
+                <span class="selected-count">5</span><span>selected</span>
+                <span class="advance-next">Advance To Next Phase<img src="/websiteimages/icons/arrow-right.svg" alt=""></span>
+            </div>
             <table class="order-table">
                 <thead>
                     <tr>
@@ -187,9 +192,32 @@
 
                             $payment_status = str_replace("_", "-", $order['payment_status']);
                             $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
-                            $pickupOption = $order['order_type'] === "repair" ? "<option value='ready-for-pickup'>Ready For Pickup</option>" : ""; 
                             $newOrderOption = $order['prod_status'] === "new_order" ? "<option value='new-order'>New Order</option>" : "";
                             $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
+                            $order_status = str_replace("_", "-", $order['prod_status']);
+                            $statuses = [
+                                "new-order" => "New Order",
+                                "pending-downpayment" => "Pending Downpayment",
+                                "ready-for-pickup" => "Ready for Pickup",
+                                "in-production" => "In Production",
+                                "pending-fullpayment" => "Pending Fullpayment",
+                                "out-for-delivery" => "Out for Delivery",
+                                "received" => "Received"
+                            ];
+                            $prod_status_options = "";
+                            $include = false;
+                            foreach ($statuses as $status => $status_text) {
+                                if ($include) {
+                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                }
+                                if ($status === $order_status) {
+                                    if($status === "ready-for-pickup" && $type === "MTO") {
+                                        continue;
+                                    }
+                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                    $include = true;
+                                }
+                            }
                             echo "
                             <tr data-id='{$order['order_id']}'>
                                 <td><input type='checkbox' name='' id=''></td>
@@ -202,12 +230,7 @@
                                 <td class='prod-status status'>
                                     <span data-prod-status='{$prod_status}'>{$prod_status_text}</span>
                                     <select name='select-prod-status' id=''>
-                                        {$newOrderOption}
-                                        <option value='pending-downpayment'>Pending Downpayment</option>
-                                        {$pickupOption}
-                                        <option value='pending-fullpayment'>Pending Fullpayment</option>
-                                        <option value='out-for-delivery'>Out For Delivery</option>
-                                        <option value='received'>Received</option>
+                                        {$prod_status_options}
                                     </select>
                                 </td>
                                 <td class='payment-status status'>
@@ -262,30 +285,6 @@
                         </svg>
                     </button>
                     <?php
-                        // $start_page = max(1, $current_page - 1); // Start page will be 1 or current_page - 1, whichever is greater
-                        // $end_page = min($page_count, $current_page + 1); // End page will be pag$page_count or current_page + 1, whichever is smaller
-                        // $last_pages = max(1, $page_count - 2); // Calculate the last 3 pages
-                        
-                        // for ($i = $start_page; $i <= $end_page; $i++) {
-                        //     $is_active_page = $current_page === $i ? 'active-page' : '';
-                        //     $disabled = $current_page === $i ? 'disabled' : '';
-                        //     echo "
-                        //         <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
-                        //             {$i}
-                        //         </button>
-                        //     ";
-                        // }
-                        // if ($page_count > 3 && $current_page < $last_pages) {
-                        //     for ($i = $last_pages; $i <= $page_count; $i++) {
-                        //         $is_active_page = $current_page === $i ? 'active-page' : '';
-                        //         $disabled = $current_page === $i ? 'disabled' : '';
-                        //         echo "
-                        //             <button type='submit' name='page' value='{$i}' class='page-btn {$is_active_page}' {$disabled}>
-                        //                 {$i}
-                        //             </button>
-                        //         ";
-                        //     }
-                        // }
                         if($current_page > 1) {
                             echo "
                                 <button type='submit' name='page' value='1' class='page-btn'>
@@ -324,6 +323,6 @@
             </div>
         </div>
     </div>
-    <script src="../js/admin-order.js"></script>
+    <script src="../js/admin/order.js"></script>
 </body>
 </html>

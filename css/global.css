@@ -362,104 +362,95 @@ body {
 
 /* ---------- Notif ---------- */
 
-.notif {
-    position: relative;
-    display: inline-block;
-}
-
-.notif__bell {
-    /* Adjust as needed */
-    width: 36px;
-    height: 36px;
-}
-
-.notif__dot {
-    position: absolute;
-    top: 0px;
-    /* Adjust to position the dot vertically */
-    right: 0px;
-    /* Adjust to position the dot horizontally */
-    width: 8px;
-    /* Adjust the size of the dot */
-    height: 8px;
-    background-color: red;
-    border-radius: 50%;
-}
-
-/* Media query for different screen sizes */
-@media (max-width: 768px) {
-    .notif__bell {
-        /* Adjust size for smaller screens */
-        width: 30px;
-        height: 30px;
-    }
-
-    .notif__dot {
-        /* Adjust dot size for smaller screens */
-        width: 6px;
-        height: 6px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1200px) {
-    .notif__bell {
-        /* Adjust size for medium screens */
-        width: 34px;
-        height: 34px;
-    }
-
-    .notif__dot {
-        /* Adjust dot size for medium screens */
-        width: 7px;
-        height: 7px;
-    }
-}
-
-
-
+/* General container styling */
 .notif__container {
-    display: inline-block;
-    position: relative;
-}
-
-.notif__bell {
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-}
-
-.notif__dot {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 8px;
-    height: 8px;
-    background-color: red;
-    border-radius: 50%;
-}
-
-#notifContainer {
     display: none;
     position: absolute;
-    top: 50px;
-    /* Adjust as needed */
-    right: 10px;
-    /* Adjust as needed */
-    width: 300px;
-    /* Adjust as needed */
-    max-height: 200px;
-    /* Adjust as needed */
+    top: 50px; /* Adjust according to your layout */
+    right: 0;
+    width: 300px; /* Adjust as needed */
+    max-height: 400px; /* Adjust as needed */
     overflow-y: auto;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 10px;
-    color: black;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
 }
 
+.notif__content {
+    padding: 10px;
+}
+
+/* Notification message styling */
 .notif__message {
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    color: black;
 }
 
 .notif__message.unread {
     font-weight: bold;
+}
+
+.notif__text {
+    flex: 1 0 80%;
+    padding-right: 10px;
+}
+
+.notif__divider {
+    width: 1px;
+    height: 20px;
+    background-color: #ddd;
+    margin: 0 10px;
+}
+
+.mark-read-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex: 0 0 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.mark-read-btn img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Tooltip styling */
+.mark-read-btn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 125%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    font-size: 12px;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+.mark-read-btn[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s;
 }
