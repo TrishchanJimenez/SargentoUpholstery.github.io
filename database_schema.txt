@@ -31,14 +31,18 @@ Contents Table:
 +--------------+--------------+------+-----+---------+-------+
 
 content_id
-<?=$contentsById["ABOUTHEADERTEXT"]["content_text"]?>
-["content_text"]
+TESTIMONIALHEADERTITLE
+TESTIMONIALHEADERSUBTEXT
 
 page
-about_us
+testimonials
 
 content_text
+Real Reviews, Real Satisfaction
+At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.
 
+<?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"]))?>
+["content_text"]
 <?php
     $sql = "SELECT * FROM contents WHERE page = 'services_works'";
     $stmt = $conn->query($sql);

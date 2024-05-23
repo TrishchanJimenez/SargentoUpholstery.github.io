@@ -21,36 +21,36 @@
     ?>
     <img src="/websiteimages/teampicture.png" alt="" class="about-us-featuredimg">
     <div class="about-us-container">
-        <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= $contentsById["ABOUTHEADERTITLE"]["content_text"] ?></h2>
-        <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= $contentsById["ABOUTHEADERTEXT"]["content_text"] ?></p>
+        <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTITLE"]["content_text"])) ?></h2>
+        <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"])) ?></p>
         <a href="order.php" class="btn btn-black">Get a Free Quote</a>
     </div>
     <div class="about-us-history about-us-container">
-        <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=$contentsById["ABOUTHISTORYTITLE"]["content_text"]?></h2>
-        <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=$contentsById["ABOUTHISTORYTEXT"]["content_text"]?></p>
+        <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTITLE"]["content_text"]))?></h2>
+        <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTEXT"]["content_text"]))?></p>
     </div>
     <div class="values-philosophy about-us-container">
-        <h2 class="long-text editable" data-id="ABOUTVALUESTITLE"><?=$contentsById["ABOUTVALUESTITLE"]["content_text"]?></h2>
+        <h2 class="long-text editable" data-id="ABOUTVALUESTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESTITLE"]["content_text"]))?></h2>
         <div class="values-container">
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING1"><?=$contentsById["ABOUTVALUESSUBHEADING1"]["content_text"]?></h3>
-                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT1"><?=$contentsById["ABOUTVALUESSUBTEXT1"]["content_text"]?></p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING1"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBHEADING1"]["content_text"]))?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT1"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBTEXT1"]["content_text"]))?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING2"><?=$contentsById["ABOUTVALUESSUBHEADING2"]["content_text"]?></h3>
-                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT2"><?=$contentsById["ABOUTVALUESSUBTEXT2"]["content_text"]?></p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING2"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBHEADING2"]["content_text"]))?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT2"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBTEXT2"]["content_text"]))?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING3"><?=$contentsById["ABOUTVALUESSUBHEADING3"]["content_text"]?></h3>
-                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT3"><?=$contentsById["ABOUTVALUESSUBTEXT3"]["content_text"]?></p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING3"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBHEADING3"]["content_text"]))?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT3"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBTEXT3"]["content_text"]))?></p>
             </div>
             <div class="values">
                 <img src="" alt="" class="values-logo">
-                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING4"><?=$contentsById["ABOUTVALUESSUBHEADING4"]["content_text"]?></h3>
-                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT4"><?=$contentsById["ABOUTVALUESSUBTEXT4"]["content_text"]?></p>
+                <h3 class="editable short-text" data-id="ABOUTVALUESSUBHEADING4"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBHEADING4"]["content_text"]))?></h3>
+                <p class="editable long-text" data-id="ABOUTVALUESSUBTEXT4"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTVALUESSUBTEXT4"]["content_text"]))?></p>
             </div>
         </div>
     </div>
