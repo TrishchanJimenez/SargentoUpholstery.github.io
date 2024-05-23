@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
         // Redirect or handle unauthorized access
@@ -8,7 +10,6 @@
     } else {
         $autofill_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
         $autofill_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-        $autofill_customer_address = isset($_SESSION['user_address']) ? $_SESSION['user_address'] : '';
         $autofill_contact_number = isset($_SESSION['contact_number']) ? $_SESSION['contact_number'] : '';
     }
 ?>
@@ -37,7 +38,11 @@
             <p>Request a quote to get custom pricing. Please take a moment to fill in the form.</p>
             <form class="quotation-form" method="post" enctype="multipart/form-data">
                 <fieldset class="quotation-form__fieldset" id="personal_info">
-                    <legend class="quotation-form__legend">Personal Information: </legend>
+                    <legend class="quotation-form__legend">Personal Information </legend>
+                    <p class="quotation-form__description">
+                        Please review the following personal information and ensure all details are correct.
+                        If you wish to change details, <a href="my/account.php">click here</a>.
+                    </p>
                     <div class="quotation-form__input-container-group">
                         <!-- Customer Name [ TEXT ] -->
                         <div class="quotation-form__input-container">
@@ -59,6 +64,9 @@
                 </fieldset>
                 <fieldset class="quotation-form__fieldset" id="order_details">
                     <legend class="quotation-form__legend">Order Details</legend>
+                    <p class="quotation-form__description">
+                        Please provide details and instructions about your order.
+                    </p>
                     <div class="quotation-form__input-container-group">
                         <!-- Order Type [ ENUM(repair, mto) ] -->
                         <div class="quotation-form__input-container">
@@ -87,6 +95,9 @@
                 </fieldset>
                 <fieldset class="quotation-form__fieldset" id="delivery_details">
                     <legend class="quotation-form__legend">Delivery Details</legend>
+                    <p class="quotation-form__description">
+                        Please provide details about the transportation of your furniture.
+                    </p>
                     <div class="quotation-form__input-container-group--repair">
                         <!-- pickup_method [ ENUM(third_party, self) ] -->
                         <div class="quotation-form__input-container">
@@ -117,7 +128,7 @@
                         <!-- del_address [ TEXT ] -->
                         <div class="quotation-form__input-container">
                             <label for="del_address" class="quotation-form__label">Where shall we deliver the furniture to be repaired?</label>
-                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here." required></textarea><br>
+                            <textarea id="del_address" name="del_address" class="quotation-form__textarea" rows="4" cols="50" placeholder="Enter the delivery address here."required></textarea><br>
                             <input type="checkbox" id="setDeliveryAddress" name="setDeliveryAddress" class="quotation-form__checkbox">
                             <label for="setDeliveryAddress" class="quotation-form__checkbox-label">Set as my current address</label>
                         </div>
@@ -130,6 +141,7 @@
                 </div>
             </form>
         </div>
+        <script src="js/order.js"></script>
         <div class="faq">
             <h1 class="faq__title">Frequently Asked Questions</h1>
             <ol class="faq__list">
@@ -156,7 +168,6 @@
     </div>
     <?php include_once("footer.php") ?>
     <script src="js/globals.js"></script>
-    <script src="js/order.js"></script>
 </body>
 
 </html>

@@ -25,15 +25,15 @@
     <div class="contact_us_text">
         <div class="contact_info">
             <h1> Cellphone Number </h1>
-            <p><?= $contentsById["CPNNUM"]["content_text"] ?></p>
+            <p><?= stripslashes(htmlspecialchars_decode($contentsById["CPNNUM"]["content_text"])) ?></p>
             <h1> Mailing Adress </h1>
-            <p><?= $contentsById["MAILADD"]["content_text"] ?></p>
+            <p><?= stripslashes(htmlspecialchars_decode($contentsById["MAILADD"]["content_text"])) ?></p>
         </div>
         <div class="adresses">
             <h1>Business Address</h1>
-            <p><?= $contentsById["BUSIADD"]["content_text"] ?></p>
+            <p><?= stripslashes(htmlspecialchars_decode($contentsById["BUSIADD"]["content_text"])) ?></p>
             <h1>Business Hours</h1>
-            <p><?= $contentsById["BUSIHRS"]["content_text"] ?></p>
+            <p><?= stripslashes(htmlspecialchars_decode($contentsById["BUSIHRS"]["content_text"])) ?></p>
         </div>
     </div>
     <div class="map">

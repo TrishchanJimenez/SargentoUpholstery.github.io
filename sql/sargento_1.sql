@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 22, 2024 at 10:25 AM
+-- Generation Time: May 23, 2024 at 12:44 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -29,6 +29,7 @@ USE `sargento_1`;
 -- Table structure for table `addresses`
 --
 
+DROP TABLE IF EXISTS `addresses`;
 CREATE TABLE IF NOT EXISTS `addresses` (
   `address_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -50,6 +51,7 @@ INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES
 -- Table structure for table `chats`
 --
 
+DROP TABLE IF EXISTS `chats`;
 CREATE TABLE IF NOT EXISTS `chats` (
   `chat_id` int NOT NULL AUTO_INCREMENT,
   `sender_id` int DEFAULT NULL,
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`chat_id`),
   KEY `chat_sender_id_fk` (`sender_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chats`
@@ -73,7 +75,11 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 (6, 23, 22, 'justine joven casiano\r\n', '2024-05-21 04:58:17'),
 (7, 23, 22, 'oyoy', '2024-05-21 05:00:56'),
 (8, 22, 22, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2024-05-21 05:02:26'),
-(9, 22, 22, 'putanginamo', '2024-05-21 07:09:38');
+(9, 22, 22, 'putanginamo', '2024-05-21 07:09:38'),
+(10, 21, 22, 'fasdfasf', '2024-05-22 11:28:02'),
+(11, 21, 21, 'hello', '2024-05-23 00:13:15'),
+(12, 21, 21, 'fadfa', '2024-05-23 00:13:21'),
+(13, 21, 22, 'dfafa', '2024-05-23 00:13:39');
 
 -- --------------------------------------------------------
 
@@ -81,6 +87,7 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 -- Table structure for table `contents`
 --
 
+DROP TABLE IF EXISTS `contents`;
 CREATE TABLE IF NOT EXISTS `contents` (
   `content_id` varchar(255) NOT NULL,
   `page` varchar(50) NOT NULL,
@@ -110,7 +117,7 @@ INSERT INTO `contents` (`content_id`, `page`, `content_text`, `image`) VALUES
 ('BUSIADD', 'contact_us', 'Blk 68 Lot 41 Lapu-Lapu St., Upper Bicutan, Taguig City', NULL),
 ('BUSIHRS', 'contact_us', '8:00 AM - 5:00 PM', NULL),
 ('CPNNUM', 'contact_us', '0999 - 406 - 8816', NULL),
-('CRAFTSCARDTEXT1', 'services_craftsmanship', 'Our journey into crafting superior furniture begins with the careful selection of materials, ensuring that only the finest components are used. For the sturdy frame and foundation of our pieces, we rely on treated palochina wood, a choice renowned for its remarkable durability and exceptional robustness. This wood is not just any wood; it\'s a testament to our dedication to creating furniture that is built to last.', NULL),
+('CRAFTSCARDTEXT1', 'services_craftsmanship', 'Our journey into crafting superior furniture begins with the careful selection of materials, ensuring that only the finest components are used. For the sturdy frame and foundation of our pieces, we rely on treated palochina wood, a choice renowned for its remarkable durability and exceptional robustness. This wood is not just any wood; it\\\'s a testament to our dedication to creating furniture that is built to last.', NULL),
 ('CRAFTSCARDTEXT2', 'services_craftsmanship', 'Moving on to the heart of our creations, we employ the luxuriously comfortable uratex foam. This premium foam is carefully chosen to provide a plush and supportive seating experience, allowing you to sink into your furniture while still enjoying the firm support that ensures your comfort and satisfaction for years to come.fasdfasaf', NULL),
 ('CRAFTSCARDTEXT3', 'services_craftsmanship', 'But it doesnt end there. Our commitment to quality extends to the fabrics we use. We insist on utilizing only the best, such as RGC fabric and German leather, both celebrated for their exceptional texture, enduring beauty, and ability to withstand wear and tear gracefully. These materials not only add to the aesthetic appeal of our pieces but also ensure that your furniture retains its allure and resilience even after years of use.', NULL),
 ('CRAFTSCARDTITLE1', 'services_craftsmanship', 'The Foundation of Durability', NULL),
@@ -119,11 +126,19 @@ INSERT INTO `contents` (`content_id`, `page`, `content_text`, `image`) VALUES
 ('CRAFTSFOOTERTEXT', 'services_craftsmanship', 'This meticulous and selective process of material sourcing and crafting guarantees that each creation that bears the Sargento Upholstery name is not just a piece of furniture; it is a work of art, meticulously built with a devotion to quality, beauty, and longevity. We take great pride in creating furniture that not only fulfills its purpose but enriches the spaces and lives it graces, turning every room into a masterpiece of comfort and elegance.', NULL),
 ('CRAFTSHEADERTEXT', 'services_craftsmanship', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
 ('CRAFTSHEADERTITLE', 'services_craftsmanship', 'A Commitment to Craftsmanship Excellence', NULL),
-('HOMEABOUTTEXT', 'home', 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a strategic relocation has contributed to the business\'s resilience in a competitive industry.', NULL),
+('HOMEABOUTTEXT', 'home', 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a strategic relocation has contributed to the business\\\'s resilience in a competitive industry.', NULL),
 ('HOMEABOUTTITLE', 'home', 'The Sargento Family Business', NULL),
 ('HOMECRAFTSTEXT', 'home', 'Take a tour of our successes as we consider the turning points and contributions that have created our story in the Upholstery industry', NULL),
 ('HOMECRAFTSTITLE', 'home', 'Our Previous Crafts', NULL),
+('HOMETEAMPICTURE', 'home', NULL, '/websiteimages/teampicture.png'),
+('HOMETESTIMONIALAUTHOR1', 'home', '-JB von Kampfer', NULL),
+('HOMETESTIMONIALAUTHOR2', 'home', '-Albert Mendoza', NULL),
+('HOMETESTIMONIALCOMMENT1', 'home', 'Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for Sargento Upholstery.', NULL),
+('HOMETESTIMONIALCOMMENT2', 'home', 'Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!', NULL),
+('HOMETESTIMONIALTITLE', 'home', 'Our Clients\' Testimonials', NULL),
 ('MAILADD', 'contact_us', 'sargentoupholstery@gmail.com', NULL),
+('TESTIMONIALHEADERSUBTEXT', 'testimonials', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
+('TESTIMONIALHEADERTITLE', 'testimonials', 'Real Reviews, Real Satisfaction', NULL),
 ('WORKSHEADERTEXT', 'services_works', 'At Sargento Upholstery, we take pride in our rich history of crafting exquisite furniture pieces that stand the test of time. Over the years, we have had the privilege of working on a diverse range of projects, from elegant sofas and armchairs to custom-designed furniture for commercial spaces. Our portfolio showcases our dedication to quality craftsmanship, attention to detail, and timeless design. Each piece tells a story of artistry and passion, reflecting our commitment to creating furniture that enhances the beauty and comfort of every space. Explore our past works and be inspired by the legacy of Sargento Upholstery.', NULL),
 ('WORKSHEADERTITLE', 'services_works', 'Past Creations: A Showcase of Artisan Furniture', NULL);
 
@@ -133,6 +148,7 @@ INSERT INTO `contents` (`content_id`, `page`, `content_text`, `image`) VALUES
 -- Table structure for table `faqs`
 --
 
+DROP TABLE IF EXISTS `faqs`;
 CREATE TABLE IF NOT EXISTS `faqs` (
   `faq_id` int NOT NULL AUTO_INCREMENT,
   `question` text NOT NULL,
@@ -162,6 +178,7 @@ INSERT INTO `faqs` (`faq_id`, `question`, `answer`) VALUES
 -- Table structure for table `notifs`
 --
 
+DROP TABLE IF EXISTS `notifs`;
 CREATE TABLE IF NOT EXISTS `notifs` (
   `notif_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
@@ -188,6 +205,7 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 -- Table structure for table `orders`
 --
 
+DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -260,6 +278,7 @@ INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `or
 --
 -- Triggers `orders`
 --
+DROP TRIGGER IF EXISTS `insert_est_date_after_acceptance`;
 DELIMITER $$
 CREATE TRIGGER `insert_est_date_after_acceptance` AFTER UPDATE ON `orders` FOR EACH ROW BEGIN
     IF NEW.is_accepted = 'accepted' THEN
@@ -270,6 +289,7 @@ CREATE TRIGGER `insert_est_date_after_acceptance` AFTER UPDATE ON `orders` FOR E
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `insert_payment_and_order_date`;
 DELIMITER $$
 CREATE TRIGGER `insert_payment_and_order_date` AFTER INSERT ON `orders` FOR EACH ROW BEGIN
     DECLARE p_date DATE;
@@ -290,6 +310,7 @@ DELIMITER ;
 -- Table structure for table `order_date`
 --
 
+DROP TABLE IF EXISTS `order_date`;
 CREATE TABLE IF NOT EXISTS `order_date` (
   `order_id` int NOT NULL,
   `placement_date` date NOT NULL,
@@ -354,6 +375,7 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 -- Table structure for table `payment`
 --
 
+DROP TABLE IF EXISTS `payment`;
 CREATE TABLE IF NOT EXISTS `payment` (
   `order_id` int NOT NULL,
   `payment_status` enum('unpaid','partially_paid','fully_paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unpaid',
@@ -421,6 +443,7 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 -- Table structure for table `pickup`
 --
 
+DROP TABLE IF EXISTS `pickup`;
 CREATE TABLE IF NOT EXISTS `pickup` (
   `order_id` int NOT NULL,
   `pickup_method` enum('third_party','self') NOT NULL,
@@ -464,6 +487,7 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address`) VALUES
 -- Table structure for table `reset_tokens`
 --
 
+DROP TABLE IF EXISTS `reset_tokens`;
 CREATE TABLE IF NOT EXISTS `reset_tokens` (
   `email` varchar(50) DEFAULT NULL,
   `token_hash` varchar(64) DEFAULT NULL,
@@ -493,6 +517,7 @@ INSERT INTO `reset_tokens` (`email`, `token_hash`, `expires_at`) VALUES
 -- Table structure for table `reviews`
 --
 
+DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE IF NOT EXISTS `reviews` (
   `review_id` int NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL,
@@ -527,6 +552,7 @@ INSERT INTO `reviews` (`review_id`, `order_id`, `rating`, `comment`, `date`, `re
 -- Table structure for table `review_images`
 --
 
+DROP TABLE IF EXISTS `review_images`;
 CREATE TABLE IF NOT EXISTS `review_images` (
   `image_id` int NOT NULL AUTO_INCREMENT,
   `review_id` int NOT NULL,
@@ -541,6 +567,7 @@ CREATE TABLE IF NOT EXISTS `review_images` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -587,6 +614,7 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_
 -- Table structure for table `works`
 --
 
+DROP TABLE IF EXISTS `works`;
 CREATE TABLE IF NOT EXISTS `works` (
   `works_id` int NOT NULL AUTO_INCREMENT,
   `category` varchar(50) DEFAULT NULL,

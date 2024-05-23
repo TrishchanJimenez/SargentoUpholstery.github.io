@@ -23,8 +23,8 @@
     ?>
     <img src="/websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
     <div class="intro-section">
-        <h2 class="intro-title editable short-text" data-id="WORKSHEADERTITLE"><?= $contentsById["WORKSHEADERTITLE"]["content_text"] ?></h2>
-        <p class="intro-info editable long-text" data-id="WORKSHEADERTEXT"><?= $contentsById["WORKSHEADERTEXT"]["content_text"] ?></p>
+        <h2 class="intro-title editable short-text" data-id="WORKSHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSHEADERTITLE"]["content_text"])) ?></h2>
+        <p class="intro-info editable long-text" data-id="WORKSHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSHEADERTEXT"]["content_text"])) ?></p>
         <a href="order.php" class="btn btn-black">Get Free Quote</a>
     </div>
     <div class="product-gallery">

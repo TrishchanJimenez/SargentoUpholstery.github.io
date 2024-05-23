@@ -48,13 +48,15 @@
         <!-- Main Content -->
         <div class="admin-chat__main-content">
             <!-- Header -->
-            <header class="admin-chat__header">
-                <h1 class="admin-chat__heading">Admin Chat</h1>
-            </header>
+            <div class="admin-chat__header">
+                <p class="main-title">Admin Chat</p>
+                <hr class="divider">
+            </div>
             <div class="admin-chat__container">
                 <!-- Customer List -->
                 <div class="admin-chat__customer-list">
                     <h2 class="admin-chat__customer-heading">Customers</h2>
+                    <hr class="admin-chat__customer-divider">
                     <ul class="admin-chat__customer-list-items">
                         <!-- Customer list items will be dynamically populated here -->
                     </ul>
@@ -63,6 +65,7 @@
                 <div class="admin-chat__chat-window">
                     <h2 class="admin-chat__chat-heading">Chat with Customer</h2>
                     <div class="admin-chat__messages">
+                        <!-- Messages will be dynamically populated here -->
                     </div>
                     <form id="message-form" class="admin-chat__message-form" method="post">
                         <input type="text" id="message-input" class="admin-chat__message-input" placeholder="Type a message...">

@@ -148,6 +148,7 @@
     background-color: #FFDC5C;
     color: #000;
     align-self: flex-end;
+    text-align: right;
 }
 
 /* Message alignment for other sender */
@@ -155,6 +156,7 @@
     background-color: #f0f0f0;
     color: #000;
     align-self: flex-start;
+    text-align: left;
 }
 
 .timestamp {
