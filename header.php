@@ -26,6 +26,12 @@
             }
         }
     }
+
+    if (isset($_POST['logout'])) {
+        // header("Location: login.php");
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/api/logout.php');
+        exit();
+    }
 ?>
 <header class="header">
     <a class="business-brand" href="/index.php">
@@ -114,14 +120,6 @@
                         <span>Log Out</span>
                     </button>
                 </form>
-                    <?php
-                    if (isset($_POST['logout'])) {
-                        session_destroy();
-                        // header("Location: login.php");
-                        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/login.php');
-                        exit();
-                    }
-                ?>
             </div>
             <img src="/websiteimages/icons/menu-icon.svg" alt="" id="open-btn" width="36px" height="36px">
         </div>
