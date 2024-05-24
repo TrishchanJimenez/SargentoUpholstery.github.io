@@ -222,10 +222,51 @@
                 } else if ($order['is_cancelled'] == 0) {
                     echo '
                         <form action="/api/cancel_order.php" method="post">
-                            <input type="hidden" name="order_id" value="' . $order["order_id"] . '"> <!-- Fixed $row to $order_id -->
+                            <input type="hidden" name="order_id" value="' . $order["order_id"] . '">
                             <button type="submit" class="cancel-order-button">Cancel Order</button>
                         </form>
                     ';
+                }
+                // Insert the payment upload form conditionally
+                if ($order['is_cancelled'] == 0 && $order['is_accepted'] !== 'rejected') {
+                    if ($order_details['payment_status'] === 'pending_downpayment' || $order_details['payment_status'] === 'pending_fullpayment') {
+                        echo $formHtml;
+                    }
+                }
+            ?>
+            <?php
+                include_once('../api/upload_proof_of_payment.php');
+                // Check if the order is not cancelled or rejected
+                if ($order_details['is_cancelled'] == 0 && $order_details['is_accepted'] !== 'rejected') {
+                    // Determine the payment status to show the appropriate form
+                    $uploadType = '';
+                    $formTitle = '';
+                    if ($order_details['order_status'] === 'pending_downpayment') {
+                        $uploadType = 'downpayment';
+                        $formTitle = 'UPLOAD PROOF OF DOWNPAYMENT';
+                    } elseif ($order_details['order_status'] === 'pending_fullpayment') {
+                        $uploadType = 'fullpayment';
+                        $formTitle = 'UPLOAD PROOF OF REMAINING BAL.';
+                    } else {
+                        echo "Whaat " . $order_details['order_status'];
+                    }
+    
+                    if ($uploadType !== '') {
+                        echo '
+                            <div class="payment-upload-form">
+                                <div class="order-details-container-header-right">
+                                    <h2>' . $formTitle . '</h2>
+                                </div>
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="order_id" value="' . htmlspecialchars($order_id) . '">
+                                    <input type="hidden" name="upload_type" value="' . $uploadType . '">
+                                    <label for="payment_image">Choose Image:</label>
+                                    <input type="file" name="payment_image" accept="image/*" required>
+                                    <button type="submit" name="upload_payment">Upload</button>
+                                </form>
+                            </div>
+                        ';
+                    }
                 }
             ?>
         </div>
@@ -244,6 +285,7 @@
             ';
         }
     ?>
+    <script src="../js/user_order_details.js"></script>
     <script>
         function goBack() {
             window.history.back();

@@ -1,47 +1,49 @@
 <?php
-   $servername = "localhost";
-   $username = "root";
-   $password = "";
-   $database = "sargento_1";
-   
-   // Create connection
-   $conn = new mysqli($servername, $username, $password, $database);
-   
-   // Check connection
-   if ($conn->connect_error) {
-       die("Connection failed: " . $conn->connect_error);
-   }
-   
-   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && isset($_POST['order_id'])) {
-       $uploadDir = 'uploadedImages/fullpaymentProof';
-       $orderId = intval($_POST['order_id']);
-       $uploadFile = $uploadDir . basename($_FILES['file']['name']);
-   
-       // Ensure the uploads directory exists
-       if (!is_dir($uploadDir)) {
-           mkdir($uploadDir, 0777, true);
-       }
-   
-       // Move the uploaded file to the desired directory
-       if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
-           // Prepare the SQL statement
-           $stmt = $conn->prepare('UPDATE payment SET fullpayment_img = ? WHERE order_id = ?');
-           $stmt->bind_param('si', $uploadFile, $orderId);
-   
-           // Execute the statement
-           if ($stmt->execute()) {
-               echo 'File uploaded and path stored in database successfully.';
-           } else {
-               echo 'Failed to store the file path in the database.';
-           }
-           $stmt->close();
-       } else {
-           echo 'Failed to upload the file.';
-       }
-   } else {
-       echo 'No file uploaded.';
-   }
-   
-   // Close connection
-   $conn->close();
-   ?>
+if (isset($_POST['upload_payment'])) {
+    $order_id = $_POST['order_id'];
+    $uploadType = $_POST['upload_type'];
+    $targetDir = '/uploadedImages/paymentImages/';
+    $targetFile = $targetDir . basename($_FILES['payment_image']['name']);
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Validate the image file
+    $check = getimagesize($_FILES['payment_image']['tmp_name']);
+    if ($check !== false) {
+        // Check if file already exists
+        if (!file_exists($targetFile)) {
+            // Check file size (limit to 5MB)
+            if ($_FILES['payment_image']['size'] <= 5000000) {
+                // Allow certain file formats
+                if ($imageFileType === 'jpg' || $imageFileType === 'png' || $imageFileType === 'jpeg' || $imageFileType === 'gif') {
+                    if (move_uploaded_file($_FILES['payment_image']['tmp_name'], $targetFile)) {
+                        // Update database with the image path
+                        try {
+                            if ($uploadType === 'downpayment') {
+                                $stmt = $conn->prepare("UPDATE payments SET downpayment_img = :img WHERE order_id = :order_id");
+                            } elseif ($uploadType === 'fullpayment') {
+                                $stmt = $conn->prepare("UPDATE payments SET fullpayment_img = :img WHERE order_id = :order_id");
+                            }
+                            $stmt->bindParam(':img', $targetFile);
+                            $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                            $stmt->execute();
+                            echo "The file " . htmlspecialchars(basename($_FILES['payment_image']['name'])) . " has been uploaded.";
+                        } catch (PDOException $e) {
+                            echo "Error updating database: " . $e->getMessage();
+                        }
+                    } else {
+                        echo "Sorry, there was an error uploading your file.";
+                    }
+                } else {
+                    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                }
+            } else {
+                echo "Sorry, your file is too large.";
+            }
+        } else {
+            echo "Sorry, file already exists.";
+        }
+    } else {
+        echo "File is not an image.";
+    }
+}
+?>
