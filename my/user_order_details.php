@@ -247,8 +247,6 @@
                     } elseif ($order_details['order_status'] === 'pending_fullpayment') {
                         $uploadType = 'fullpayment';
                         $formTitle = 'UPLOAD PROOF OF REMAINING BAL.';
-                    } else {
-                        echo "Whaat " . $order_details['order_status'];
                     }
     
                     if ($uploadType !== '') {
