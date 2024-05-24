@@ -1,0 +1,148 @@
+body {
+    background-color: #F8F7F1;
+}
+
+.back-button-img {
+    width: 50px;
+    margin: 25px 0 0px 30px;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+    /* Darker blue on hover */
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    margin: auto;
+    justify-content: space-evenly;
+}
+
+.order-details-header {
+    font-family: 'Playfair Display';
+    font: bold;
+    font-size: 30px;
+    margin: 20px 0 40px 40px;
+}
+
+.order-details-container-left {
+    width: 60%;
+    height: auto;
+    /* Changed from fixed height */
+    background-color: #FDFDFD;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.right-side {
+    width: 30%;
+}
+
+.order-details-container-right {
+    height: auto;
+    /* Changed from fixed height */
+    background-color: #FDFDFD;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.order-details-container-header {
+    font-family: 'Playfair Display';
+    color: #FFDC5C;
+    background-color: BLACK;
+}
+
+.order-details-container-header-right {
+    font-family: 'Playfair Display';
+    color: #FFDC5C;
+    background-color: BLACK;
+    padding: 3%;
+}
+
+.order-details-container-header h2 {
+    padding: 1.5%;
+}
+
+.left-table-top {
+    width: 90%;
+    margin: 20px auto 0 auto;
+}
+
+.left-table {
+    width: 90%;
+    margin: auto;
+    padding: 2%;
+}
+
+.row {
+    font-size: 25px;
+    text-align: left;
+    padding: 1%;
+    font-family: Inter;
+}
+
+.content {
+    text-align: left;
+    font-size: 18px;
+    padding: 1%;
+    font-family: Inter;
+}
+
+.cancel-order-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 5%;
+    font-size: 30px;
+    cursor: pointer;
+    margin: 40px 0 0 0;
+    font-family: Inter;
+}
+
+.rejected-reason {
+    width: 50%;
+    margin: 3% auto 0 auto;
+    height: auto;
+    /* Changed from fixed height */
+    background-color: #FDFDFD;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    font-family: Inter;
+    font-size: 18px;
+}
+
+.rejected-header {
+    font-family: 'Playfair Display';
+    color: #FFDC5C;
+    background-color: BLACK;
+    padding: 3%;
+}
+
+.text-field {
+    padding-top: 4%;
+    padding-bottom: 4%;
+    margin: 0 auto 0 auto;
+    text-align: center;
+    width: 80%;
+}
+
+.review-button {
+    padding: 20px 25px;
+    border: none;
+    background-color: #FFDC5C;
+    border-radius: 5px 5px 0 0;
+    font-size: 25px;
+    font-family: 'Playfair Display';
+    font-weight: 700;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+.order-details-image {
+    padding: 1vmin;
+    width: 100%;
+}
+
+.order-details-image img {
+    width: 100%;
+}

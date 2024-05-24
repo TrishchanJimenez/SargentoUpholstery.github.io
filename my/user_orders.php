@@ -13,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/user_orders.css">
-    <script src="/js/user_orders.js"></script>
     <title>My Orders</title>
 </head>
 
@@ -665,6 +664,7 @@
                 }
             ?>
         </div>
+        <!-- rejected -->
         <div id="tab9" class="tab">
             <?php
                 try {
@@ -737,5 +737,7 @@
                 }
             ?>
         </div>
+    </div>
+    <script src="/js/user_orders.js"></script>
 </body>
 </html>

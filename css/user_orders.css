@@ -1,26 +1,33 @@
 body {
     background-color: #F8F7F1;
-    }
-    form{
+}
+
+form {
     border: 0;
-    }
-    /* Styles for tabs */
-    .tab {
+}
+
+/* Styles for tabs */
+.tab {
     display: none;
-    }
-    /* Style for active tab */
-    .tab.active {
+}
+
+/* Style for active tab */
+.tab.active {
     display: block;
-    }
-    /* Style for tab buttons */
-    .tab-container {
+}
+
+/* Style for tab buttons */
+.tab-container {
     width: 90%;
     margin: 1% auto 0 auto;
-    display: flex; /* Use flexbox */
-    justify-content: space-evenly; /* Evenly space the buttons */
+    display: flex;
+    /* Use flexbox */
+    justify-content: space-evenly;
+    /* Evenly space the buttons */
     border-bottom: 20px solid #FFDC5C;
-    }
-    .tab-button {
+}
+
+.tab-button {
     cursor: pointer;
     padding: 10px 15px;
     border: none;
@@ -32,74 +39,90 @@ body {
     margin-right: 5px;
     margin-left: 5px;
     margin-top: 20px;
-    }
-    .item-box {
+}
+
+.item-box {
     cursor: pointer;
-    }
-    /* Style for active tab button */
-    .tab-button.active {
+}
+
+/* Style for active tab button */
+.tab-button.active {
     background-color: #FFDC5C;
-    }
-    .order-header {
+}
+
+.order-header {
     padding: 3% 0 0 4%;
     font-size: 50px;
     font-weight: 700;
-    }
-    /* tab 4 */
-    .order-container {
+}
+
+/* tab 4 */
+.order-container {
     width: 90%;
     height: 150px;
     background-color: #FDFDFD;
     box-shadow: 0px 4px 4px 0px #00000040;
-    }
-    .order-container-space {
-    height: 20px; /* Adjust this value as needed */
-    }
-    .status-header {
+}
+
+.order-container-space {
+    height: 20px;
+    /* Adjust this value as needed */
+}
+
+.status-header {
     font-family: Inter;
     margin-top: 20px;
     font-size: 30px;
     font-weight: 700;
     line-height: 26.66px;
     justify-content: space-evenly;
-    }
-    .tab-table{
+}
+
+.tab-table {
     font-family: Inter;
     font-size: 22px;
     font-weight: 500;
     line-height: 24px;
     text-align: left;
     width: 200px;
-    }
-    table {
+}
+
+table {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
-    }
-    td {
+}
+
+td {
     padding: 2%;
-    }
-    th {
+}
+
+th {
     text-align: left !important;
     padding: 2%;
-    }
-    /* tab 5 */
-    .tabLabels {
+}
+
+/* tab 5 */
+.tabLabels {
     width: 90%;
     margin: 20px auto 0 auto;
-    }
-    #fileInput {
-    display: none; /* Hide the file input */
-    }
-    #addAttachmentButton {
+}
+
+#fileInput {
+    display: none;
+    /* Hide the file input */
+}
+
+#addAttachmentButton {
     cursor: pointer;
     padding: 10px 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f0f0f0;
-    }
-    /* tab 7 */
-    .received-button {
+}
+
+/* tab 7 */
+.received-button {
     padding: 20px 25px;
     border: none;
     background-color: #FFDC5C;
@@ -109,8 +132,9 @@ body {
     font-weight: 700;
     box-shadow: 0px 4px 4px 0px #00000040;
     border-radius: 25px;
-    }
-    .review-button{
+}
+
+.review-button {
     padding: 20px 25px;
     border: none;
     background-color: #FFDC5C;
@@ -120,13 +144,15 @@ body {
     font-weight: 700;
     box-shadow: 0px 4px 4px 0px #00000040;
     border-radius: 25px;
-    }
-    /* file upload css */
-    .file-upload-wrapper {
+}
+
+/* file upload css */
+.file-upload-wrapper {
     position: relative;
     display: inline-block;
-    }
-    .file-upload-input {
+}
+
+.file-upload-input {
     position: absolute;
     top: 0;
     left: 0;
@@ -134,8 +160,9 @@ body {
     height: 100%;
     opacity: 0;
     cursor: pointer;
-    }
-    .file-upload-button {
+}
+
+.file-upload-button {
     padding: 20px 25px;
     border: none;
     background-color: #F8F7F1;
@@ -146,7 +173,8 @@ body {
     box-shadow: 0px 4px 4px 0px #00000040;
     background-color: #FFDC5C;
     border-radius: 25px;
-    }
-    .file-upload-button:hover {
+}
+
+.file-upload-button:hover {
     background-color: #0056b3;
-    }
+}
