@@ -124,7 +124,8 @@
             <img src="/websiteimages/icons/menu-icon.svg" alt="" id="open-btn" width="36px" height="36px">
         </div>
         <div id="offcanvas-menu">
-            <img src="/websiteimages/icons/close-icon.svg" alt="" id="close-btn" width="30px" height="30px">
+            <!-- <img src="/websiteimages/icons/close-icon-white.svg" alt="" id="close-btn" width="60px" height="60px"> -->
+            <svg xmlns="http://www.w3.org/2000/svg" id="close-btn" height="60px" viewBox="0 -960 960 960" width="60px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
             <ul class="nav-links">
                 <li><a href="/index.php">Home</a></li>
                 <li><a href="/services_craftsmanship.php">Services</a></li>

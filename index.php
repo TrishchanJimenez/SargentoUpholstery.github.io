@@ -27,7 +27,7 @@
         }
     ?>
     <div class="featured">
-        <h2 class="featured-title">
+        <h2 class="featured-title text-gold">
             Well-crafted & Timeless
             <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
         </h2>

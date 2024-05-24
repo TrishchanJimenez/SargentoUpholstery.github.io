@@ -161,6 +161,17 @@ body {
 #offcanvas-menu {
     display: none;
     transform: translateX(100%);
+
+    svg {
+        cursor: pointer;
+    }
+
+    svg:hover {
+        background-color: #FFDC5C;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        fill: #111;
+    }
 }
 
 #offcanvas-menu.active {
@@ -169,7 +180,7 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    background: rgb(26, 2, 43);
+    background: rgba(0, 0, 0, 0.9);
     width: clamp(320px, 40vw, 40vw);
     height: 100vh;
     transform: translateX(0);
@@ -205,6 +216,15 @@ body {
 
 .nav-links li {
     padding: 1em 0;
+
+    &:hover {
+        background-color: #FFDC5C;
+        border-radius: 0.75rem;
+
+        a {
+            color: #111;
+        }
+    }
 }
 
 .nav-links li a {

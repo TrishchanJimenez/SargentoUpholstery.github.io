@@ -4,6 +4,7 @@ require '../database_connection.php';
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $order_id = $_POST["order_id"];
     $rating = $_POST["rating"];
     $comment = $_POST["comment"];
     
@@ -11,9 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imagePaths = [];
     if (!empty($_FILES["images"]["name"])) {
         foreach ($_FILES["images"]["tmp_name"] as $key => $tmp_name) {
-            $imagePath = "uploads/images/" . $_FILES["images"]["name"][$key];
+            $imagePath = "../uploadedImages/reviewImages/" . $_FILES["images"]["name"][$key];
             move_uploaded_file($tmp_name, $imagePath);
-            $imagePaths[] = $imagePath;
+
+            $dbPath = '/uploadedImages/reviewImages/' . basename($_FILES["images"]["name"][$key]);
+            $imagePaths[] = $dbPath;
         }
     }
 
@@ -24,10 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(2, $rating, PDO::PARAM_INT);
     $stmt->bindParam(3, $comment, PDO::PARAM_STR);
     $stmt->execute();
+    $review_id = $conn->lastInsertId();
 
-    $sql = "INSERT INTO review_images (review_id, image_path) VALUES (?, ?)";
+    $sql = "INSERT INTO review_images (review_id, path) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
     foreach ($imagePaths as $imagePath) {
-        $stmt = $conn->prepare($sql);
         $stmt->bindParam(1, $review_id, PDO::PARAM_INT);
         $stmt->bindParam(2, $imagePath, PDO::PARAM_STR);
         $stmt->execute();

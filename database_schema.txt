@@ -113,3 +113,126 @@ SELECT
     (SELECT COUNT(*) FROM Orders 
      JOIN Order_date ON Orders.order_id = Order_date.order_id 
      WHERE MONTH(placement_date) = MONTH(CURDATE()) - 1 AND YEAR(placement_date) = YEAR(CURDATE())) AS last_month;
+
+
+Orders Table:
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field          | Type                                                                                                                           | Null | Key | Default           | Extra                                         |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| order_id       | int                                                                                                                            | NO   | PRI | NULL              | auto_increment                                |
+| user_id        | int                                                                                                                            | NO   | MUL | NULL              |                                               |
+| furniture_type | varchar(32)                                                                                                                    | NO   |     | NULL              |                                               |
+| order_type     | enum('repair','mto')                                                                                                           | NO   |     | NULL              |                                               |
+| order_status   | enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') | NO   |     | new_order         |                                               |
+| ref_img_path   | tinytext                                                                                                                       | YES  |     | NULL              |                                               |
+| del_method     | enum('third_party','self')                                                                                                     | NO   |     | NULL              |                                               |
+| del_address_id | int                                                                                                                            | NO   |     | NULL              |                                               |
+| notes          | text                                                                                                                           | YES  |     | NULL              |                                               |
+| quoted_price   | float                                                                                                                          | YES  |     | NULL              |                                               |
+| is_accepted    | enum('pending','accepted','rejected')                                                                                          | NO   |     | pending           |                                               |
+| refusal_reason | text                                                                                                                           | YES  |     | NULL              |                                               |
+| last_updated   | timestamp                                                                                                                      | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+
+order_date Table:
++---------------------+------+------+-----+---------+-------+
+| Field               | Type | Null | Key | Default | Extra |
++---------------------+------+------+-----+---------+-------+
+| order_id            | int  | NO   | MUL | NULL    |       |
+| placement_date      | date | NO   |     | NULL    |       |
+| est_completion_date | date | NO   |     | NULL    |       |
++---------------------+------+------+-----+---------+-------+
+
+users Table:
++----------------+--------------------------+------+-----+---------+----------------+
+| Field          | Type                     | Null | Key | Default | Extra          |
++----------------+--------------------------+------+-----+---------+----------------+
+| user_id        | int                      | NO   | PRI | NULL    | auto_increment |
+| name           | varchar(255)             | YES  |     | NULL    |                |
+| email          | varchar(255)             | NO   |     | NULL    |                |
+| password       | char(255)                | NO   |     | NULL    |                |
+| user_type      | enum('customer','admin') | NO   |     | NULL    |                |
+| user_address   | varchar(120)             | YES  |     | NULL    |                |
+| contact_number | varchar(11)              | NO   |     | NULL    |                |
++----------------+--------------------------+------+-----+---------+----------------+
+
+payment Table:
++--------------------+------------------------------------------------+------+-----+---------+-------+
+| Field              | Type                                           | Null | Key | Default | Extra |
++--------------------+------------------------------------------------+------+-----+---------+-------+
+| order_id           | int                                            | NO   | MUL | NULL    |       |
+| payment_status     | enum('unpaid','partially_paid','fully_paid')   | NO   |     | unpaid  |       |
+| downpayment_method | enum('gcash','paymaya','cash','bank_transfer') | YES  |     | NULL    |       |
+| downpayment_img    | text                                           | YES  |     | NULL    |       |
+| fullpayment_method | enum('gcash','paymaya','cash','bank_transfer') | YES  |     | NULL    |       |
+| fullpayment_img    | text                                           | YES  |     | NULL    |       |
++--------------------+------------------------------------------------+------+-----+---------+-------+
+
+pickups Table:
++-------------------+----------------------------+------+-----+---------+-------+
+| Field             | Type                       | Null | Key | Default | Extra |
++-------------------+----------------------------+------+-----+---------+-------+
+| order_id          | int                        | NO   | MUL | NULL    |       |
+| pickup_method     | enum('third_party','self') | NO   |     | NULL    |       |
+| pickup_address_id | int                        | NO   |     | NULL    |       |
++-------------------+----------------------------+------+-----+---------+-------+
+
+addresses Table:
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| address_id | int          | NO   | PRI | NULL    | auto_increment |
+| user_id    | int          | NO   |     | NULL    |                |
+| address    | varchar(255) | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+
+SELECT o.furniture_type, DATE_FORMAT(od.placement_date, '%Y-%m-%d') AS day_start, COUNT(*) AS order_count 
+        FROM orders o 
+        JOIN order_date od ON o.order_id = od.order_id 
+        WHERE o.order_status = 'received'
+        GROUP BY o.furniture_type, DAY(od.placement_date)
+        ORDER BY o.furniture_type, od.placement_date
+
+
+SELECT furniture_type, COUNT(*) AS order_count
+    FROM orders O
+    JOIN order_date USING(order_id)
+    WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE()) AND order_status = 'received'
+    GROUP BY furniture_type
+    ORDER BY furniture_type
+
+SELECT *
+FROM (
+    SELECT *
+    FROM orders
+    WHERE order_id = 49) AS O
+JOIN order_date OD USING(order_id)
+JOIN users U USING(user_id)
+JOIN payment P USING(order_id)
+JOIN ( 
+    SELECT
+        address_id,
+        address AS delivery_address
+    FROM addresses
+) AS A ON O.del_address_id = A.address_id
+LEFT JOIN(
+    SELECT
+        order_id,
+        pickup_method,
+        address AS pickup_address
+    FROM pickup
+    JOIN addresses ON pickup.pickup_address_id = addresses.address_id
+    ) AS pickup USING(order_id)
+
+orders Table:
++----------+--------------------------------------------------------------------------+
+| order_id | ref_img_path                                                             |
++----------+--------------------------------------------------------------------------+
+|       41 | uploadedImages/images.jpg                                                |
+|       42 | uploadedImages/images.jpg                                                |
+|       43 | uploadedImages/images.jpg                                                |
+|       44 | uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg |
+|       45 | uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg |
+|       48 | uploadedImages/testimg1.jpg                                              |
+|       49 | uploadedImages/testimg1.jpg                                              |
++----------+----------------------------------------------------------------------

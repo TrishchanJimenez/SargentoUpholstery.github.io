@@ -36,6 +36,7 @@
             O.quoted_price AS price,
             OD.placement_date,
             O.order_status AS prod_status,
+            O.is_cancelled,
             P.payment_status
         FROM orders O 
         JOIN users U ON O.user_id = U.user_id
@@ -163,7 +164,7 @@
             </form>
             <div class="selected-multiple">
                 <img src="/websiteimages/icons/close-icon-gray.svg" alt="" class="close-icon">
-                <span class="selected-count">5</span><span>selected</span>
+                <span class="selected-count"></span><span>selected</span>
                 <span class="advance-next">Advance To Next Phase<img src="/websiteimages/icons/arrow-right.svg" alt=""></span>
             </div>
             <table class="order-table">
@@ -206,6 +207,12 @@
                             ];
                             $prod_status_options = "";
                             $include = false;
+                            $is_cancelled = $order['is_cancelled'] === 1 ? true : false;
+                            if($is_cancelled) {
+                                $prod_status = "cancelled";
+                                $prod_status_text = "Cancelled";
+                                // $prod_status_options .= "<option value='cancelled'>Cancelled</option>";
+                            }
                             foreach ($statuses as $status => $status_text) {
                                 if ($include) {
                                     $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";

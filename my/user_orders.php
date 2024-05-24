@@ -5,7 +5,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="/css/global.css">
       <link rel="stylesheet" href="/css/user_orders.css">
-      <script src="/js/user_orders.js"></script>
+      <link rel="stylesheet" href="/css/review_submission.css">
       <title>Document</title>
    </head>
    <body>
@@ -47,7 +47,7 @@
                   }
                   
                   // Query to select data from the database
-                  $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status, is_cancelled FROM orders WHERE user_id = $user_id";
+                  $sql = "SELECT order_id,furniture_type, quoted_price, del_address_id, order_type, is_accepted, order_status, is_cancelled FROM orders WHERE user_id = $user_id";
                   $result = $conn->query($sql);
                   
                   
@@ -117,7 +117,7 @@
                                <tr class="order-container" data-id="' . $row["order_id"] . '">
                               <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                               <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                              <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                              <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                               <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                               <td><div class="tab-table"><p>' . $display_status . '</p></div></td>
                               <td class="myTable">
@@ -161,7 +161,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND is_accepted = 'pending'";
+               $sql = "SELECT order_id,furniture_type, quoted_price, del_address_id, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND is_accepted = 'pending'";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -193,7 +193,7 @@
                          <tr class="order-container" data-id="' . $row["order_id"] . '">
                         <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                        <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                        <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                         <td><div class="tab-table"><p>' . $display_status . '</p></div></td>
                         <td class="myTable">
@@ -238,7 +238,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND order_status = 'ready_for_pickup'";
+               $sql = "SELECT order_id,furniture_type, quoted_price, del_address_id, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND order_status = 'ready_for_pickup'";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -269,7 +269,7 @@
                          <tr class="order-container" data-id="' . $row["order_id"] . '">
                         <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                        <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                        <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                         <td class="myTable">
                             <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
@@ -313,7 +313,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id,furniture_type, quoted_price, del_address, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND order_status = 'in_production'";
+               $sql = "SELECT order_id,furniture_type, quoted_price, del_address_id, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND order_status = 'in_production'";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -344,7 +344,7 @@
                          <tr class="order-container" data-id="' . $row["order_id"] . '">
                         <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                        <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                        <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                         <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                         <td class="myTable">
                             <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
@@ -387,7 +387,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id, order_type, furniture_type, quoted_price, del_address FROM orders WHERE order_status ='pending_fullpayment' AND user_id = $user_id";
+               $sql = "SELECT order_id, order_type, furniture_type, quoted_price, del_address_id FROM orders WHERE order_status ='pending_fullpayment' AND user_id = $user_id";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -426,7 +426,7 @@
                        <tr class="order-container" data-id="' . $row["order_id"] . '">
                            <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                            <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                           <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                           <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                            <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                            <td>';
                        
@@ -481,7 +481,7 @@
                }
 
                // Query to select data from the database
-               $sql = "SELECT order_id,furniture_type, order_type, quoted_price, del_address, order_type FROM orders WHERE order_status = 'out_for_delivery' AND user_id = $user_id ";
+               $sql = "SELECT order_id,furniture_type, order_type, quoted_price, del_address_id, order_type FROM orders WHERE order_status = 'out_for_delivery' AND user_id = $user_id ";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -510,7 +510,7 @@
                            <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
                            <td>
                                <div class="tab-table">
-                                   <p>' . $row["del_address"] . '</p>
+                                   <p>' . $row["del_address_id"] . '</p>
                                </div>
                            </td>
                            <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
@@ -562,7 +562,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id,furniture_type, order_type, quoted_price, del_address FROM orders WHERE order_status ='received' AND user_id = $user_id"; 
+               $sql = "SELECT order_id,furniture_type, order_type, quoted_price, del_address_id FROM orders WHERE order_status ='received' AND user_id = $user_id"; 
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -581,36 +581,34 @@
                    // Output data of each row
                    while ($row = $result->fetch_assoc()) {
                        // Output the table rows inside the loop with additional classes for styling
-                       echo '
-                       <tr class="order-container" data-id="' . $row["order_id"] . '">
-                           <td>
-                               <div class="tab-table">
-                                   <p>' . $row["furniture_type"] . '</p>
-                               </div>
-                           </td>
-                           <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                           <td>
-                               <div class="tab-table">
-                                   <p>' . $row["del_address"] . '</p>
-                               </div>
-                           </td>
-                           <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
-                           <td>
-                               <div class="tab-table">
-                                   <form action="review/Review_Submission.php" method="post">
-                                       <input type="hidden" name="order_id" value="' . $row["order_id"] . '">
-                                       <button type="submit" class="review-button">Review</button>
-                                   </form>
-                               </div>
-                           </td>
-                           <td class="chevron-right">
-                               <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
-                                   <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280">
-                                       <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
-                                   </svg>
-                               </a>
-                           </td>
-                       </tr>';
+                        echo '
+                        <tr class="order-container" data-id="' . $row["order_id"] . '">
+                            <td>
+                                <div class="tab-table">
+                                    <p>' . $row["furniture_type"] . '</p>
+                                </div>
+                            </td>
+                            <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
+                            <td>
+                                <div class="tab-table">
+                                    <p>' . $row["del_address_id"] . '</p>
+                                </div>
+                            </td>
+                            <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
+                            <td>
+                                <div class="tab-table">
+                                    <input type="hidden" name="order_id" value="' . $row["order_id"] . '">
+                                    <button type="submit" class="review-button">Review</button>
+                                </div>
+                            </td>
+                            <td class="chevron-right">
+                                <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6B7280">
+                                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>';
                        // Add spacing between order-container elements
                        echo '<tr class="order-container-space"></tr>';
                    }
@@ -641,7 +639,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT furniture_type, quoted_price, del_address, order_type,order_id FROM orders WHERE is_cancelled = 1 AND user_id = $user_id";
+               $sql = "SELECT furniture_type, quoted_price, del_address_id, order_type,order_id FROM orders WHERE is_cancelled = 1 AND user_id = $user_id";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -671,7 +669,7 @@
                                <tr class="order-container" data-id="' . $row["order_id"] . '">
                               <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                               <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                              <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                              <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                               <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                               <td class="myTable">
                                   <a href="user_order_details.php?order-id=' . $row["order_id"] . '">
@@ -714,7 +712,7 @@
                }
                
                // Query to select data from the database
-               $sql = "SELECT order_id, furniture_type, quoted_price, del_address, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND is_accepted = 'rejected'";
+               $sql = "SELECT order_id, furniture_type, quoted_price, del_address_id, order_type, is_accepted, order_status FROM orders WHERE user_id = $user_id AND is_accepted = 'rejected'";
                $result = $conn->query($sql);
                
                if ($result->num_rows > 0) {
@@ -737,7 +735,7 @@
                        <tr class="order-container" data-id="' . $row["order_id"] . '">
                            <td><div class="tab-table"><p>' . $row["furniture_type"] . '</p></div></td>
                            <td><div class="tab-table"><p>' . (is_null($row["quoted_price"]) ? "N/A" : "₱" . htmlspecialchars($row["quoted_price"])) . '</p></div></td>
-                           <td><div class="tab-table"><p>' . $row["del_address"] . '</p></div></td>
+                           <td><div class="tab-table"><p>' . $row["del_address_id"] . '</p></div></td>
                            <td><div class="tab-table"><p>' . ($row["order_type"] === "mto" ? "MTO" : "Repair") . '</p></div></td>
                            <td><div class="tab-table"><p>' . $display_status . '</p></div></td>
                            <td class="myTable">
@@ -756,6 +754,38 @@
                }
                $conn->close();
                ?>
-      </div>
-   </body>
+        </div>
+        <div class="review-background">
+            <div class="review-content">
+                <div class="review-header">
+                    <h1>Rate Service</h1>
+                    <span class="close-modal" onclick="closeReviewModal()">&times;</span>
+                </div>
+                <form id="reviewForm" action="" method="post" enctype="multipart/form-data">
+                    <div class="starcontainer">
+                        <p>Rate Quality:</p>
+                        <div class="rating" id="ratingStars">
+                            <input type="hidden" id="rating" name="rating" value="">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div><br><br>
+                    </div>
+                    <label for="review">Review:</label><br>
+                    <textarea id="review" name="comment" rows="4" cols="50" placeholder="Enter review here..." required></textarea><br><br>
+                    <label for="images">Additional Images:</label>
+                    <div class="file-drop" id="imagesDrop" onclick="document.getElementById('images').click();">
+                        <span>Click Here to Add Images</span>
+                        <input type="file" id="images" name="images[]" multiple accept="image/*" onchange="previewImages(event)">
+                    </div>
+                    <div id="imagesPreview"></div><br><br>
+                    <input type="submit" value="Submit Review">
+                </form>
+            </div>
+        </div>
+    <script src="/js/review_submission.js"></script>
+    <script src="/js/user_orders.js"></script>
+    </body>
 </html>

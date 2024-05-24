@@ -20,16 +20,30 @@
     $query = "
         SELECT *
         FROM (
-        SELECT *
-        FROM orders
-        WHERE order_id = $order_id) AS O
-        JOIN order_date USING(order_id)
-        JOIN users USING(user_id)
-        JOIN payment USING(order_id)
-        LEFT JOIN pickup USING(order_id)
+            SELECT *
+            FROM orders
+            WHERE order_id = :order_id) AS O
+        JOIN order_date OD USING(order_id)
+        JOIN users U USING(user_id)
+        JOIN payment P USING(order_id)
+        JOIN ( 
+            SELECT
+                address_id,
+                address AS delivery_address
+            FROM addresses
+        ) AS A ON O.del_address_id = A.address_id
+        LEFT JOIN(
+            SELECT
+                order_id,
+                pickup_method,
+                address AS pickup_address
+            FROM pickup P
+            JOIN addresses A ON P.pickup_address_id = A.address_id
+            ) AS pickup USING(order_id)
     ";
-
-    $stmt = $conn->query($query);
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':order_id', $order_id);
+    $stmt->execute();
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
     // var_dump($order);
     $prod_status = str_replace("_", "-", $order['order_status']);
@@ -146,53 +160,84 @@
                                 <?= $order['notes'] ?>
                             </span>
                         </div>
-                        <?php
-                            if(!is_null($order['ref_img_path'])) {
-                                echo " 
-                                <div class='info'>
-                                    <span class='info-name'>
-                                        PICTURE
-                                    </span>
-                                    <span class='info-detail'>
-                                        <img src='/{$order['repair_img_path']}' alt='' class='repair-img'>
-                                    </span>
-                                </div>"
-                                ;
-                            }
-                        ?>
+                        <?php if(!is_null($order['ref_img_path'])): ?>
+                            <div class="info">
+                                <span class="info-name">PICTURE</span>
+                                <span class="info-detail">
+                                    <img src='/<?= $order['ref_img_path'] ?>' alt='' class='repair-img'>
+                                </span>
+                            </div>
+                        <?php endif; ?>                             
                     </div>
                 </div>
-                <div class="payment-information">
-                    <p class="info-title">
-                        PAYMENTS   
-                    </p>
-                    <div class="info-order-detail payment-info">
-                        <div class="info">
-                            <span class="info-name"> DOWNPAYMENT </span>
-                            <span class="info-detail">
-                                <?= "₱" . $order['downpayment'] ?>
-                            </span>
-                        </div>
-                        <div class="info">
-                            <span class="info-name"> FULLPAYMENT </span>
-                            <span class="info-detail">
-                                <?= "₱" . $order['fullpayment'] ?>
-                            </span>
-                        </div>
-                        <div class="info">
-                            <span class="info-name"> PAYMENT STATUS </span>
-                            <span class="info-detail">
-                                <?= $payment_status_text ?>
-                            </span>
-                        </div>
-                        <div class="info">
-                            <span class="info-name"> PAYMENT DATE </span>
-                            <span class="info-detail">
-                                <?= date('M d, Y', strtotime($order['payment_date'])) ?>
-                            </span>
+                <?php if(is_null($order['downpayment_method'])) : ?>
+                    <div class="payment-information">
+                        <p class="info-title">
+                            DOWNPAYMENT INFORMATION
+                        </p>
+                        <div class="info-order-detail payment-info">
+                            <div class="info">
+                                <span class="info-name">METHOD</span>
+                                <span class="info-detail">
+                                    <?= $order["downpayment_method"] ?>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span class="info-name">VERIFICATION STATUS</span>
+                                <span class="info-detail">
+                                    <?php
+                                        echo ucfirst(str_replace("_", " ", $order["downpayment_verification_status"]));
+                                    ?>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span class="info-name">PROOF OF PAYMENT</span>
+                                <span class="info-detail">
+                                    <img src="/<?= $order["downpayment_img"] ?>" alt="">
+                                </span>
+                            </div>
+                            <?php if($order['downpayment_verification_status'] === "waiting_for_verification") : ?>
+                                <div class="verification-buttons button-container">
+                                    <input type="button" value="Verify" class="green-button accept-verification">
+                                    <input type="button" value="Needs Reverification" class="red-button reject-verification">
+                                </div> 
+                            <?php endif; ?>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
+                <?php if(!is_null($order['fullpayment_method'])) : ?>
+                    <div class="payment-information">
+                        <p class="info-title">
+                            FULLPAYMENT INFORMATION
+                        </p>
+                        <div class="info-order-detail payment-info">
+                            <div class="info">
+                                <span class="info-name">METHOD</span>
+                                <span class="info-detail">
+                                    <?= $order["fullpayment_method"] ?>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span class="info-name">VERIFICATION STATUS</span>
+                                <span class="info-detail">
+                                    <?= $order["fullpayment_verification_status"]  ?>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span class="info-name">PROOF OF PAYMENT</span>
+                                <span class="info-detail">
+                                    <img src="<?= $order["fullpayment_img"] ?>" alt="">
+                                </span>
+                            </div>
+                            <?php if($order['fullpayment_verification_status'] === "waiting_for_verification") : ?>
+                                <div class="verification-buttons button-container fullpayment">
+                                    <input type="button" value="Verify" class="green-button accept-verification">
+                                    <input type="button" value="Needs Reverification" class="red-button reject-verification">
+                                </div> 
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="right">
                 <div class="customer-information">
@@ -214,44 +259,46 @@
                         </div>
                         <div class="info">
                             <span class="info-name">DELIVERY ADDRESS</span>
-                            <span class="info-detail">Blk 123 Lt 21 Brgy. Ninonin, Taguig City</span>
+                            <span class="info-detail"><?= $order['delivery_address'] ?></span>
                         </div>
+                        <?php if(!is_null($order['pickup_address'])): ?>
+                            <div class="info">
+                                <span class="info-name">PICKUP ADDRESS</span>
+                                <span class="info-detail"><?= $order['pickup_address'] ?></span>
+                            </div>
+                        <?php endif; ?>                             
                     </div>
                 </div>
-                <?php
-                    if($order['is_accepted'] === "pending") {
-                        echo "<div class='order-action is-new-order'>";
-                    } else {
-                        echo "<div class='order-action'>";
-                    }
-                ?>
-                    <p class="info-title">
-                        ACTIONS
-                    </p>
-                    <div class="info-order-detail">
-                        <div class="action-buttons">
-                            <input type="button" value="accept order" class="green-button accept-order action-button">
-                            <input type="button" value="reject order" class="red-button reject-order action-button">
+                <?php if($order['is_accepted'] === "pending") : ?>
+                    <div class='order-action'>
+                        <p class="info-title">
+                            ACTIONS
+                        </p>
+                        <div class="info-order-detail">
+                            <div class="action-buttons">
+                                <input type="button" value="accept order" class="green-button accept-order action-button">
+                                <input type="button" value="reject order" class="red-button reject-order action-button">
+                            </div>
+                            <form action="" method="post">
+                                <input type="hidden" name="order_id" <?= "value={$order_id}" ?>>
+                                <div class="on-reject action-input">
+                                    <label for="rejection-reason">Reason for rejection</label>
+                                    <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
+                                </div>
+                                <div class="on-accept action-input">
+                                    <label for="price">Price for the Order</label>
+                                    <input type="number" name="price" class="price-input" placeholder="₱12131" required>
+                                    <label for="price-reason">Reason for price</label>
+                                    <textarea name="price-reason" rows="3" placeholder="Write reason here..." class="price-reason-input" required></textarea>
+                                </div>
+                                <div class="on-click">
+                                    <input type="submit" value="save" class="green-button action-button">
+                                    <input type="button" value="cancel" class="red-button action-button">
+                                </div>
+                            </form>
                         </div>
-                        <form action="" method="post">
-                            <input type="hidden" name="order_id" <?= "value={$order_id}" ?>>
-                            <div class="on-reject action-input">
-                                <label for="rejection-reason">Reason for rejection</label>
-                                <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
-                            </div>
-                            <div class="on-accept action-input">
-                                <label for="price">Price for the Order</label>
-                                <input type="number" name="price" class="price-input" placeholder="₱12131" required>
-                                <label for="price-reason">Reason for price</label>
-                                <textarea name="price-reason" rows="3" placeholder="Write reason here..." class="price-reason-input" required></textarea>
-                            </div>
-                            <div class="on-click">
-                                <input type="submit" value="save" class="green-button action-button">
-                                <input type="button" value="cancel" class="red-button action-button">
-                            </div>
-                        </form>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

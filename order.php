@@ -203,7 +203,7 @@
             $ref_img_path = null;
             $uploadOk = 1;
             if (isset($_FILES["referenceImage"]) && $_FILES["referenceImage"]["error"] == 0) {
-                $target_dir = "uploadedImages/";
+                $target_dir = "uploadedImages/referenceImages/";
                 $target_file = $target_dir . basename($_FILES["referenceImage"]["name"]);
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 

@@ -173,7 +173,8 @@
 
 .status span[data-payment="unpaid"], 
 .status span[data-prod-status="pending-downpayment"],
-.status span[data-prod-status="pending-fullpayment"] {
+.status span[data-prod-status="pending-fullpayment"],
+.status span[data-prod-status="cancelled"]{
     color: var(--red-800, #991B1B);
     border: 1px solid var(--red-300, #FCA5A5);
     background: var(--red-100, #FEE2E2); 
@@ -345,8 +346,8 @@
 }
 
 .order-action {
+    display: block;
     grid-column: 3;
-    display: none;
 }
 
 .action-buttons {
@@ -403,6 +404,25 @@
     background: var(--green-100, #D1FAE5);
 }
 
+.button-container {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    input {
+        display: inline-block;
+        padding: 0.125rem 0.625rem; 
+        border-radius: 0.25rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+}
+
 .on-click {
     margin-top: 0.5rem;
     display: flex;
@@ -428,11 +448,8 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 
-.is-new-order {
-    display: block;
-}
-
 .info-detail img {
+    width: 100%;
     border-radius: 0.5rem;
 }
 

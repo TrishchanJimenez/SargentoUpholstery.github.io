@@ -37,6 +37,8 @@
             foreach($orders as $order) {
                 if($order['order_status'] === "received") {
                     continue;
+                } else if($order['is_cancelled'] === 1) {
+                    continue;
                 }
                 $new_status = $statuses[array_search($order['order_status'], $statuses) + 1];
                 if($order['order_type'] === "mto" && $new_status === "ready_for_pickup") {
