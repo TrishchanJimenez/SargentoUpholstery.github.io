@@ -1,12 +1,12 @@
 <?php
 require_once '../database_connection.php'; // Include database connection script
 
-$sqlM = "SELECT o.furniture_type, DATE_FORMAT(od.placement_date, '%Y-%m-01') AS month_start, COUNT(*) AS order_count 
-        FROM orders o 
-        JOIN order_date od ON o.order_id = od.order_id 
-        WHERE od.placement_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
-        GROUP BY o.furniture_type, DATE_FORMAT(od.placement_date, '%Y-%m-01')
-        ORDER BY o.furniture_type, od.placement_date";
+$sqlM = "SELECT furniture_type, COUNT(*) AS order_count
+        FROM orders O
+        JOIN order_date USING(order_id)
+        WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE()) AND order_status = 'received'
+        GROUP BY furniture_type
+        ORDER BY furniture_type";
 
 $stmtM = $conn->prepare($sqlM);
 $stmtM->execute();

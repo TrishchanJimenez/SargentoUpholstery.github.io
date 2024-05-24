@@ -44,6 +44,7 @@
 
 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -138,7 +139,7 @@
                             <div class="categories">
                                 <!-- Categories or additional content -->
                             </div>
-                        </div>
+                        </div>  
 
                         <div class="order_type">
                             <div class="toper1">
@@ -164,7 +165,7 @@
                         <div class="mostordered_container">
                             <div class="mostordered">
                                 <p>Most Ordered</p>
-                                <canvas id="myChartD" width="100%" height="80%"></canvas>
+                                <canvas id="myChartD"></canvas>
                             </div>
                         </div>
 
@@ -222,23 +223,11 @@
                     </div>
                     <div class="linecharts_container">
                         <div class="mid">
-
                             <div class="orderchart">
                                 <div class="description">
-                                    <h1>Average Order value</h1>
+                                    <h1>Average Sales</h1>
                                 </div>
-                                <canvas id="myChart1" width="700px " height="400"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bot">
-                            <div class="saleschart">
-
-                                <div class="description">
-                                    `<h1>Average Sales</h1>
-                                </div>
-                                <canvas id="myChart2" width="700px " height="400"></canvas>
-
+                                <canvas id="myChart1"></canvas>
                             </div>
                         </div>
                     </div>
@@ -332,7 +321,7 @@
                         <div class="mostordered_container">
                             <div class="mostordered">
                                 <p>Most Ordered</p>
-                                <canvas id="myChartW" width="100%" height="80%"></canvas>
+                                <canvas id="myChartW"></canvas>
                             </div>
                         </div>
 
@@ -388,18 +377,9 @@
                         <div class="mid">
                             <div class="orderchart">
                                 <div class="description">
-                                    <h1>Average Order value</h1>
+                                    <h1>Average Sales</h1>
                                 </div>
-                                <canvas id="myChart3" width="700px " height="400"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bot">
-                            <div class="saleschart">
-                                <div class="description">
-                                    `<h1>Average Sales</h1>
-                                </div>
-                                <canvas id="myChart4" width="700px " height="400"></canvas>
+                                <canvas id="myChart3"></canvas>
                             </div>
                         </div>
                     </div>
@@ -497,7 +477,7 @@
                         <div class="mostordered_container">
                             <div class="mostordered">
                                 <p>Most Ordered</p>
-                                <canvas id="myChartM" width="100%" height="80%"></canvas>
+                                <canvas id="myChartM"></canvas>
                             </div>
                         </div>
 
@@ -552,18 +532,9 @@
                         <div class="mid">
                             <div class="orderchart">
                                 <div class="description">
-                                    <h1>Average Order value</h1>
-                                </div>
-                                <canvas id="myChart5" width="700px" height="400"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bot">
-                            <div class="saleschart">
-                                <div class="description">
                                     <h1>Average Sales</h1>
                                 </div>
-                                <canvas id="myChart6" width="700px" height="400"></canvas>
+                                <canvas id="myChart5"></canvas>
                             </div>
                         </div>
                     </div>

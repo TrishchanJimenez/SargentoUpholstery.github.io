@@ -1,23 +1,23 @@
 <?php
 require_once '../database_connection.php'; // Include database connection script
 
-$sqlD = "SELECT o.furniture_type, DATE_FORMAT(od.placement_date, '%Y-%m-%d') AS day_start, COUNT(*) AS order_count 
-        FROM orders o 
-        JOIN order_date od ON o.order_id = od.order_id 
-        WHERE od.placement_date >= CURDATE()
-        GROUP BY o.furniture_type, DAY(od.placement_date)
-        ORDER BY o.furniture_type, od.placement_date";
+$sqlD = "SELECT furniture_type, COUNT(*) AS order_count
+        FROM orders O
+        JOIN order_date USING(order_id)
+        WHERE placement_date = CURDATE() AND order_status = 'received'
+        GROUP BY furniture_type
+        ORDER BY furniture_type";
 
 $stmtD = $conn->prepare($sqlD);
 $stmtD->execute();
 $rowsD = $stmtD->fetchAll(PDO::FETCH_ASSOC);
 
 $dataD = [
-    'labels' => [],
+    'labels' => [], // Initialize labels array
     'datasets' => [
         [
-            'label' => 'Order Count', // Dataset label
-            'data' => [], // Data array (will be populated below)
+            'label' => 'Order Count',
+            'data' => [], // Initialize data array
             'backgroundColor' => [ // Colors for bars (optional)
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
@@ -41,12 +41,13 @@ $dataD = [
     ]
 ];
 
+// Populate labels and data arrays
 foreach ($rowsD as $rowD) {
-    $dataD['labels'][] = $rowD['furniture_type']; // Assuming 'furniture_type' is already in correct format
-    $dataD['datasets'][0]['data'][] = (int) $rowD['order_count'];
+    $dataD['labels'][] = $rowD['furniture_type']; // Add furniture_type to labels array
+    $dataD['datasets'][0]['data'][] = (int) $rowD['order_count']; // Add order_count to data array
 }
 
-// Check if there are no rows returned
+// If no data fetched, ensure empty arrays
 if (empty($dataD['labels'])) {
     $dataD = [
         'labels' => [], // Empty array for labels

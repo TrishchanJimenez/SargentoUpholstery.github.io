@@ -9,9 +9,9 @@
 .tdmstatistic_container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
     background-color: #F8F7F1;
     width: 30%;
+    height: 100%;
     
 }
 
@@ -39,7 +39,7 @@
 }
 
 .new_orders {
-    height: 30%;
+    height: 50%;
     width: 90%;
     border-radius: 8px;
     background: #FDFDFD;
@@ -52,7 +52,7 @@
 
 .order_status {
     width: 90%;
-    height: 45%;
+    height: 50%;
     border-radius: 8px;
     background: #FDFDFD;
     box-shadow: 0px 8px 24px 0px rgba(69, 69, 80, 0.10);
@@ -76,7 +76,7 @@
 
 .order_type {
     width: 90%;
-    height: 45%;
+    height: 50%;
     border-radius: 8px;
     background: #FDFDFD;
     box-shadow: 0px 8px 24px 0px rgba(69, 69, 80, 0.10);
@@ -211,8 +211,7 @@
     flex-direction: column;
     width: 70%;
     background-color: #F8F7F1;
-    padding: 16px; /* Add some padding if necessary */
-    gap: 16px; /* Add gap to separate child elements */
+    gap: 7%; /* Add gap to separate child elements */
     margin-left:-2% ;
 }
 
@@ -272,16 +271,20 @@
     font-weight: 500;
     line-height: 30px; /* 150% */
     letter-spacing: 0.333px;
+    width: 100%;
+    height: 10%;
+    text-align: center;
 }
 
 
-.mid, .bot {
+.mid{
     width: 100%;
     height: 100%;
     padding: 1% ;
     display: flex;
     align-items: center;
     flex-direction:column    ;
+    justify-content: center;
 }
 
 .orderchart, .saleschart{
@@ -441,7 +444,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 200%;
+    height: 50%;
 }
 
 .contfixer{
@@ -476,15 +479,37 @@
 .stat_container{
     display: flex;
     flex-direction: column;
-    width: 83%;
+    width: 100%;
     height: 100%;
     padding: 2%;
-    padding-top: 1%;
+
 }
 
 .tdm{
     display: flex;
     flex-direction: column;
 }
+
+
+.orderchart{
+    width: 100%;
+    height: 110%;
+    padding-left: 1%;
+}
+
+.mostordered canvas{
+    width: 100%;
+    height: 90%;
+}
+
+.orderchart canvas{
+    width: 200%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:19%;
+}
+
 
 
