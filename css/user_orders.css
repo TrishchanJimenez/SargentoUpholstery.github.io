@@ -18,7 +18,7 @@ form {
 
 /* Style for tab buttons */
 .tab-container {
-    width: 90%;
+    width: 80%;
     margin: 1% auto 0 auto;
     display: flex;
     /* Use flexbox */
@@ -33,11 +33,11 @@ form {
     border: none;
     background-color: #F8F7F1;
     border-radius: 5px 5px 0 0;
-    font-size: 25px;
+    font-size: 21px;
     font-family: 'Playfair Display';
     font-weight: 700;
-    margin-right: 5px;
-    margin-left: 5px;
+    margin-right: 2px;
+    margin-left: 2px;
     margin-top: 20px;
 }
 

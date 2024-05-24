@@ -235,7 +235,10 @@
                 }
             ?>
             <?php
-                include_once('../api/upload_proof_of_payment.php');
+                if ($order_details['fullpayment_img'] !== null || $order_details['downpayment_img'] !== null) {
+                    echo 'Proof Of Payment Already Uploaded';
+                }else{
+                    include_once('../api/upload_proof_of_payment.php');
                 // Check if the order is not cancelled or rejected
                 if ($order_details['is_cancelled'] == 0 && $order_details['is_accepted'] !== 'rejected') {
                     // Determine the payment status to show the appropriate form
@@ -275,6 +278,8 @@
                         ';
                     }
                 }
+                }
+                
             ?>
         </div>
     </div>
