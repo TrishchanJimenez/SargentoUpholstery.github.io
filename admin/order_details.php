@@ -203,8 +203,8 @@
                             </div>
                             <?php if($order['downpayment_verification_status'] === "waiting_for_verification") : ?>
                                 <div class="verification-buttons button-container downpayment">
-                                    <input type="button" value="Verify" class="green-button accept-verification">
-                                    <input type="button" value="Needs Reverification" class="red-button reject-verification">
+                                    <input type="button" value="Verify" class="green-button accept-verification" onclick="verifyDownpayment()">
+                                    <input type="button" value="Needs Reverification" class="red-button reject-verification" onclick="reverifyDownpayment()">
                                 </div> 
                             <?php endif; ?>
                         </div>

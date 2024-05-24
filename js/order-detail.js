@@ -45,58 +45,63 @@
         actionButtons.style.display = "flex";
     })
     
-    verifyDownpaymentBtn.addEventListener('click', (e) => {
+    function verifyDownpayment() {
         let verificationData = new FormData();
         verificationData.append('order_id', orderId);
         verificationData.append('payment_phase', 'downpayment');
+        verificationData.append('is_verified', true);
         console.log(verificationData);
-        // fetch('../api/verify_downpayment.php', {
-        //     method: 'POST',
-        //     body: verificationData })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         downpaymentVerificationStatus.textContent = data.status;
-        //     })
-    });
+        fetch('../api/payment_update_admin.php', {
+            method: 'POST',
+            body: verificationData })
+            .then(response => {
+                // console.log(response.text());
+                return response.json()
+            })
+            .then(data => {
+                downpaymentVerificationStatus.textContent = data.payment_status;
+                document.querySelector('.verification-buttons.downpayment').display = 'none';
+            })
+    }
     
-    reverifyDownpaymentBtn.addEventListener('click', (e) => {
+    function reverifyDownpayment() {
         let verificationData = new FormData();
         verificationData.append('order_id', orderId);
         verificationData.append('payment_phase', 'downpayment');
         console.log(verificationData);
-        // fetch('../api/verify_downpayment.php', {
-        //     method: 'POST',
-        //     body: verificationData })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         downpaymentVerificationStatus.textContent = data.status;
-        //     })
-    });
+        fetch('../api/payment_update_admin.php', {
+            method: 'POST',
+            body: verificationData })
+            .then(response => response.json())
+            .then(data => {
+                downpaymentVerificationStatus.textContent = data.status;
+            })
+    }
+
+    function verifyFullpayment() {
+        let verificationData = new FormData();
+        verificationData.append('order_id', orderId);
+        verificationData.append('payment_phase', 'downpayment');
+        console.log(verificationData);
+        fetch('../api/payment_update_admin.php', {
+            method: 'POST',
+            body: verificationData })
+            .then(response => response.json())
+            .then(data => {
+                downpaymentVerificationStatus.textContent = data.status;
+            })
+    }
     
-    verifyFullpaymentBtn.addEventListener('click', (e) => {
+    function reverifyFullpayment() {
         let verificationData = new FormData();
         verificationData.append('order_id', orderId);
         verificationData.append('payment_phase', 'downpayment');
         console.log(verificationData);
-        // fetch('../api/verify_downpayment.php', {
-        //     method: 'POST',
-        //     body: verificationData })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         downpaymentVerificationStatus.textContent = data.status;
-        //     })
-    });
-    
-    reverifyFullpaymentBtn.addEventListener('click', (e) => {
-        let verificationData = new FormData();
-        verificationData.append('order_id', orderId);
-        verificationData.append('payment_phase', 'downpayment');
-        console.log(verificationData);
-        // fetch('../api/verify_downpayment.php', {
-        //     method: 'POST',
-        //     body: verificationData })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         downpaymentVerificationStatus.textContent = data.status;
-        //     })
-    });
+        fetch('../api/payment_update_admin.php', {
+            method: 'POST',
+            body: verificationData })
+            .then(response => response.json())
+            .then(data => {
+                downpaymentVerificationStatus.textContent = data.status;
+            })
+    }

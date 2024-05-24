@@ -236,3 +236,17 @@ orders Table:
 |       48 | uploadedImages/testimg1.jpg                                              |
 |       49 | uploadedImages/testimg1.jpg                                              |
 +----------+----------------------------------------------------------------------
+
+Payment Table
++---------------------------------+----------------------------------------------------------------------+------+-----+---------+-------+
+| Field                           | Type                                                                 | Null | Key | Default | Extra |
++---------------------------------+----------------------------------------------------------------------+------+-----+---------+-------+
+| order_id                        | int                                                                  | NO   | MUL | NULL    |       |
+| payment_status                  | enum('unpaid','partially_paid','fully_paid')                         | NO   |     | unpaid  |       |
+| downpayment_method              | enum('gcash','paymaya','cash','bank_transfer')                       | YES  |     | NULL    |       |
+| downpayment_img                 | text                                                                 | YES  |     | NULL    |       |
+| downpayment_verification_status | enum('waiting_for_verification',' needs_reverification',' verified') | YES  |     | NULL    |       |
+| fullpayment_method              | enum('gcash','paymaya','cash','bank_transfer')                       | YES  |     | NULL    |       |
+| fullpayment_img                 | text                                                                 | YES  |     | NULL    |       |
+| fullpayment_verification_status | enum('waiting_for_verification',' needs_reverification',' verified') | YES  |     | NULL    |       |
++---------------------------------+----------------------------------------------------------------------+
