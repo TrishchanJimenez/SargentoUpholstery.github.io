@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     messagesContainer.appendChild(messageElement);
                     messageElement.appendChild(timestampElement);
                 });
+                // On Message Load Scroll to bottom of messages
+                scrollToBottomOfMessages();
             })
             .catch(error => console.error('Error fetching messages:', error));
     }
@@ -76,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function scrollToBottomOfMessages() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
     // Event listener for sending a message
     messageForm.addEventListener('submit', event => {
         event.preventDefault();
@@ -96,6 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageInput.value = '';
                 // Refresh the messages
                 fetchMessages(currentCustomerId);
+                // Scroll to the bottom of the messages
+                scrollToBottomOfMessages();
             })
             .catch(error => console.error('Error sending message:', error));
         }
@@ -103,4 +111,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial fetch of customers
     fetchCustomers();
+
 });
