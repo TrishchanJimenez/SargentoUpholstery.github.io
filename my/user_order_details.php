@@ -38,6 +38,21 @@
         $stmt->execute();
         $order_details = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $query = "
+            SELECT 
+                *
+            FROM  
+                addresses a
+                    INNER JOIN
+                orders o
+                    ON a.address_id = :del_address_id
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':del_address_id', $order_details['del_address_id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $address = $stmt->fetch(PDO::FETCH_ASSOC);
+
         if (!$order_details) {
             die("Order details not found.");
         }
@@ -120,7 +135,7 @@
                 </tr>
                 <tr>
                     <td class="content">
-                        <p><?php echo htmlspecialchars($order_details["address"]); ?></p>
+                        <p><?php echo htmlspecialchars($address['address']); ?></p>
                     </td> <!-- Fixed $order to $order_details -->
                     <td class="content">
                         <p> 
