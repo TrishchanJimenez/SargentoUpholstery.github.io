@@ -248,7 +248,7 @@
                         $uploadType = 'fullpayment';
                         $formTitle = 'UPLOAD PROOF OF REMAINING BAL.';
                     }
-    
+
                     if ($uploadType !== '') {
                         echo '
                             <div class="payment-upload-form">
@@ -258,6 +258,15 @@
                                 <form action="" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="order_id" value="' . htmlspecialchars($order_id) . '">
                                     <input type="hidden" name="upload_type" value="' . $uploadType . '">
+                                    <label for="payment_method">Select Payment Method:</label>
+                                    <div class="payment-methods">
+                                        <label>
+                                            <input type="radio" name="payment_method" value="gcash" required> GCash
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="payment_method" value="paymaya" required> PayMaya
+                                        </label>
+                                    </div>
                                     <label for="payment_image">Choose Image:</label>
                                     <input type="file" name="payment_image" accept="image/*" required>
                                     <button type="submit" name="upload_payment">Upload</button>
