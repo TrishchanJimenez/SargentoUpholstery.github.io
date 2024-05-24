@@ -11,6 +11,8 @@
         }
         return $initials;
     }
+
+    // IF REDIRECTED FROM REVIEW SUBMISSION
     
     // Retrieve existing reviews from the database
     $sql = "

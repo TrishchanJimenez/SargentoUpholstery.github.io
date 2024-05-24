@@ -28,8 +28,7 @@
     ?>
     <div class="featured">
         <h2 class="featured-title text-gold">
-            Well-crafted & Timeless
-            <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
+            Well-crafted & Timeless <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
         </h2>
         <a href="order.php" class="btn btn-black">Get a free quote</a>
     </div>
@@ -89,7 +88,6 @@
         <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
     <?php include_once("footer.php") ?>
-    <script src="js/globals.js"></script>
-    <script src="js/index/link-to-works.js"></script>
+ <script src="js/index/link-to-works.js"></script>
 </body>
 </html>
