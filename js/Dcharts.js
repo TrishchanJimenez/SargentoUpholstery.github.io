@@ -248,8 +248,8 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then(data => {
           // Update chart data
-          config.data.labels = data.labels;
-          config.data.datasets[0].data = data.datasets[0].data;
+          configD.data.labels = data.labels;
+          configD.data.datasets[0].data = data.datasets[0].data;
 
           // Create chart instance
           const ctxD = document.getElementById('myChartD').getContext('2d');
