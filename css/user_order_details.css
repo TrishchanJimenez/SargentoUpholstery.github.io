@@ -145,4 +145,5 @@ body {
 
 .order-details-image img {
     width: 100%;
+    height: auto;
 }

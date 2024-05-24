@@ -28,7 +28,7 @@
             JOIN 
                 users USING(user_id)
             JOIN 
-                payment USING(order_id)
+                payment USING(order_id) 
             LEFT JOIN 
                 pickup USING(order_id)
         ";
@@ -70,96 +70,119 @@
         <h2>ORDER DETAILS</h2>
     </div>
     <div class="container">
-    <div class="order-details-container-left">
-        <div class="order-details-container-header">
-            <h2>ORDER INFORMATION</h2>
-        </div>
-        <table class="left-table">
+        <div class="order-details-container-left">
+            <div class="order-details-container-header">
+                <h2>ORDER INFORMATION</h2>
+            </div>
+            <table class="left-table">
                 <tr>
                     <th class="row">ORDER ID</th>
                     <th class="row">ORDER TYPE</th>
                 </tr>
                 <tr>
-                    <td class="content"><p><?php echo htmlspecialchars($order_id); ?></p></td> <!-- Replaced $order with $order_id -->
-                    <td class="content"><p><?php
-                                    if($order_type === "mto") echo "MTO"; // Changed $order['order_type'] to $order_type
-                                    else echo "Repair"
-                                ?></p></td>
+                    <td class="content">
+                        <p><?php echo htmlspecialchars($order_id); ?></p>
+                    </td> <!-- Replaced $order with $order_id -->
+                    <td class="content">
+                        <p>
+                            <?php
+                                if ($order_type === "mto") 
+                                    echo "MTO"; // Changed $order['order_type'] to $order_type
+                                else 
+                                    echo "Repair"
+                            ?>
+                        </p>
+                    </td>
                 </tr>
                 <tr>
                     <th class="row">ORDER PLACEMENT DATE</th>
                     <th class="row">ESTIMATED DELIVERY DATE</th>
                 </tr>
                 <tr>
-                                    if($order_details['est_completion_date'] === '0000-00-00')  { // Fixed $order to $order_details
-                                        echo "N/A";
-                                    } else {
-                                        echo date('M d, Y', strtotime($order_details['est_completion_date'])); // Fixed $order to $order_details
-                                    }
-                                ?></p></td>
+                    <td class="content">
+                        <p><?= date('M d, Y', strtotime($order_details['placement_date'])) ?></p>
+                    </td> <!-- Fixed $order to $order_details -->
+                    <td class="content">
+                        <p>
                             <?php
+                                if ($order_details['est_completion_date'] === '0000-00-00') { // Fixed $order to $order_details
+                                    echo "N/A";
+                                } else {
+                                    echo date('M d, Y', strtotime($order_details['est_completion_date'])); // Fixed $order to $order_details
+                                }
+                            ?>
+                        </p>
+                    </td>
                 </tr>
                 <tr>
                     <th class="row">DELIVERY ADDRESS</th>
                     <th class="row">QUOTED PRICE</th>
                 </tr>
                 <tr>
-                    <td class="content"><p><?php echo htmlspecialchars($order_details["del_address"]); ?></p></td> <!-- Fixed $order to $order_details -->
-                                ?></p></td>
+                    <td class="content">
+                        <p><?php echo htmlspecialchars($order_details["address"]); ?></p>
+                    </td> <!-- Fixed $order to $order_details -->
+                    <td class="content">
+                        <p> 
+                            <?php
+                                if (is_null($order_details['quoted_price'])) 
+                                    echo "N/A"; // Fixed $order to $order_details
+                                else 
+                                    echo "₱" . $order_details['quoted_price'];
+                            ?>
+                        </p>
+                    </td>
                 </tr>
                 <tr>
                     <th class="row">PAYMENT STATUS</th>
                     <th class="row">ORDER STATUS</th>
                 </tr>
                 <tr>
-                    <td class="content"><p><?php 
-                    if($order['is_cancelled'] == 1){
-                            echo'Waiting For Verification';
-                        }else{
-                            if($order['order_status'] === 'ready_for_pickup'){
-                                echo'Ready For Pickup';
-                            }else{
-                                if($order['is_accepted'] =='rejected'){
-                                    echo'Rejected';
-                                }else{
-                                    if($order['order_status'] ==='received'){
-                                        echo'Received';
-                                        if($order['order_status'] === 'in_production'){
-                                            echo'In Production';
-                                        }else{
-                                            if($order['is_accepted'] === 'pending'){
-                                                echo'Pending';
-                                            }else if($order['is_accepted'] === 'accepted'){
-                                                echo'Accepted';
-                                            }else{
-                                                if($order['is_cancelled'] === 0){
-                                                    echo htmlspecialchars($prod_status_text);
-                                                }else{
-                                                    echo'Cancelled';
                     <td class="content">
                         <p><?php echo htmlspecialchars($payment_status_text); ?></p>
+                    </td>
+                    <td class="content">
+                        <p>
+                            <?php
                                 if ($order['is_cancelled'] == 1) {
                                     echo 'Cancelled';
+                                } else {
+                                    if ($order['order_status'] === 'pending_fullpayment') {
+                                        echo 'Waiting For Verification';
+                                    } else {
+                                        if ($order['order_status'] === 'ready_for_pickup') {
+                                            echo 'Ready For Pickup';
+                                        } else {
                                             if ($order['is_accepted'] == 'rejected') {
+                                                echo 'Rejected';
+                                            } else {
+                                                if ($order['order_status'] === 'received') {
+                                                    echo 'Received';
                                                 } else {
+                                                    if ($order['order_status'] === 'in_production') {
+                                                        echo 'In Production';
+                                                    } else {
+                                                        if ($order['is_accepted'] === 'pending') {
+                                                            echo 'Pending';
+                                                        } else if ($order['is_accepted'] === 'accepted') {
                                                             echo 'Accepted';
+                                                        } else {
+                                                            if ($order['is_cancelled'] === 0) {
                                                                 echo htmlspecialchars($prod_status_text);
+                                                            } else {
+                                                                echo 'Cancelled';
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                } 
-                            }  
-                        }   
-                    }
                                 }
                             ?>
                         </p>
+                    </td>
                 </tr>
-        </table>
-    </div>
             </table>
         </div>
         <div class="right-side">
