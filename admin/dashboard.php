@@ -134,7 +134,7 @@
                             </div>
 
                             <div class="chart-container">
-                                <canvas id="chartDailyStatus"></canvas>
+                                <canvas id="chartDaily"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -150,7 +150,7 @@
                             </div>
 
                             <div class="chart-container">
-                                <canvas id="chartDailyType"></canvas>
+                                <canvas id="chartDailytype"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -292,7 +292,7 @@
                                 </div>
                             </div>
                             <div class="chart-container">
-                                <canvas id="chartWeeklyStatus"></canvas>
+                                <canvas id="chartWeekly"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -307,7 +307,7 @@
                                 </div>
                             </div>
                             <div class="chart-container">
-                                <canvas id="chartWeeklyType"></canvas>
+                                <canvas id="chartWeeklytype"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -447,7 +447,7 @@
                             </div>
 
                             <div class="chart-container">
-                                <canvas id="chartMonthlyStatus"></canvas>
+                                <canvas id="chartMonthly"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -463,7 +463,7 @@
                             </div>
 
                             <div class="chart-container">
-                                <canvas id="chartMonthlyType"></canvas>
+                                <canvas id="chartMonthlytype"></canvas>
                             </div>
                             <div class="categories">
                                 <!-- Categories or additional content -->
@@ -554,6 +554,8 @@
     <script src="../js/Dcharts.js"></script>
     <script src="../js/Wcharts.js"></script>
     <script src="../js/Mcharts.js"></script>
+    <script src="../js/charttype.js"></script>
+
 </body>
 
 </html>

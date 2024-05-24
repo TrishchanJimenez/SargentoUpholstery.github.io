@@ -22,142 +22,108 @@ function openstats(tabName) {
 //Start for chart
         // Data for the charts (you can customize these datasets as needed)
         document.addEventListener("DOMContentLoaded", function() {
-            // Data for the charts (you can customize these datasets as needed)
-            const chartDataDaily = {
-                labels: ['Red', 'Blue', 'Yellow'],
-                datasets: [{
-                    label: 'Daily Statistics',
-                    data: [300, 50, 100],
-                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                    hoverOffset: 4
-                }]
-            };
-        
-            const chartDataWeekly = {
-                labels: ['Red', 'Blue', 'Yellow'],
-                datasets: [{
-                    label: 'Weekly Statistics',
-                    data: [200, 100, 150],
-                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                    hoverOffset: 4
-                }]
-            };
-        
-            const chartDataMonthly = {
-                labels: ['Red', 'Blue', 'Yellow'],
-                datasets: [{
-                    label: 'Monthly Statistics',
-                    data: [400, 75, 125],
-                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                    hoverOffset: 4
-                }]
-            };
-        
-            // Configuration for the charts
             const chartConfig = {
                 type: 'doughnut',
-                data: chartDataDaily,  // Default data, will be updated later
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Status',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 159, 64)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'bottom', // Adjust the position as needed
+                            position: 'bottom',
                             labels: {
                                 font: {
-                                    family: 'Inter', // Font family
-                                    size: 16, // Font size
-                                    style: 'normal', // Font style
-                                    weight: 400, // Font weight
-                                    lineHeight: 24 // Line height
+                                    family: 'Inter',
+                                    size: 16,
+                                    style: 'normal',
+                                    weight: 400,
+                                    lineHeight: 24
                                 },
-                                color: 'rgb(26, 25, 25)' // Legend text color
+                                color: 'rgb(26, 25, 25)'
                             }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(tooltipItem) {
-                                    return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2);
+                                    return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2) + '%';
                                 }
                             }
                         }
                     }
-                },
+                }
             };
         
-            // Create charts for each tab content on page load
-            var chartDailyStatus = new Chart(document.getElementById('chartDailyStatus'), {
-                ...chartConfig,
-                data: chartDataDaily,
-            });
+            const chartDaily = new Chart(document.getElementById('chartDaily'), chartConfig);
+            const chartWeekly = new Chart(document.getElementById('chartWeekly'), chartConfig);
+            const chartMonthly = new Chart(document.getElementById('chartMonthly'), chartConfig);
         
-            var chartWeeklyStatus = new Chart(document.getElementById('chartWeeklyStatus'), {
-                ...chartConfig,
-                data: chartDataWeekly,
-            });
+            function fetchData(interval, chart) {
+                fetch(`../chartData/doughnut.php?interval=${interval}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        chart.data.labels = data.labels;
+                        chart.data.datasets[0].data = data.datasets[0].data;
+                        chart.update();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            }
         
-            var chartMonthlyStatus = new Chart(document.getElementById('chartMonthlyStatus'), {
-                ...chartConfig,
-                data: chartDataMonthly,
-            });
-        
-            var chartDailyType = new Chart(document.getElementById('chartDailyType'), {
-                ...chartConfig,
-                data: chartDataDaily,  // You can use different data here if needed
-            });
-        
-            var chartWeeklyType = new Chart(document.getElementById('chartWeeklyType'), {
-                ...chartConfig,
-                data: chartDataWeekly, // You can use different data here if needed
-            });
-        
-            var chartMonthlyType = new Chart(document.getElementById('chartMonthlyType'), {
-                ...chartConfig,
-                data: chartDataMonthly, // You can use different data here if needed
-            });
-        
-            // Function to handle tab change and update charts
-            function openstats(tabName) {
-                var tabcontent = document.getElementsByClassName("tabcontent");
-                for (var i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                document.getElementById(tabName).style.display = "flex";
-        
-                // Update charts based on selected tab
-                switch (tabName) {
+            // Event listener for tab selection
+            const tabSelect = document.getElementById('tabSelect');
+            tabSelect.addEventListener('change', function() {
+                const selectedInterval = tabSelect.value;
+                switch (selectedInterval) {
                     case 'Daily':
-                        chartDailyStatus.data = chartDataDaily;
-                        chartDailyStatus.update();
-                        chartDailyType.data = chartDataDaily;
-                        chartDailyType.update();
+                        fetchData('Daily', chartDaily);
                         break;
                     case 'Weekly':
-                        chartWeeklyStatus.data = chartDataWeekly;
-                        chartWeeklyStatus.update();
-                        chartWeeklyType.data = chartDataWeekly;
-                        chartWeeklyType.update();
+                        fetchData('Weekly', chartWeekly);
                         break;
                     case 'Monthly':
-                        chartMonthlyStatus.data = chartDataMonthly;
-                        chartMonthlyStatus.update();
-                        chartMonthlyType.data = chartDataMonthly;
-                        chartMonthlyType.update();
+                        fetchData('Monthly', chartMonthly);
                         break;
                     default:
                         break;
                 }
-            }
-        
-            // Event listener for tab selection
-            var tabSelect = document.getElementById("tabSelect");
-            tabSelect.addEventListener("change", function() {
-                openstats(tabSelect.value);
             });
         
-            // Trigger the default tab (Daily) on page load
-            openstats(tabSelect.value);
+            // Initial fetch for default tab (Daily)
+            fetchData('Daily', chartDaily);
         });
+        
+        
 
 
 //datetime
@@ -187,62 +153,14 @@ window.onload = function() {
 //end of datetime
         
 
-//vertical chart for ranking system
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-const data = {
-  labels: labels,
-  datasets: [{
-    label: 'My First Dataset',
-    data: [65, 59, 80, 81, 56, 55, 40],
-    backgroundColor: [
-      'rgba(255, 99, 132, 0.2)',
-      'rgba(255, 159, 64, 0.2)',
-      'rgba(255, 205, 86, 0.2)',
-      'rgba(75, 192, 192, 0.2)',
-      'rgba(54, 162, 235, 0.2)',
-      'rgba(153, 102, 255, 0.2)',
-      'rgba(201, 203, 207, 0.2)'
-    ],
-    borderColor: [
-      'rgb(255, 99, 132)',
-      'rgb(255, 159, 64)',
-      'rgb(255, 205, 86)',
-      'rgb(75, 192, 192)',
-      'rgb(54, 162, 235)',
-      'rgb(153, 102, 255)',
-      'rgb(201, 203, 207)'
-    ],
-    borderWidth: 1
-  }]
-};
-
-const config = {
-  type: 'bar',
-  data: data,
-  options: {
-    scales: {
-      x: {
-        beginAtZero: true
-      }
-    }
-  },
-};
-
-// Initialize the chart
-var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-);
 
 
 
 
-//start of line smoothen chart
 
 
 
 
-  
 
 
 
