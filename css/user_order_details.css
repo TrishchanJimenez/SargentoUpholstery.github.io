@@ -165,6 +165,7 @@ body {
 }
 
 .payment-upload-form form {
+    padding: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -172,6 +173,16 @@ body {
 .payment-upload-form label {
     font-size: 1em;
     margin-bottom: 5px;
+    color: #555;
+}
+
+.payment-upload-form .payment-methods {
+    margin-bottom: 15px;
+}
+
+.payment-upload-form .payment-methods label {
+    margin-right: 15px;
+    font-size: 1em;
     color: #555;
 }
 
@@ -186,17 +197,17 @@ body {
 .payment-upload-form button {
     padding: 10px 15px;
     font-size: 1em;
-    color: #fff;
-    background-color: #007bff;
+    color: black;
+    background-color: #FFDC5C;
     border: none;
     border-radius: 3px;
     cursor: pointer;
 }
 
 .payment-upload-form button:hover {
-    background-color: #0056b3;
+    background-color: #f7d24a;
 }
 
 .payment-upload-form button:active {
-    background-color: #004494;
+    background-color: #f7d24a;
 }
