@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 23, 2024 at 02:40 PM
+-- Generation Time: May 24, 2024 at 05:59 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `user_id` int NOT NULL,
   `address` varchar(255) NOT NULL,
   PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `addresses`
@@ -45,7 +45,8 @@ INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES
 (1, 21, '123 Rizal, Taguig City'),
 (7, 22, '1123 Rizal Taguig City'),
 (9, 21, 'Phase 1, Taguig City'),
-(10, 21, 'Maya St. Rizal Taguig City');
+(10, 21, 'Maya St. Rizal Taguig City'),
+(14, 24, '123 Rizal St. Brgy Rizal Taguig City');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`chat_id`),
   KEY `chat_sender_id_fk` (`sender_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chats`
@@ -81,7 +82,12 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 (10, 21, 22, 'fasdfasf', '2024-05-22 11:28:02'),
 (11, 21, 21, 'hello', '2024-05-23 00:13:15'),
 (12, 21, 21, 'fadfa', '2024-05-23 00:13:21'),
-(13, 21, 22, 'dfafa', '2024-05-23 00:13:39');
+(13, 21, 22, 'dfafa', '2024-05-23 00:13:39'),
+(14, 21, 22, 'fasf', '2024-05-23 17:17:01'),
+(15, 24, 22, 'sfhahfjaf', '2024-05-24 03:10:40'),
+(16, 24, 22, 'a', '2024-05-24 04:24:37'),
+(17, 24, 22, 'hello', '2024-05-24 04:26:44'),
+(18, 24, 22, 'hi', '2024-05-24 04:26:55');
 
 -- --------------------------------------------------------
 
@@ -190,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `notifs` (
   `redirect_link` tinytext,
   PRIMARY KEY (`notif_id`),
   KEY `notifs_user_id_fk` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `notifs`
@@ -202,7 +208,8 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (3, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-21 07:09:19', 1, NULL),
 (4, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 13:53:07', 0, NULL),
 (5, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 14:07:43', 0, NULL),
-(6, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 14:25:30', 0, NULL);
+(6, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 14:25:30', 0, NULL),
+(7, 24, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-23 22:14:44', 0, '/my/orders.php');
 
 -- --------------------------------------------------------
 
@@ -223,66 +230,68 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quoted_price` float DEFAULT NULL,
   `is_accepted` enum('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
+  `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
   `refusal_reason` text,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`order_id`),
   KEY `user_id_fk` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `order_status`, `ref_img_path`, `del_method`, `del_address_id`, `notes`, `quoted_price`, `is_accepted`, `refusal_reason`, `last_updated`) VALUES
-(1, 1, 'Table', 'repair', 'pending_downpayment', NULL, 'third_party', 1, 'Needs repair for broken leg', 1230, 'accepted', NULL, '2024-05-23 12:25:26'),
-(2, 2, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat needs reupholstering', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(3, 3, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Door hinge needs fixing', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(4, 4, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Cracked wood needs repair', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(5, 5, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Frame needs strengthening', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(6, 6, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is stuck', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(7, 7, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Legs are wobbly', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(8, 8, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Backrest needs repair', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(9, 9, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Drawer is off track', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(10, 10, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Shelves are sagging', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(11, 11, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Headboard needs repair', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(12, 12, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Surface has scratches', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(13, 13, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Needs refinishing', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(14, 14, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Legs are uneven', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(15, 15, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Handle needs replacing', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(16, 16, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Bracket is loose', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(17, 17, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Side rail needs repair', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(18, 18, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is missing', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(19, 19, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Top needs refinishing', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(20, 20, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat is cracked', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(21, 1, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(22, 2, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair color: blue', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(23, 3, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Extra shelf required', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(24, 4, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf design', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(25, 5, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(26, 6, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(27, 7, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: hardwood', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(28, 8, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: leather', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(29, 9, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet size', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(30, 10, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf color: white', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(31, 11, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed storage: drawers', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(32, 12, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk material: glass top', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(33, 13, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design: round', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(34, 14, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair height: bar stool', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(35, 15, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet color: black', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(36, 16, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf size: 3 shelves', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(37, 17, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard design', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(38, 18, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size: 5ft x 2.5ft', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(39, 19, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: marble top', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(40, 20, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: fabric', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(41, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(43, 22, 'Sofa', 'repair', 'new_order', 'uploadedImages/images.jpg', 'third_party', 1, 'wasak na siya pre', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'minor scratch', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(45, 22, 'Broken table ', 'repair', 'new_order', 'uploadedImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'Legs are broken', NULL, 'pending', NULL, '2024-05-23 12:25:26'),
-(46, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 12, 'fasfasfasdf', NULL, 'pending', NULL, '2024-05-23 14:09:08'),
-(47, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 13, 'fasfasfasdf', NULL, 'pending', NULL, '2024-05-23 14:18:40'),
-(48, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', NULL, '2024-05-23 14:23:18'),
-(49, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', NULL, '2024-05-23 14:25:29');
+INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `order_status`, `ref_img_path`, `del_method`, `del_address_id`, `notes`, `quoted_price`, `is_accepted`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES
+(1, 1, 'Table', 'repair', 'pending_downpayment', NULL, 'third_party', 1, 'Needs repair for broken leg', 1230, 'accepted', 1, NULL, '2024-05-24 00:09:28'),
+(2, 2, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat needs reupholstering', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(3, 3, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Door hinge needs fixing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(4, 4, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Cracked wood needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(5, 5, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Frame needs strengthening', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(6, 6, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is stuck', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(7, 7, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Legs are wobbly', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(8, 8, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Backrest needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(9, 9, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Drawer is off track', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(10, 10, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Shelves are sagging', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(11, 11, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Headboard needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(12, 12, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Surface has scratches', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(13, 13, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Needs refinishing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(14, 14, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Legs are uneven', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(15, 15, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Handle needs replacing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(16, 16, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Bracket is loose', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(17, 17, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Side rail needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(18, 18, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is missing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(19, 19, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Top needs refinishing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(20, 20, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat is cracked', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(21, 1, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(22, 2, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair color: blue', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(23, 3, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Extra shelf required', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(24, 4, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(25, 5, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(26, 6, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(27, 7, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: hardwood', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(28, 8, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: leather', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(29, 9, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet size', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(30, 10, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf color: white', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(31, 11, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed storage: drawers', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(32, 12, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk material: glass top', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(33, 13, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design: round', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(34, 14, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair height: bar stool', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(35, 15, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet color: black', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(36, 16, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf size: 3 shelves', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(37, 17, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(38, 18, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size: 5ft x 2.5ft', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(39, 19, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: marble top', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(40, 20, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: fabric', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
+(41, 22, 'sofa', 'repair', 'received', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', 0, NULL, '2024-05-24 00:02:08'),
+(42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(43, 22, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'wasak na siya pre', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/referenceImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'minor scratch', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(45, 22, 'Broken table ', 'repair', 'new_order', 'uploadedImages/referenceImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'Legs are broken', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(46, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 12, 'fasfasfasdf', NULL, 'pending', 0, NULL, '2024-05-23 14:09:08'),
+(47, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 13, 'fasfasfasdf', NULL, 'pending', 0, NULL, '2024-05-23 14:18:40'),
+(48, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(49, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
+(50, 24, 'Bed', 'repair', 'received', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 14, 'fkjafhawjkefawef', NULL, 'pending', 0, NULL, '2024-05-23 22:23:26');
 
 --
 -- Triggers `orders`
@@ -332,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `order_date` (
 --
 
 INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES
-(1, '2024-05-14', '2024-06-06'),
+(1, '2024-05-14', '2024-06-07'),
 (2, '2024-05-14', '0000-00-00'),
 (3, '2024-05-14', '0000-00-00'),
 (4, '2024-05-14', '0000-00-00'),
@@ -380,7 +389,8 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 (46, '2024-05-23', '0000-00-00'),
 (47, '2024-05-23', '0000-00-00'),
 (48, '2024-05-23', '0000-00-00'),
-(49, '2024-05-23', '0000-00-00');
+(49, '2024-05-23', '0000-00-00'),
+(50, '2024-05-24', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -394,8 +404,10 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `payment_status` enum('unpaid','partially_paid','fully_paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unpaid',
   `downpayment_method` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpayment_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `downpayment_verification_status` enum('waiting_for_verification',' needs_reverification',' verified') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fullpayment_method` enum('gcash','paymaya','cash','bank_transfer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fullpayment_img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `fullpayment_verification_status` enum('waiting_for_verification',' needs_reverification',' verified') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   KEY `order_id_fk_payment` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -403,56 +415,57 @@ CREATE TABLE IF NOT EXISTS `payment` (
 -- Dumping data for table `payment`
 --
 
-INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `fullpayment_method`, `fullpayment_img`) VALUES
-(1, 'unpaid', NULL, NULL, NULL, NULL),
-(2, 'unpaid', NULL, NULL, NULL, NULL),
-(3, 'unpaid', NULL, NULL, NULL, NULL),
-(4, 'unpaid', NULL, NULL, NULL, NULL),
-(5, 'unpaid', NULL, NULL, NULL, NULL),
-(6, 'unpaid', NULL, NULL, NULL, NULL),
-(7, 'unpaid', NULL, NULL, NULL, NULL),
-(8, 'unpaid', NULL, NULL, NULL, NULL),
-(9, 'unpaid', NULL, NULL, NULL, NULL),
-(10, 'unpaid', NULL, NULL, NULL, NULL),
-(11, 'unpaid', NULL, NULL, NULL, NULL),
-(12, 'unpaid', NULL, NULL, NULL, NULL),
-(13, 'unpaid', NULL, NULL, NULL, NULL),
-(14, 'unpaid', NULL, NULL, NULL, NULL),
-(15, 'unpaid', NULL, NULL, NULL, NULL),
-(16, 'unpaid', NULL, NULL, NULL, NULL),
-(17, 'unpaid', NULL, NULL, NULL, NULL),
-(18, 'unpaid', NULL, NULL, NULL, NULL),
-(19, 'unpaid', NULL, NULL, NULL, NULL),
-(20, 'unpaid', NULL, NULL, NULL, NULL),
-(21, 'unpaid', NULL, NULL, NULL, NULL),
-(22, 'unpaid', NULL, NULL, NULL, NULL),
-(23, 'unpaid', NULL, NULL, NULL, NULL),
-(24, 'unpaid', NULL, NULL, NULL, NULL),
-(25, 'unpaid', NULL, NULL, NULL, NULL),
-(26, 'unpaid', NULL, NULL, NULL, NULL),
-(27, 'unpaid', NULL, NULL, NULL, NULL),
-(28, 'unpaid', NULL, NULL, NULL, NULL),
-(29, 'unpaid', NULL, NULL, NULL, NULL),
-(30, 'unpaid', NULL, NULL, NULL, NULL),
-(31, 'unpaid', NULL, NULL, NULL, NULL),
-(32, 'unpaid', NULL, NULL, NULL, NULL),
-(33, 'unpaid', NULL, NULL, NULL, NULL),
-(34, 'unpaid', NULL, NULL, NULL, NULL),
-(35, 'unpaid', NULL, NULL, NULL, NULL),
-(36, 'unpaid', NULL, NULL, NULL, NULL),
-(37, 'unpaid', NULL, NULL, NULL, NULL),
-(38, 'unpaid', NULL, NULL, NULL, NULL),
-(39, 'unpaid', NULL, NULL, NULL, NULL),
-(40, 'unpaid', NULL, NULL, NULL, NULL),
-(41, 'unpaid', NULL, NULL, NULL, NULL),
-(42, 'unpaid', NULL, NULL, NULL, NULL),
-(43, 'unpaid', NULL, NULL, NULL, NULL),
-(44, 'unpaid', NULL, NULL, NULL, NULL),
-(45, 'unpaid', NULL, NULL, NULL, NULL),
-(46, 'unpaid', NULL, NULL, NULL, NULL),
-(47, 'unpaid', NULL, NULL, NULL, NULL),
-(48, 'unpaid', NULL, NULL, NULL, NULL),
-(49, 'unpaid', NULL, NULL, NULL, NULL);
+INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES
+(1, 'unpaid', 'gcash', '/uploadedImages/paymentImages/proof1.jpg', 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(2, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(3, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(4, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(5, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(6, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(7, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(8, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(9, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(10, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(11, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(12, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(13, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(14, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(15, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(16, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(17, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(18, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(19, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(20, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(21, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(22, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(23, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(24, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(25, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(26, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(27, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(28, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(29, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(30, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(31, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(32, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(33, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(34, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(35, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(36, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(37, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(38, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(39, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(40, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(41, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(42, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(43, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(44, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(45, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(46, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(47, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(48, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(49, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification'),
+(50, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification');
 
 -- --------------------------------------------------------
 
@@ -497,7 +510,8 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address_id`) VALUES
 (43, 'third_party', 1),
 (44, 'third_party', 1),
 (45, 'third_party', 1),
-(49, 'third_party', 10);
+(49, 'third_party', 10),
+(50, 'third_party', 14);
 
 -- --------------------------------------------------------
 
@@ -546,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   `reply_date` datetime DEFAULT NULL,
   PRIMARY KEY (`review_id`),
   KEY `order_review_fk` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `reviews`
@@ -562,7 +576,8 @@ INSERT INTO `reviews` (`review_id`, `order_id`, `rating`, `comment`, `date`, `re
 (7, 27, 4, 'Great communication', '2024-05-14 10:11:28', NULL, NULL),
 (8, 28, 3, 'Average service', '2024-05-14 10:11:28', NULL, NULL),
 (9, 29, 5, 'Very satisfied', '2024-05-14 10:11:28', NULL, NULL),
-(10, 30, 1, 'Terrible experience', '2024-05-14 10:11:28', NULL, NULL);
+(10, 30, 1, 'Terrible experience', '2024-05-14 10:11:28', 'hello', '2024-05-23 20:37:45'),
+(12, 49, 3, 'It was a good service', '2024-05-24 04:03:25', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -577,7 +592,16 @@ CREATE TABLE IF NOT EXISTS `review_images` (
   `path` text NOT NULL,
   PRIMARY KEY (`image_id`),
   KEY `image_review_fk` (`review_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `review_images`
+--
+
+INSERT INTO `review_images` (`image_id`, `review_id`, `path`) VALUES
+(1, 12, '/uploadedImages/reviewImages/repimg3.jpg'),
+(2, 12, '/uploadedImages/reviewImages/repimg2.jpg'),
+(3, 12, '/uploadedImages/reviewImages/repimg1.jpg');
 
 -- --------------------------------------------------------
 
@@ -592,39 +616,39 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_type` enum('customer','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `user_address` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `user_address`, `contact_number`) VALUES
-(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', NULL, '09123456789'),
-(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', NULL, '09234567890'),
-(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', NULL, '09345678901'),
-(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', NULL, '09456789012'),
-(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', NULL, '09567890123'),
-(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', NULL, '09678901234'),
-(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', NULL, '09789012345'),
-(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', NULL, '09890123456'),
-(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', NULL, '09901234567'),
-(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', NULL, '09112345678'),
-(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', NULL, '09223456789'),
-(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', NULL, '09334567890'),
-(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', NULL, '09445678901'),
-(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', NULL, '09556789012'),
-(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', NULL, '09667890123'),
-(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', NULL, '09778901234'),
-(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', NULL, '09889012345'),
-(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', NULL, '09990123456'),
-(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', NULL, '09101234567'),
-(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', NULL, '09212345678'),
-(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', NULL, '09123412014'),
-(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', NULL, '09052669619'),
-(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', NULL, '09123456789');
+INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES
+(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09123456789'),
+(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09234567890'),
+(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', '09345678901'),
+(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', '09456789012'),
+(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', '09567890123'),
+(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', '09678901234'),
+(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', '09789012345'),
+(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', '09890123456'),
+(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', '09901234567'),
+(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', '09112345678'),
+(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', '09223456789'),
+(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', '09334567890'),
+(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', '09445678901'),
+(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', '09556789012'),
+(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', '09667890123'),
+(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', '09778901234'),
+(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', '09889012345'),
+(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', '09990123456'),
+(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09101234567'),
+(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09212345678'),
+(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', '09123412014'),
+(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', '09052669619'),
+(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', '09123456789'),
+(24, 'Lance Jimenez', 'trishchan@gmail.com', '$2y$10$YEHSUssJkiVGzdmnzbyxwuaWrCtxVV7BegI6/I80StyNAtEi0rapG', 'admin', '09791406736');
 
 -- --------------------------------------------------------
 
@@ -701,8 +725,7 @@ INSERT INTO `works` (`works_id`, `category`, `color`, `img_path`) VALUES
 (57, 'sofa', 'cyan', '/websiteimages/galleryimages/sofa17.png'),
 (58, 'sofa', 'brown', '/websiteimages/galleryimages/sofa18.jpg'),
 (59, 'sofa', 'red', '/websiteimages/galleryimages/sofa19.jpg'),
-(60, 'sofa', 'black', '/websiteimages/galleryimages/sofa20.jpg'),
-(66, 'Sofa', 'Blue', '/websiteimages/galleryimages/repimg6.jpg');
+(60, 'sofa', 'black', '/websiteimages/galleryimages/sofa20.jpg');
 
 --
 -- Constraints for dumped tables
