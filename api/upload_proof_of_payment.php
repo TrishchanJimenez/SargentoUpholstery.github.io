@@ -3,7 +3,7 @@
     if (isset($_POST['upload_payment'])) {
         $order_id = $_POST['order_id'];
         $uploadType = $_POST['upload_type'];
-        $targetDir = '/uploadedImages/paymentImages/';
+        $targetDir = '../uploadedImages/paymentImages/';
         $targetFile = $targetDir . basename($_FILES['payment_image']['name']);
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -20,9 +20,9 @@
                             // Update database with the image path
                             try {
                                 if ($uploadType === 'downpayment') {
-                                    $stmt = $conn->prepare("UPDATE payments SET downpayment_img = :img WHERE order_id = :order_id");
+                                    $stmt = $conn->prepare("UPDATE payment SET downpayment_img = :img WHERE order_id = :order_id");
                                 } elseif ($uploadType === 'fullpayment') {
-                                    $stmt = $conn->prepare("UPDATE payments SET fullpayment_img = :img WHERE order_id = :order_id");
+                                    $stmt = $conn->prepare("UPDATE payment SET fullpayment_img = :img WHERE order_id = :order_id");
                                 }
                                 $stmt->bindParam(':img', $targetFile);
                                 $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
