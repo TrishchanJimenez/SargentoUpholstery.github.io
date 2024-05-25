@@ -1,33 +1,10 @@
 body {
     overflow-x: hidden;
 }
-.testimonials-featured-img {
-    width: 100vw;
-    object-fit: cover;
-}
 
-.testimonials-title {
-    text-align: center;
-    width: 80%;
-    margin: 0 auto;
-}
 
-.testimonials-title h2 {
-    font-size: var(--fs-48);
-    font-weight: bold;
-}
 
-.testimonials-title p {
-    font-size: var(--fs-24);
-    margin-bottom: 2rem;
-}
 
-.testimonials-title a {
-    color: white;
-    background-color: black;
-    border-radius: 5px;
-    padding: 1% 2%;
-}
 
 .testimonials-divider {
     width: 80%;
@@ -67,7 +44,7 @@ h2.star-rating-title {
     padding: 3rem 0;
 
     * {
-        font-family: "Inter",  sans-serif;
+        font-family: "Inter", sans-serif;
     }
 
     .reviews-container {
@@ -76,7 +53,7 @@ h2.star-rating-title {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-    
+
     .review {
         width: 100%;
         /* height: fit-content; */
@@ -85,13 +62,13 @@ h2.star-rating-title {
         padding: 2rem;
         background-color: #fff;
     }
-    
+
     .user-info {
         display: flex;
         align-items: center;
     }
-    
-    .avatar{
+
+    .avatar {
         width: 3rem;
         height: 3rem;
         display: flex;
@@ -104,50 +81,51 @@ h2.star-rating-title {
         color: white;
         margin-right: 0.5rem;
     }
-    
+
     .username {
         color: #111;
         font-size: 1.5rem;
         font-weight: 500;
     }
-    
+
     .rating {
         margin-top: 0.5rem;
         display: flex;
         align-items: center;
     }
-    
-    .star-container{
+
+    .star-container {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 0.5rem;
     }
-    
+
     .date {
         display: flex;
         align-items: center;
         margin-top: 0.1rem;
     }
-    
+
     .details {
         margin-top: 0.25rem;
         color: #555;
     }
-    
+
     .star {
         font-size: 30px;
-        color: #ffc107; /* Highlighted star color */
+        color: #ffc107;
+        /* Highlighted star color */
         margin-bottom: 2%;
     }
-    
+
     .review-text {
         margin-top: 0.5rem;
         color: #111;
         font-size: 1.25rem;
     }
-    
-    .review-images{
+
+    .review-images {
         margin: 1rem 0 0.5rem;
         width: 100%;
         display: grid;
@@ -155,7 +133,7 @@ h2.star-rating-title {
         column-gap: 0.125rem;
         /* overflow: hidden; */
     }
-    
+
     .review-images img {
         width: 100%;
         height: 100%;
@@ -163,8 +141,8 @@ h2.star-rating-title {
         margin-bottom: 5px;
         border-radius: 5px;
     }
-    
-    .date{
+
+    .date {
         margin-left: 1%;
         font-family: "Inter", sans-serif;
         font-optical-sizing: 16px;
@@ -172,8 +150,8 @@ h2.star-rating-title {
         font-style: normal;
         color: rgba(85, 85, 85, 1);
     }
-    
-    .details{
+
+    .details {
         font-family: "Inter", sans-serif;
         font-optical-sizing: 16px;
         font-weight: 500;
@@ -181,41 +159,42 @@ h2.star-rating-title {
         color: rgba(85, 85, 85, 1);
         margin-bottom: 2%;
     }
-    
-    .details span{
+
+    .details span {
         font-family: "Inter", sans-serif;
         font-optical-sizing: 16px;
         font-weight: 500;
         font-style: normal;
         color: rgba(221, 221, 221, 1);
     }
-    
+
     .reply-button {
         margin-top: 0.5rem;
     }
-    
+
     .reply-form {
         margin-top: 0.5rem;
         display: none;
     }
-    
+
     .text {
         resize: none;
-        width: 100%; /* Change width to 100% to occupy its container */
+        width: 100%;
+        /* Change width to 100% to occupy its container */
         border-radius: 0.3125rem;
-        border: 1px solid #B0B0B0; 
+        border: 1px solid #B0B0B0;
         font-weight: 600;
         padding: 0.5rem;
     }
-    
-    .button-container{
+
+    .button-container {
         display: flex;
         justify-content: flex-end;
         margin-top: 0.5rem !important;
         gap: 0.75rem;
     }
-    
-    .button-submit{
+
+    .button-submit {
         border-radius: 0.3125rem;
         border: 1px solid #B0B0B0;
         background: #F6F5F5;
@@ -225,35 +204,35 @@ h2.star-rating-title {
         padding: 0.25rem 0.75rem;
         cursor: pointer;
     }
-    
-    .button-submit:hover{
+
+    .button-submit:hover {
         background-color: #3F2F2F;
         color: #F6F5F5;
     }
-    
-    .admin-reply-container{
+
+    .admin-reply-container {
         margin-top: 1.5rem;
         width: 100%;
         display: flex;
     }
-    
-    .admin-reply-thing{
-        width: 5px; 
-        background-color:#B0B0B0;
+
+    .admin-reply-thing {
+        width: 5px;
+        background-color: #B0B0B0;
         margin-right: 0.75rem;
     }
-    
+
     .info {
         padding: 0.5rem 0;
     }
-    
-    .topper{
+
+    .topper {
         color: #000;
         font-size: 1.25rem;
         font-weight: 500;
     }
-    
-    .reply{
+
+    .reply {
         color: #474242;
         font-size: 1.125rem;
         font-weight: 500;
@@ -270,7 +249,7 @@ h2.star-rating-title {
 .star-rating {
     position: relative;
     display: inline-block;
-    margin: 0 auto;      
+    margin: 0 auto;
 
     .star {
         font-size: 8rem;
@@ -281,7 +260,8 @@ h2.star-rating-title {
     position: relative;
     display: flex;
     justify-content: space-between;
-    color: #ddd; /* color of the empty stars */
+    color: #ddd;
+    /* color of the empty stars */
 }
 
 .front-stars {
@@ -290,5 +270,6 @@ h2.star-rating-title {
     left: 0;
     white-space: nowrap;
     overflow: hidden;
-    color: #f39c12; /* color of the filled stars */
+    color: #f39c12;
+    /* color of the filled stars */
 }

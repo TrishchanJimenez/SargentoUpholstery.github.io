@@ -89,7 +89,6 @@
                     ";
                 }
             ?>
-
             <div class="account-menu">
                 <?php
                     if ($_SESSION['access_type'] === "admin") {

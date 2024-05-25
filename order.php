@@ -37,7 +37,7 @@
     $stmt->execute();
     $addresses = $stmt->fetchAll(); 
     ?>
-    <div class="featured-banner">
+    <div class="featured_banner featured_banner--quotation">
         <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
     </div>
     <div class="order-page__content">

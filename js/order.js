@@ -78,18 +78,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchUserAddress(callback) {
         fetch('/api/get_user_details.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.address) {
-                    callback(data.address);
-                } else {
-                    alert("No address found in user details.");
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user details:', error);
-                alert("Failed to fetch user details.");
-            });
+        .then(response => response.json())
+        .then(data => {
+            if (data.address) {
+                callback(data.address);
+            } else {
+                alert("No address found in user details.");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user details:', error);
+            alert("Failed to fetch user details.");
+        });
     }
 
     setPickupAddressCheckbox.addEventListener("change", function() {
