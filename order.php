@@ -21,25 +21,33 @@
     <meta charset="UTF-8">
     <title>Sargento Upholstery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/order.css">
 </head>
 
 <body>
     <?php 
-    include_once("header.php");
-    include_once('database_connection.php');
+        include_once('database_connection.php');
 
-    // GET ALL ADDRESS OF THE USER
-    $sql = "SELECT * FROM addresses WHERE user_id = :user_id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':user_id', $_SESSION['user_id']);
-    $stmt->execute();
-    $addresses = $stmt->fetchAll(); 
+        // Get all addresses of the user
+        $query = "
+            SELECT 
+                * 
+            FROM 
+                `addresses`
+            WHERE 
+                `user_id` = :user_id
+        ";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':user_id', $_SESSION['user_id']);
+        $stmt->execute();
+        $addresses = $stmt->fetchAll(); 
     ?>
-    <div class="featured_banner featured_banner--quotation">
-        <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
-    </div>
+    <?php 
+        require_once('header.php');
+        $needs_cta = false;
+        require_once('featured.php');
+    ?>
     <div class="order-page__content">
         <div class="order-form">
             <h1 class="quotation-form__title">Quotation Form</h1>
