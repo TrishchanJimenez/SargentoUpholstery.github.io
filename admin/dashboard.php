@@ -43,9 +43,32 @@
     $average_rating_customized = $rowCustomized['average_rating2'];
 
 
+    if (isset($_SESSION['user_id'])) {
+    // Include database connection file
+    include_once("../database_connection.php");
+    include_once("../notif.php");
 
+    // Fetch all records from notifs table where user_id matches session user_id
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $notif_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Check if there are unread notifications
+    $unread_notifs = false;
+    foreach ($notif_list as $notif) {
+        if ($notif['is_read'] == 0) {
+            $unread_notifs = true;
+            break;
+        }
+    }
+}
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -523,8 +546,8 @@
                         </div>
 
                         <div class="monitoring_container">
-                            <div class="monitoring">
-                                <!-- Monitoring content -->
+                            <div class="monitoring" id="notif_container">
+
                             </div>
                         </div>
                     </div>
