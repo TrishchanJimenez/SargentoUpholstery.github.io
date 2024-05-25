@@ -96,7 +96,11 @@
                 $_SESSION['access_type'] = $user['user_type'];
                 $_SESSION['contact_number'] = $user['contact_number'];
                 // Redirect user to dashboard or any other page
-                header("Location: index.php");
+                if($user['user_type'] == 'admin') {
+                    header("Location: ./orders.php");
+                } else {
+                    header("Location: index.php");
+                }
                 exit();
             } else {
                 sendAlert("error", "Incorrect password. Please try again.");
@@ -104,7 +108,5 @@
         } else {
             sendAlert("error", "Email unknown. Please enter a registered email or sign up.");
         }
-
-
     }
 ?>
