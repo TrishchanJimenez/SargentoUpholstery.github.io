@@ -19,12 +19,10 @@
             $contentsById[$content['content_id']] = $content;
         }
     ?>
-    <img src="/websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
-    <div class="intro-section">
-        <h2 class="intro-title"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTITLE"]["content_text"])) ?></h2>
-        <p class="intro-info"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTEXT"]["content_text"])) ?></p>
-        <a href="order.php" class="btn btn-black">Get Free Quote</a>
-    </div>
+    <?php 
+        $needs_cta = true;
+        require_once('intro.php');
+    ?>
     <div class="services_craftmanship_card_container">
         <div class="services_craftmanship_card">
             <img src="/websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
@@ -59,13 +57,10 @@
         <p><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSFOOTERTEXT"]["content_text"])) ?></p>
     </div>
     <img src="/websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
-    <div class="services_craftmanship_hero_image_2">
-        <h1>
-            Explore Our Masterpieces
-        </h1>
-        <a href="services_works.php" class="btn btn-black">See More</a>
-    </div>
-    <?php include_once("footer.php") ?>
+    <?php 
+        require_once('outro.php');
+        require_once('footer.php');
+    ?>
     <script src="js/globals.js"></script>
 </body>
 </html>

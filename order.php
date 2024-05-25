@@ -46,7 +46,7 @@
     <?php 
         require_once('header.php');
         $needs_cta = false;
-        require_once('featured.php');
+        require_once('intro.php');
     ?>
     <div class="order-page__content">
         <div class="order-form">
@@ -179,14 +179,12 @@
             </ol>
         </div>
     </div>
-    <div class="order-testimonials-cta">
-        <p>See What Our Clients Say</p>
-        <a href="testimonials.php">See More</a>
-    </div>
-    <?php include_once("footer.php") ?>
+    <?php 
+        require_once('outro.php');
+        require_once('footer.php');
+    ?>
     <script src="js/globals.js"></script>
 </body>
-
 </html>
 
 <?php
