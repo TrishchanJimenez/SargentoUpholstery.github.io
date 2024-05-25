@@ -31,18 +31,15 @@
                 <label for="contactno">Phone</label><br>
                 <input type="tel" name="contactno" placeholder="Enter your contact no." required><br><br>
     
-                <label for="password">
-                    <span>Password</span>
-                    <span class="toggle-password">
-                        <img src="/websiteimages/icons/show.svg" alt="" class="toggle-img">
-                        <span class="toggle-text">Show</span>
-                    </span>
-                </label>
+                <label for="password">Password</label>
                 <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
                 <p class="error_message email"></p>
-    
                 <label for="confirmPassword">Confirm Password</label><br>
                 <input type="password" name="confirmPassword" placeholder="Re enter your password" required>
+                <div class="show-password">
+                    <input type="checkbox" name="show-password" id="">
+                    <label for="show-password">Show Password</label>
+                </div>
                 <p class="error_message password hide">Use 8 or more characters with a mix of letters, numbers & symbols</p>
                 <input type="submit" value="Sign Up" class="signUpBtn">
             </form>
@@ -74,10 +71,6 @@
             } else {
                 $stmt = $conn->prepare("INSERT INTO users(name, email, password, contact_number, user_type) VALUES(?,?,?,?,?)");
                 $stmt->execute([$name, $email, $hashedPassword, $contactno, "customer"]);
-                echo "Registration Succesful";
-               /*  session_start();
-                $_SESSION['access_type'] = 'customer';
-                $_SESSION['user_id'] = $conn->lastInsertId(); */
                 header("Location: login.php");
             }
         }
