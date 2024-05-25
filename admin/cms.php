@@ -171,12 +171,7 @@
                         <a href="testimonials.php" class="btn btn-black">More Reviews</a>
                     </div>
                     <div class="about-us">
-                        <div class="image-edit" data-id="HOMETEAMPICTURE">
-                            <img src="<?= $contentsById["HOMETEAMPICTURE"]["image"]?>" alt="" class="team-picture">
-                            <div class='action-buttons'>
-                                <button class='edit-button'>Change Image</button>
-                            </div>
-                        </div>
+                        <img src="<?= $contentsById["HOMETEAMPICTURE"]["image"]?>" alt="" class="team-picture">
                         <h2 class="text-gold editable short-text" data-id="HOMEABOUTTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMEABOUTTITLE"]["content_text"])) ?></h2>
                         <p class="business-history editable long-text" data-id="HOMEABOUTTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMEABOUTTEXT"]["content_text"])) ?></p>
                         <a href="about_us.php" class="btn btn-white">Learn More</a>

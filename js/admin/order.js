@@ -3,7 +3,7 @@ let lastSelectedClosed = false;
 let target;
 
 tableBody.addEventListener('mousedown', (e) => {
-    target = e.target.closest('.prod-status') ?? e.target.closest('.payment-status');
+    target = e.target.closest('.prod-status');
     if(target !== null && target.classList.contains('status')) {
         const isCancelled = target.querySelector('span').dataset.prodStatus === 'cancelled';
         if(isCancelled) {
@@ -48,6 +48,16 @@ tableBody.addEventListener('mousedown', (e) => {
                 if (previousStatuses.length >= 2) {
                     const confirmation = confirm("Are you sure you want to skip multiple stages?");
                     if (!confirmation) {
+                        status.dataset.prodStatus = pastStatus;
+
+                        if(status.dataset.prodStatus === '') {
+                            status.dataset.prodStatus = 'new-order';
+                            status.innerText = 'New Order';
+                        } else {
+                            status.innerText = selector.value.split('-').join(' ');
+                        }
+                        target.classList.remove('active');
+                        target.classList.add('status');
                         return;
                     }
                 }

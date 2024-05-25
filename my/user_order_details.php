@@ -75,6 +75,7 @@
     <title>Order Details</title>
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/user_order_details.css">
+    <link rel="stylesheet" href="/css/review_submission.css">
 </head>
 <body>
     <?php include_once("../header.php"); ?>
@@ -214,16 +215,46 @@
             <?php
                 if ($order['order_status'] === 'received') {
                     echo '
-                        <form action="review/Review_Submission.php" method="post">
-                            <input type="hidden" name="order_id" value="' . $order["order_id"] . '">
-                            <button type="submit" class="review-button">Review</button>
-                        </form>
+                        <div class="review-background">
+                            <div class="review-content">
+                                <div class="review-header">
+                                    <h1>Rate Service</h1>
+                                    <span class="close-modal" onclick="closeReviewModal()">&times;</span>
+                                </div>
+                                <form id="reviewForm" action="" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="order_id" value="' . $order_details['order_id'] . '">
+                                    <div class="starcontainer">
+                                        <p>Rate Quality:</p>
+                                        <div class="rating" id="ratingStars">
+                                            <input type="hidden" id="rating" name="rating" value="">
+                                            <span class="star" data-value="1">&#9733;</span>
+                                            <span class="star" data-value="2">&#9733;</span>
+                                            <span class="star" data-value="3">&#9733;</span>
+                                            <span class="star" data-value="4">&#9733;</span>
+                                            <span class="star" data-value="5">&#9733;</span>
+                                        </div><br><br>
+                                    </div>
+                                    <label for="review">Review:</label><br>
+                                    <textarea id="review" name="comment" rows="4" cols="50" placeholder="Enter review here..." required></textarea><br><br>
+                                    <label for="images">Additional Images:</label>
+                                    <div class="file-drop" id="imagesDrop" onclick="document.getElementById(\'images\').click();">
+                                        <span>Click Here to Add Images</span>
+                                        <input type="file" id="images" name="images[]" multiple accept="image/*" onchange="previewImages(event)">
+                                    </div>
+                                    <div id="imagesPreview"></div><br><br>
+                                    <input type="submit" value="Submit Review">
+                                </form>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" value=' . $order_details['order_id'] . ' class="review-button">Review</button>
+                        </div>
                     ';
                 } else if ($order['is_cancelled'] == 0) {
                     echo '
                         <form action="/api/cancel_order.php" method="post">
                             <input type="hidden" name="order_id" value="' . $order["order_id"] . '">
-                            <button type="submit" class="cancel-order-button">Cancel Order</button>
+                            <button type="submit" class="cancel-order-button">cancel order</button>
                         </form>
                     ';
                 }
@@ -297,7 +328,8 @@
             ';
         }
     ?>
-    <script src="../js/user_order_details.js"></script>
+    <script src="/js/user_order_details.js"></script>
+    <script src="/js/review_submission.js"></script>
     <script>
         function goBack() {
             window.history.back();

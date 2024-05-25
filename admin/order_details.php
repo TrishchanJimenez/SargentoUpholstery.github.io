@@ -46,8 +46,13 @@
     $stmt->execute();
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
     // var_dump($order);
-    $prod_status = str_replace("_", "-", $order['order_status']);
-    $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
+    if($order['is_cancelled'] === 1) {
+        $prod_status = "cancelled";
+        $prod_status_text = "Cancelled";
+    } else {
+        $prod_status = str_replace("_", "-", $order['order_status']);
+        $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
+    } 
 
     $payment_status = str_replace("_", "-", $order['payment_status']);
     $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
@@ -170,7 +175,7 @@
                         <?php endif; ?>                             
                     </div>
                 </div>
-                <?php if(is_null($order['downpayment_method'])) : ?>
+                <?php if(!is_null($order['downpayment_method'])) : ?>
                     <div class="payment-information">
                         <p class="info-title">
                             DOWNPAYMENT INFORMATION
@@ -179,12 +184,12 @@
                             <div class="info">
                                 <span class="info-name">METHOD</span>
                                 <span class="info-detail">
-                                    <?= $order["downpayment_method"] ?>
+                                    <?= ucfirst($order["downpayment_method"]) ?>
                                 </span>
                             </div>
                             <div class="info">
                                 <span class="info-name">VERIFICATION STATUS</span>
-                                <span class="info-detail">
+                                <span class="info-detail downpayment-status">
                                     <?php
                                         echo ucfirst(str_replace("_", " ", $order["downpayment_verification_status"]));
                                     ?>
@@ -193,13 +198,13 @@
                             <div class="info">
                                 <span class="info-name">PROOF OF PAYMENT</span>
                                 <span class="info-detail">
-                                    <img src="/<?= $order["downpayment_img"] ?>" alt="">
+                                    <img src="<?= $order["downpayment_img"] ?>" alt="">
                                 </span>
                             </div>
                             <?php if($order['downpayment_verification_status'] === "waiting_for_verification") : ?>
-                                <div class="verification-buttons button-container">
-                                    <input type="button" value="Verify" class="green-button accept-verification">
-                                    <input type="button" value="Needs Reverification" class="red-button reject-verification">
+                                <div class="verification-buttons button-container downpayment">
+                                    <input type="button" value="Verify" class="green-button accept-verification" onclick="verifyDownpayment()">
+                                    <input type="button" value="Needs Reverification" class="red-button reject-verification" onclick="reverifyDownpayment()">
                                 </div> 
                             <?php endif; ?>
                         </div>
@@ -288,8 +293,6 @@
                                 <div class="on-accept action-input">
                                     <label for="price">Price for the Order</label>
                                     <input type="number" name="price" class="price-input" placeholder="₱12131" required>
-                                    <label for="price-reason">Reason for price</label>
-                                    <textarea name="price-reason" rows="3" placeholder="Write reason here..." class="price-reason-input" required></textarea>
                                 </div>
                                 <div class="on-click">
                                     <input type="submit" value="save" class="green-button action-button">
@@ -302,6 +305,7 @@
             </div>
         </div>
     </div>
+    <script>let orderId = <?= $order['order_id'] ?></script>
     <script src="/js/order-detail.js"></script>
 </body>
 </html>
