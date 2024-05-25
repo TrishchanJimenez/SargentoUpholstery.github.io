@@ -71,6 +71,7 @@
 <body>
     <?php 
         require_once('header.php');
+        $needs_cta = true;
         require_once('sections/featured.php');
     ?>
     <img src="/websiteimages/Divider.png" class="testimonials-divider">
