@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 25, 2024 at 07:19 AM
+-- Generation Time: May 25, 2024 at 11:29 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -137,11 +137,15 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('HOMETESTIMONIALCOMMENT2', 'home', NULL, 'Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!', NULL),
 ('HOMETESTIMONIALTITLE', 'home', NULL, 'Our Clients\' Testimonials', NULL),
 ('MAILADD', 'contact_us', NULL, 'sargentoupholstery@gmail.com', NULL),
+('QUOTEFEATUREDDESC', 'order', 'FEATUREDDESC', ' ', NULL),
+('QUOTEFEATUREDIMG', 'order', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--order.png'),
+('QUOTEFEATUREDTITLE', 'order', 'FEATUREDTITLE', 'Design, Craft, Quote - All in One Place', ''),
 ('TESTIMONIALFEATUREDDESC', 'testimonials', 'FEATUREDDESC', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
-('TESTIMONIALFEATUREDIMG', 'testimonials', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured_image--testimonials.png'),
+('TESTIMONIALFEATUREDIMG', 'testimonials', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--testimonials.png'),
 ('TESTIMONIALFEATUREDTITLE', 'testimonials', 'FEATUREDTITLE', 'Real Reviews, Real Satisfaction', NULL),
-('WORKSFEATUREDDESC', 'services_works', NULL, 'At Sargento Upholstery, we take pride in our rich history of crafting exquisite furniture pieces that stand the test of time. Over the years, we have had the privilege of working on a diverse range of projects, from elegant sofas and armchairs to custom-designed furniture for commercial spaces. Our portfolio showcases our dedication to quality craftsmanship, attention to detail, and timeless design. Each piece tells a story of artistry and passion, reflecting our commitment to creating furniture that enhances the beauty and comfort of every space. Explore our past works and be inspired by the legacy of Sargento Upholstery.', NULL),
-('WORKSFEATUREDTITLE', 'services_works', NULL, 'Past Creations: A Showcase of Artisan Furniture', NULL);
+('WORKSFEATUREDDESC', 'services_works', 'FEATUREDDESC', 'At Sargento Upholstery, our rich history of crafting timeless furniture pieces reflects our dedication to quality craftsmanship and attention to detail. From elegant sofas to custom-designed commercial furniture, each piece tells a story of artistry and passion.', NULL),
+('WORKSFEATUREDIMG', 'services_works', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--works.jpg'),
+('WORKSFEATUREDTITLE', 'services_works', 'FEATUREDTITLE', 'Past Creations: A Showcase of Artisan Furniture', NULL);
 
 -- --------------------------------------------------------
 
@@ -493,6 +497,36 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quotations`
+--
+
+CREATE TABLE `quotations` (
+  `quotation_id` int NOT NULL,
+  `customer_id` int DEFAULT NULL,
+  `furniture_type` varchar(50) DEFAULT NULL,
+  `dimensions` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `material` varchar(100) DEFAULT NULL,
+  `description` text,
+  `quantity` int DEFAULT NULL,
+  `status_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quotation_status`
+--
+
+CREATE TABLE `quotation_status` (
+  `status_id` int NOT NULL,
+  `status` enum('pending','approved','rejected','cancelled','completed') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reset_tokens`
 --
 
@@ -755,6 +789,20 @@ ALTER TABLE `pickup`
   ADD KEY `order_id_fk_repair` (`order_id`);
 
 --
+-- Indexes for table `quotations`
+--
+ALTER TABLE `quotations`
+  ADD PRIMARY KEY (`quotation_id`),
+  ADD KEY `quotation_customer_id_fk` (`customer_id`),
+  ADD KEY `quotation_status_id_fk` (`status_id`);
+
+--
+-- Indexes for table `quotation_status`
+--
+ALTER TABLE `quotation_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -813,6 +861,18 @@ ALTER TABLE `notifs`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT for table `quotations`
+--
+ALTER TABLE `quotations`
+  MODIFY `quotation_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quotation_status`
+--
+ALTER TABLE `quotation_status`
+  MODIFY `status_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -877,6 +937,13 @@ ALTER TABLE `payment`
 --
 ALTER TABLE `pickup`
   ADD CONSTRAINT `order_id_fk_repair` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `quotations`
+--
+ALTER TABLE `quotations`
+  ADD CONSTRAINT `quotation_customer_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `quotation_status_id_fk` FOREIGN KEY (`status_id`) REFERENCES `quotation_status` (`status_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
