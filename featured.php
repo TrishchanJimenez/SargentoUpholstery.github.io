@@ -29,7 +29,9 @@
     <div class="featured-banner__overlay">
         <div class="featured-banner__text">
             <h2 class="featured-banner__title"><?= stripslashes(html_entity_decode($contentsById["FEATUREDTITLE"]["content_text"])) ?></h2>
-            <p class="featured-banner__description"><?= stripslashes(html_entity_decode($contentsById["FEATUREDDESC"]["content_text"])) ?></p>
+            <?php if (isset($contentsById["FEATUREDDESC"]["content_text"])): ?>
+                <p class="featured-banner__description"><?= stripslashes(html_entity_decode($contentsById["FEATUREDDESC"]["content_text"])) ?></p>
+            <?php endif; ?>
             <?php if ($needs_cta): ?>
                 <a class="featured-banner__cta" href="/order.php">Get a Free Quote</a>
             <?php endif; ?>

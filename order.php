@@ -46,7 +46,7 @@
     <?php 
         require_once('header.php');
         $needs_cta = false;
-        require_once('sections/featured.php');
+        require_once('featured.php');
     ?>
     <div class="order-page__content">
         <div class="order-form">

@@ -72,7 +72,7 @@
     <?php 
         require_once('header.php');
         $needs_cta = true;
-        require_once('sections/featured.php');
+        require_once('featured.php');
     ?>
     <img src="/websiteimages/Divider.png" class="testimonials-divider">
     <h2 class="star-rating-title">Our Average Star Rating</h2>
