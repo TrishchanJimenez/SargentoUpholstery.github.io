@@ -54,85 +54,37 @@ tableBody.addEventListener('mousedown', (e) => {
 
                 // Continue with the rest of the code...
 
-                // const statusData = new FormData();
-                // statusData.append('order_id', orderId);
-                // statusData.append('new_status', newStatus);
-                // statusData.append('status_type', 'prod');
-                // console.log(statusData);
-                  // fetch('/api/update_status.php', {
-                //     method: "POST",
-                //     body: statusData
-                // })
-                // .then(res => {
-                //     if (!res.ok) {
-                //         throw new Error('Network response was not ok');
-                //     }
-                //     return res.json();
-                // }).then(data => {
-                //     // Handle the response data here
-                //     console.log('Response:', data);
-                // }).catch(error => {console.error('Error: ', error)})
-            })
-            // selector.addEventListener('blur', (e) => {
-            //     // console.log('change')
-            //     status.dataset.prodStatus = selector.value;
-
-            //     if(status.dataset.prodStatus === '') {
-            //         status.dataset.prodStatus = 'new-order';
-            //         status.innerText = 'New Order';
-            //     } else {
-            //         status.innerText = selector.value.split('-').join(' ');
-            //     }
-            //     target.classList.remove('active');
-            //     target.classList.add('status');
-            // })
-        } else if(target.classList.contains('payment-status')) {
-            const selector = target.querySelector('select[name=select-payment-status]'); 
-            const status = target.querySelector('span[data-payment]');
-
-            // console.log(status.dataset.payment);
-            selector.value = status.dataset.payment;
-            // console.log()
-    
-            selector.addEventListener('change', (e) => {
-                // console.log('change')
-                status.dataset.payment = selector.value;
-                status.innerText = selector.value.split('-').join(' ');
-
-                target.classList.remove('active');
-                target.classList.add('status');
-
-                const newStatus = status.dataset.payment;
-                console.log(orderId, " ", newStatus, " ", "payment");
                 const statusData = new FormData();
                 statusData.append('order_id', orderId);
                 statusData.append('new_status', newStatus);
-                statusData.append('status_type', 'payment');
-
-                fetch('/api/update_status.php', {
+                statusData.append('status_type', 'prod');
+                console.log(statusData);
+                  fetch('/api/update_status.php', {
                     method: "POST",
                     body: statusData
-                }).then(res => {
+                })
+                .then(res => {
                     if (!res.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return res.json();
                 }).then(data => {
                     // Handle the response data here
-                    // console.log('Response:', data);
+                    console.log('Response:', data);
                 }).catch(error => {console.error('Error: ', error)})
             })
             selector.addEventListener('blur', (e) => {
+                // console.log('change')
+                status.dataset.prodStatus = selector.value;
+
                 if(status.dataset.prodStatus === '') {
-                    status.dataset.payment = 'unpaid';
-                    status.innerText = 'Unpaid';
+                    status.dataset.prodStatus = 'new-order';
+                    status.innerText = 'New Order';
                 } else {
-                    status.dataset.payment = selector.value;
                     status.innerText = selector.value.split('-').join(' ');
                 }
                 target.classList.remove('active');
-                target.classList.add('active');
-                // console.log('change')
+                target.classList.add('status');
             })
         }
     }
