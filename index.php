@@ -88,6 +88,7 @@
         <a href="about_us.php" class="btn btn-white">Learn More</a>
     </div>
     <?php include_once("footer.php") ?>
- <script src="js/index/link-to-works.js"></script>
+    <script src="js/index/link-to-works.js"></script>
+    <script src="/js/globals.js"></script>
 </body>
 </html>
