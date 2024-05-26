@@ -167,3 +167,23 @@
     font-size: 9px;
     color: #666;
 }
+
+
+/* Red Bubble to Indicate New Message */
+
+.chat-button__new-message-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    background-color: #FF0000;
+    color: #fff;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

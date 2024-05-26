@@ -21,6 +21,7 @@
 
 <div class="chat-button" id="chatButton">
     <img src="/websiteimages/icons/chat-icon.svg" alt="Chat Logo" class="chat-button__image">
+    <div class="chat-button__new-message-indicator" id="newMessageIndicator"></div>
 </div>
 <div class="chat-window" id="chatWindow">
     <div class="chat-window__header">
@@ -29,6 +30,7 @@
     </div>
     <div class="chat-window__messages" id="chatMessages">
         <?php
+            $lastMessageId = 0;
             // Fetch and display messages
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $sender_id = $row['sender_id'];
@@ -61,6 +63,8 @@
                 echo "<span class='timestamp'>" . $time_ago . "</span>";
                 echo "<p>" . $message . "</p>";
                 echo "</div>";
+
+                $lastMessageId = $row['chat_id'];
             }
         ?>
     </div>
@@ -70,4 +74,5 @@
     </div>
 </div>
 
+<script>var lastMessageId = <?php echo $lastMessageId ?></script>
 <script src="js/chat.js"></script>
