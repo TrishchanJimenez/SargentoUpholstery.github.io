@@ -9,9 +9,19 @@
 </head>
 <body>
     <?php
-        include_once("header.php");
-        require 'database_connection.php';
-        $sql = "SELECT * FROM contents WHERE page = 'contact_us'";
+        require_once('database_connection.php');
+        require_once('header.php');
+        $needs_cta = false;
+        require_once('intro.php');
+
+        $sql = "
+            SELECT 
+                * 
+            FROM 
+                contents 
+            WHERE 
+                page = 'contact_us'
+        ";
         $stmt = $conn->query($sql);
         $contents = $stmt->fetchAll();
         $contentsById = [];
@@ -19,9 +29,6 @@
             $contentsById[$content['content_id']] = $content;
         }
     ?>
-    
-    <img src="/websiteimages/callcenterdude.png" div class="call_center_dude">
-    <h1 class="contact_us_text_title">Get In Touch With Us</h1>
     <div class="contact_us_text">
         <div class="contact_info">
             <h1> Cellphone Number </h1>

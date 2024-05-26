@@ -24,7 +24,7 @@
     <?php 
         require_once('header.php');
         $needs_cta = true;
-        require_once('featured.php');
+        require_once('intro.php');
     ?>
     <!-- <img src="/websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
     <div class="intro-section">
@@ -60,15 +60,19 @@
         </div>
         <div class="gallery-section">
             <?php
-                $sql = "
+                $query = "
                     SELECT
                         *
-                    FROM works
-                    ORDER BY works_id DESC
+                    FROM 
+                        works
+                    ORDER BY 
+                        works_id 
+                            DESC
                 ";
-                $stmt = $conn->query($sql);
+                $stmt = $conn->prepare($query);
+                $stmt->execute();
                 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                foreach($results AS $works) {
+                foreach($results as $works) {
                     // Access the values of each row here
                     // For example, you can access the "category" and "color" columns like this:
                     $category = $works['category'];
@@ -83,15 +87,10 @@
         </div>
     </div>
     <img src="/websiteimages/Divider.png" div class="services_works_text_divider_img">
-    <div class="services_works_hero_image_2">
-        <div>
-            <h1>
-                Discover Our Artistry
-            </h1>
-            <a href="services_craftsmanship.php" class="btn btn-black">See More</a>
-        </div>
-    </div>
-    <?php include_once("footer.php") ?>
+    <?php 
+        require_once('outro.php');
+        require_once('footer.php'); 
+    ?>
     <script src="js/globals.js"></script>
     <script src="js/works.js"></script>
 </body>

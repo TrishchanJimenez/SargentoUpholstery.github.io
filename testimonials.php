@@ -72,7 +72,7 @@
     <?php 
         require_once('header.php');
         $needs_cta = true;
-        require_once('featured.php');
+        require_once('intro.php');
     ?>
     <img src="/websiteimages/Divider.png" class="testimonials-divider">
     <h2 class="star-rating-title">Our Average Star Rating</h2>
@@ -173,7 +173,10 @@
             ?>
         </div>
     </div>
-    <?php require_once('footer.php') ?>
+    <?php 
+        require_once('outro.php');
+        require_once('footer.php');
+    ?>
     <script src="/js/globals.js"></script>
     <script src="/js/display_reviews.js"></script>
 </body>

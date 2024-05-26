@@ -222,8 +222,8 @@
                 <div class="tab" data-page="services-works">
                     <img src="/websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
                     <div class="intro-section">
-                        <h2 class="intro-title editable short-text" data-id="WORKSFEATUREDTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSFEATUREDTITLE"]["content_text"])) ?></h2>
-                        <p class="intro-info editable long-text" data-id="WORKSFEATUREDDESC"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSFEATUREDDESC"]["content_text"])) ?></p>
+                        <h2 class="intro-title editable short-text" data-id="WORKSINTROTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTROTITLE"]["content_text"])) ?></h2>
+                        <p class="intro-info editable long-text" data-id="WORKSINTRODESC"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTRODESC"]["content_text"])) ?></p>
                         <a href="order.php" class="btn btn-black">Get Free Quote</a>
                     </div> 
                     <div class="product-gallery">

@@ -9,9 +9,19 @@
 </head>
 <body>
     <?php
-        include_once("header.php");
-        require 'database_connection.php';
-        $sql = "SELECT * FROM contents WHERE page = 'about_us'";
+        require_once('database_connection.php');
+        require_once('header.php');
+        $needs_cta = false;
+        require_once('intro.php');
+        
+        $sql = "
+            SELECT 
+                * 
+            FROM 
+                contents 
+            WHERE 
+                page = 'about_us'
+        ";
         $stmt = $conn->query($sql);
         $contents = $stmt->fetchAll();
         $contentsById = [];
@@ -19,12 +29,6 @@
             $contentsById[$content['content_id']] = $content;
         }
     ?>
-    <img src="/websiteimages/teampicture.png" alt="" class="about-us-featuredimg">
-    <div class="about-us-container">
-        <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTITLE"]["content_text"])) ?></h2>
-        <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"])) ?></p>
-        <a href="order.php" class="btn btn-black">Get a Free Quote</a>
-    </div>
     <div class="about-us-history about-us-container">
         <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTITLE"]["content_text"]))?></h2>
         <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTEXT"]["content_text"]))?></p>

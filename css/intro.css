@@ -1,0 +1,60 @@
+.intro-banner {
+    height: 70vh;
+    position: relative;
+    overflow: hidden; /* Ensures text doesn't overflow outside the banner */
+    background: rgb(0,0,0);
+}
+
+.intro-banner__image {
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+    object-fit: cover;
+}
+
+.intro-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%; /* Adjust the width to your preference */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(
+        90deg, 
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.9) 10%,
+        rgba(0, 0, 0, 0.8) 25%,
+        rgba(0, 0, 0, 0.6) 40%,
+        rgba(0, 0, 0, 0.4) 60%,
+        rgba(0, 0, 0, 0.2) 75%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+.intro-banner__text {
+    text-align: left;
+    color: white; /* Text color */
+    width: 50%; /* Adjust the width to make sure text is centered */
+    margin-left: 10%;
+}
+
+.intro-banner__title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.intro-banner__description {
+    font-size: 16px;
+    margin-bottom: 2rem;
+    line-height: 150%;
+}
+
+.intro-banner__cta {
+    color: black;
+    background-color: #ffdc5c;
+    border-radius: 5px;
+    padding: 2% 4%;
+    font-weight: bold;
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 25, 2024 at 11:29 AM
+-- Generation Time: May 26, 2024 at 07:43 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -101,8 +101,9 @@ CREATE TABLE `contents` (
 --
 
 INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `image`) VALUES
-('ABOUTHEADERTEXT', 'about_us', NULL, 'The proud workers of sargento that handfully perfected their craft in making your dream furniture into reality. They\\\'ve spend their entire lives practicing, flourishing each individual furniture known for them to be known in the metro. The team also consists of female workers helps the business afloat. With all of the sleepless nights, they\\\'ve strive for sucess by burning the midnight oil. Mr. Eddie Murphy Sargento, keeping the family business alive with Mrs. Journa Joy Sargento, they\\\'ve been working and doing the best they can for their family. With these individuals around, Sargento Upholstery will be able to provide the highest quality furniture to suit your every needs.', NULL),
-('ABOUTHEADERTITLE', 'about_us', NULL, 'Meet the team', NULL),
+('ABOUT_INTRO_DESC', 'about_us', 'INTRO_DESC', 'The skilled artisans at Sargento Upholstery have dedicated their lives to perfecting the craft of creating your dream furniture. Known throughout the metro for their expertise, the team includes talented female workers who contribute significantly to the business\'s success. With tireless dedication, Mr. Eddie Murphy Sargento and Mrs. Journa Joy Sargento continue the family legacy. Together, they ensure Sargento Upholstery delivers the highest quality furniture to meet your every need.', NULL),
+('ABOUT_INTRO_IMG', 'about_us', 'INTRO_IMG', NULL, '/websiteimages/banner-images/about-us.png'),
+('ABOUT_INTRO_TITLE', 'about_us', 'INTRO_TITLE', 'Meet The Team', NULL),
 ('ABOUTHISTORYTEXT', 'about_us', NULL, 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery.', NULL),
 ('ABOUTHISTORYTITLE', 'about_us', NULL, 'History of Sargento Upholstery', NULL),
 ('ABOUTVALUESSUBHEADING1', 'about_us', NULL, 'Quality Materials', NULL),
@@ -116,7 +117,17 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('ABOUTVALUESTITLE', 'about_us', NULL, 'Our Values & Philosophy', NULL),
 ('BUSIADD', 'contact_us', NULL, 'Blk 68 Lot 41 Lapu-Lapu St., Upper Bicutan, Taguig City', NULL),
 ('BUSIHRS', 'contact_us', NULL, '8:00 AM - 5:00 PM', NULL),
+('CONTACT_INTRO_DESC', 'contact_us', 'INTRO_DESC', 'Feel free to reach out us for any inquiries or concerns. Our contact details such as mailing address and business location are available below.', NULL),
+('CONTACT_INTRO_IMG', 'contact_us', 'INTRO_IMG', NULL, '/websiteimages/banner-images/contact-us.png'),
+('CONTACT_INTRO_TITLE', 'contact_us', 'INTRO_TITLE', 'Get In Touch With Us', NULL),
 ('CPNNUM', 'contact_us', NULL, '0999 - 406 - 8816', NULL),
+('CRAFTS_INTRO_DESC', 'services_craftsmanship', 'INTRO_DESC', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that our products are a masterpiece of quality, designed to provide both aesthetics and durability.', NULL),
+('CRAFTS_INTRO_IMG', 'services_craftsmanship', 'INTRO_IMG', NULL, '/websiteimages/banner-images/craftsmanship.png'),
+('CRAFTS_INTRO_TITLE', 'services_craftsmanship', 'INTRO_TITLE', 'A Commitment to Craftsmanship Excellence', NULL),
+('CRAFTS_OUTRO_CTALINK', 'services_craftsmanship', 'OUTRO_CTALINK', '/services_works.php', NULL),
+('CRAFTS_OUTRO_CTATEXT', 'services_craftsmanship', 'OUTRO_CTATEXT', 'View Works', NULL),
+('CRAFTS_OUTRO_IMG', 'services_craftsmanship', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/works.png'),
+('CRAFTS_OUTRO_TITLE', 'services_craftsmanship', 'OUTRO_TITLE', 'Explore Our Masterpieces', NULL),
 ('CRAFTSCARDTEXT1', 'services_craftsmanship', NULL, 'Our journey into crafting superior furniture begins with the careful selection of materials, ensuring that only the finest components are used. For the sturdy frame and foundation of our pieces, we rely on treated palochina wood, a choice renowned for its remarkable durability and exceptional robustness. This wood is not just any wood; it\\\'s a testament to our dedication to creating furniture that is built to last.', NULL),
 ('CRAFTSCARDTEXT2', 'services_craftsmanship', NULL, 'Moving on to the heart of our creations, we employ the luxuriously comfortable uratex foam. This premium foam is carefully chosen to provide a plush and supportive seating experience, allowing you to sink into your furniture while still enjoying the firm support that ensures your comfort and satisfaction for years to come.fasdfasaf', NULL),
 ('CRAFTSCARDTEXT3', 'services_craftsmanship', NULL, 'But it doesnt end there. Our commitment to quality extends to the fabrics we use. We insist on utilizing only the best, such as RGC fabric and German leather, both celebrated for their exceptional texture, enduring beauty, and ability to withstand wear and tear gracefully. These materials not only add to the aesthetic appeal of our pieces but also ensure that your furniture retains its allure and resilience even after years of use.', NULL),
@@ -124,8 +135,6 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('CRAFTSCARDTITLE2', 'services_craftsmanship', NULL, 'Luxurious Comfort', NULL),
 ('CRAFTSCARDTITLE3', 'services_craftsmanship', NULL, 'Exceptional Fabrics', NULL),
 ('CRAFTSFOOTERTEXT', 'services_craftsmanship', NULL, 'This meticulous and selective process of material sourcing and crafting guarantees that each creation that bears the Sargento Upholstery name is not just a piece of furniture; it is a work of art, meticulously built with a devotion to quality, beauty, and longevity. We take great pride in creating furniture that not only fulfills its purpose but enriches the spaces and lives it graces, turning every room into a masterpiece of comfort and elegance.', NULL),
-('CRAFTSHEADERTEXT', 'services_craftsmanship', NULL, 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
-('CRAFTSHEADERTITLE', 'services_craftsmanship', NULL, 'A Commitment to Craftsmanship Excellence', NULL),
 ('HOMEABOUTTEXT', 'home', NULL, 'Established by Eddielberto Sargento in Negros Occidental, Sargento Upholstery has quietly thrived in the furniture industry for nearly three and a half decades, specializing in custom-made furniture. Known for its commitment to quality craftsmanship and flexibility in adapting to changing market trends, the business has managed to sustain itself over the years. In 1997, a strategic decision was made to relocate the business to Taguig, a move aimed at expanding its reach and meeting the evolving demands of the market. This relocation, though not widely recognized, played a crucial role in the continued success of Sargento Upholstery. The combination of personalized craftsmanship, an understanding of local markets, and a strategic relocation has contributed to the business\\\'s resilience in a competitive industry.', NULL),
 ('HOMEABOUTTITLE', 'home', NULL, 'The Sargento Family Business', NULL),
 ('HOMECRAFTSTEXT', 'home', NULL, 'Take a tour of our successes as we consider the turning points and contributions that have created our story in the Upholstery industry', NULL),
@@ -137,15 +146,27 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('HOMETESTIMONIALCOMMENT2', 'home', NULL, 'Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!', NULL),
 ('HOMETESTIMONIALTITLE', 'home', NULL, 'Our Clients\' Testimonials', NULL),
 ('MAILADD', 'contact_us', NULL, 'sargentoupholstery@gmail.com', NULL),
-('QUOTEFEATUREDDESC', 'order', 'FEATUREDDESC', ' ', NULL),
-('QUOTEFEATUREDIMG', 'order', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--order.png'),
-('QUOTEFEATUREDTITLE', 'order', 'FEATUREDTITLE', 'Design, Craft, Quote - All in One Place', ''),
-('TESTIMONIALFEATUREDDESC', 'testimonials', 'FEATUREDDESC', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
-('TESTIMONIALFEATUREDIMG', 'testimonials', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--testimonials.png'),
-('TESTIMONIALFEATUREDTITLE', 'testimonials', 'FEATUREDTITLE', 'Real Reviews, Real Satisfaction', NULL),
-('WORKSFEATUREDDESC', 'services_works', 'FEATUREDDESC', 'At Sargento Upholstery, our rich history of crafting timeless furniture pieces reflects our dedication to quality craftsmanship and attention to detail. From elegant sofas to custom-designed commercial furniture, each piece tells a story of artistry and passion.', NULL),
-('WORKSFEATUREDIMG', 'services_works', 'FEATUREDIMG', NULL, '/websiteimages/featured_banners/featured-image--works.jpg'),
-('WORKSFEATUREDTITLE', 'services_works', 'FEATUREDTITLE', 'Past Creations: A Showcase of Artisan Furniture', NULL);
+('QUOTE_INTRO_DESC', 'order', 'INTRO_DESC', ' ', NULL),
+('QUOTE_INTRO_IMG', 'order', 'INTRO_IMG', NULL, '/websiteimages/banner-images/order.png'),
+('QUOTE_INTRO_TITLE', 'order', 'INTRO_TITLE', 'Design, Craft, Quote - All in One Place', ''),
+('QUOTE_OUTRO_CTALINK', 'order', 'OUTRO_CTALINK', '/testimonials.php', NULL),
+('QUOTE_OUTRO_CTATEXT', 'order', 'OUTRO_CTATEXT', 'See Reviews', NULL),
+('QUOTE_OUTRO_IMG', 'order', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/testimonials.png'),
+('QUOTE_OUTRO_TITLE', 'order', 'OUTRO_TITLE', 'See What Our Clients Say', NULL),
+('TESTIMONIALS_INTRO_DESC', 'testimonials', 'INTRO_DESC', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
+('TESTIMONIALS_INTRO_IMG', 'testimonials', 'INTRO_IMG', NULL, '/websiteimages/banner-images/testimonials.png'),
+('TESTIMONIALS_INTRO_TITLE', 'testimonials', 'INTRO_TITLE', 'Real Reviews, Real Satisfaction', NULL),
+('TESTIMONIALS_OUTRO_CTALINK', 'testimonials', 'OUTRO_CTALINK', '/services_works.php', ''),
+('TESTIMONIALS_OUTRO_CTATEXT', 'testimonials', 'OUTRO_CTATEXT', 'See More', ''),
+('TESTIMONIALS_OUTRO_IMG', 'testimonials', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/works.png'),
+('TESTIMONIALS_OUTRO_TITLE', 'testimonials', 'OUTRO_TITLE', 'Explore Our Masterpieces', NULL),
+('WORKS_INTRO_DESC', 'services_works', 'INTRO_DESC', 'At Sargento Upholstery, our rich history of crafting timeless furniture pieces reflects our dedication to quality craftsmanship and attention to detail. From elegant sofas to custom-designed commercial furniture, each piece tells a story of artistry and passion.', NULL),
+('WORKS_INTRO_IMG', 'services_works', 'INTRO_IMG', NULL, '/websiteimages/banner-images/works.png'),
+('WORKS_INTRO_TITLE', 'services_works', 'INTRO_TITLE', 'Past Creations: A Showcase of Artisan Furniture', NULL),
+('WORKS_OUTRO_CTALINK', 'services_works', 'OUTRO_CTALINK', '/services_craftsmanship.php', NULL),
+('WORKS_OUTRO_CTATEXT', 'services_works', 'OUTRO_CTATEXT', 'See More', NULL),
+('WORKS_OUTRO_IMG', 'services_works', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/craftsmanship.png'),
+('WORKS_OUTRO_TITLE', 'services_works', 'OUTRO_TITLE', 'Discover Our Artistry', NULL);
 
 -- --------------------------------------------------------
 
@@ -497,18 +518,17 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quotations`
+-- Table structure for table `quotes`
 --
 
-CREATE TABLE `quotations` (
-  `quotation_id` int NOT NULL,
+CREATE TABLE `quotes` (
+  `quote_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
   `furniture_type` varchar(50) DEFAULT NULL,
-  `dimensions` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `material` varchar(100) DEFAULT NULL,
   `description` text,
   `quantity` int DEFAULT NULL,
-  `status_id` int DEFAULT NULL,
+  `custom_id` int DEFAULT NULL,
+  `status_id` enum('pending','approved','rejected','cancelled','completed') DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -516,11 +536,23 @@ CREATE TABLE `quotations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quotation_status`
+-- Table structure for table `quote_customs`
 --
 
-CREATE TABLE `quotation_status` (
-  `status_id` int NOT NULL,
+CREATE TABLE `quote_customs` (
+  `custom_id` int NOT NULL,
+  `dimensions` varchar(50) DEFAULT NULL,
+  `materials` varchar(150) DEFAULT NULL,
+  `fabric` varchar(150) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_status`
+--
+
+CREATE TABLE `quote_status` (
   `status` enum('pending','approved','rejected','cancelled','completed') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -789,18 +821,25 @@ ALTER TABLE `pickup`
   ADD KEY `order_id_fk_repair` (`order_id`);
 
 --
--- Indexes for table `quotations`
+-- Indexes for table `quotes`
 --
-ALTER TABLE `quotations`
-  ADD PRIMARY KEY (`quotation_id`),
-  ADD KEY `quotation_customer_id_fk` (`customer_id`),
-  ADD KEY `quotation_status_id_fk` (`status_id`);
+ALTER TABLE `quotes`
+  ADD PRIMARY KEY (`quote_id`),
+  ADD KEY `quotation_status_id_fk` (`status_id`),
+  ADD KEY `quote_customer_id_fk` (`customer_id`),
+  ADD KEY `quote_custom_id_fk` (`custom_id`);
 
 --
--- Indexes for table `quotation_status`
+-- Indexes for table `quote_customs`
 --
-ALTER TABLE `quotation_status`
-  ADD PRIMARY KEY (`status_id`);
+ALTER TABLE `quote_customs`
+  ADD PRIMARY KEY (`custom_id`);
+
+--
+-- Indexes for table `quote_status`
+--
+ALTER TABLE `quote_status`
+  ADD PRIMARY KEY (`status`);
 
 --
 -- Indexes for table `reviews`
@@ -863,16 +902,16 @@ ALTER TABLE `orders`
   MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT for table `quotations`
+-- AUTO_INCREMENT for table `quotes`
 --
-ALTER TABLE `quotations`
-  MODIFY `quotation_id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `quotes`
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `quotation_status`
+-- AUTO_INCREMENT for table `quote_customs`
 --
-ALTER TABLE `quotation_status`
-  MODIFY `status_id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `quote_customs`
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -939,11 +978,11 @@ ALTER TABLE `pickup`
   ADD CONSTRAINT `order_id_fk_repair` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `quotations`
+-- Constraints for table `quotes`
 --
-ALTER TABLE `quotations`
-  ADD CONSTRAINT `quotation_customer_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `quotation_status_id_fk` FOREIGN KEY (`status_id`) REFERENCES `quotation_status` (`status_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `quotes`
+  ADD CONSTRAINT `quote_custom_id_fk` FOREIGN KEY (`custom_id`) REFERENCES `quote_customs` (`custom_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `quote_customer_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
