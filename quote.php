@@ -27,7 +27,7 @@
 
 <body>
     <?php 
-        include_once('database_connection.php');
+        require_once('database_connection.php');
         // Get all addresses of the user
         $query = "SELECT * FROM `addresses` WHERE `user_id` = :user_id";
         $stmt = $conn->prepare($query);
@@ -37,7 +37,7 @@
     ?>
     <?php
         // APIs
-        include_once("alert.php");
+        require_once("alert.php");
         include_once("api/CheckAddress.php");
     ?>
     <?php 
@@ -145,19 +145,19 @@
                         <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
                             <input class="quote-form__input quote-form__input--checkbox quote-form__input--customization" type="checkbox" id="customization-enable-dimensions" name="customization-enable-dimensions">
                             <label class="quote-form__label quote-form__label--customization" for="customization-enable-dimensions">Specify Dimensions</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="customization-dimensions" name="customization-dimensions" placeholder="Length x Width x Height" disabled>
+                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="dimensions" name="dimensions" placeholder="Length x Width x Height" disabled>
                         </div>
 
                         <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
                             <input class="quote-form__input quote-form__input--checkbox quote-form__input--customization" type="checkbox" id="customization-enable-materials" name="customization-enable-materials">
                             <label class="quote-form__label quote-form__label--customization" for="customization-enable-materials">Specify Materials</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="customization-materials" name="customization-materials" placeholder="E.g. wood, plastic, metal" disabled>
+                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="materials" name="materials" placeholder="E.g. wood, plastic, metal" disabled>
                         </div>
 
                         <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
                             <input class="quote-form__input quote-form__input--checkbox quote-form__input--customization" type="checkbox" id="customization-enable-fabric" name="customization-enable-fabric">
                             <label class="quote-form__label quote-form__label--customization" for="customization-enable-fabric">Specify Fabric</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="customization-fabric" name="customization-fabric" placeholder="E.g cotton, linen, leather" disabled>
+                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="fabric" name="fabric" placeholder="E.g cotton, linen, leather" disabled>
                         </div>
                     </div>
                 </div>
@@ -172,3 +172,102 @@
     <script src="js/quote.js"></script>
 </body>
 </html>
+
+<?php
+    require_once('database_connection.php');
+
+    // Sanitize inputs
+    function sanitizeInputs($data) {
+        foreach($data as $key => $value) {
+            // Check if the value is an array
+            if(is_array($value)) {
+                // If it's an array, recursively call sanitizeInputs
+                $data[$key] = sanitizeInputs($value);
+            } else {
+                // If it's not an array, sanitize the value
+                $data[$key] = htmlspecialchars(strip_tags($value));
+            }
+        }
+        return $data;
+    }
+
+    // If form is completed
+    if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['submit_button'])) {
+        // Call the sanitizeInputs function on $_POST
+        $_POST = sanitizeInputs($_POST);
+        // Extract sanitized $_POST variables into separate variables
+        extract($_POST);
+
+        // ----- If customization is selected, insert into quotes_custom table ----- //
+        if (isset($furniture_enable_customization)) {
+            try {
+                $query = "
+                    INSERT INTO
+                        quote_customs (
+                            customer_id,
+                            furniture_type,
+                            description,
+                            quantity,
+                            custom_id    
+                        )
+                    VALUES (
+                        :dimensions,
+                        :materials,
+                        :fabric
+                    )
+                ";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':dimensions', $dimensions);
+                $stmt->bindParam(':materials', $materials);
+                $stmt->bindParam(':fabric', $fabric);
+                $stmt->execute();
+        
+                $custom_id = $conn->lastInsertId();
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+
+        // ----- Insert into quotes table and create notif ----- //
+        try {
+            $query = "
+                INSERT INTO
+                    quotes (
+                        customer_id,
+                        furniture_type,
+                        description,
+                        quantity,
+                        custom_id
+                    )
+                VALUES (
+                    :customer_id,
+                    :furniture_type,
+                    :description,
+                    :quantity,
+                    :custom_id
+                )
+            ";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+            $stmt->bindParam(':furniture_type', $furniture_type);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':quantity', $quantity);
+            $stmt->bindParam(':custom_id', $custom_id);
+            $stmt->execute();
+            
+            // Create a new notification message
+            $notif_msg = "You have successfully placed a quote request. Please await confirmation of order."; // Customize the message as needed
+            // Call the createNotif function
+            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/user_orders.php")) {
+                // Notification created successfully
+                echo "Notification created successfully";
+                sendAlert("success", "You have successfully placed a quote request. Please await confirmation of order.");
+            } else {
+                // Failed to create notification
+                echo "Failed to create notification";
+            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+?>
