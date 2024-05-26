@@ -7,6 +7,10 @@
         // Redirect or handle unauthorized access
         header("Location: login.php");
         exit;
+    } else {
+        $af_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
+        $af_address = isset($_SESSION['user_address']) ? $_SESSION['user_address'] : '';
+        $af_contact = isset($_SESSION['contact_number']) ? $_SESSION['contact_number'] : '';
     }
 ?>
 
@@ -62,24 +66,21 @@
                         
                         <div class="quote-form__output-container">
                             <label class="quote-form__label" for="customer-name">Full Name *</label> 
-                            <input class="quote-form__output quote-form__output--text" type="text" id="customer-name" name="customer-name" required readonly>
+                            <input class="quote-form__output quote-form__output--text" type="text" id="customer-name" name="customer-name" value="<?= $af_name ?>" required readonly>
                         </div>
 
                         <div class="quote-form__input-container">
                             <label class="quote-form__label" for="customer-address">Address *</label> 
-                            <select class="quote-form__output quote-form__output--select" name="customer-address" id="customer-address" required readonly>
-                                <option value="">Address 1</option>
-                                <option value="">Address 2</option>
-                            </select>
+                            <input class="quote-form__output quote-form__output--text" type="text" id="customer-address" name="customer-address" value="<?= $af_address ?>" required readonly>
                         </div>
 
                         <div class="quote-form__input-container">
                             <label class="quote-form__label" for="customer-contact">Contact Number *</label> 
                             <div class="quote-form__input-text--contact">
-                                <select class="quote-form__output" id="country-code" name="country-code" required>
+                                <!-- <select class="quote-form__output" id="country-code" name="country-code" required>
                                     <option value="+63">+63</option>
-                                </select>
-                                <input class="quote-form__input quote-form__input--text" type="tel" id="customer-contact" name="customer-contact" pattern="[0-9]{10}" required>
+                                </select> -->
+                                <input class="quote-form__input quote-form__input--text" type="tel" id="customer-contact" name="customer-contact" pattern="[0-9]{11}" value="<?= $af_contact ?>" required>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 25, 2024 at 02:00 PM
+-- Generation Time: May 26, 2024 at 07:43 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -518,18 +518,17 @@ INSERT INTO `pickup` (`order_id`, `pickup_method`, `pickup_address_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quotations`
+-- Table structure for table `quotes`
 --
 
-CREATE TABLE `quotations` (
-  `quotation_id` int NOT NULL,
+CREATE TABLE `quotes` (
+  `quote_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
   `furniture_type` varchar(50) DEFAULT NULL,
-  `dimensions` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `material` varchar(100) DEFAULT NULL,
   `description` text,
   `quantity` int DEFAULT NULL,
-  `status_id` int DEFAULT NULL,
+  `custom_id` int DEFAULT NULL,
+  `status_id` enum('pending','approved','rejected','cancelled','completed') DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -537,11 +536,23 @@ CREATE TABLE `quotations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quotation_status`
+-- Table structure for table `quote_customs`
 --
 
-CREATE TABLE `quotation_status` (
-  `status_id` int NOT NULL,
+CREATE TABLE `quote_customs` (
+  `custom_id` int NOT NULL,
+  `dimensions` varchar(50) DEFAULT NULL,
+  `materials` varchar(150) DEFAULT NULL,
+  `fabric` varchar(150) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_status`
+--
+
+CREATE TABLE `quote_status` (
   `status` enum('pending','approved','rejected','cancelled','completed') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -810,18 +821,25 @@ ALTER TABLE `pickup`
   ADD KEY `order_id_fk_repair` (`order_id`);
 
 --
--- Indexes for table `quotations`
+-- Indexes for table `quotes`
 --
-ALTER TABLE `quotations`
-  ADD PRIMARY KEY (`quotation_id`),
-  ADD KEY `quotation_customer_id_fk` (`customer_id`),
-  ADD KEY `quotation_status_id_fk` (`status_id`);
+ALTER TABLE `quotes`
+  ADD PRIMARY KEY (`quote_id`),
+  ADD KEY `quotation_status_id_fk` (`status_id`),
+  ADD KEY `quote_customer_id_fk` (`customer_id`),
+  ADD KEY `quote_custom_id_fk` (`custom_id`);
 
 --
--- Indexes for table `quotation_status`
+-- Indexes for table `quote_customs`
 --
-ALTER TABLE `quotation_status`
-  ADD PRIMARY KEY (`status_id`);
+ALTER TABLE `quote_customs`
+  ADD PRIMARY KEY (`custom_id`);
+
+--
+-- Indexes for table `quote_status`
+--
+ALTER TABLE `quote_status`
+  ADD PRIMARY KEY (`status`);
 
 --
 -- Indexes for table `reviews`
@@ -884,16 +902,16 @@ ALTER TABLE `orders`
   MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT for table `quotations`
+-- AUTO_INCREMENT for table `quotes`
 --
-ALTER TABLE `quotations`
-  MODIFY `quotation_id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `quotes`
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `quotation_status`
+-- AUTO_INCREMENT for table `quote_customs`
 --
-ALTER TABLE `quotation_status`
-  MODIFY `status_id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `quote_customs`
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -960,11 +978,11 @@ ALTER TABLE `pickup`
   ADD CONSTRAINT `order_id_fk_repair` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `quotations`
+-- Constraints for table `quotes`
 --
-ALTER TABLE `quotations`
-  ADD CONSTRAINT `quotation_customer_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `quotation_status_id_fk` FOREIGN KEY (`status_id`) REFERENCES `quotation_status` (`status_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `quotes`
+  ADD CONSTRAINT `quote_custom_id_fk` FOREIGN KEY (`custom_id`) REFERENCES `quote_customs` (`custom_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `quote_customer_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`

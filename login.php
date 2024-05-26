@@ -95,6 +95,7 @@
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['access_type'] = $user['user_type'];
                 $_SESSION['contact_number'] = $user['contact_number'];
+                $_SESSION['user_address'] = $address['address'];
                 // Redirect user to dashboard or any other page
                 if($user['user_type'] == 'admin') {
                     header("Location: ./orders.php");
