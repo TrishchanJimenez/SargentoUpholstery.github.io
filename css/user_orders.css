@@ -20,17 +20,39 @@ form {
 .tab-container {
     width: 80%;
     margin: 1% auto 0 auto;
-    display: flex;
-    /* Use flexbox */
-    justify-content: space-evenly;
-    /* Evenly space the buttons */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: fit-content;
+    position: relative;
     border-bottom: 20px solid #FFDC5C;
 }
 
+#tab-buttons { 
+    width: 100%;
+	white-space: nowrap;
+	scroll-behavior: smooth;
+	user-select: none;
+	overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE */    
+
+    &.dragging {
+        scroll-behavior: unset;
+        cursor: grab;
+    }
+}
+
+#tab-buttons::-webkit-scrollbar {
+    display: none;
+}
+
 .tab-button {
+	display: inline-block;
     cursor: pointer;
     padding: 10px 15px;
     border: none;
+    white-space: nowrap;
     background-color: #F8F7F1;
     border-radius: 5px 5px 0 0;
     font-size: 21px;
@@ -39,6 +61,8 @@ form {
     margin-right: 2px;
     margin-left: 2px;
     margin-top: 20px;
+	user-select: none;
+	transition: background-color .3s ease;
 }
 
 .item-box {
@@ -46,8 +70,37 @@ form {
 }
 
 /* Style for active tab button */
+.tab-button:hover {
+    background-color: #FFDC5C;
+}
+
 .tab-button.active {
     background-color: #FFDC5C;
+}
+
+.left-btn,
+.right-btn {
+	position: absolute;
+    bottom: 0;
+	color: black;
+	font-size: 1.8em;
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+.left-btn {
+	left: 0;
+	background: linear-gradient(to left, transparent, #FFDC5C 80%);
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	display: none;
+}
+
+.right-btn {
+	right: 0;
+	background: linear-gradient(to right, transparent, #FFDC5C 80%);
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 .order-header {

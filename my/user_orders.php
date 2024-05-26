@@ -2,6 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
 include_once("../database_connection.php");
 $user_id = $_SESSION['user_id'];
 ?>
@@ -25,7 +31,9 @@ $user_id = $_SESSION['user_id'];
     </div>
     <!-- Tab buttons -->
     <div class="tab-container">
-        <div id="tab-buttons">
+        <ion-icon class="left-btn" name="chevron-back-outline"></ion-icon>
+        <ion-icon class="right-btn" name="chevron-forward-outline"></ion-icon>
+        <div id="tab-buttons" class="scrollable-tab">
             <button class="tab-button" onclick="openTab(event, 'tab1')">All Orders</button>
             <button class="tab-button" onclick="openTab(event, 'tab2')">Pending</button>
             <button class="tab-button" onclick="openTab(event, 'tab3')">Accepted</button>
@@ -87,40 +95,13 @@ $user_id = $_SESSION['user_id'];
                         $prod_status = str_replace("_", "-", $row['order_status']);
                         $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
                         $display_status = '';
-                        if ($row['is_cancelled'] == 1) {
+
+                        if($row['is_cancelled'] === 1) {
                             $display_status = 'Cancelled';
+                        } else if ($row['is_accepted'] !== 'accepted') {
+                            $display_status = ucfirst($row['is_accepted']);
                         } else {
-                            if ($row['order_status'] === 'pending_fullpayment') {
-                                $display_status = 'Waiting For Verification';
-                            } else {
-                                if ($row['order_status'] === 'ready_for_pickup') {
-                                    $display_status = 'Ready For Pickup';
-                                } else {
-                                    if ($row['is_accepted'] == 'rejected') {
-                                        $display_status = 'Rejected';
-                                    } else {
-                                        if ($row['order_status'] === 'received') {
-                                            $display_status = 'Received';
-                                        } else {
-                                            if ($row['order_status'] === 'in_production') {
-                                                $display_status = 'In Production';
-                                            } else {
-                                                if ($row['is_accepted'] === 'pending') {
-                                                    $display_status = 'Pending';
-                                                } else if ($row['is_accepted'] === 'accepted') {
-                                                    $display_status = 'Accepted';
-                                                } else {
-                                                    if ($row['is_cancelled'] == 0) {
-                                                        $display_status = htmlspecialchars($prod_status_text);
-                                                    } else {
-                                                        $display_status = 'Cancelled';
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            $display_status = ucwords(str_replace('_', ' ', $row['order_status']));
                         }
 
                         echo '
@@ -823,6 +804,9 @@ $user_id = $_SESSION['user_id'];
         </div>
     </div>
     <script src="/js/user_orders.js"></script>
+    <script src="/js/globals.js"></script>
+	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
