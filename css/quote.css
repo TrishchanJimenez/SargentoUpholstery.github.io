@@ -1,0 +1,133 @@
+.quote-page__content {
+    width: 100%;
+    height: auto;
+    font-family: "Inter", sans-serif;
+    padding: 2.5vmin;
+}
+
+.quote {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 2.5vmin;
+    border-radius: 10px;
+}
+
+.quote-form__title {
+    margin-bottom: 20px;
+}
+
+.quote-form__subtext {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.quote-form {
+    width: 100%;
+    height: auto;
+}
+
+.quote-form__heading {
+    width: 100%;
+    height: auto;
+    margin: 1.25vmin;
+}
+
+.quote-form__submit {
+    width: 80%;
+    height: fit-content;
+    padding: 2.5vmin;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 10%;
+    margin-top: 25%;
+}
+
+.quote-form__wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quote-form__display,
+.quote-form__section {
+    /* width: calc(33.33% - 20px); */
+    min-width: calc(33.33% - 20px);
+    flex: 1;
+    margin: 1.25vmin;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 3.75vmin;
+}
+
+.quote-form__header {
+    margin-bottom: 10px;
+}
+
+.quote-form__description {
+    margin-bottom: 20px;
+    color: #666;
+    min-height: 40px;
+}
+
+.quote-form__output-container,
+.quote-form__input-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 12.5vh;
+}
+
+.quote-form__input-container--checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.quote-form__label {
+    display: block;
+    margin-bottom: 1.25vmin;
+}
+
+.quote-form__output,
+.quote-form__input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.quote-form__output--text,
+.quote-form__output--select,
+.quote-form__input--text,
+.quote-form__input--textarea,
+.quote-form__input--file,
+.quote-form__input--number {
+    width: 100%;
+}
+
+.quote-form__input--textarea {
+    resize: vertical;
+    max-height: 150px;
+}
+
+.quote-form__input--select,
+.quote-form__input-container--checkbox>label,
+.quote-form__input--checkbox,
+.quote-form__input--file {
+    cursor: pointer;
+}
+
+.quote-form__input--checkbox {
+    margin-right: 10px;
+}
+
+.quote-form__input-text--contact {
+    display: flex;
+}
+
+#country-code {
+    margin-right: 10px;
+}
