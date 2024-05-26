@@ -98,7 +98,7 @@
                 $_SESSION['user_address'] = $address['address'];
                 // Redirect user to dashboard or any other page
                 if($user['user_type'] == 'admin') {
-                    header("Location: ./orders.php");
+                    header("Location: ./admin/dashboard.php");
                 } else {
                     header("Location: index.php");
                 }

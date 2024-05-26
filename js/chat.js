@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chatInput');
     const sendButton = document.getElementById('sendButton');
     const chatMessages = document.getElementById('chatMessages');
+    const newMessageIndicator = document.getElementById('newMessageIndicator');
 
+    let isChatOpen = false;
     // Function to display a message in the chat window
     function displayMessage(message, sender) {
         const messageElement = document.createElement('div');
@@ -49,11 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listeners
     chatButton.addEventListener('click', () => {
-        chatWindow.style.display = chatWindow.style.display == 'flex' ? 'none' : 'flex';
+        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        isChatOpen = chatWindow.style.display === 'flex' ? true : false;
+        if (isChatOpen) {
+            updateMessageStatus();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        newMessageIndicator.style.display = 'none';
     });
 
     closeChatWindow.addEventListener('click', () => {
         chatWindow.style.display = 'none';
+        isChatOpen = false;
     });
 
     sendButton.addEventListener('click', sendMessage);
@@ -62,4 +71,100 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
+
+    function checkForNewMessage() {
+        fetch('check_new_message.php', {
+            method: 'POST',
+        })
+        .then(response => {
+            // console.log(response.text());
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.error('Failed to retrieve messages from the database');
+            }
+        })
+        .then(data => {
+            if (data.has_unread_message && !isChatOpen) {
+                newMessageIndicator.style.display = 'flex';
+            }
+        })
+        .catch(error => {
+            console.error('Error retrieving messages:', error);
+        });
+    }
+
+    function updateMessageStatus() {
+        if (!isChatOpen) {
+            return;
+        }
+        fetch('update_message_status.php', {
+            method: 'POST',
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Failed to update message status');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating message status:', error);
+        });
+    }
+
+    function calculateTimeAgo(seconds) {
+        if (seconds < 60) {
+            return `Just now`;
+        }
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) {
+            return `${minutes} minutes ago`;
+        }
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) {
+            return `${hours} hours ago`;
+        }
+        const days = Math.floor(hours / 24);
+        return `${days} days ago`;
+    }
+
+    // Fetch API request to retrieve messages from the database
+    function fetchMessages() {
+        fetch('fetch_new_messages.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `lastMessageId=${lastMessageId}`
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.error('Failed to retrieve messages from the database');
+            }
+        })
+        .then(({messages, newLastMessageId}) => {
+            if (messages.length > 0) {
+                messages.forEach(message => {
+                    chatMessages.innerHTML += `
+                        <div class="message left">
+                            <span class="timestamp">${calculateTimeAgo(message.time_diff)}</span>
+                            <p>${message.message}</p>
+                        </div>
+                    `;
+
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+                lastMessageId = newLastMessageId;
+            }
+        })
+        .catch(error => {
+            console.error('Error retrieving messages:', error);
+        });
+    }    
+
+    // Check for new messages every second
+    setInterval(checkForNewMessage, 1000);
+    setInterval(updateMessageStatus, 1000);
+    setInterval(fetchMessages, 1000);
 });

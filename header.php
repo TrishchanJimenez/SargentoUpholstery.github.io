@@ -11,7 +11,7 @@
 
         // Fetch all records from notifs table where user_id matches session user_id
         $user_id = $_SESSION['user_id'];
-        $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id";
+        $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id ORDER BY `created_at` DESC";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
