@@ -11,6 +11,7 @@
             quote_id,
             furniture_type AS item,
             name AS customer_name,
+            email,
             service_type AS type,
             quantity,
             quote_status AS status,
@@ -46,6 +47,7 @@
                     <tr>
                         <th>Quote Id</th>
                         <th>Customer Name</th>
+                        <th>Email</th>
                         <th>Item</th>
                         <th>Quantity</th>
                         <th>Type</th>
@@ -65,6 +67,7 @@
                             <tr data-id='{$quote['quote_id']}'>
                                 <td>{$quote['quote_id']}</td>
                                 <td>{$quote['customer_name']}</td>
+                                <td>{$quote['email']}</td>
                                 <td>{$quote['item']}</td>
                                 <td>{$quote['quantity']}</td>
                                 <td>{$type}</td>
@@ -78,7 +81,7 @@
                                     </a>
                                 </td>
                             </tr>
-                            ";
+                            ";  
                         }
                     ?>
                 </tbody>
