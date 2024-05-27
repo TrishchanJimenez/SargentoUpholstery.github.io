@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 27, 2024 at 11:21 AM
+-- Generation Time: May 27, 2024 at 11:52 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `quote_id` int NOT NULL,
-  `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
+  `order_status` enum('pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pending_downpayment',
   `del_method` enum('third_party','self') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `del_address_id` int DEFAULT NULL,
   `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
@@ -283,71 +283,60 @@ CREATE TABLE IF NOT EXISTS `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(1, 1, 1, 'pending_downpayment', 'third_party', 1, 1, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(2, 2, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(3, 3, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(4, 4, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(5, 5, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(6, 6, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(7, 7, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(8, 8, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(9, 9, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(10, 10, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(11, 11, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(12, 12, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(13, 13, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(14, 14, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(15, 15, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(16, 16, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(17, 17, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(18, 18, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(19, 19, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(20, 20, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(21, 1, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(22, 2, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(23, 3, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(24, 4, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(25, 5, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(26, 6, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(27, 7, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(28, 8, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(29, 9, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(30, 10, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(31, 11, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(32, 12, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(33, 13, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(34, 14, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(35, 15, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(36, 16, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(37, 17, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(38, 18, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(39, 19, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(40, 20, 1, 'new_order', 'self', 1, 0, NULL, '2024-05-27 01:54:03');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(2, 2, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:46:15');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(3, 3, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(4, 4, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(5, 5, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(6, 6, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(7, 7, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(8, 8, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(9, 9, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(10, 10, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(11, 11, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(12, 12, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(13, 13, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(14, 14, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(15, 15, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(16, 16, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(17, 17, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(18, 18, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(19, 19, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(20, 20, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(21, 1, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(22, 2, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(23, 3, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(24, 4, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(25, 5, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(26, 6, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(27, 7, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(28, 8, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(29, 9, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(30, 10, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(31, 11, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(32, 12, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(33, 13, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(34, 14, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(35, 15, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(36, 16, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(37, 17, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(38, 18, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(39, 19, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(40, 20, 1, 'pending_downpayment', 'self', 1, 0, NULL, '2024-05-27 11:48:33');
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(41, 22, 1, 'received', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(42, 22, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(43, 22, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(44, 22, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(45, 22, 1, 'new_order', 'third_party', 1, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(46, 21, 1, 'new_order', 'third_party', 12, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(47, 21, 1, 'new_order', 'third_party', 13, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(48, 21, 1, 'new_order', 'third_party', 10, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(49, 21, 1, 'new_order', 'third_party', 10, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(50, 24, 1, 'received', 'third_party', 14, 0, NULL, '2024-05-27 01:54:03');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(51, 22, 3, 'new_order', NULL, NULL, 0, NULL, '2024-05-27 11:18:12');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(42, 22, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(43, 22, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(44, 22, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(45, 22, 1, 'pending_downpayment', 'third_party', 1, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(46, 21, 1, 'pending_downpayment', 'third_party', 12, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(47, 21, 1, 'pending_downpayment', 'third_party', 13, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(48, 21, 1, 'pending_downpayment', 'third_party', 10, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(49, 21, 1, 'pending_downpayment', 'third_party', 10, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(50, 24, 1, 'pending_downpayment', 'third_party', 14, 0, NULL, '2024-05-27 11:50:29');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(51, 22, 3, 'pending_downpayment', NULL, NULL, 0, NULL, '2024-05-27 11:48:33');
 
 --
 -- Triggers `orders`
 --
-DROP TRIGGER IF EXISTS `insert_est_date_after_acceptance`;
-DELIMITER $$
-CREATE TRIGGER `insert_est_date_after_acceptance` AFTER UPDATE ON `orders` FOR EACH ROW BEGIN
-    IF NEW.is_accepted = 'accepted' THEN
-        UPDATE order_date
-        SET est_completion_date = DATE_ADD(NOW(), INTERVAL 2 WEEK)
-        WHERE order_id = NEW.order_id;
-    END IF;
-END
-$$
-DELIMITER ;
 DROP TRIGGER IF EXISTS `insert_payment_and_order_date`;
 DELIMITER $$
 CREATE TRIGGER `insert_payment_and_order_date` AFTER INSERT ON `orders` FOR EACH ROW BEGIN
