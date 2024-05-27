@@ -36,26 +36,35 @@
         <div class="selector-container">
             <select name="type-selector" id="type-selector" onchange="filterGallery()">
                 <option selected value="all">All</option>
-                <option value="bed">Beds</option>
-                <option value="armchair">Armchairs</option>
-                <option value="custom">Custom</option>
-                <option value="loveseat">Loveseats</option>
-                <option value="ottoman">Ottomans</option>
-                <option value="sofa">Sofas</option>
-                <option value="cleopatra">Cleopatras</option>
+                <?php
+                    $sql = "
+                        SELECT
+                            DISTINCT category
+                        FROM works
+                    ";
+                    $stmt = $conn->query($sql);
+                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach($results AS $category) {
+                        $category_text = ucfirst($category['category']); 
+                        echo "<option value='{$category['category']}'>{$category_text}</option>";
+                    }
+                ?>
             </select>
             <select name="color-selector" id="color-selector" onchange="filterGallery()">
                 <option selected value="all">All</option>
-                <option value="black">Black</option>
-                <option value="blue">Blue</option>
-                <option value="brown">Brown</option>
-                <option value="cyan">Cyan</option>
-                <option value="gray">Gray</option>
-                <option value="orange">Orange</option>
-                <option value="pink">Pink</option>
-                <option value="purple">Purple</option>
-                <option value="red">Red</option>
-                <option value="white">White</option>
+                <?php
+                    $sql = "
+                        SELECT
+                            DISTINCT color
+                        FROM works
+                    ";
+                    $stmt = $conn->query($sql);
+                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach($results AS $color) {
+                        $color_text = ucfirst($color['color']); 
+                        echo "<option value='{$color['color']}'>{$color_text}</option>";
+                    }
+                ?>
             </select>
         </div>
         <div class="gallery-section">

@@ -6,10 +6,13 @@ $sqlD = "
         furniture_type, 
         COUNT(*) AS order_count
     FROM orders O
+    JOIN quotes USING (quote_id)
     JOIN order_date USING(order_id)
     WHERE 
         order_status NOT IN ('received', 'new_order')
         AND is_cancelled = 0
+        AND WEEK(placement_date) = WEEK(CURDATE())
+        AND YEAR(placement_date) = YEAR(CURDATE())
     GROUP BY furniture_type
     ORDER BY furniture_type";
 

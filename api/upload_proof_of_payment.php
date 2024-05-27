@@ -20,9 +20,9 @@
                         // Update database with the image path and payment method
                         try {
                             if ($uploadType === 'downpayment') {
-                                $stmt = $conn->prepare("UPDATE payment SET downpayment_img = :img, downpayment_method = :method WHERE order_id = :order_id");
+                                $stmt = $conn->prepare("UPDATE payment SET downpayment_img = :img, downpayment_method = :method, downpayment_verification_status = 'waiting_for_verification' WHERE order_id = :order_id");
                             } elseif ($uploadType === 'fullpayment') {
-                                $stmt = $conn->prepare("UPDATE payment SET fullpayment_img = :img, fullpayment_method = :method WHERE order_id = :order_id");
+                                $stmt = $conn->prepare("UPDATE payment SET fullpayment_img = :img, fullpayment_method = :method, fullpayment_verification_status = 'waiting_for_verification' WHERE order_id = :order_id");
                             }
                             $stmt->bindParam(':img', $targetFile);
                             $stmt->bindParam(':method', $paymentMethod);

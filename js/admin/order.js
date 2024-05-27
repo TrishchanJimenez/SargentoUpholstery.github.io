@@ -6,8 +6,9 @@ tableBody.addEventListener('mousedown', (e) => {
     target = e.target.closest('.prod-status');
     if(target !== null && target.classList.contains('status')) {
         const isCancelled = target.querySelector('span').dataset.prodStatus === 'cancelled';
-        if(isCancelled) {
-            console.log('test');
+        const isRejected = target.querySelector('span').dataset.prodStatus === 'rejected'; 
+        if(isCancelled || isRejected) {
+            // console.log('test');
             return;
         }
         target.classList.remove('status');

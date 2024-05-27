@@ -42,26 +42,27 @@
     border-radius: 10px;
     cursor: pointer;
     margin-left: 10%;
-    margin-top: 25%;
 }
 
 .quote-form__wrapper {
     width: 100%;
     height: auto;
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
     justify-content: center;
 }
 
 .quote-form__display,
 .quote-form__section {
     /* width: calc(33.33% - 20px); */
-    min-width: calc(33.33% - 20px);
+    /* min-width: calc(33.33% - 20px); */
+    display: block;
+    width: 100%;
     flex: 1;
-    margin: 1.25vmin;
-    border: 1px solid #ccc;
+    /* margin: 1.25vmin;
+    border: 1px solid #ccc; */
     border-radius: 10px;
-    padding: 3.75vmin;
+    padding: 1.25vmin;
 }
 
 .quote-form__header {
@@ -69,16 +70,18 @@
 }
 
 .quote-form__description {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     color: #666;
     min-height: 40px;
 }
 
 .quote-form__output-container,
 .quote-form__input-container {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     margin-bottom: 20px;
     min-height: 12.5vh;
+    width: 30%;
+    display: inline-block;
 }
 
 .quote-form__input-container--checkbox {
@@ -89,6 +92,7 @@
 .quote-form__label {
     display: block;
     margin-bottom: 1.25vmin;
+    white-space: nowrap;
 }
 
 .quote-form__output,
@@ -97,14 +101,19 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
+    background-color: transparent;
+}
+
+.quote-form__input--number {
+    /* width: min-content; */
+    width: 100%;
 }
 
 .quote-form__output--text,
 .quote-form__input--select,
 .quote-form__input--text,
 .quote-form__input--textarea,
-.quote-form__input--file,
-.quote-form__input--number {
+.quote-form__input--file {
     width: 100%;
 }
 
@@ -128,6 +137,55 @@
     display: flex;
 }
 
+.quote-form_furniture-item_main-detail {
+    display: flex;
+    align-items: start;
+    gap: 5px;
+}
+
+.quote-form_furniture-item_sub-detail {
+    display: flex;
+    gap: 5px;
+}
+
 #country-code {
     margin-right: 10px;
+}
+
+.quote-form__section {
+    &:hover {
+        .remove-item {
+            display: inline;
+        }
+    }
+}
+
+.fa.fa-close {
+    display: none;
+}
+
+.remove-item {
+    margin-left: 0.5rem;
+    color: gray;
+    cursor: pointer;
+}
+
+.quote-form__add-item {
+    padding: 1.25vmin;
+    width: 80%;
+    margin: 0 auto;
+    cursor: pointer;
+    border-radius: 2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: transparent;
+
+    &:hover {
+        background-color: #b8b5b5;
+    }
+}
+
+.quote-form__furniture-container {
+    display: none; 
 }

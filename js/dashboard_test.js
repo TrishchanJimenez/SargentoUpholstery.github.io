@@ -1,10 +1,3 @@
-/* <div class="order-status">
-  <p class="chart-title">Status Breakdown</p>
-  <div class="chart-container">
-    <canvas id="chartWeekly"></canvas>
-  </div>
-</div>; */
-
 const chartConfig = {
 	type: "doughnut",
 	data: {
@@ -157,7 +150,7 @@ function fetchTypeData(chart) {
 
 function fetchFurnitureData(chart) {
 	// Fetch data from PHP script
-	fetch('/chartData/Ddata.php')
+	fetch('/chartData/furniture_type_data.php')
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok  ');

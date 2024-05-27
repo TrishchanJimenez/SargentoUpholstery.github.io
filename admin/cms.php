@@ -59,14 +59,6 @@
                     </svg>
                     <span>Orders</span>
                 </a>
-                <a href="./payment.php" class="admin-link" data-page="payment">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="folder">
-                        <path id="Icon" d="M13 7L11.8845 4.76892C11.5634 4.1268 11.4029 3.80573 11.1634 3.57116C10.9516 3.36373 10.6963 3.20597 10.4161 3.10931C10.0992 3 9.74021 3 9.02229 3H5.2C4.0799 3 3.51984 3 3.09202 3.21799C2.71569 3.40973 2.40973 3.71569 2.21799 4.09202C2 4.51984 2 5.0799 2 6.2V7M2 7H17.2C18.8802 7 19.7202 7 20.362 7.32698C20.9265 7.6146 21.3854 8.07354 21.673 8.63803C22 9.27976 22 10.1198 22 11.8V16.2C22 17.8802 22 18.7202 21.673 19.362C21.3854 19.9265 20.9265 20.3854 20.362 20.673C19.7202 21 18.8802 21 17.2 21H6.8C5.11984 21 4.27976 21 3.63803 20.673C3.07354 20.3854 2.6146 19.9265 2.32698 19.362C2 18.7202 2 17.8802 2 16.2V7Z" stroke="#C4CAD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
-                    </svg>
-                    <span>Payment</span>
-                </a>
                 <a href="./cms.php" class="admin-link fill-icon" data-page="cms">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="edit_document_24dp_FILL0_wght400_GRAD0_opsz24 1">
@@ -108,7 +100,7 @@
                 <span class="tab-button" data-tab="services-craftsmanship">Craftsmanship</span>
                 <span class="tab-button" data-tab="services-works">Works</span>
                 <span class="tab-button" data-tab="order">Order</span>
-                <span class="tab-button" data-tab="testimonial">Testimonial</span>
+                <!-- <span class="tab-button" data-tab="testimonial">Testimonial</span> -->
                 <span class="tab-button" data-tab="about">About Us</span>
                 <span class="tab-button" data-tab="contact">Contact Us</span>
             </div> 
@@ -178,12 +170,6 @@
                     </div>
                 </div>
                 <div class="tab" data-page="services-craftsmanship">
-                    <img src="/websiteimages/2mensofa.png" alt="Photo of 2 men carrying a Sofa" class="intro-image">
-                    <div class="intro-section">
-                        <h2 class="intro-title editable short-text" data-id="CRAFTSHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTITLE"]["content_text"])) ?></h2>
-                        <p class="intro-info editable long-text" data-id="CRAFTSHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTEXT"]["content_text"])) ?></p>
-                        <a href="/quote.php" class="btn btn-black">Get Free Quote</a>
-                    </div>
                     <div class="services_craftmanship_card_container">
                         <div class="services_craftmanship_card">
                             <img src="/websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
@@ -211,21 +197,8 @@
                         <p class="editable long-text" data-id="CRAFTSFOOTERTEXT" data-id="CRAFTSFOOTERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSFOOTERTEXT"]["content_text"])) ?></p>
                     </div>
                     <img src="/websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
-                    <div class="services_craftmanship_hero_image_2">
-                        <h1>
-                            Explore Our Masterpieces
-                        </h1>
-                        <a href="services_works.php" class="btn btn-black">See More</a>
-                    </div>
-
                 </div>
                 <div class="tab" data-page="services-works">
-                    <img src="/websiteimages/services-works-heroimage-img.jpg" alt="Sofa" div class="services-works-heroimage">
-                    <div class="intro-section">
-                        <h2 class="intro-title editable short-text" data-id="WORKSINTROTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTROTITLE"]["content_text"])) ?></h2>
-                        <p class="intro-info editable long-text" data-id="WORKSINTRODESC"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTRODESC"]["content_text"])) ?></p>
-                        <a href="/quote.php" class="btn btn-black">Get Free Quote</a>
-                    </div> 
                     <div class="product-gallery">
                         <div class="selector-container">
                             <select name="type-selector" id="type-selector" onchange="filterGallery()">
@@ -289,19 +262,8 @@
                         </div>
                     </div>
                     <img src="/websiteimages/Divider.png" div class="services_works_text_divider_img">
-                    <div class="services_works_hero_image_2">
-                        <div>
-                            <h1>
-                                Discover Our Artistry
-                            </h1>
-                            <a href="services_craftsmanship.php" class="btn btn-black">See More</a>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab" data-page="order">
-                    <div class="featured-banner">
-                        <h1 class="order-page__title">Design, Craft, Quote - All in One Place</h2>
-                    </div>
                     <div class="faq">
                         <h1 class="faq__title">Frequently Asked Questions</h1>
                         <ol class="faq__list">
@@ -325,21 +287,7 @@
                         <a href="testimonials.php">See More</a>
                     </div>
                 </div>
-                <div class="tab" data-page="testimonial">
-                    <img src="/websiteimages/testimonialsfeaturedimg.png" alt="" class="testimonials-featured-img">
-                    <div class="testimonials-title">
-                        <h2 class="editable short-text" data-id="TESTIMONIALHEADERTITLE"><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERTITLE"]["content_text"])) ?></h2>
-                        <p class="editable long-text" data-id="TESTIMONIALHEADERSUBTEXT"><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERSUBTEXT"]["content_text"])) ?></p>
-                        <a href="/quote.php">Get a Free Quote</a>
-                    </div>
-                </div>
                 <div class="tab" data-page="about">
-                    <img src="/websiteimages/teampicture.png" alt="" class="about-us-featuredimg">
-                    <div class="about-us-container">
-                        <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTITLE"]["content_text"])) ?></h2>
-                        <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"])) ?></p>
-                        <a href="/quote.php" class="btn btn-black">Get a Free Quote</a>
-                    </div>
                     <div class="about-us-history about-us-container">
                         <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTITLE"]["content_text"]))?></h2>
                         <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTEXT"]["content_text"]))?></p>
@@ -371,7 +319,6 @@
                     </div>
                 </div>
                 <div class="tab" data-page="contact">
-                    <img src="/websiteimages/callcenterdude.png" div class="call_center_dude">
                     <h1 class="contact_us_text_title">Get In Touch With Us</h1>
                     <div class="contact_us_text">
                         <div class="contact_info">

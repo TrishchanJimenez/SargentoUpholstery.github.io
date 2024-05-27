@@ -112,6 +112,7 @@ body {
     top: 30%;
     right: 35%;
     display: none;
+    z-index: 100;
     /* display: none; */
     border-radius: 0.85rem;
     background-color: #34343A;

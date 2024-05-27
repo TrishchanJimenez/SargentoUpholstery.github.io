@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 27, 2024 at 11:52 AM
+-- Generation Time: May 27, 2024 at 11:11 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `user_id` int NOT NULL,
   `address` varchar(255) NOT NULL,
   PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `addresses`
@@ -46,6 +46,7 @@ INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES(7, 22, '1123
 INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES(9, 21, 'Phase 1, Taguig City');
 INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES(10, 21, 'Maya St. Rizal Taguig City');
 INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES(14, 24, '123 Rizal St. Brgy Rizal Taguig City');
+INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES(15, 25, '123 Rizal, Makati City');
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`chat_id`),
   KEY `chat_sender_id_fk` (`sender_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chats`
@@ -87,6 +88,12 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(16, 24, 22, 'a', '2024-05-24 04:24:37', 0);
 INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(17, 24, 22, 'hello', '2024-05-24 04:26:44', 0);
 INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(18, 24, 22, 'hi', '2024-05-24 04:26:55', 0);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(19, 25, 25, 'hello', '2024-05-27 22:24:58', 0);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(20, 24, 25, 'a', '2024-05-27 22:25:09', 1);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(21, 24, 25, 'hello', '2024-05-27 22:25:14', 1);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(22, 25, 25, 'hi', '2024-05-27 22:25:21', 0);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(23, 24, 25, 'ano po kailangan nyo', '2024-05-27 22:25:42', 1);
+INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestamp`, `is_read`) VALUES(24, 24, 25, 'anno', '2024-05-27 22:25:46', 1);
 
 -- --------------------------------------------------------
 
@@ -207,6 +214,33 @@ INSERT INTO `faqs` (`faq_id`, `question`, `answer`) VALUES(10, 'How can I contac
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `multis`
+--
+
+DROP TABLE IF EXISTS `multis`;
+CREATE TABLE IF NOT EXISTS `multis` (
+  `multi_id` int NOT NULL AUTO_INCREMENT,
+  `quote_id` int NOT NULL,
+  `custom_id` int DEFAULT NULL,
+  `furniture_type` varchar(50) NOT NULL,
+  `quantity` int NOT NULL,
+  `description` text,
+  `ref_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  PRIMARY KEY (`multi_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `multis`
+--
+
+INSERT INTO `multis` (`multi_id`, `quote_id`, `custom_id`, `furniture_type`, `quantity`, `description`, `ref_img_path`) VALUES(1, 9, NULL, 'Sofa', 2, 'asfasdf', '');
+INSERT INTO `multis` (`multi_id`, `quote_id`, `custom_id`, `furniture_type`, `quantity`, `description`, `ref_img_path`) VALUES(2, 9, NULL, 'Dining', 1, '22', '');
+INSERT INTO `multis` (`multi_id`, `quote_id`, `custom_id`, `furniture_type`, `quantity`, `description`, `ref_img_path`) VALUES(3, 11, 11, 'Sofa', 1, 'soft', '');
+INSERT INTO `multis` (`multi_id`, `quote_id`, `custom_id`, `furniture_type`, `quantity`, `description`, `ref_img_path`) VALUES(4, 11, 12, 'Bed', 2, 'malaki', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notifs`
 --
 
@@ -220,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `notifs` (
   `redirect_link` tinytext,
   PRIMARY KEY (`notif_id`),
   KEY `notifs_user_id_fk` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `notifs`
@@ -255,6 +289,9 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(27, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:40:43', 0, '/my/user_orders.php');
 INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(28, 22, 'Your request for quotation has been evaluated', '2024-05-27 09:56:17', 0, '/my/user_order_details.php?quote-id=2');
 INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(29, 22, 'Your request for quotation has been evaluated', '2024-05-27 09:57:55', 0, '/my/user_order_details.php?quote-id=3');
+INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(30, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-27 12:19:32', 0, '/my/user_orders.php');
+INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(31, 25, 'Your request for quotation has been evaluated', '2024-05-27 12:23:02', 0, '/my/user_order_details.php?quote-id=4');
+INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read`, `redirect_link`) VALUES(32, 25, 'Your request for quotation has been evaluated', '2024-05-27 23:07:23', 0, '/my/user_order_details.php?quote-id=9');
 
 -- --------------------------------------------------------
 
@@ -276,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   PRIMARY KEY (`order_id`),
   KEY `user_id_fk` (`user_id`),
   KEY `order_quote_id_fk` (`quote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
@@ -331,8 +368,10 @@ INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_me
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(47, 21, 1, 'pending_downpayment', 'third_party', 13, 0, NULL, '2024-05-27 11:48:33');
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(48, 21, 1, 'pending_downpayment', 'third_party', 10, 0, NULL, '2024-05-27 11:48:33');
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(49, 21, 1, 'pending_downpayment', 'third_party', 10, 0, NULL, '2024-05-27 11:48:33');
-INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(50, 24, 1, 'pending_downpayment', 'third_party', 14, 0, NULL, '2024-05-27 11:50:29');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(50, 24, 1, 'pending_downpayment', NULL, NULL, 0, NULL, '2024-05-27 12:07:12');
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(51, 22, 3, 'pending_downpayment', NULL, NULL, 0, NULL, '2024-05-27 11:48:33');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(52, 25, 4, 'pending_downpayment', 'third_party', 15, 0, NULL, '2024-05-27 12:36:13');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES(53, 25, 9, 'pending_downpayment', NULL, NULL, 0, NULL, '2024-05-27 23:09:01');
 
 --
 -- Triggers `orders`
@@ -421,6 +460,8 @@ INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) V
 INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES(49, '2024-05-23', '0000-00-00');
 INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES(50, '2024-05-24', '0000-00-00');
 INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES(51, '2024-05-27', '0000-00-00');
+INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES(52, '2024-05-27', '0000-00-00');
+INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES(53, '2024-05-28', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -496,6 +537,8 @@ INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `down
 INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES(49, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification');
 INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES(50, 'unpaid', NULL, NULL, 'waiting_for_verification', NULL, NULL, 'waiting_for_verification');
 INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES(51, 'unpaid', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES(52, 'unpaid', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `payment` (`order_id`, `payment_status`, `downpayment_method`, `downpayment_img`, `downpayment_verification_status`, `fullpayment_method`, `fullpayment_img`, `fullpayment_verification_status`) VALUES(53, 'unpaid', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -565,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   PRIMARY KEY (`quote_id`),
   KEY `quote_customer_id_fk` (`customer_id`),
   KEY `quote_custom_id_fk` (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `quotes`
@@ -574,6 +617,13 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(1, 22, 'Bookshelf', 'mto', 'My wife and I want to have a bookshelf made for our daughter.', '/uploadedImages/referenceImages/61F8CTCqVVL._AC_SL1001_.jpg', 1, 6, NULL, 'cancelled', '2024-05-26 14:25:09', '2024-05-27 01:09:27');
 INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(2, 22, 'Bed', 'repair', 'Little John broke our bed.', NULL, 1, 7, '3120', 'approved', '2024-05-26 23:39:06', '2024-05-27 09:56:17');
 INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(3, 22, 'Sofa', 'repair', 'Minor issues', NULL, 1, 8, '8000', 'accepted', '2024-05-26 23:40:43', '2024-05-27 11:18:12');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(4, 25, 'Sofa', 'repair', 'I want this', NULL, 1, NULL, '1203', 'accepted', '2024-05-27 12:19:32', '2024-05-27 12:28:43');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(5, 25, 'asd', 'repair', 'adfa', '', 1, NULL, NULL, 'pending', '2024-05-27 21:37:11', '2024-05-27 21:37:11');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(6, 25, 'Dining', 'mto', 'malaki', '', 1, 9, NULL, 'pending', '2024-05-27 21:39:15', '2024-05-27 21:39:15');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(8, 25, 'multiple', 'repair', NULL, NULL, NULL, NULL, NULL, 'pending', '2024-05-27 22:00:32', '2024-05-27 22:00:32');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(9, 25, 'multiple', 'repair', NULL, NULL, NULL, NULL, '2400', 'accepted', '2024-05-27 22:01:19', '2024-05-27 23:09:01');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(10, 25, 'multiple', 'mto', NULL, NULL, NULL, NULL, NULL, 'pending', '2024-05-27 22:02:31', '2024-05-27 22:02:31');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quoted_price`, `quote_status`, `created_at`, `updated_at`) VALUES(11, 25, 'multiple', 'mto', NULL, NULL, NULL, NULL, NULL, 'pending', '2024-05-27 22:03:34', '2024-05-27 22:03:34');
 
 --
 -- Triggers `quotes`
@@ -601,7 +651,7 @@ CREATE TABLE IF NOT EXISTS `quote_customs` (
   `fabric` varchar(150) DEFAULT NULL,
   `color` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `quote_customs`
@@ -615,6 +665,10 @@ INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `
 INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(6, '0.5m x 2.5m x 1.5m', 'galvanized square steel beams, eco-friendly wood veneers', '', 'sky blue');
 INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(7, '', 'galvanized square steel beams, eco-friendly wood veneer', 'linen from auntie&#039;s house', 'light brown');
 INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(8, '', '', 'leather', 'orange');
+INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(9, '12x12x12', '', 'Linen', '');
+INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(10, '12x12x12', '', 'Linen', 'black');
+INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(11, '12x12x12', '', 'Linen', 'black');
+INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES(12, '2x2x2', 'wood', '', '');
 
 -- --------------------------------------------------------
 
@@ -718,7 +772,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_type` enum('customer','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
@@ -748,6 +802,7 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `conta
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', '09052669619');
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', '09123456789');
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES(24, 'Lance Jimenez', 'trishchan@gmail.com', '$2y$10$YEHSUssJkiVGzdmnzbyxwuaWrCtxVV7BegI6/I80StyNAtEi0rapG', 'admin', '09791406736');
+INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES(25, 'Chris Paul', 'chispaul@gmail.com', '$2y$10$dXItxFQz3d2n.9KS0MF9GOWDqBhUS8k28HEEDz3a/NkRwSBOGnLAa', 'customer', '09312818482');
 
 -- --------------------------------------------------------
 

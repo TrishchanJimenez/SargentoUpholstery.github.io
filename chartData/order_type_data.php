@@ -5,10 +5,12 @@ require_once '../database_connection.php';
 // Check if interval parameter is set in GET request
 $sql = "
     SELECT
-        order_type,
+        service_type AS order_type,
         COUNT(*) AS count
     FROM
         orders
+    JOIN
+        quotes USING(quote_id)
     JOIN
         order_date USING(order_id)
     WHERE

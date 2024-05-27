@@ -19,26 +19,29 @@
     $current_page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
 
     $count_query = "
-    SELECT COUNT(*) AS total_records
-    FROM orders O 
-    JOIN users U ON O.user_id = U.user_id
-    JOIN order_date OD ON OD.order_id = O.order_id
-    JOIN payment P ON P.order_id = O.order_id
-    WHERE 1
+        SELECT COUNT(*) AS total_records
+        FROM orders O 
+        JOIN quotes USING(quote_id)
+        JOIN users U ON O.user_id = U.user_id
+        JOIN order_date OD ON OD.order_id = O.order_id
+        JOIN payment P ON P.order_id = O.order_id
+        WHERE 1
     ";
 
     $query = "
         SELECT
             O.order_id,
             U.name AS customer_name,
-            O.furniture_type AS item,
-            O.order_type,
-            O.quoted_price AS price,
+            Q.furniture_type AS item,
+            Q.service_type AS order_type,
+            Q.quantity,
+            Q.quoted_price AS price,
             OD.placement_date,
             O.order_status AS prod_status,
             O.is_cancelled,
             P.payment_status
         FROM orders O 
+        JOIN quotes Q USING (quote_id)
         JOIN users U ON O.user_id = U.user_id
         JOIN order_date OD ON OD.order_id = O.order_id
         JOIN payment P ON P.order_id = O.order_id
@@ -48,12 +51,16 @@
     if (!empty($search_input)) {
         switch($search_type) {
             case "order_id":
-                $count_query .= " AND O.order_id = $search_input";
-                $query .= " AND O.order_id = $search_input";
-                break;
+                if (is_numeric($search_input)) {
+                    $count_query .= " AND O.order_id = $search_input";
+                    $query .= " AND O.order_id = $search_input";
+                    break;
+                } else {
+                    break;
+                }
             case "item":
-                $count_query .= " AND O.furniture_type LIKE '%$search_input%'";
-                $query .= " AND O.furniture_type LIKE '%$search_input%'";
+                $count_query .= " AND Q.furniture_type LIKE '%$search_input%'";
+                $query .= " AND Q.furniture_type LIKE '%$search_input%'";
                 break;
             case "customer_name":
                 $count_query .= " AND U.name LIKE '%$search_input%'";
@@ -62,8 +69,8 @@
         }
     }
     if (!($order_type === 'default' || empty($order_type))) {
-        $count_query .= " AND order_type = '$order_type'";
-        $query .= " AND order_type = '$order_type'";
+        $count_query .= " AND service_type = '$order_type'";
+        $query .= " AND service_type = '$order_type'";
     }
     if (!($order_prod_status === 'default' || empty($order_prod_status))) {
         $count_query .= " AND O.order_status = '$order_prod_status'";
@@ -79,9 +86,9 @@
 
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
-        $query .= " ORDER BY $order_sort";
+        $query .= " ORDER BY $order_sort DESC";
     } else {
-        $query .= " ORDER BY order_id";
+        $query .= " ORDER BY O.last_updated DESC";
     }
 
     $query .= " LIMIT 10";
@@ -135,7 +142,6 @@
                 <div class="filter-prod-status selector-container">
                     <select name="order-prod-status" id="" class="selector">
                         <option value="default">Prod. Status</option>
-                        <option value="new_order">New Order</option>
                         <option value="pending_downpayment">Pending Downpayment</option>
                         <option value="ready_for_pickup">Ready for Pickup</option>
                         <option value="in_production">In Production</option>
@@ -212,7 +218,7 @@
                                 $prod_status = "cancelled";
                                 $prod_status_text = "Cancelled";
                                 // $prod_status_options .= "<option value='cancelled'>Cancelled</option>";
-                            }
+                            } 
                             foreach ($statuses as $status => $status_text) {
                                 if ($include) {
                                     $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";

@@ -23,11 +23,31 @@
             users U ON Q.customer_id = U.user_id
         WHERE 
             Q.quote_id = :quote_id
+        ORDER BY 
+            Q.created_at DESC
     ";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':quote_id', $quote_id);
     $stmt->execute();
     $quote_details = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $orders = null;
+    if ($quote_details['furniture_type'] === 'multiple') {
+        $sql = "
+            SELECT 
+                * 
+            FROM 
+                multis
+            LEFT JOIN
+                quote_customs USING(custom_id) 
+            WHERE 
+                quote_id = :quote_id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':quote_id', $quote_id);
+        $stmt->execute();
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +72,8 @@
                 <div class="order-information">
                     <p class="info-title">
                         QUOTE INFORMATION   
-                        <div class="info-order-detail">
                     </p>
+                    <div class="info-order-detail">
                         <div class="info">
                             <span class="info-name"> QUOTE ID </span>
                             <span class="info-detail">
@@ -69,15 +89,17 @@
                         <div class="info">
                             <span class="info-name"> FURNITURE TYPE </span>
                             <span class="info-detail">
-                                <?= $quote_details['furniture_type'] ?>
+                                <?= ucfirst($quote_details['furniture_type']) ?>
                             </span>
                         </div>
-                        <div class="info">
-                            <span class="info-name"> QUANTITY </span>
-                            <span class="info-detail">
-                                <?= $quote_details['quantity'] ?>
-                            </span>
-                        </div>
+                        <?php if($quote_details['furniture_type'] !== 'multiple'): ?>
+                            <div class="info">
+                                <span class="info-name"> QUANTITY </span>
+                                <span class="info-detail">
+                                    <?= $quote_details['quantity'] ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
                         <div class="info">
                             <span class="info-name"> QUOTE PLACEMENT DATE </span>
                             <span class="info-detail">
@@ -101,13 +123,15 @@
                                 </span>
                             </div>
                         <?php endif; ?>
-                        <div class="info">
-                            <span class="info-name"> NOTE </span>
-                            <span class="info-detail">
-                                <?= $quote_details['description'] ?>
-                            </span>
-                        </div>
-                        <?php if(!is_null($quote_details['dimensions']) && $quote_details['dimensions'] !== ''): ?>
+                        <?php if($quote_details['furniture_type'] !== 'multiple'): ?>
+                            <div class="info">
+                                <span class="info-name"> NOTE </span>
+                                <span class="info-detail">
+                                    <?= $quote_details['description'] ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if(!is_null($quote_details['dimensions']) && $quote_details['dimensions'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
                             <div class="info">
                                 <span class="info-name">DIMENSIONS</span>
                                 <span class="info-detail">
@@ -115,7 +139,7 @@
                                 </span>
                             </div>
                         <?php endif; ?>
-                        <?php if(!is_null($quote_details['materials']) && $quote_details['materials'] !== ''): ?>
+                        <?php if(!is_null($quote_details['materials']) && $quote_details['materials'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
                             <div class="info">
                                 <span class="info-name">MATERIALS</span>
                                 <span class="info-detail">
@@ -123,7 +147,7 @@
                                 </span>
                             </div>
                         <?php endif; ?>
-                        <?php if(!is_null($quote_details['fabric']) && $quote_details['fabric'] !== ''): ?>
+                        <?php if(!is_null($quote_details['fabric']) && $quote_details['fabric'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
                             <div class="info">
                                 <span class="info-name">FABRIC</span>
                                 <span class="info-detail">
@@ -131,7 +155,7 @@
                                 </span>
                             </div>
                         <?php endif; ?>
-                        <?php if(!is_null($quote_details['color']) && $quote_details['color'] !== ''): ?>
+                        <?php if(!is_null($quote_details['color']) && $quote_details['color'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
                             <div class="info">
                                 <span class="info-name">COLOR</span>
                                 <span class="info-detail">
@@ -149,6 +173,73 @@
                         <?php endif; ?>
                     </div>
                 </div>
+                <?php if($quote_details['furniture_type'] === 'multiple'): ?>
+                    <?php $counter = 0; foreach($orders as $order): $counter++; ?> 
+                        <div class="order-information">
+                            <p class="info-title">FURNITURE <?= $counter ?></p>   
+                            <div class="info-order-detail"> 
+                                <div class="info">
+                                    <span class="info-name"> TYPE </span>
+                                    <span class="info-detail">
+                                        <?= ucfirst($order['furniture_type']) ?>
+                                    </span>
+                                </div>
+                                <div class="info">
+                                    <span class="info-name"> QUANTITY </span>
+                                    <span class="info-detail">
+                                        <?= $order['quantity'] ?>
+                                    </span>
+                                </div>
+                                <div class="info">
+                                    <span class="info-name"> NOTE </span>
+                                    <span class="info-detail">
+                                        <?= $order['description'] ?>
+                                    </span>
+                                </div>
+                                <?php if(!is_null($order['dimensions']) && $order['dimensions'] !== ''): ?>
+                                    <div class="info">
+                                        <span class="info-name">DIMENSIONS</span>
+                                        <span class="info-detail">
+                                            <?= $order['dimensions'] ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(!is_null($order['materials']) && $order['materials'] !== ''): ?>
+                                    <div class="info">
+                                        <span class="info-name">MATERIALS</span>
+                                        <span class="info-detail">
+                                            <?= $order['materials'] ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(!is_null($order['fabric']) && $order['fabric'] !== ''): ?>
+                                    <div class="info">
+                                        <span class="info-name">FABRIC</span>
+                                        <span class="info-detail">
+                                            <?= $order['fabric'] ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(!is_null($order['color']) && $order['color'] !== ''): ?>
+                                    <div class="info">
+                                        <span class="info-name">COLOR</span>
+                                        <span class="info-detail">
+                                            <?= $order['color'] ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(!is_null($order['ref_img_path']) && $order['ref_img_path'] !== ''): ?>
+                                    <div class="info">
+                                        <span class="info-name">PICTURE</span>
+                                        <span class="info-detail">
+                                            <img src='/<?= $order['ref_img_path'] ?>' alt='' class='repair-img'>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="right">
                 <div class="customer-information">

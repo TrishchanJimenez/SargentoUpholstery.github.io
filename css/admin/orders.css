@@ -174,7 +174,8 @@
 .status span[data-payment="unpaid"], 
 .status span[data-prod-status="pending-downpayment"],
 .status span[data-prod-status="pending-fullpayment"],
-.status span[data-prod-status="cancelled"]{
+.status span[data-prod-status="cancelled"],
+.status span[data-prod-status="rejected"] {
     color: var(--red-800, #991B1B);
     border: 1px solid var(--red-300, #FCA5A5);
     background: var(--red-100, #FEE2E2); 

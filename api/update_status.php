@@ -1,5 +1,6 @@
 <?php
     require dirname(__DIR__) . '/database_connection.php';
+    include  dirname(__DIR__) . '/notif.php';
     if(isset($_POST['status_type'])) {
         $status_type = $_POST['status_type'];
         $is_multiple = $_POST['is_multiple'] === "true" ? true : false;
@@ -54,6 +55,18 @@
             }
             echo json_encode($response);
         } else {
+            $sql = "SELECT * FROM orders WHERE order_id = :id";
+            $selectStmt = $conn->prepare($sql);
+            $selectStmt->bindParam(':id', $_POST['order_id']);
+            $selectStmt->execute();
+            $order = $selectStmt->fetch(PDO::FETCH_ASSOC);
+
+            if($order['order_status'] === "new_order") { 
+                createNotif($order['user_id'], "Your order has been accepted", "/my/user_order_details.php?order_id=" . $order['order_id']);
+            } else if($order['order_status'] === "pending_downpayment") {
+                
+            }
+
             $new_status = str_replace("-", "_", $_POST['new_status']);
             $order_id = $_POST['order_id'];
             $updateStmt->bindParam(':status', $new_status);

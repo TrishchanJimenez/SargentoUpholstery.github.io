@@ -90,6 +90,20 @@ Order_date Table:
 | placement_date      | date | NO   |     | NULL    |       |
 | est_completion_date | date | NO   |     | NULL    |       |
 +---------------------+------+------+-----+---------+-------+
+    SELECT
+        (SELECT 
+            COUNT(*) AS new_orders_current_week
+        FROM 
+            orders
+        JOIN 
+            order_date USING(user_id)
+        WHERE 
+            AND WEEK(placement_date) = WEEK(CURDATE()) 
+            AND YEAR(placement_date) = YEAR(CURDATE())) AS new_orders_current_week
+
+            SELECT COUNT(*) FROM Orders 
+            JOIN Order_date ON Orders.order_id = Order_date.order_id 
+            WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1;
 
 COUNT OF NEW ORDERS THIS DAY VS YESTERDAY
 SELECT
@@ -186,20 +200,6 @@ addresses Table:
 | address    | varchar(255) | NO   |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
 
-SELECT o.furniture_type, DATE_FORMAT(od.placement_date, '%Y-%m-%d') AS day_start, COUNT(*) AS order_count 
-        FROM orders o 
-        JOIN order_date od ON o.order_id = od.order_id 
-        WHERE o.order_status = 'received'
-        GROUP BY o.furniture_type, DAY(od.placement_date)
-        ORDER BY o.furniture_type, od.placement_date
-
-
-SELECT furniture_type, COUNT(*) AS order_count
-    FROM orders O
-    JOIN order_date USING(order_id)
-    WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE()) AND order_status = 'received'
-    GROUP BY furniture_type
-    ORDER BY furniture_type
 
 SELECT *
 FROM (
@@ -250,3 +250,54 @@ Payment Table
 | fullpayment_img                 | text                                                                 | YES  |     | NULL    |       |
 | fullpayment_verification_status | enum('waiting_for_verification',' needs_reverification',' verified') | YES  |     | NULL    |       |
 +---------------------------------+----------------------------------------------------------------------+
+
++----------------+--------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field          | Type                                                         | Null | Key | Default           | Extra
+   |
++----------------+--------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| quote_id       | int                                                          | NO   | PRI | NULL              | auto_increment
+   |
+| customer_id    | int                                                          | YES  | MUL | NULL              |
+   |
+| furniture_type | varchar(50)                                                  | YES  |     | NULL              |
+   |
+| service_type   | enum('repair','mto')                                         | YES  |     | NULL              |
+   |
+| description    | text                                                         | YES  |     | NULL              |
+   |
+| ref_img_path   | text                                                         | YES  |     | NULL              |
+   |
+| quantity       | int                                                          | YES  |     | NULL              |
+   |
+| custom_id      | int                                                          | YES  | MUL | NULL              |
+   |
+| quoted_price   | decimal(10,0)                                                | YES  |     | NULL              |
+   |
+| quote_status   | enum('pending','approved','accepted','rejected','cancelled') | NO   |     | pending           |
+   |
+| created_at     | timestamp                                                    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED
+   |
+| updated_at     | timestamp                                                    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------+--------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field          | Type                                                                                                                           | Null | Key | Default           | Extra                                         |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| order_id       | int                                                                                                                            | NO   | PRI | NULL              | auto_increment                                |
+| user_id        | int                                                                                                                            | NO   | MUL | NULL              |                                               |
+| quote_id       | int                                                                                                                            | NO   | MUL | NULL              |                                               |
+| order_status   | enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') | NO   |
+ | new_order         |                                               |
+| del_method     | enum('third_party','self')                                                                                                     | NO   |
+ | NULL              |                                               |
+| del_address_id | int                                                                                                                            | NO   |
+ | NULL              |                                               |
+| is_accepted    | enum('pending','accepted','rejected')                                                                                          | NO   |
+ | pending           |                                               |
+| is_cancelled   | tinyint(1)                                                                                                                     | NO   |
+ | 0                 |                                               |
+| refusal_reason | text                                                                                                                           | YES  |
+ | NULL              |                                               |
+| last_updated   | timestamp                                                                                                                      | NO   |
+ | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------+--------------------------------------------------------------------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+

@@ -63,12 +63,13 @@
                             $type = ($quote['type'] === "mto") ? "MTO" : "Repair";
                             $status = $quote['status'];
                             $status_text = ($status === "pending") ? "Pending" : "Approved";
+                            $item = ucfirst($quote['item']);
                             echo "
                             <tr data-id='{$quote['quote_id']}'>
                                 <td>{$quote['quote_id']}</td>
                                 <td>{$quote['customer_name']}</td>
                                 <td>{$quote['email']}</td>
-                                <td>{$quote['item']}</td>
+                                <td>{$item}</td>
                                 <td>{$quote['quantity']}</td>
                                 <td>{$type}</td>
                                 <td>{$date}</td>

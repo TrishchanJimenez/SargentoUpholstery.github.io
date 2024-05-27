@@ -12,10 +12,6 @@
     }
     
     $order_id = $_GET['order-id'];
-    $stmt = $conn->query("SELECT order_type FROM orders WHERE order_id = '$order_id'");
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
-    // var_dump($order);
-    $order_type = $order['order_type'];
 
     $query = "
         SELECT *
@@ -23,10 +19,12 @@
             SELECT *
             FROM orders
             WHERE order_id = :order_id) AS O
+        JOIN quotes Q USING(quote_id)
+        LEFT JOIN quote_customs QC ON Q.custom_id = QC.custom_id
         JOIN order_date OD USING(order_id)
         JOIN users U USING(user_id)
         JOIN payment P USING(order_id)
-        JOIN ( 
+        LEFT JOIN ( 
             SELECT
                 address_id,
                 address AS delivery_address
@@ -49,7 +47,8 @@
     if($order['is_cancelled'] === 1) {
         $prod_status = "cancelled";
         $prod_status_text = "Cancelled";
-    } else {
+    }
+    else {
         $prod_status = str_replace("_", "-", $order['order_status']);
         $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
     } 
@@ -92,7 +91,7 @@
                             <span class="info-name"> ORDER TYPE </span>
                             <span class="info-detail">
                                 <?php
-                                    if($order['order_type'] === "mto") echo "MTO";
+                                    if($order['service_type'] === "mto") echo "MTO";
                                     else echo "Repair"
                                 ?>
                             </span>
@@ -149,7 +148,7 @@
                         <div class="info">
                             <span class="info-name"> PAYMENT STATUS </span>
                             <span class="info-detail status">
-                                <span <?= "data-payment='{$payment_status}'" ?>>
+                                <span <?= "data-payment='{$payment_status}'" ?> class="payment-status">
                                     <?= $payment_status_text ?>
                                 </span>
                                 <select name='select-payment-status' id=''>
@@ -162,7 +161,7 @@
                         <div class="info">
                             <span class="info-name"> NOTE </span>
                             <span class="info-detail">
-                                <?= $order['notes'] ?>
+                                <?= $order['description'] ?>
                             </span>
                         </div>
                         <?php if(!is_null($order['ref_img_path'])): ?>
@@ -172,46 +171,50 @@
                                     <img src='/<?= $order['ref_img_path'] ?>' alt='' class='repair-img'>
                                 </span>
                             </div>
-                        <?php endif; ?>                             
+                        <?php endif; ?>
                     </div>
                 </div>
-                <?php if(!is_null($order['downpayment_method'])) : ?>
-                    <div class="payment-information">
-                        <p class="info-title">
-                            DOWNPAYMENT INFORMATION
-                        </p>
-                        <div class="info-order-detail payment-info">
-                            <div class="info">
-                                <span class="info-name">METHOD</span>
-                                <span class="info-detail">
-                                    <?= ucfirst($order["downpayment_method"]) ?>
-                                </span>
+                <?php
+                    if(!is_null($order['downpayment_method'])) {
+                        $method = ucfirst($order['downpayment_method']);
+                        $verification_status = ucfirst(str_replace("_", " ", $order['downpayment_verification_status']));
+                        $verification_buttons = $order['downpayment_verification_status'] === 'waiting_for_verification' ? "
+                            <div class='verification-buttons button-container downpayment'>
+                                <input type='button' value='Verify' class='green-button accept-verification'>
+                                <input type='button' value='Needs Reverification' class='red-button reject-verification'>
+                            </div>" : "";
+                        echo "
+                            <div class='payment-information downpayment-info'>
+                                <p class='info-title'>
+                                    DOWNPAYMENT INFORMATION
+                                </p>
+                                <div class='info-order-detail payment-info'>
+                                    <div class='info'>
+                                        <span class='info-name'>METHOD</span>
+                                        <span class='info-detail'>
+                                            {$method}
+                                        </span>
+                                    </div>
+                                    <div class='info'>
+                                        <span class='info-name'>VERIFICATION STATUS</span>
+                                        <span class='info-detail downpayment-status'>
+                                            {$verification_status}
+                                        </span>
+                                    </div>
+                                    <div class='info'>
+                                        <span class='info-name'>PROOF OF PAYMENT</span>
+                                        <span class='info-detail'>
+                                            <img src='{$order['downpayment_img']}' alt=''>
+                                        </span>
+                                    </div>
+                                    {$verification_buttons}
+                                </div>
                             </div>
-                            <div class="info">
-                                <span class="info-name">VERIFICATION STATUS</span>
-                                <span class="info-detail downpayment-status">
-                                    <?php
-                                        echo ucfirst(str_replace("_", " ", $order["downpayment_verification_status"]));
-                                    ?>
-                                </span>
-                            </div>
-                            <div class="info">
-                                <span class="info-name">PROOF OF PAYMENT</span>
-                                <span class="info-detail">
-                                    <img src="<?= $order["downpayment_img"] ?>" alt="">
-                                </span>
-                            </div>
-                            <?php if($order['downpayment_verification_status'] === "waiting_for_verification") : ?>
-                                <div class="verification-buttons button-container downpayment">
-                                    <input type="button" value="Verify" class="green-button accept-verification" onclick="verifyDownpayment()">
-                                    <input type="button" value="Needs Reverification" class="red-button reject-verification" onclick="reverifyDownpayment()">
-                                </div> 
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+                        ";
+                    }
+                ?>
                 <?php if(!is_null($order['fullpayment_method'])) : ?>
-                    <div class="payment-information">
+                    <div class="payment-information fullpayment-info">
                         <p class="info-title">
                             FULLPAYMENT INFORMATION
                         </p>
@@ -274,18 +277,18 @@
                         <?php endif; ?>                             
                     </div>
                 </div>
-                <?php if($order['is_accepted'] === "pending") : ?>
+                <?php if($order['order_status'] === "pending_downpayment") : ?>
                     <div class='order-action'>
                         <p class="info-title">
                             ACTIONS
                         </p>
                         <div class="info-order-detail">
                             <div class="action-buttons">
-                                <input type="button" value="accept order" class="green-button accept-order action-button">
                                 <input type="button" value="reject order" class="red-button reject-order action-button">
                             </div>
-                            <form action="" method="post">
+                            <form action="" method="post" id="order-accept-form">
                                 <input type="hidden" name="order_id" <?= "value={$order_id}" ?>>
+                                <input type="hidden" name="is_accepted">
                                 <div class="on-reject action-input">
                                     <label for="rejection-reason">Reason for rejection</label>
                                     <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
@@ -310,33 +313,27 @@
 </body>
 </html>
 <?php
-    if(isset($_POST['order_id']) && $_SERVER['REQUEST_METHOD'] === "POST") {
-        $is_accepted = false;
-        $price = 0;
-        $rejection_reason = "";
-        if(isset($_POST['price'])) {
-            $is_accepted = true; 
-            $price = $_POST['price'];
-        } else {
-            $rejection_reason = $_POST['rejection-reason'];
-        }
+    include_once("../notif.php");
+    if(isset($_POST['is_accepted']) && $_SERVER['REQUEST_METHOD'] === "POST") {
         $order_id = $_POST['order_id'];
+        $is_accepted = $_POST['is_accepted'] === 'true' ? true : false;
 
         if($is_accepted) {
+            $price = $_POST['price'];
             $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'accepted', order_status = 'pending_downpayment', quoted_price = :price WHERE order_id = :order_id");
             $stmt->bindParam(':price', $price);
             $stmt->bindParam(':order_id', $order_id);
             $stmt->execute();
+            createNotif($order['user_id'], "Your order has been accepted", "/my/user_order_details.php?order-id=" . $order['order_id']);
         } else {
+            $rejection_reason = $_POST['rejection-reason'];
             $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'rejected', refusal_reason = :reason WHERE order_id = :order_id");
             $stmt->bindParam(':reason', $rejection_reason);
             $stmt->bindParam(':order_id', $order_id);
             $stmt->execute();
+            createNotif($order['user_id'], "Your order has unfortunately been rejected. Click to see Reason", "/my/user_order_details.php?order-id={$order_id}");
         }
-        echo "
-            <script>
-                location.reload();
-            <script>
-        ";
+        // header("Location: ".$_SERVER['PHP_SELF']);
+        // exit();
     }
 ?>

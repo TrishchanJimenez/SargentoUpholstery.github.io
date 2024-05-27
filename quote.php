@@ -23,6 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/quote.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -87,43 +88,92 @@
 
                     <!-- Furniture Details Section -->
                     <div class="quote-form__section" id="details">
-                        <h2 class="quote-form__header">Furniture Details</h2>
-                        <p class="quote-form__description">Please provide information about the furniture.</p>
-
-                        <div class="quote-form__input-container">
-                            <label class="quote-form__label" for="furniture_type">Furniture Type *</label> 
-                            <input class="quote-form__input quote-form__input--text" type="text" id="furniture_type" name="furniture_type" placeholder="E.g. sofa, dining seats, bed" required>
-                        </div>
+                        <h2 class="quote-form__header">Request Details</h2>
+                        <p class="quote-form__description">Please provide information about your quotation request.</p>
 
                         <div class="quote-form__input-container">
                             <label class="quote-form__label" for="service_type">Service Type *</label> 
-                            <select class="quote-form__input quote-form__input--select" name="service_type" id="service_type" required>
+                            <select class="quote-form__input quote-form__input--select" name="service_type" id="service_type" required onchange="displayAppropriateInput(event)">
                                 <option value="repair">Repair</option>
                                 <option value="mto">Made-to-Order</option>
                             </select>
                         </div>
-
-                        <div class="quote-form__input-container">
-                            <label class="quote-form__label" for="description">Furniture Description *</label> 
-                            <textarea class="quote-form__input quote-form__input--textarea" id="description" name="description" placeholder="Please describe the furniture in detail." required></textarea>
-                        </div>
-
-                        <div class="quote-form__input-container quote-form__input-container--file">
-                            <label class="quote-form__label" for="ref_img">Reference Image</label> 
-                            <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="ref_img" accept="images/*">
-                        </div>
-
-                        <div class="quote-form__input-container">
-                            <label class="quote-form__label" for="quantity">Quantity *</label> 
-                            <input class="quote-form__input quote-form__input--number" type="number" id="quantity" name="quantity" value="1" min="1" max="50" required>
-                        </div>
-
-                        <div class="quote-form__input-container quote-form__input-container--checkbox">
-                            <input class="quote-form__input quote-form__input--checkbox" type="checkbox" id="enable_customization" name="enable_customization">
-                            <label class="quote-form__label" for="enable_customization">Add Customization</label>
-                        </div>
                     </div>
+                    <div class="quote-form__furniture-container">
+                        <!-- <div class="quote-form__section quote-form__furniture-item">
+                            <h2 class="quote-form__header">Furniture Detail<i class="fa fa-close remove-item" onclick="removeItem(this.closest(' .quote-form__furniture-item'))"></i></h2>
+                            <div class="quote-form_furniture-item_main-detail">
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="furniture_type">Furniture Type *</label> 
+                                    <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture_type[]" placeholder="E.g. sofa, dining seats, bed" required cols="25" disabled>
+                                </div>
 
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="quantity">Quantity *</label> 
+                                    <input class="quote-form__input quote-form__input--number required" type="number" id="quantity" name="quantity[]" value="1" min="1" max="50" required disabled>
+                                </div>
+        
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="description">Furniture Description *</label> 
+                                    <textarea class="quote-form__input quote-form__input--textarea required" id="description" name="description[]" placeholder="Please describe the furniture in detail." required disabled></textarea>
+                                </div>
+        
+                                <div class="quote-form__input-container quote-form__input-container--file">
+                                    <label class="quote-form__label" for="ref_img">Reference Image</label> 
+                                    <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="ref_img[]" accept="images/*">
+                                </div>
+                            </div>
+                            <div class="quote-form_furniture-item_sub-detail">
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="dimensions">Specify Dimensions (in meters)</label>
+                                    <input class="quote-form__input quote-form__input--text" type="text" id="dimensions" name="dimensions[]" placeholder="Length x Width x Height">
+                                </div>
+        
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="materials">Specify Materials</label>
+                                    <input class="quote-form__input quote-form__input--text" type="text" id="materials" name="materials[]" placeholder="E.g. wood, plastic, metal">
+                                </div>
+        
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="fabric">Specify Fabric</label>
+                                    <input class="quote-form__input quote-form__input--text" type="text" id="fabric" name="fabric[]" placeholder="E.g cotton, linen, leather">
+                                </div>
+        
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="color">Specify Color</label>
+                                    <input class="quote-form__input quote-form__input--text" type="text" id="color" name="color[]" placeholder="E.g black, blue, red">
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="quote-form__add-item" id="add-item" onclick="addItem()">ADD ANOTHER TYPE</div>
+                    </div>
+                    <div class="quote-form__furniture-repair-container">
+                        <div class="quote-form__section quote-form__furniture-item-repair">
+                            <h2 class="quote-form__header">Repair Detail<i class="fa fa-close remove-item" onclick="removeRepairItem(this.closest(' .quote-form__furniture-item-repair'))"></i></h2>
+                            <div class="quote-form_furniture-item_main-detail">
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="furniture_type">Furniture Type *</label> 
+                                    <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture_type[]" placeholder="E.g. sofa, dining seats, bed" required cols="25">
+                                </div>
+
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="quantity">Quantity *</label> 
+                                    <input class="quote-form__input quote-form__input--number required" type="number" id="quantity" name="quantity[]" value="1" min="1" max="50" required>
+                                </div>
+        
+                                <div class="quote-form__input-container">
+                                    <label class="quote-form__label" for="description">Furniture Description *</label> 
+                                    <textarea class="quote-form__input quote-form__input--textarea required" id="description" name="description[]" placeholder="Please describe the damage to the furniture in detail." required></textarea>
+                                </div>
+        
+                                <div class="quote-form__input-container quote-form__input-container--file">
+                                    <label class="quote-form__label" for="ref_img">Reference Image</label> 
+                                    <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="ref_img[]" accept="images/*">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quote-form__add-item" id="add-item-repair" onclick="addRepairItem()">ADD ANOTHER TYPE</div>
+                    </div>
                     <!-- Legal Agreements Section -->
                     <div class="quote-form__section" id="legal-agreements">
                         <h2 class="quote-form__header">Legal Agreements</h2>
@@ -142,32 +192,6 @@
                         <!-- Submit Button -->
                         <div class="quote-form__heading-actions">
                             <button class="quote-form__submit" type="submit">Submit Request</button>
-                        </div>
-                    </div>
-
-                    <!-- Customization Section -->
-                    <div class="quote-form__section" id="customization">
-                        <h2 class="quote-form__header">Furniture Customization</h2>
-                        <p class="quote-form__description">Customize the furniture. If you do not wish to customize a certain field, simply leave it blank.</p>
-
-                        <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
-                            <label class="quote-form__label quote-form__label--customization" for="dimensions">Specify Dimensions (in meters)</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="dimensions" name="dimensions" placeholder="Length x Width x Height">
-                        </div>
-
-                        <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
-                            <label class="quote-form__label quote-form__label--customization" for="materials">Specify Materials</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="materials" name="materials" placeholder="E.g. wood, plastic, metal">
-                        </div>
-
-                        <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
-                            <label class="quote-form__label quote-form__label--customization" for="fabric">Specify Fabric</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="fabric" name="fabric" placeholder="E.g cotton, linen, leather">
-                        </div>
-
-                        <div class="quote-form__input-container quote-form__input-container--checkbox quote-form__input-container--customization">
-                            <label class="quote-form__label quote-form__label--customization" for="color">Specify Color</label>
-                            <input class="quote-form__input quote-form__input--text quote-form__input--customization" type="text" id="color" name="color" placeholder="E.g black, blue, red">
                         </div>
                     </div>
                 </div>
@@ -201,134 +225,439 @@
         return $data;
     }
 
-    
+    function uploadReferenceImage() : string {
+        $target_dir = "uploadedImages/referenceImages/";
+        $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        // Check if file is a valid image
+        $check = getimagesize($_FILES["ref_img"]["tmp_name"]);
+        if($check === false) {
+            // Invalid image file
+            return '';
+        }
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            // File already exists
+            return '';
+        }
+
+        // Check file size
+        if ($_FILES["ref_img"]["size"] > 500000) {
+            // File size exceeds limit
+            return '';
+        }
+
+        // Allow only specific file formats
+        if($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
+            // Invalid file format
+            return '';
+        }
+
+        // Move uploaded file to target directory
+        if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
+            // File uploaded successfully
+            return $target_file;
+        } else {
+            // Error uploading file
+            return '';
+        }
+    }
+
+    function insertCustom($dimensions, $materials, $fabric, $color) : int {
+        global $conn;
+        $query = "
+            INSERT INTO
+                `quote_customs` (
+                    `dimensions`,
+                    `materials`,
+                    `fabric`,
+                    `color`
+                )
+            VALUES (
+                :dimensions,
+                :materials,
+                :fabric,
+                :color
+            )";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':dimensions', $dimensions);
+        $stmt->bindParam(':materials', $materials);
+        $stmt->bindParam(':fabric', $fabric);
+        $stmt->bindParam(':color', $color);
+        $stmt->execute();
+        return $conn->lastInsertId();
+    }
 
     // If form is completed
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Call the sanitizeInputs function on $_POST
         $_POST = sanitizeInputs($_POST);
         // Extract sanitized $_POST variables into separate variables
-        extract($_POST);
+        // var_dump($_POST);
+        
+        $furniture_types = $_POST['furniture_type'];
+        $quantities = $_POST['quantity'];
+        $descriptions = $_POST['description'];
+        $ref_imgs = $_FILES['ref_img'];
 
-        // ----- If customization is selected, insert into quotes_custom table ----- //
-        if ($_POST['enable_customization'] == 'on') {
-            try {
+        // IF MTO
+        if($_POST['service_type'] === 'mto') {
+            // IF SINGLE ORDER
+
+            if(count($furniture_types) === 1) {
+                $furniture_type = $furniture_types[0];
+                $quantity = $quantities[0];
+                $description = $descriptions[0];
+                $ref_img = $ref_imgs['name'][0] ?? '';
+
+                $dimensions = $_POST['dimensions'][0];
+                $materials = $_POST['materials'][0];
+                $fabric = $_POST['fabric'][0];
+                $color = $_POST['color'][0];
+                $custom_id = null;
+                if(!empty($dimensions) || !empty($materials) || !empty($fabric) || !empty($color)) {
+                    $custom_id = insertCustom($dimensions, $materials, $fabric, $color);
+                }
+
+                // if (isset($_FILES["ref_img"]) && $_FILES["ref_img"]["error"] == 0) {
+                //     $target_dir = "uploadedImages/referenceImages/";
+                //     $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
+                //     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+                //     // Check if $uploadOk is set to 0 by an error
+                //     if ($uploadOk) {
+                //         if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
+                //             $ref_img_path = $target_file;
+                //             echo "The file ". basename( $_FILES["ref_img"]["name"]). " has been uploaded.";
+                //         } else {
+                //             echo "Sorry, there was an error uploading your file.";
+                //             $uploadOk = 0;
+                //         }
+                //     }
+                // }
+
                 $query = "
                     INSERT INTO
-                        `quote_customs` (
-                            `dimensions`,
-                            `materials`,
-                            `fabric`,
-                            `color`
+                        `quotes` (
+                            `customer_id`,
+                            `furniture_type`,
+                            `service_type`,
+                            `description`,
+                            `ref_img_path`,
+                            `quantity`,
+                            `custom_id`
                         )
                     VALUES (
-                        :dimensions,
-                        :materials,
-                        :fabric,
-                        :color
+                        :customer_id,
+                        :furniture_type,
+                        :service_type,
+                        :description,
+                        :ref_img_path,
+                        :quantity,
+                        :custom_id
+                    )";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+                $stmt->bindParam(':furniture_type', $furniture_type);
+                $stmt->bindParam(':service_type', $_POST['service_type']);
+                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':ref_img_path', $ref_img);
+                $stmt->bindParam(':quantity', $quantity);
+                $stmt->bindParam(':custom_id', $custom_id);
+                $stmt->execute();
+            } else {
+                // IF MULTIPLE ORDERS
+                $dimensions = $_POST['dimensions'];
+                $materials = $_POST['materials'];
+                $fabric = $_POST['fabric'];
+                $colors = $_POST['color'];
+
+                $sql = "
+                    INSERT INTO
+                        quotes (
+                            customer_id,
+                            service_type,
+                            furniture_type
+                        )
+                    VALUES (
+                        :customer_id,
+                        :service_type,
+                        :furniture_type
                     )
                 ";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':dimensions', $dimensions);
-                $stmt->bindParam(':materials', $materials);
-                $stmt->bindParam(':fabric', $fabric);
-                $stmt->bindParam(':color', $color);
+
+                $stmt = $conn->prepare($sql);
+                $mult = "multiple";
+                $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+                $stmt->bindParam(':service_type', $_POST['service_type']);
+                $stmt->bindParam(':furniture_type', $mult);
                 $stmt->execute();
-        
-                $custom_id = $conn->lastInsertId();
-            } catch (PDOException $e) {
-                echo "<script>alert(" . $e->getMessage() . ")</script>";
-                sendAlert("warning", $e->getMessage());
-            }
-        }
+                $quote_id = $conn->lastInsertId();
 
-        // ----- Insert into quotes table and create notif ----- //
-        try {
-            $query = "
-                INSERT INTO
-                    `quotes` (
-                        `customer_id`,
-                        `furniture_type`,
-                        `service_type`,
-                        `description`,
-                        `ref_img_path`,
-                        `quantity`,
-                        `custom_id`
-                    )
-                VALUES (
-                    :customer_id,
-                    :furniture_type,
-                    :service_type,
-                    :description,
-                    :ref_img_path,
-                    :quantity,
-                    :custom_id
-                )
-            ";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':customer_id', $_SESSION['user_id']);
-            $stmt->bindParam(':furniture_type', $furniture_type);
-            $stmt->bindParam(':service_type', $service_type);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':ref_img_path', $ref_img_path);
-            $stmt->bindParam(':quantity', $quantity);
-            $stmt->bindParam(':custom_id', $custom_id);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            echo "<script>alert(" . $e->getMessage() . ")</script>";
-            sendAlert("warning", $e->getMessage());
-        }
+                for($i = 0; $i < count($furniture_types); $i++) {
+                    $furniture_type = $furniture_types[$i];
+                    $quantity = $quantities[$i];
+                    $description = $descriptions[$i];
+                    $ref_img = $ref_imgs['name'][$i];
 
-        // ----- Rename and save uploaded image ----- //
-        // Get the quote ID after insertion
-        $quote_id = $conn->lastInsertId();
+                    $dimensions = $_POST['dimensions'][$i];
+                    $materials = $_POST['materials'][$i];
+                    $fabric = $_POST['fabric'][$i];
+                    $color = $_POST['color'][$i];
+                    $custom_id = null;
 
-        // Get the customer's name
-        $customer_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
+                    if (!empty($dimensions[$i]) || !empty($materials[$i]) || !empty($fabric[$i]) || !empty($colors[$i])) {
+                        // Code to execute if any of the variables is not empty
+                        $dimension = !empty($dimensions[$i]) ? $dimensions[$i] : '';
+                        $material = !empty($materials[$i]) ? $materials[$i] : '';
+                        $fab = !empty($fabric[$i]) ? $fabric[$i] : '';
+                        $color = !empty($colors[$i]) ? $colors[$i] : '';
 
-        
+                        $custom_id = insertCustom($dimensions, $materials, $fabric, $color);
+                    }
 
-        // Check if a file was uploaded
-        $ref_img_path = null;
-        $uploadOk = 1;
-        if (isset($_FILES["ref_img"]) && $_FILES["ref_img"]["error"] == 0) {
-            $target_dir = "uploadedImages/referenceImages/";
-            $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
-            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-            // Check if the file already exists
-            if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
-                $uploadOk = 0;
-            }
-
-            // Check file size
-            if ($_FILES["ref_img"]["size"] > 5000000) { // Adjust this size limit as needed
-                echo "Sorry, your file is too large.";
-                $uploadOk = 0;
-            }
-
-            // Allow only certain file formats
-            $allowed_extensions = array("jpg", "jpeg", "png", "gif");
-            if (!in_array($imageFileType, $allowed_extensions)) {
-                echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed.";
-                $uploadOk = 0;
-            }
-
-            // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk) {
-                if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
-                    $ref_img_path = $target_file;
-                    echo "The file ". basename( $_FILES["ref_img"]["name"]). " has been uploaded.";
-                } else {
-                    echo "Sorry, there was an error uploading your file.";
-                    $uploadOk = 0;
+                    $query = "
+                        INSERT INTO
+                            `multis` (
+                                `quote_id`,
+                                `furniture_type`,
+                                `description`,
+                                `ref_img_path`,
+                                `quantity`,
+                                `custom_id`
+                                )
+                            VALUES (
+                                :quote_id,
+                                :furniture_type,
+                                :description,
+                                :ref_img_path,
+                                :quantity,
+                                :custom_id
+                            )";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bindParam(':quote_id', $quote_id);
+                    $stmt->bindParam(':furniture_type', $furniture_type);
+                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':ref_img_path', $ref_img);
+                    $stmt->bindParam(':quantity', $quantity);
+                    $stmt->bindParam(':custom_id', $custom_id);
+                    $stmt->execute();
                 }
             }
-        } else {
-            echo "File upload is required.";
-            $uploadOk = 0;
+        } else if($_POST['service_type'] === "repair") {
+            // IF SINGLE ORDER
+            if(count($furniture_types) === 1) {
+                $furniture_type = $furniture_types[0];
+                $quantity = $quantities[0];
+                $description = $descriptions[0];
+                $ref_img = $ref_imgs['name'][0];
+
+                $query = "
+                    INSERT INTO
+                        `quotes` (
+                            `customer_id`,
+                            `furniture_type`,
+                            `service_type`,
+                            `description`,
+                            `ref_img_path`,
+                            `quantity`
+                        )
+                    VALUES (
+                        :customer_id,
+                        :furniture_type,
+                        :service_type,
+                        :description,
+                        :ref_img_path,
+                        :quantity
+                    )";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+                $stmt->bindParam(':furniture_type', $furniture_type);
+                $stmt->bindParam(':service_type', $_POST['service_type']);
+                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':ref_img_path', $ref_img);
+                $stmt->bindParam(':quantity', $quantity);
+                $stmt->execute();
+            } else {
+                // IF MULTIPLE ORDERS
+                $sql = "
+                    INSERT INTO
+                        quotes (
+                            customer_id,
+                            service_type,
+                            furniture_type
+                        )
+                    VALUES (
+                        :customer_id,
+                        :service_type,
+                        :furniture_type
+                    )
+                ";
+
+                $stmt = $conn->prepare($sql);
+                $mult = "multiple";
+                $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+                $stmt->bindParam(':service_type', $_POST['service_type']);
+                $stmt->bindParam(':furniture_type', $mult);
+                $stmt->execute();
+                $quote_id = $conn->lastInsertId();
+
+                for($i = 0; $i < count($furniture_types); $i++) {
+                    $furniture_type = $furniture_types[$i];
+                    $quantity = $quantities[$i];
+                    $description = $descriptions[$i];
+                    $ref_img = $ref_imgs['name'][$i];
+
+                    $query = "
+                        INSERT INTO
+                            `multis` (
+                                `quote_id`,
+                                `furniture_type`,
+                                `description`,
+                                `ref_img_path`,
+                                `quantity`
+                                )
+                            VALUES (
+                                :quote_id,
+                                :furniture_type,
+                                :description,
+                                :ref_img_path,
+                                :quantity
+                            )";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bindParam(':quote_id', $quote_id);
+                    $stmt->bindParam(':furniture_type', $furniture_type);
+                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':ref_img_path', $ref_img);
+                    $stmt->bindParam(':quantity', $quantity);
+                    $stmt->execute();
+                }
+            }
         }
+
+        // extract($_POST);
+
+        // ----- If customization is selected, insert into quotes_custom table ----- //
+    //     if ($_POST['enable_customization'] == 'on') {
+    //         try {
+    //             $query = "
+    //                 INSERT INTO
+    //                     `quote_customs` (
+    //                         `dimensions`,
+    //                         `materials`,
+    //                         `fabric`,
+    //                         `color`
+    //                     )
+    //                 VALUES (
+    //                     :dimensions,
+    //                     :materials,
+    //                     :fabric,
+    //                     :color
+    //                 )
+    //             ";
+    //             $stmt = $conn->prepare($query);
+    //             $stmt->bindParam(':dimensions', $dimensions);
+    //             $stmt->bindParam(':materials', $materials);
+    //             $stmt->bindParam(':fabric', $fabric);
+    //             $stmt->bindParam(':color', $color);
+    //             $stmt->execute();
+        
+    //             $custom_id = $conn->lastInsertId();
+    //         } catch (PDOException $e) {
+    //             echo "<script>alert(" . $e->getMessage() . ")</script>";
+    //             sendAlert("warning", $e->getMessage());
+    //         }
+    //     }
+
+    //     // ----- Insert into quotes table and create notif ----- //
+    //     try {
+    //         $query = "
+    //             INSERT INTO
+    //                 `quotes` (
+    //                     `customer_id`,
+    //                     `furniture_type`,
+    //                     `service_type`,
+    //                     `description`,
+    //                     `ref_img_path`,
+    //                     `quantity`,
+    //                     `custom_id`
+    //                 )
+    //             VALUES (
+    //                 :customer_id,
+    //                 :furniture_type,
+    //                 :service_type,
+    //                 :description,
+    //                 :ref_img_path,
+    //                 :quantity,
+    //                 :custom_id
+    //             )
+    //         ";
+    //         $stmt = $conn->prepare($query);
+    //         $stmt->bindParam(':customer_id', $_SESSION['user_id']);
+    //         $stmt->bindParam(':furniture_type', $furniture_type);
+    //         $stmt->bindParam(':service_type', $service_type);
+    //         $stmt->bindParam(':description', $description);
+    //         $stmt->bindParam(':ref_img_path', $ref_img_path);
+    //         $stmt->bindParam(':quantity', $quantity);
+    //         $stmt->bindParam(':custom_id', $custom_id);
+    //         $stmt->execute();
+    //     } catch (PDOException $e) {
+    //         echo "<script>alert(" . $e->getMessage() . ")</script>";
+    //         sendAlert("warning", $e->getMessage());
+    //     }
+
+    //     // ----- Rename and save uploaded image ----- //
+    //     // Get the quote ID after insertion
+    //     $quote_id = $conn->lastInsertId();
+
+    //     // Get the customer's name
+    //     $customer_name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
+
+        
+
+    //     // Check if a file was uploaded
+    //     $ref_img_path = null;
+    //     $uploadOk = 1;
+    //     if (isset($_FILES["ref_img"]) && $_FILES["ref_img"]["error"] == 0) {
+    //         $target_dir = "uploadedImages/referenceImages/";
+    //         $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
+    //         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    //         // Check if the file already exists
+    //         if (file_exists($target_file)) {
+    //             echo "Sorry, file already exists.";
+    //             $uploadOk = 0;
+    //         }
+
+    //         // Check file size
+    //         if ($_FILES["ref_img"]["size"] > 5000000) { // Adjust this size limit as needed
+    //             echo "Sorry, your file is too large.";
+    //             $uploadOk = 0;
+    //         }
+
+    //         // Allow only certain file formats
+    //         $allowed_extensions = array("jpg", "jpeg", "png", "gif");
+    //         if (!in_array($imageFileType, $allowed_extensions)) {
+    //             echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed.";
+    //             $uploadOk = 0;
+    //         }
+
+    //         // Check if $uploadOk is set to 0 by an error
+    //         if ($uploadOk) {
+    //             if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
+    //                 $ref_img_path = $target_file;
+    //                 echo "The file ". basename( $_FILES["ref_img"]["name"]). " has been uploaded.";
+    //             } else {
+    //                 echo "Sorry, there was an error uploading your file.";
+    //                 $uploadOk = 0;
+    //             }
+    //         }
+    //     } else {
+    //         echo "File upload is required.";
+    //         $uploadOk = 0;
+    //     }
 
 
 
