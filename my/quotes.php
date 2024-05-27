@@ -57,16 +57,16 @@
     <?php require_once('../header.php'); ?>
     <div class="quotes">
         <div class="quote-details__wrapper">
-            <h1 class="quote-details__title">Details</h1>
             <div class="quote-details">
                 <table class="quote-details__table">
+                    <h1 class="quote-details__title">Quote Details</h1>
                     <tr>
                         <th class="quote-details__th">Furniture Type</th>
                         <th class="quote-details__th">Service Type</th>
                     </tr>
                     <tr>
-                        <td class="quote-details__td"> <?= htmlspecialchars($quote["furniture_type"])?> </td>
-                        <td class="quote-details__td"> <?= htmlspecialchars($quote["service_type"])?> </td>
+                        <td class="quote-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["furniture_type"] ?? 'N/A'))) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
                     </tr>
                     <tr>
                         <th class="quote-details__th">Quantity</th>
@@ -74,7 +74,7 @@
                     </tr>
                     <tr>
                         <td class="quote-details__td"> <?= htmlspecialchars($quote["quantity"])?> </td>
-                        <td class="quote-details__td"> <?= htmlspecialchars($quote["quote_status"])?> </td>
+                        <td class="quote-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["quote_status"])))?> </td>
                     </tr>
                     <tr>
                         <th class="quote-details__th">Description</th>
@@ -85,26 +85,49 @@
                         <td class="quote-details__td"> <img class="quote-details__ref-img" src="<?= htmlspecialchars($quote["ref_img_path"])?>"> </td>
                     </tr>
                 </table>
+                <table class="quote-details__table quote-details__table--customs">
+                    <div class="quote-details__title">
+                        <h1>Quote Customization</h1>
+                    </div>
+                    <tr>
+                        <th class="quote-details__th">Dimensions</th>
+                        <th class="quote-details__th">Materials</th>
+                    </tr>
+                    <tr>
+                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["dimensions"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["materials"] ?? 'None')) ?> </td>
+                    </tr>
+                    <tr>
+                        <th class="quote-details__th">Fabric</th>
+                        <th class="quote-details__th">Color</th>
+                    </tr>
+                    <tr>
+                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["fabric"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["color"] ?? 'None')) ?> </td>
+                    </tr>
+                </table>
             </div>
             <a href="orders_and_quotes.php" class="quote-details__back-button">Back to Orders and Quotes</a>
         </div>
         <div class="quote-actions__wrapper">
-            <h1 class="quote-actions__title">Actions</h1>
+            <div class="quote-actions__title">
+                <h1>Quote Actions</h1>
+            </div>
             <div class="quote-actions">
                 <?php
                     if ($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "accepted") {
                         echo '<button class="quote-actions__cancel">Cancel Order</button>';
-                    }
-                    if ($quote['quote_status'] == "approved") {
+                    } elseif ($quote['quote_status'] == "approved") {
                         echo '<button class="quote-actions__accept">Accept Order</button>';
+                    } else {
+                        echo 'No actions currently available.';
                     }
                 ?>
             </div>
         </div>
     </div>
-    <script>
+    <script src="/js/my/quotes.js">
         const quoteId = <?= json_encode($quote_id) ?>;
     </script>
-    <script src="/js/my/quotes.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/orders_and_quotes.css">
-    <script src="/js/user_orders.js"></script>
+    <script src="/js/my/orders_and_quotes.js"></script>
     <title>Sargento Upholstery</title>
 </head>
 
@@ -29,8 +29,8 @@
     <div class="onq">
         <h1 class="onq__title">My Orders and Quotes</h1>
         <div class="onq__tab-button-container">
-            <button class="onq__tab-button">All Orders</button>
-            <button class="onq__tab-button">All Quotes</button>
+            <button class="onq__tab-button onq__tab-button--quotes">All Quotes</button>
+            <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
         <div class="onq__tab onq__tab--quotes">
             <?php
@@ -43,11 +43,16 @@
             <table class="onq__table">
                 <thead>
                     <tr>
-                        <th class="onq__th--corner"></th>
-                        <th class="onq__th">Furniture Type</th>
-                        <th class="onq__th">Service Type</th>
-                        <th class="onq__th">Quantity</th>
-                        <th class="onq__th">Status</th>
+                        <th class="onq__th onq__th--quote onq__th--title" colspan="6">All Quotes</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th class="onq__th--corner">#</th>
+                        <th class="onq__th onq__th--quote">Furniture Type</th>
+                        <th class="onq__th onq__th--quote">Service Type</th>
+                        <th class="onq__th onq__th--quote">Quantity</th>
+                        <th class="onq__th onq__th--quote">Status</th>
                         <th class="onq__th--corner"></th>
                     </tr>
                 </thead>
@@ -60,10 +65,10 @@
                                 echo '
                                     <tr>
                                         <td class="onq__td--edge">' . $i . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["furniture_type"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["service_type"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["quantity"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["quote_status"]) . '</td>
+                                        <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
+                                        <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . '</td>
+                                        <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">
                                                 >
@@ -82,19 +87,18 @@
                 </tbody>
             </table>
         </div>
-        <!-- <div class="onq__tab onq__tab--orders">
+        <div class="onq__tab onq__tab--orders">
             <?php
                 $query = "
                     SELECT 
-                        o.*,
-                        q.quantity
+                        *
                     FROM 
                         `orders` o
                             INNER JOIN
                         `quotes` q
                             USING (quote_id)
                     WHERE 
-                        `user_id` = :user
+                        `user_id` = :user_id
                 ";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -104,29 +108,38 @@
             <table class="onq__table">
                 <thead>
                     <tr>
-                        <th class="onq__th--corner"></th>
-                        <th class="onq__th">Furniture Type</th>
-                        <th class="onq__th">Service Type</th>
-                        <th class="onq__th">Quantity</th>
-                        <th class="onq__th">Status</th>
+                        <th class="onq__th onq__th--order onq__th--title" colspan="8">All Orders</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th class="onq__th--corner">#</th>
+                        <th class="onq__th onq__th--order">Furniture Type</th>
+                        <th class="onq__th onq__th--order">Service Type</th>
+                        <th class="onq__th onq__th--order">Quantity</th>
+                        <th class="onq__th onq__th--order">Delivery Method</th>
+                        <th class="onq__th onq__th--order">Price</th>
+                        <th class="onq__th onq__th--order">Status</th>
                         <th class="onq__th--corner"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                        if($quotes) {
+                        if($orders) {
                             $i = 0;
-                            foreach ($quotes as $row) {
+                            foreach ($orders as $row) {
                                 $i++;
                                 echo '
                                     <tr>
                                         <td class="onq__td--edge">' . $i . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["furniture_type"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["service_type"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["quantity"]) . '</td>
-                                        <td class="onq__td">' . htmlspecialchars($row["quote_status"]) . '</td>
+                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
+                                        <td class="onq__td onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . '</td>
+                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["del_method"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quoted_price"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["order_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
-                                            <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">
+                                            <a href="orders.php?order_id=' . htmlspecialchars($row["order_id"]) . '">
                                                 >
                                             </a>
                                         </td>
@@ -136,13 +149,13 @@
                         }
                         echo '
                             <tr class="onq__tr">
-                                <td class="onq__td--end" colspan="6">End of records</td>
+                                <td class="onq__td--end" colspan="8">End of records</td>
                             </tr>
                         ';
                     ?>
                 </tbody>
             </table>
-        </div> -->
+        </div>
     </div>
 </body>
 </html>

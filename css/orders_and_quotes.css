@@ -1,10 +1,28 @@
 /* ---------- Orders and Quotes ---------- */
 
-.onq__tab-button-container {
+.onq {
     width: 100%;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.onq__tab-button-container {
+    width: 90%;
     height: auto;
     display: flex;
     justify-content: center;
+    margin: 5%;
+    margin-bottom: 0;
+}
+
+.onq__tab-button {
+    width: 50%;
+    height: auto;
+    padding: 2.5vmin;
+    font-size: larger;
+    cursor: pointer;
+    border: 1px solid #ccc;
 }
 
 .onq__tab {
@@ -18,6 +36,8 @@
     width: 95%;
     height: auto;
     border: 1px solid #ccc;
+    margin: 5%;
+    margin-top: 0;
 }
 
 .onq__th--corner {
@@ -27,15 +47,37 @@
 }
 
 .onq__th {
-    width: calc(85%/4);
     height: auto;
     border: 1px solid #bbb;
+    padding: 2.5vmin;
+    font-size: large;
+}
+
+.onq__th--quote {
+    width: calc(85%/4);
+}
+
+.onq__th--order {
+    width: calc(85%/6);
+    font-size: medium;
+}
+
+.onq__th--title {
+    padding: 2.5vmin;
+    font-size: xx-large;
 }
 
 .onq__td {
-    max-width: calc((77.5%/4)-5px);
     height: 15vh;
     text-align: center;
+}
+
+.onq__td--quote {
+    max-width: calc((77.5%/4)-5px);
+}
+
+.onq__td--order {
+    max-width: calc((77.5%/6)-5px);
 }
 
 .onq__td--edge {
@@ -51,29 +93,42 @@
     text-align: center;
 }
 
-/* ---------- Quote Details ---------- */
+/* ---------- Quotes ---------- */
 
 .quotes {
-    width: 100%;
+    width: 90%;
     height: auto;
     display: flex;
+    margin: 5%;
+    font-family: "Inter", sans-serif;
 }
     .quote-details__wrapper {
         width: 60%;
         height: auto;
+        padding: 2.5%;
     }
-        .quote-details__title {
+        .quote-details__title,
+        .quote-actions__title {
+            width: 100%;
+            height: auto;
             text-align: center;
+            margin-bottom: 0;
+            background-color: #ddd;
+            padding: 2.5vmin;
         }
         .quote-details {
             width: 100%;
             height: auto;
             display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .quote-details__table {
             width: 100%;
             height: auto;
             border: 1px solid #ccc;
+            margin: 5%;
+            margin-top: 0;
         }
             .quote-details__th {
                 width: 50%;
@@ -93,9 +148,11 @@
     .quote-actions__wrapper {
         width: 40%;
         height: auto;
+        padding: 2.5%;
     }
         .quote-actions__title {
             text-align: center;
+            margin-bottom: 5vmin;
         }
         .quote-actions {
             width: 100%;

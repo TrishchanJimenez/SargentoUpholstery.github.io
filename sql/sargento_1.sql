@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 27, 2024 at 01:34 AM
+-- Generation Time: May 27, 2024 at 05:42 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -253,13 +253,10 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 CREATE TABLE `orders` (
   `order_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `furniture_type` varchar(32) NOT NULL,
-  `order_type` enum('repair','mto') NOT NULL,
+  `quote_id` int NOT NULL,
   `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
-  `ref_img_path` tinytext,
   `del_method` enum('third_party','self') NOT NULL,
   `del_address_id` int NOT NULL,
-  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quoted_price` float DEFAULT NULL,
   `is_accepted` enum('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
   `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
@@ -271,57 +268,57 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `furniture_type`, `order_type`, `order_status`, `ref_img_path`, `del_method`, `del_address_id`, `notes`, `quoted_price`, `is_accepted`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES
-(1, 1, 'Table', 'repair', 'pending_downpayment', NULL, 'third_party', 1, 'Needs repair for broken leg', 1230, 'accepted', 1, NULL, '2024-05-24 00:09:28'),
-(2, 2, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat needs reupholstering', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(3, 3, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Door hinge needs fixing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(4, 4, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Cracked wood needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(5, 5, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Frame needs strengthening', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(6, 6, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is stuck', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(7, 7, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Legs are wobbly', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(8, 8, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Backrest needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(9, 9, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Drawer is off track', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(10, 10, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Shelves are sagging', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(11, 11, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Headboard needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(12, 12, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Surface has scratches', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(13, 13, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Needs refinishing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(14, 14, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Legs are uneven', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(15, 15, 'Cabinet', 'repair', 'new_order', NULL, 'third_party', 1, 'Handle needs replacing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(16, 16, 'Shelf', 'repair', 'new_order', NULL, 'self', 1, 'Bracket is loose', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(17, 17, 'Bed', 'repair', 'new_order', NULL, 'third_party', 1, 'Side rail needs repair', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(18, 18, 'Desk', 'repair', 'new_order', NULL, 'self', 1, 'Drawer is missing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(19, 19, 'Table', 'repair', 'new_order', NULL, 'third_party', 1, 'Top needs refinishing', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(20, 20, 'Chair', 'repair', 'new_order', NULL, 'self', 1, 'Seat is cracked', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(21, 1, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(22, 2, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair color: blue', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(23, 3, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Extra shelf required', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(24, 4, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(25, 5, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(26, 6, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(27, 7, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: hardwood', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(28, 8, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: leather', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(29, 9, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet size', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(30, 10, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf color: white', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(31, 11, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed storage: drawers', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(32, 12, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk material: glass top', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(33, 13, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table design: round', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(34, 14, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair height: bar stool', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(35, 15, 'Cabinet', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom cabinet color: black', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(36, 16, 'Shelf', 'mto', 'new_order', NULL, 'self', 1, 'Custom shelf size: 3 shelves', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(37, 17, 'Bed', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom bed headboard design', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(38, 18, 'Desk', 'mto', 'new_order', NULL, 'self', 1, 'Custom desk size: 5ft x 2.5ft', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(39, 19, 'Table', 'mto', 'new_order', NULL, 'third_party', 1, 'Custom table material: marble top', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(40, 20, 'Chair', 'mto', 'new_order', NULL, 'self', 1, 'Custom chair upholstery: fabric', NULL, 'pending', 0, NULL, '2024-05-23 12:25:26'),
-(41, 22, 'sofa', 'repair', 'received', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', 0, NULL, '2024-05-24 00:02:08'),
-(42, 22, 'sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'back right leg is broken, right armrest banister is broken', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(43, 22, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/images.jpg', 'third_party', 1, 'wasak na siya pre', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(44, 22, 'table', 'repair', 'new_order', 'uploadedImages/referenceImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'minor scratch', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(45, 22, 'Broken table ', 'repair', 'new_order', 'uploadedImages/referenceImages/abandoned-broken-furniture-outside-a-storeroom-EFAN2A.jpg', 'third_party', 1, 'Legs are broken', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(46, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 12, 'fasfasfasdf', NULL, 'pending', 0, NULL, '2024-05-23 14:09:08'),
-(47, 21, 'Sofa', 'repair', 'new_order', NULL, 'third_party', 13, 'fasfasfasdf', NULL, 'pending', 0, NULL, '2024-05-23 14:18:40'),
-(48, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(49, 21, 'Sofa', 'repair', 'new_order', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 10, 'sakfjahsfkda', NULL, 'pending', 0, NULL, '2024-05-23 16:14:53'),
-(50, 24, 'Bed', 'repair', 'received', 'uploadedImages/referenceImages/testimg1.jpg', 'third_party', 14, 'fkjafhawjkefawef', NULL, 'pending', 0, NULL, '2024-05-23 22:23:26');
+INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `quoted_price`, `is_accepted`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES
+(1, 1, 1, 'pending_downpayment', 'third_party', 1, 1230, 'accepted', 1, NULL, '2024-05-27 01:54:03'),
+(2, 2, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(3, 3, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(4, 4, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(5, 5, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(6, 6, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(7, 7, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(8, 8, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(9, 9, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(10, 10, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(11, 11, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(12, 12, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(13, 13, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(14, 14, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(15, 15, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(16, 16, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(17, 17, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(18, 18, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(19, 19, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(20, 20, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(21, 1, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(22, 2, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(23, 3, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(24, 4, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(25, 5, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(26, 6, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(27, 7, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(28, 8, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(29, 9, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(30, 10, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(31, 11, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(32, 12, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(33, 13, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(34, 14, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(35, 15, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(36, 16, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(37, 17, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(38, 18, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(39, 19, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(40, 20, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(41, 22, 1, 'received', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(42, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(43, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(44, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(45, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(46, 21, 1, 'new_order', 'third_party', 12, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(47, 21, 1, 'new_order', 'third_party', 13, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(48, 21, 1, 'new_order', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(49, 21, 1, 'new_order', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(50, 24, 1, 'received', 'third_party', 14, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03');
 
 --
 -- Triggers `orders`
@@ -367,7 +364,7 @@ CREATE TABLE `order_date` (
 --
 
 INSERT INTO `order_date` (`order_id`, `placement_date`, `est_completion_date`) VALUES
-(1, '2024-05-14', '2024-06-07'),
+(1, '2024-05-14', '2024-06-10'),
 (2, '2024-05-14', '0000-00-00'),
 (3, '2024-05-14', '0000-00-00'),
 (4, '2024-05-14', '0000-00-00'),
@@ -836,7 +833,8 @@ ALTER TABLE `notifs`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `user_id_fk` (`user_id`);
+  ADD KEY `user_id_fk` (`user_id`),
+  ADD KEY `order_quote_id_fk` (`quote_id`);
 
 --
 -- Indexes for table `order_date`
@@ -986,7 +984,8 @@ ALTER TABLE `notifs`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `order_address_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_address_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_quote_id_fk` FOREIGN KEY (`quote_id`) REFERENCES `quotes` (`quote_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Constraints for table `order_date`
