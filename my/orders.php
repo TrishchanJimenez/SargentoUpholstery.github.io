@@ -81,19 +81,29 @@
                         <td class="order-details__td"> <?= html_entity_decode($order["quantity"])?> </td>
                         <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["order_status"])))?> </td>
                     </tr>
+                    <?php if($order["service_type"] == "repair"): ?>
                     <tr>
-                        <th class="order-details__th">Quoted Price</th>
+                        <th class="order-details__th">Pickup Method</th>
+                        <th class="order-details__th">Pickup Address</th>
+                    </tr>
+                    <tr>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["pickup_method"] ?? 'N/A'))) ?> </td>
+                        <td class="order-details__td"> <?= ucwords(html_entity_decode($order["pickup_address"] ?? 'N/A')) ?> </td>
+                    </tr>
+                    <?php endif ?>
+                    <tr>
                         <th class="order-details__th">Delivery Method</th>
+                        <th class="order-details__th">Delivery Address</th>
                     </tr>
                     <tr>
-                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["quoted_price"] ?? 'N/A'))) ?> </td>
                         <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["del_method"] ?? 'N/A'))) ?> </td>
+                        <td class="order-details__td"> <?= ucwords(html_entity_decode($order["del_address"] ?? 'N/A')) ?> </td>
                     </tr>
                     <tr>
-                        <th class="order-details__th" colspan="2">Delivery Address</th>
+                        <th class="order-details__th" colspan="2">Quoted Price</th>
                     </tr>
                     <tr>
-                        <td class="order-details__td" colspan="2"> <?= ucwords(html_entity_decode($order["address"] ?? 'N/A')) ?> </td>
+                        <td class="order-details__td" colspan="2"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["quoted_price"] ?? 'N/A'))) ?> </td>
                     </tr>
                     <tr>
                         <th class="order-details__th">Description</th>

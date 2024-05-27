@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 27, 2024 at 05:42 AM
+-- Generation Time: May 27, 2024 at 09:35 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -242,7 +242,8 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (24, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 13:49:20', 1, '/my/user_orders.php'),
 (25, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 14:25:09', 0, '/my/user_orders.php'),
 (26, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:39:06', 0, '/my/user_orders.php'),
-(27, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:40:43', 0, '/my/user_orders.php');
+(27, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:40:43', 0, '/my/user_orders.php'),
+(28, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-27 09:32:09', 0, '/my/user_orders.php');
 
 -- --------------------------------------------------------
 
@@ -254,7 +255,7 @@ CREATE TABLE `orders` (
   `order_id` int NOT NULL,
   `user_id` int NOT NULL,
   `quote_id` int NOT NULL,
-  `order_status` enum('new_order','pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'new_order',
+  `order_status` enum('pending_downpayment','ready_for_pickup','in_production','pending_fullpayment','out_for_delivery','received') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pending_downpayment',
   `del_method` enum('third_party','self') NOT NULL,
   `del_address_id` int NOT NULL,
   `quoted_price` float DEFAULT NULL,
@@ -270,54 +271,54 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`order_id`, `user_id`, `quote_id`, `order_status`, `del_method`, `del_address_id`, `quoted_price`, `is_accepted`, `is_cancelled`, `refusal_reason`, `last_updated`) VALUES
 (1, 1, 1, 'pending_downpayment', 'third_party', 1, 1230, 'accepted', 1, NULL, '2024-05-27 01:54:03'),
-(2, 2, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(3, 3, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(4, 4, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(5, 5, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(6, 6, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(7, 7, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(8, 8, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(9, 9, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(10, 10, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(11, 11, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(12, 12, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(13, 13, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(14, 14, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(15, 15, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(16, 16, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(17, 17, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(18, 18, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(19, 19, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(20, 20, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(21, 1, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(22, 2, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(23, 3, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(24, 4, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(25, 5, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(26, 6, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(27, 7, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(28, 8, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(29, 9, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(30, 10, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(31, 11, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(32, 12, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(33, 13, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(34, 14, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(35, 15, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(36, 16, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(37, 17, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(38, 18, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(39, 19, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(40, 20, 1, 'new_order', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(2, 2, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(3, 3, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(4, 4, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(5, 5, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(6, 6, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(7, 7, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(8, 8, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(9, 9, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(10, 10, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(11, 11, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(12, 12, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(13, 13, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(14, 14, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(15, 15, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(16, 16, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(17, 17, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(18, 18, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(19, 19, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(20, 20, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(21, 1, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(22, 2, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(23, 3, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(24, 4, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(25, 5, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(26, 6, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(27, 7, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(28, 8, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(29, 9, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(30, 10, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(31, 11, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(32, 12, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(33, 13, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(34, 14, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(35, 15, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(36, 16, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(37, 17, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(38, 18, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(39, 19, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(40, 20, 1, 'pending_downpayment', 'self', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
 (41, 22, 1, 'received', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(42, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(43, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(44, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(45, 22, 1, 'new_order', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(46, 21, 1, 'new_order', 'third_party', 12, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(47, 21, 1, 'new_order', 'third_party', 13, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(48, 21, 1, 'new_order', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
-(49, 21, 1, 'new_order', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03'),
+(42, 22, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(43, 22, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(44, 22, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(45, 22, 1, 'pending_downpayment', 'third_party', 1, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(46, 21, 1, 'pending_downpayment', 'third_party', 12, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(47, 21, 1, 'pending_downpayment', 'third_party', 13, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(48, 21, 1, 'pending_downpayment', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
+(49, 21, 1, 'pending_downpayment', 'third_party', 10, NULL, 'pending', 0, NULL, '2024-05-27 09:30:20'),
 (50, 24, 1, 'received', 'third_party', 14, NULL, 'pending', 0, NULL, '2024-05-27 01:54:03');
 
 --
@@ -559,7 +560,8 @@ CREATE TABLE `quotes` (
 INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quote_status`, `created_at`, `updated_at`) VALUES
 (1, 22, 'Bookshelf', 'mto', 'My wife and I want to have a bookshelf made for our daughter.', '/uploadedImages/referenceImages/61F8CTCqVVL._AC_SL1001_.jpg', 1, 6, 'cancelled', '2024-05-26 14:25:09', '2024-05-27 01:09:27'),
 (2, 22, 'Bed', 'repair', 'Little John broke our bed.', NULL, 1, 7, 'pending', '2024-05-26 23:39:06', '2024-05-26 23:39:06'),
-(3, 22, 'Sofa', 'repair', 'Minor issues', NULL, 1, 8, 'pending', '2024-05-26 23:40:43', '2024-05-26 23:40:43');
+(3, 22, 'Sofa', 'repair', 'Minor issues', NULL, 1, 8, 'pending', '2024-05-26 23:40:43', '2024-05-26 23:40:43'),
+(4, 22, 'ottoman', 'repair', 'broken seat', NULL, 1, 9, 'pending', '2024-05-27 09:32:09', '2024-05-27 09:32:09');
 
 -- --------------------------------------------------------
 
@@ -587,7 +589,8 @@ INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `
 (5, 'test', 'test', 'test', 'test'),
 (6, '0.5m x 2.5m x 1.5m', 'galvanized square steel beams, eco-friendly wood veneers', '', 'sky blue'),
 (7, '', 'galvanized square steel beams, eco-friendly wood veneer', 'linen from auntie&#039;s house', 'light brown'),
-(8, '', '', 'leather', 'orange');
+(8, '', '', 'leather', 'orange'),
+(9, '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -920,7 +923,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `notifs`
 --
 ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -932,13 +935,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
-  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `quote_customs`
 --
 ALTER TABLE `quote_customs`
-  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `reviews`
