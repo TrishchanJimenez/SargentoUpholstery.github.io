@@ -92,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeReviewModal();
                 window.location.href = '/testimonials.php';
             } else {
-                alert('An error occurred while submitting the review.');
+                alert('An error occurred while submitting the review. 1');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while submitting the review.');
+            alert('An error occurred while submitting the review. 2');
         });
     });
 
