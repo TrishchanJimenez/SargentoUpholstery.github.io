@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 26, 2024 at 10:31 AM
+-- Generation Time: May 27, 2024 at 01:34 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -146,13 +146,13 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('HOMETESTIMONIALCOMMENT2', 'home', NULL, 'Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!', NULL),
 ('HOMETESTIMONIALTITLE', 'home', NULL, 'Our Clients\' Testimonials', NULL),
 ('MAILADD', 'contact_us', NULL, 'sargentoupholstery@gmail.com', NULL),
-('QUOTE_INTRO_DESC', 'order', 'INTRO_DESC', ' ', NULL),
-('QUOTE_INTRO_IMG', 'order', 'INTRO_IMG', NULL, '/websiteimages/banner-images/order.png'),
-('QUOTE_INTRO_TITLE', 'order', 'INTRO_TITLE', 'Design, Craft, Quote - All in One Place', ''),
-('QUOTE_OUTRO_CTALINK', 'order', 'OUTRO_CTALINK', '/testimonials.php', NULL),
-('QUOTE_OUTRO_CTATEXT', 'order', 'OUTRO_CTATEXT', 'See Reviews', NULL),
-('QUOTE_OUTRO_IMG', 'order', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/testimonials.png'),
-('QUOTE_OUTRO_TITLE', 'order', 'OUTRO_TITLE', 'See What Our Clients Say', NULL),
+('QUOTE_INTRO_DESC', 'quote', 'INTRO_DESC', ' ', NULL),
+('QUOTE_INTRO_IMG', 'quote', 'INTRO_IMG', NULL, '/websiteimages/banner-images/order.png'),
+('QUOTE_INTRO_TITLE', 'quote', 'INTRO_TITLE', 'Design, Craft, Quote - All in One Place', ''),
+('QUOTE_OUTRO_CTALINK', 'quote', 'OUTRO_CTALINK', '/testimonials.php', NULL),
+('QUOTE_OUTRO_CTATEXT', 'quote', 'OUTRO_CTATEXT', 'See Reviews', NULL),
+('QUOTE_OUTRO_IMG', 'quote', 'OUTRO_IMG', NULL, '/websiteimages/banner-images/testimonials.png'),
+('QUOTE_OUTRO_TITLE', 'quote', 'OUTRO_TITLE', 'See What Our Clients Say', NULL),
 ('TESTIMONIALS_INTRO_DESC', 'testimonials', 'INTRO_DESC', 'At Sargento Upholstery, our commitment to excellence is evident in every step of our meticulous craftsmanship. We take pride in the fact that each and every one of our products is a masterpiece of quality, designed to provide both aesthetics and durability that can withstand the test of time.', NULL),
 ('TESTIMONIALS_INTRO_IMG', 'testimonials', 'INTRO_IMG', NULL, '/websiteimages/banner-images/testimonials.png'),
 ('TESTIMONIALS_INTRO_TITLE', 'testimonials', 'INTRO_TITLE', 'Real Reviews, Real Satisfaction', NULL),
@@ -239,7 +239,10 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (21, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:18:37', 0, '/my/user_orders.php'),
 (22, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:21:57', 0, '/my/user_orders.php'),
 (23, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:22:36', 0, '/my/user_orders.php'),
-(24, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:22:41', 0, '/my/user_orders.php');
+(24, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 13:49:20', 1, '/my/user_orders.php'),
+(25, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 14:25:09', 0, '/my/user_orders.php'),
+(26, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:39:06', 0, '/my/user_orders.php'),
+(27, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:40:43', 0, '/my/user_orders.php');
 
 -- --------------------------------------------------------
 
@@ -547,10 +550,19 @@ CREATE TABLE `quotes` (
   `ref_img_path` text,
   `quantity` int DEFAULT NULL,
   `custom_id` int DEFAULT NULL,
-  `status_id` enum('pending','approved','rejected','cancelled','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'pending',
+  `quote_status` enum('pending','approved','accepted','rejected','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `quotes`
+--
+
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `furniture_type`, `service_type`, `description`, `ref_img_path`, `quantity`, `custom_id`, `quote_status`, `created_at`, `updated_at`) VALUES
+(1, 22, 'Bookshelf', 'mto', 'My wife and I want to have a bookshelf made for our daughter.', '/uploadedImages/referenceImages/61F8CTCqVVL._AC_SL1001_.jpg', 1, 6, 'cancelled', '2024-05-26 14:25:09', '2024-05-27 01:09:27'),
+(2, 22, 'Bed', 'repair', 'Little John broke our bed.', NULL, 1, 7, 'pending', '2024-05-26 23:39:06', '2024-05-26 23:39:06'),
+(3, 22, 'Sofa', 'repair', 'Minor issues', NULL, 1, 8, 'pending', '2024-05-26 23:40:43', '2024-05-26 23:40:43');
 
 -- --------------------------------------------------------
 
@@ -575,7 +587,10 @@ INSERT INTO `quote_customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `
 (2, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
 (3, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
 (4, 'test', 'test', 'test', 'test'),
-(5, 'test', 'test', 'test', 'test');
+(5, 'test', 'test', 'test', 'test'),
+(6, '0.5m x 2.5m x 1.5m', 'galvanized square steel beams, eco-friendly wood veneers', '', 'sky blue'),
+(7, '', 'galvanized square steel beams, eco-friendly wood veneer', 'linen from auntie&#039;s house', 'light brown'),
+(8, '', '', 'leather', 'orange');
 
 -- --------------------------------------------------------
 
@@ -846,7 +861,6 @@ ALTER TABLE `pickup`
 --
 ALTER TABLE `quotes`
   ADD PRIMARY KEY (`quote_id`),
-  ADD KEY `quotation_status_id_fk` (`status_id`),
   ADD KEY `quote_customer_id_fk` (`customer_id`),
   ADD KEY `quote_custom_id_fk` (`custom_id`);
 
@@ -908,7 +922,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `notifs`
 --
 ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -920,13 +934,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
-  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `quote_customs`
 --
 ALTER TABLE `quote_customs`
-  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reviews`
