@@ -1,12 +1,17 @@
 <?php
 require_once '../database_connection.php'; // Include database connection script
 
-$sqlD = "SELECT furniture_type, COUNT(*) AS order_count
-        FROM orders O
-        JOIN order_date USING(order_id)
-        WHERE placement_date = CURDATE() AND order_status = 'received'
-        GROUP BY furniture_type
-        ORDER BY furniture_type";
+$sqlD = "
+    SELECT 
+        furniture_type, 
+        COUNT(*) AS order_count
+    FROM orders O
+    JOIN order_date USING(order_id)
+    WHERE 
+        order_status NOT IN ('received', 'new_order')
+        AND is_cancelled = 0
+    GROUP BY furniture_type
+    ORDER BY furniture_type";
 
 $stmtD = $conn->prepare($sqlD);
 $stmtD->execute();

@@ -1,584 +1,298 @@
 <?php
-    require '../database_connection.php';
-    session_start();
-    if(!(!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== "admin")) {
-        header("Location: ../index.php");
-        exit();
-    }
+require_once '../database_connection.php';
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['access_type'] !== 'admin') {
+    header('Location: ../login.php');
+    exit();
+}
 
-    require '../database_connection.php';
-    
-    // SQL query to get the average rating
-    $sqlavg = "SELECT ROUND(AVG(rating),1) AS average_rating FROM reviews";
-    $stmt = $conn->prepare($sqlavg);
-    $stmt->execute(); 
+$sql = "
+    SELECT
+        (SELECT
+            SUM(quoted_price)
+        FROM
+            orders
+        JOIN
+            order_date USING(order_id)
+        JOIN
+            quotes USING(quote_id)    
+        WHERE
+            order_status <> 'received'
+            AND is_cancelled = 0
+            AND WEEK(placement_date) = WEEK(CURDATE()) 
+            AND YEAR(placement_date) = YEAR(CURDATE())) AS total_revenue_current_week,
+        (SELECT
+            SUM(quoted_price)
+        FROM
+            orders
+        JOIN
+            order_date USING(order_id)
+        JOIN
+            quotes USING(quote_id)    
+        WHERE
+            order_status <> 'received'
+            AND is_cancelled = 0
+            AND YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS total_revenue_last_week,
+        (SELECT 
+            COUNT(*) 
+        FROM 
+            orders
+        JOIN 
+            order_date USING(order_id)
+        WHERE 
+            WEEK(placement_date) = WEEK(CURDATE()) 
+            AND YEAR(placement_date) = YEAR(CURDATE())) AS new_orders_current_week,
+        (SELECT 
+            COUNT(*) 
+        FROM 
+            orders 
+        JOIN 
+            order_date USING(order_id)
+        WHERE 
+            YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS new_orders_last_week,
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        WHERE 
+            is_cancelled = 1
+            AND WEEK(last_updated) = WEEK(CURDATE()) 
+            AND YEAR(last_updated) = YEAR(CURDATE())) AS cancelled_orders_current_week,
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        WHERE 
+            is_cancelled = 1
+            AND YEARWEEK(last_updated, 1) = YEARWEEK(CURDATE(), 1) - 1) AS cancelled_orders_last_week,
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        JOIN (
+            SELECT U.user_id,
+            MIN(placement_date) AS first_order
+            FROM orders O
+            JOIN order_date OD USING(order_id)
+            JOIN users U ON O.user_id = U.user_id
+            WHERE user_type = 'customer'
+            GROUP BY U.user_id
+        ) AS first_orders ON orders.user_id = first_orders.user_id
+        WHERE 
+            WEEK(first_order) = WEEK(CURDATE()) 
+            AND YEAR(first_order) = YEAR(CURDATE())) AS new_customers_current_week,
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        JOIN (
+            SELECT U.user_id,
+            MIN(placement_date) AS first_order
+            FROM orders O
+            JOIN order_date OD USING(order_id)
+            JOIN users U ON O.user_id = U.user_id
+            WHERE user_type = 'customer'
+            GROUP BY U.user_id
+        ) AS first_orders ON orders.user_id = first_orders.user_id
+        WHERE 
+            YEARWEEK(first_order, 1) = YEARWEEK(CURDATE(), 1) - 1) AS new_customers_last_week,
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        WHERE
+            order_status = 'received'
+            AND WEEK(last_updated) = WEEK(CURDATE())) AS completed_orders_current_week, 
+        (SELECT
+            COUNT(*)
+        FROM
+            orders
+        WHERE
+            order_status = 'received'
+            AND YEARWEEK(last_updated, 1) = YEARWEEK(CURDATE(), 1) - 1) AS completed_orders_last_week 
+";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch the result
-    $rowavg = $stmt->fetch(PDO::FETCH_ASSOC);
-    $average_rating = $rowavg['average_rating'];
+$total_revenue_current_week = $stats['total_revenue_current_week'];
+if($stats['total_revenue_last_week'] == 0) {
+    $total_revenue_stat_change = 100;
+} else {
+    $total_revenue_stat_change = round(($total_revenue_current_week - $stats['total_revenue_last_week']) / $stats['total_revenue_last_week'] * 100, 2);
+}
 
+$new_orders_current_week = $stats['new_orders_current_week'];
+if($stats['new_orders_last_week'] == 0) {
+    $new_order_stat_change = 100;
+} else {
+    $new_order_stat_change = round(($new_orders_current_week - $stats['new_orders_last_week']) / $stats['new_orders_last_week'] * 100, 2);
+}
 
-    $sqlRepair = "
-    SELECT ROUND(AVG(r.rating), 1) AS average_rating1
-    FROM orders o
-    INNER JOIN reviews r USING(order_id)
-    WHERE o.order_type = 'repair'
+$cancelled_orders_current_week = $stats['cancelled_orders_current_week'];
+if($stats['cancelled_orders_last_week'] == 0) {
+    $cancelled_orders_stat_change = 100;
+} else {
+    $cancelled_orders_stat_change = round(($cancelled_orders_current_week - $stats['cancelled_orders_last_week']) / $stats['cancelled_orders_last_week'] * 100, 2);
+}
+
+$new_customers_current_week = $stats['new_customers_current_week'];
+if($stats['new_customers_last_week'] == 0) {
+    $new_customers_stat_change = 100;
+} else {
+    $new_customers_stat_change = round(($new_customers_current_week - $stats['new_customers_last_week']) / $stats['new_customers_last_week'] * 100, 2);
+}
+
+$completed_orders_current_week = $stats['completed_orders_current_week'];
+if($stats['completed_orders_last_week'] == 0) {
+    $completed_orders_stat_change = 100;
+} else {
+    $completed_orders_stat_change = round(($completed_orders_current_week - $stats['completed_orders_last_week']) / $stats['completed_orders_last_week'] * 100, 2);
+}
+
+$avg_rating_sql = "
+    SELECT AVG(rating) AS average_rating FROM reviews
 ";
 
-    $stmtRepair = $conn->prepare($sqlRepair);
-    $stmtRepair->execute();
-    $rowRepair = $stmtRepair->fetch(PDO::FETCH_ASSOC);
-    $average_rating_repair = $rowRepair['average_rating1'];
+$stmt = $conn->prepare($avg_rating_sql);
+$stmt->execute();
+$avg_rating = round($stmt->fetch(PDO::FETCH_ASSOC)['average_rating'], 2);
 
-    // SQL query to get the average rating for 'customized' orders
-    $sqlCustomized = "
-        SELECT ROUND(AVG(r.rating), 1) AS average_rating2
-        FROM orders o
-        INNER JOIN reviews r ON o.order_id = r.order_id
-        WHERE o.order_type = 'mto'
-    ";
-    $stmtCustomized = $conn->prepare($sqlCustomized);
-    $stmtCustomized->execute();
-    $rowCustomized = $stmtCustomized->fetch(PDO::FETCH_ASSOC);
-    $average_rating_customized = $rowCustomized['average_rating2'];
+$review_count = "
+    SELECT
+        COUNT(*) AS review_count
+    FROM
+        reviews";
+$stmt = $conn->prepare($review_count);
+$stmt->execute();
+$review_count = $stmt->fetch(PDO::FETCH_ASSOC)['review_count'];
 
+$ratings_by_type = "
+    SELECT
+        service_type AS order_type,
+        AVG(rating) AS average_rating
+    FROM
+        reviews
+    JOIN orders USING (order_id)
+    JOIN quotes USING (quote_id)
+    GROUP BY order_type
+";
 
-    if (isset($_SESSION['user_id'])) {
-    // Include database connection file
-    include_once("../database_connection.php");
-    include_once("../notif.php");
-
-    // Fetch all records from notifs table where user_id matches session user_id
-    $user_id = $_SESSION['user_id'];
-    $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $notif_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Check if there are unread notifications
-    $unread_notifs = false;
-    foreach ($notif_list as $notif) {
-        if ($notif['is_read'] == 0) {
-            $unread_notifs = true;
-            break;
-        }
-    }
-}
+$stmt = $conn->prepare($ratings_by_type);
+$stmt->execute();
+$ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/admin/orders.css">
+    <link rel="stylesheet" href="../css/dashboard_test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
-    <div class="wrapper">
-        <!-- Sidebar -->
+    <div class="dashboard">
         <?php require 'sidebar.php' ?>
-        <div class="stat_container">
-            <!-- Tab Selector -->
-
-        
-            <div class="tab_container">
-                <select id="tabSelect" class="dropdown">
-                    <option value="Daily">Daily Statistics</option>
-                    <option value="Weekly">Weekly Statistics</option>
-                    <option value="Monthly">Monthly Statistics</option>
-                </select>
-                <p id="datetime"></p>
+        <div class="dashboard-content">
+            <p class="main-title">Dashboard</p>
+            <hr class="divider">
+            <div class="top-charts">
+                <div class="orders-summary stat-container">
+                    <p class="orders-title">Business Statistics</p>
+                    <p class="summary-title">Orders Summary</p>
+                    <div class="stat-categories">
+                        <div class="stat-category category-volume">
+                            <p class="category-title">Order Volume</p>
+                            <p class="category-value">₱<?= $total_revenue_current_week ?></p> 
+                            <p class="rise-value"><span class="<?= $total_revenue_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $total_revenue_stat_change ?>%</span> from last week</p> 
+                        </div>
+                        <div class="stat-category category-new">
+                            <p class="category-title">New Orders</p>
+                            <p class="category-value"><?= $new_orders_current_week ?></p> 
+                            <p class="rise-value"><span class="<?= $new_order_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $new_order_stat_change ?>%</span> from last week</p> 
+                        </div>
+                        <div class="stat-category category-cancelled">
+                            <p class="category-title">Cancelled Orders</p>
+                            <p class="category-value"><?= $cancelled_orders_current_week ?></p> 
+                            <p class="rise-value"><span class="<?= $cancelled_orders_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $cancelled_orders_stat_change ?>%</span> from last week</p> 
+                        </div>
+                        <div class="stat-category category-customers">
+                            <p class="category-title">Completed Orders</p>
+                            <p class="category-value"><?= $completed_orders_current_week ?></p> 
+                            <p class="rise-value"><span class="<?= $completed_orders_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $completed_orders_stat_change ?>%</span> from last week</p> 
+                        </div>
+                        <div class="stat-category category-current">
+                            <p class="category-title">New Customers</p>
+                            <p class="category-value"><?= $new_customers_current_week ?></p> 
+                            <p class="rise-value"><span class="<?= $new_customers_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $new_customers_stat_change ?>%</span> from last week</p> 
+                        </div>
+                    </div>
+                </div>
+                <div class="review-stats stat-container">
+                    <p class="orders-title">Average Rating</p>
+                    <div class="average-rating">
+                        <span class="rating-text"> <?= $avg_rating ?> </span>
+                        <span class="rating-stars">
+                            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                <span class="fa fa-star
+                                    <?= $i <= $avg_rating ? 'checked' : '' ?>">
+                                </span>
+                            <?php } ?>
+                        </span>
+                    </div>
+                    <p class="orders-title by-type">By Type</p>
+                    <p class="sub-category">MTO</p>
+                    <div class="average-rating">
+                        <span class="rating-text"> <?= round($ratings_by_type[0]['average_rating'], 2) ?> </span>
+                        <span class="rating-stars">
+                            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                <span class="fa fa-star
+                                    <?= $i <= $ratings_by_type[0]['average_rating'] ? 'checked' : '' ?>">
+                                </span>
+                            <?php } ?>
+                        </span>
+                    </div>
+                    <?php if(isset($ratings[1]['average_rating'])) : ?>
+                        <p class="sub-category">Repair</p>
+                        <div class="average-rating">
+                            <span class="rating-text"> <?= round($ratings_by_type[1]['average_rating'],2) ?> </span>
+                            <span class="rating-stars">
+                                <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                    <span class="fa fa-star
+                                        <?= $i <= $ratings_by_type[1]['average_rating'] ? 'checked' : '' ?>">
+                                    </span>
+                                <?php } ?>
+                            </span>
+                        </div>
+                    <?php endif ?>
+                </div>
             </div>
-        
-            <!-- Tab Content for Daily -->
-            <div class="contents_container tabcontent" id="Daily">
-                <div class="tdmstatistic_container">
-                    
-                    <?php
-                    require '../database_connection.php'; // Adjust path as necessary
-
-                    // SQL query to fetch pending orders for today and yesterday
-                    $query = "
-                        SELECT
-                            (SELECT COUNT(*) FROM orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND DATE(placement_date) = CURDATE()) AS today,
-                            (SELECT COUNT(*) FROM orders JOIN order_date USING(order_id) WHERE is_accepted = 'pending' AND DATE(placement_date) = CURDATE() - INTERVAL 1 DAY) AS yesterday;
-                    ";
-
-                    $stmt = $conn->prepare($query);
-                    $stmt->execute();
-                    $dailyData = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $todayNewOrdersCount = $dailyData['today'];
-                    $yesterdayNewOrdersCount = $dailyData['yesterday'];
-
-                    // Calculate trend
-                    $trend = $todayNewOrdersCount - $yesterdayNewOrdersCount;
-                    $trendPercentage = ($yesterdayNewOrdersCount != 0) ? (($todayNewOrdersCount - $yesterdayNewOrdersCount) / $yesterdayNewOrdersCount) * 100 : 0;
-
-                    ?>
-                        <div class="new_orders">
-                            <div class="toper">
-                                <h1>New Orders</h1>
-                                <div class="box">
-                                    <p>Today</p>
-                                </div>
-                            </div>
-
-                            <div class="no">
-                                <p><?php echo htmlspecialchars($todayNewOrdersCount); ?></p>
-                                <div class="trend <?php echo ($trend >= 0) ? 'positive' : 'negative'; ?>">
-                                    <p><?php echo sprintf("%.1f%%", $trendPercentage); ?></p>
-                                </div>
-                            </div>
-
-                            <div class="compare">
-                                <p>Compared to <?php echo htmlspecialchars($yesterdayNewOrdersCount); ?> yesterday</p>
-                            </div>
-
-                        </div>
-
-                        <div class="order_status">
-                            <div class="toper1">
-                                <h1>Order Status</h1>
-                                <div class="box">
-                                    <p>Today</p>
-                                </div>
-                            </div>
-
-                            <div class="chart-container">
-                                <canvas id="chartDaily"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>  
-
-                        <div class="order_type">
-                            <div class="toper1">
-                                <h1>Order Type</h1>
-                                <div class="box">
-                                    <p>Today</p>
-                                </div>
-                            </div>
-
-                            <div class="chart-container">
-                                <canvas id="chartDailytype"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>
-                    
-                </div>
-
-                <div class="body">
-                    <div class="upper">
-
-                        <div class="mostordered_container">
-                            <div class="mostordered">
-                                <p>Most Ordered</p>
-                                <canvas id="myChartD"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="starrating">
-
-                            <div class="avgrate">
-                                <h1>Average Rating<br> Per Service</h1>
-                                <div class="starcontents">
-                                    <div class="repair">
-                                        <div class="type">
-                                            <p>Repair</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_repair ?? 'N/A'); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="customized">
-                                        <div class="type">
-                                            <p>Customized</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_customized); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="avgrate1">
-                                <h1>Overall Average Rating</h1>
-                                <div class="star1">
-                                    <p><?php echo htmlspecialchars($average_rating); ?></p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="26" viewBox="0 0 28 26" fill="none">
-                                        <path d="M14 0.790844L17.8006 8.49178L17.8821 8.65678L18.0642 8.68324L26.5627 9.91815L20.4131 15.9125L20.2813 16.0409L20.3124 16.2223L21.7641 24.6864L14.1629 20.6902L14 20.6046L13.8371 20.6902L6.23585 24.6864L7.68757 16.2223L7.71867 16.0409L7.58691 15.9125L1.43734 9.91815L9.93583 8.68324L10.1179 8.65678L10.1994 8.49178L14 0.790844Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="monitoring_container">
-                            <div class="monitoring">
-
-                            </div>
-                        </div>
-
+            <div class="bottom-charts">
+                <div class="order-status stat-container">
+                    <p class="chart-title">Currrent Orders Status</p>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
                     </div>
-                    <div class="linecharts_container">
-                        <div class="mid">
-                            <div class="orderchart">
-                                <div class="description">
-                                    <h1>Average Sales</h1>
-                                </div>
-                                <canvas id="myChart1"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </div>
-
-            <!-- Tab Content for Weekly -->
-            <div class="contents_container tabcontent" id="Weekly">
-                <div class="tdmstatistic_container">
-                   
-                    <div>
-                        <?php
-                        require '../database_connection.php'; // Adjust path as necessary
-
-                        // SQL query to fetch new orders for the current week and the previous week
-                        $query = "
-                            SELECT 
-                                (SELECT COUNT(*) FROM Orders 
-                                JOIN Order_date ON Orders.order_id = Order_date.order_id 
-                                WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1)) AS current_week,
-                                (SELECT COUNT(*) FROM Orders 
-                                JOIN Order_date ON Orders.order_id = Order_date.order_id 
-                                WHERE YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS last_week;
-                        ";
-
-                        $stmt = $conn->prepare($query);
-                        $stmt->execute();
-                        $weeklyData = $stmt->fetch(PDO::FETCH_ASSOC);
-                        $currentWeekNewOrdersCount = $weeklyData['current_week'];
-                        $lastWeekNewOrdersCount = $weeklyData['last_week'];
-
-                        // Calculate trend
-                        $trend = $currentWeekNewOrdersCount - $lastWeekNewOrdersCount;
-                        $trendPercentage = ($lastWeekNewOrdersCount != 0) ? (($currentWeekNewOrdersCount - $lastWeekNewOrdersCount) / $lastWeekNewOrdersCount) * 100 : 0;
-                        ?>
-                        <div class="new_orders">
-                            <div class="toper">
-                                <h1>New Orders</h1>
-                                <div class="box">
-                                    <p>Weekly</p>
-                                </div>
-                            </div>
-                            <div class="no">
-                                <p><?php echo htmlspecialchars($currentWeekNewOrdersCount); ?></p>
-                                <div class="trend <?php echo ($trend >= 0) ? 'positive' : 'negative'; ?>">
-                                    <p><?php echo sprintf("%.1f%%", $trendPercentage); ?></p>
-                                </div>
-                            </div>
-                            <div class="compare">
-                                <p>Compared to <?php echo htmlspecialchars($lastWeekNewOrdersCount); ?> last week</p>
-                            </div>
-                        </div>
-
-                        <div class="order_status">
-                            <div class="toper1">
-                                <h1>Order Status</h1>
-                                <div class="box">
-                                    <p>Weekly</p>
-                                </div>
-                            </div>
-                            <div class="chart-container">
-                                <canvas id="chartWeekly"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>
-
-                        <div class="order_type">
-                            <div class="toper1">
-                                <h1>Order Type</h1>
-                                <div class="box">
-                                    <p>Weekly</p>
-                                </div>
-                            </div>
-                            <div class="chart-container">
-                                <canvas id="chartWeeklytype"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>
+                </div>  
+                <div class="order-type stat-container">
+                    <p class="chart-title">Current Orders Type</p>
+                    <div class="chart-container">
+                        <canvas id="typeChart"></canvas>
                     </div>
                 </div>
-
-                <div class="body">
-                    <div class="upper">
-                        <div class="mostordered_container">
-                            <div class="mostordered">
-                                <p>Most Ordered</p>
-                                <canvas id="myChartW"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="starrating">
-                            <div class="avgrate">
-                                <h1>Average Rating<br> Per Service</h1>
-                                <div class="starcontents">
-                                    <div class="repair">
-                                        <div class="type">
-                                            <p>Repair</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_repair ?? 'N/A'); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <div class="customized">
-                                        <div class="type">
-                                            <p>Customized</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_customized); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="avgrate1">
-                                <h1>Overall Average Rating</h1>
-                                <div class="star1">
-                                    <p><?php echo htmlspecialchars($average_rating); ?></p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="26" viewBox="0 0 28 26" fill="none">
-                                        <path d="M14 0.790844L17.8006 8.49178L17.8821 8.65678L18.0642 8.68324L26.5627 9.91815L20.4131 15.9125L20.2813 16.0409L20.3124 16.2223L21.7641 24.6864L14.1629 20.6902L14 20.6046L13.8371 20.6902L6.23585 24.6864L7.68757 16.2223L7.71867 16.0409L7.58691 15.9125L1.43734 9.91815L9.93583 8.68324L10.1179 8.65678L10.1994 8.49178L14 0.790844Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="monitoring_container">
-                            <div class="monitoring">
-                                <!-- Monitoring content -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="linecharts_container">
-                        <div class="mid">
-                            <div class="orderchart">
-                                <div class="description">
-                                    <h1>Average Sales</h1>
-                                </div>
-                                <canvas id="myChart3"></canvas>
-                            </div>
-                        </div>
+                <div class="furniture-categories stat-container">
+                    <p class="chart-title">Orders by Furniture</p>
+                    <div class="chart-container">
+                        <canvas id="furnitureChart"></canvas>
                     </div>
                 </div>
             </div>
-
-
-            <!-- Tab Content for Monthly -->
-            <div class="contents_container tabcontent" id="Monthly">
-                <div class="tdmstatistic_container">
-                    
-                    <div>
-                        <?php
-                        require '../database_connection.php'; // Adjust path as necessary
-
-                        // SQL query to fetch new orders for the current month and the previous month
-                        $query = "
-                            SELECT 
-                                (SELECT COUNT(*) FROM Orders 
-                                JOIN Order_date ON Orders.order_id = Order_date.order_id 
-                                WHERE MONTH(placement_date) = MONTH(CURDATE()) AND YEAR(placement_date) = YEAR(CURDATE())) AS current_month,
-                                (SELECT COUNT(*) FROM Orders 
-                                JOIN Order_date ON Orders.order_id = Order_date.order_id 
-                                WHERE MONTH(placement_date) = MONTH(CURDATE()) - 1 AND YEAR(placement_date) = YEAR(CURDATE())) AS last_month;
-                        ";
-
-                        $stmt = $conn->prepare($query);
-                        $stmt->execute();
-                        $monthlyData = $stmt->fetch(PDO::FETCH_ASSOC);
-                        $currentMonthNewOrdersCount = $monthlyData['current_month'];
-                        $lastMonthNewOrdersCount = $monthlyData['last_month'];
-
-                        // Calculate trend
-                        $trend = $currentMonthNewOrdersCount - $lastMonthNewOrdersCount;
-                        $trendPercentage = ($lastMonthNewOrdersCount != 0) ? (($currentMonthNewOrdersCount - $lastMonthNewOrdersCount) / $lastMonthNewOrdersCount) * 100 : 0;
-
-                        ?>
-                        <div class="new_orders">
-                            <div class="toper">
-                                <h1>New Orders</h1>
-                                <div class="box">
-                                    <p>Monthly</p>
-                                </div>
-                            </div>
-
-                            <div class="no">
-                                <p><?php echo htmlspecialchars($currentMonthNewOrdersCount); ?></p>
-                                <div class="trend <?php echo ($trend >= 0) ? 'positive' : 'negative'; ?>">
-                                    <p><?php echo sprintf("%.1f%%", $trendPercentage); ?></p>
-                                </div>
-                            </div>
-
-                            <div class="compare">
-                                <p>Compared to <?php echo htmlspecialchars($lastMonthNewOrdersCount); ?> last month</p>
-                            </div>
-
-                        </div>
-
-                        <div class="order_status">
-                            <div class="toper1">
-                                <h1>Order Status</h1>
-                                <div class="box">
-                                    <p>Monthly</p>
-                                </div>
-                            </div>
-
-                            <div class="chart-container">
-                                <canvas id="chartMonthly"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>
-
-                        <div class="order_type">
-                            <div class="toper1">
-                                <h1>Order Type</h1>
-                                <div class="box">
-                                    <p>Monthly</p>
-                                </div>
-                            </div>
-
-                            <div class="chart-container">
-                                <canvas id="chartMonthlytype"></canvas>
-                            </div>
-                            <div class="categories">
-                                <!-- Categories or additional content -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="body">
-                    <div class="upper">
-                        <div class="mostordered_container">
-                            <div class="mostordered">
-                                <p>Most Ordered</p>
-                                <canvas id="myChartM"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="starrating">
-                            <div class="avgrate">
-                                <h1>Average Rating<br> Per Service</h1>
-                                <div class="starcontents">
-                                    <div class="repair">
-                                        <div class="type">
-                                            <p>Repair</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_repair ?? 'N/A'); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <div class="customized">
-                                        <div class="type">
-                                            <p>Customized</p>
-                                        </div>
-                                        <div class="star">
-                                            <p><?php echo htmlspecialchars($average_rating_customized); ?></p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
-                                                <path d="M10 0.822791L12.6222 6.40154L12.7016 6.5705L12.8861 6.59866L18.7837 7.49847L14.5049 11.8777L14.3814 12.0042L14.4099 12.1788L15.4163 18.3401L10.1691 15.4436L10 15.3502L9.83085 15.4436L4.58371 18.3401L5.59014 12.1788L5.61865 12.0042L5.49506 11.8777L1.21632 7.49847L7.11386 6.59866L7.29842 6.5705L7.37783 6.40154L10 0.822791Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="avgrate1">
-                                <h1>Overall Average Rating</h1>
-                                <div class="star1">
-                                    <p><?php echo htmlspecialchars($average_rating); ?></p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="26" viewBox="0 0 28 26" fill="none">
-                                        <path d="M14 0.790844L17.8006 8.49178L17.8821 8.65678L18.0642 8.68324L26.5627 9.91815L20.4131 15.9125L20.2813 16.0409L20.3124 16.2223L21.7641 24.6864L14.1629 20.6902L14 20.6046L13.8371 20.6902L6.23585 24.6864L7.68757 16.2223L7.71867 16.0409L7.58691 15.9125L1.43734 9.91815L9.93583 8.68324L10.1179 8.65678L10.1994 8.49178L14 0.790844Z" fill="#FEB703" stroke="#967C4E" stroke-width="0.7" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="monitoring_container">
-                            <div class="monitoring" id="notif_container">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linecharts_container">
-                        <div class="mid">
-                            <div class="orderchart">
-                                <div class="description">
-                                    <h1>Average Sales</h1>
-                                </div>
-                                <canvas id="myChart5"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
         </div>
-
-</div>
-
-
-
-    <!-- JavaScript -->
-    <script src="../js/dashboard.js"></script>
-    <script src="../js/Dcharts.js"></script>
-    <script src="../js/Wcharts.js"></script>
-    <script src="../js/Mcharts.js"></script>
-    <script src="../js/charttype.js"></script>
-
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/dashboard_test.js"></script>
 </body>
-
 </html>
