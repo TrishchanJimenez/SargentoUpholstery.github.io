@@ -19,16 +19,21 @@
 
     $query = "
         SELECT 
-            * 
+            o.*, 
+            q.*, 
+            a.address
         FROM 
-            `orders` 
-                INNER JOIN
-            `quotes`
-                USING (quote_id)
+            `orders` o
+        INNER JOIN 
+            `quotes` q
+            ON o.quote_id = q.quote_id
+        INNER JOIN 
+            `addresses` a
+            ON o.del_address_id = a.address_id
         WHERE 
-            `order_id` = :order_id 
-                AND 
-            `customer_id` = :customer_id
+            o.order_id = :order_id 
+            AND 
+            o.user_id = :customer_id
     ";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
@@ -65,24 +70,38 @@
                         <th class="order-details__th">Service Type</th>
                     </tr>
                     <tr>
-                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($order["furniture_type"] ?? 'N/A'))) ?> </td>
-                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($order["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["furniture_type"] ?? 'N/A'))) ?> </td>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
                     </tr>
                     <tr>
                         <th class="order-details__th">Quantity</th>
                         <th class="order-details__th">Current Status</th>
                     </tr>
                     <tr>
-                        <td class="order-details__td"> <?= htmlspecialchars($order["quantity"])?> </td>
-                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($order["order_status"])))?> </td>
+                        <td class="order-details__td"> <?= html_entity_decode($order["quantity"])?> </td>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["order_status"])))?> </td>
+                    </tr>
+                    <tr>
+                        <th class="order-details__th">Quoted Price</th>
+                        <th class="order-details__th">Delivery Method</th>
+                    </tr>
+                    <tr>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["quoted_price"] ?? 'N/A'))) ?> </td>
+                        <td class="order-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["del_method"] ?? 'N/A'))) ?> </td>
+                    </tr>
+                    <tr>
+                        <th class="order-details__th" colspan="2">Delivery Address</th>
+                    </tr>
+                    <tr>
+                        <td class="order-details__td" colspan="2"> <?= ucwords(html_entity_decode($order["address"] ?? 'N/A')) ?> </td>
                     </tr>
                     <tr>
                         <th class="order-details__th">Description</th>
                         <th class="order-details__th">Reference Image</th>
                     </tr>
                     <tr>
-                        <td class="order-details__td"> <?= htmlspecialchars($order["description"])?> </td>
-                        <td class="order-details__td"> <img class="order-details__ref-img" src="<?= htmlspecialchars($order["ref_img_path"])?>"> </td>
+                        <td class="order-details__td"> <?= html_entity_decode($order["description"])?> </td>
+                        <td class="order-details__td"> <img class="order-details__ref-img" src="<?= html_entity_decode($order["ref_img_path"])?>"> </td>
                     </tr>
                 </table>
             </div>
@@ -94,6 +113,25 @@
             </div>
             <div class="order-actions">
                 <?php
+                    switch ($order['order_status']) {
+                        case "pending_downpayment":
+                            $enablePickup = ($order['service_type'] == "repair") ? true : false;
+                            include('order_address_form.php');
+                            echo '<button class="order-actions__button">Upload Proof of Downpayment</button>';
+                            break;
+                        case "pending_fullpayment":
+                            echo '<button class="order-actions__button">Upload Proof of Fullpayment</button>';
+                            break;
+                        case "out_for_delivery":
+                            echo '<button class="order-actions__button">Confirm Delivery of Order</button>';
+                            break;
+                        case "received":
+                            echo '<button class="order-actions__button">Review Order</button>';
+                            break;
+                        default:
+                            echo 'No actions currently available.';
+                            break;
+                    }
                 ?>
             </div>
         </div>

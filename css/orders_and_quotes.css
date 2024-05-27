@@ -50,7 +50,7 @@
     height: auto;
     border: 1px solid #bbb;
     padding: 2.5vmin;
-    font-size: large;
+    font-size: 100%;
 }
 
 .onq__th--quote {
@@ -58,8 +58,7 @@
 }
 
 .onq__th--order {
-    width: calc(85%/6);
-    font-size: medium;
+    width: calc(85%/7);
 }
 
 .onq__th--title {
@@ -163,6 +162,81 @@
         }
             .quote-actions__cancel,
             .quote-actions__accept {
+                margin: 1.25vmin;
+                margin-top: 12.5vmin;
+                padding: 1.25vmin;
+                width: 60%;
+            }
+
+/* ---------- Orders ---------- */
+
+.orders {
+    width: 90%;
+    height: auto;
+    display: flex;
+    margin: 5%;
+    font-family: "Inter", sans-serif;
+}
+    .order-details__wrapper {
+        width: 60%;
+        height: auto;
+        padding: 2.5%;
+    }
+        .order-details__title,
+        .order-actions__title {
+            width: 100%;
+            height: auto;
+            text-align: center;
+            margin-bottom: 0;
+            background-color: #ddd;
+            padding: 2.5vmin;
+        }
+        .order-details {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .order-details__table {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            margin: 5%;
+            margin-top: 0;
+        }
+            .order-details__th {
+                width: 50%;
+                text-align: center;
+                background-color: #bbb;
+            }
+            .order-details__td {
+                width: 50%;
+                text-align: center;
+                padding: 5vmin;
+                background-color: #eee;
+            }
+            .order-details__ref-img {
+                width: 100%;
+                height: auto;
+            }
+    .order-actions__wrapper {
+        width: 40%;
+        height: auto;
+        padding: 2.5%;
+    }
+        .order-actions__title {
+            text-align: center;
+            margin-bottom: 5vmin;
+        }
+        .order-actions {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+            .order-actions__button {
                 margin: 1.25vmin;
                 margin-top: 12.5vmin;
                 padding: 1.25vmin;

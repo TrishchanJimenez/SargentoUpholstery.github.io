@@ -73,16 +73,16 @@
                         <th class="quote-details__th">Current Status</th>
                     </tr>
                     <tr>
-                        <td class="quote-details__td"> <?= htmlspecialchars($quote["quantity"])?> </td>
-                        <td class="quote-details__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["quote_status"])))?> </td>
+                        <td class="quote-details__td"> <?= html_entity_decode($quote["quantity"])?> </td>
+                        <td class="quote-details__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($quote["quote_status"])))?> </td>
                     </tr>
                     <tr>
                         <th class="quote-details__th">Description</th>
                         <th class="quote-details__th">Reference Image</th>
                     </tr>
                     <tr>
-                        <td class="quote-details__td"> <?= htmlspecialchars($quote["description"])?> </td>
-                        <td class="quote-details__td"> <img class="quote-details__ref-img" src="<?= htmlspecialchars($quote["ref_img_path"])?>"> </td>
+                        <td class="quote-details__td"> <?= html_entity_decode($quote["description"])?> </td>
+                        <td class="quote-details__td"> <img class="quote-details__ref-img" src="<?= html_entity_decode($quote["ref_img_path"])?>"> </td>
                     </tr>
                 </table>
                 <table class="quote-details__table quote-details__table--customs">
@@ -94,16 +94,16 @@
                         <th class="quote-details__th">Materials</th>
                     </tr>
                     <tr>
-                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["dimensions"] ?? 'None')) ?> </td>
-                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["materials"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(html_entity_decode($quote["dimensions"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(html_entity_decode($quote["materials"] ?? 'None')) ?> </td>
                     </tr>
                     <tr>
                         <th class="quote-details__th">Fabric</th>
                         <th class="quote-details__th">Color</th>
                     </tr>
                     <tr>
-                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["fabric"] ?? 'None')) ?> </td>
-                        <td class="quote-details__td"> <?= ucwords(htmlspecialchars($quote["color"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(html_entity_decode($quote["fabric"] ?? 'None')) ?> </td>
+                        <td class="quote-details__td"> <?= ucwords(html_entity_decode($quote["color"] ?? 'None')) ?> </td>
                     </tr>
                 </table>
             </div>
@@ -117,11 +117,10 @@
                 <?php
                     if ($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "accepted") {
                         echo '<button class="quote-actions__cancel">Cancel Order</button>';
-                    } elseif ($quote['quote_status'] == "approved") {
-                        echo '<button class="quote-actions__accept">Accept Order</button>';
-                    } else {
-                        echo 'No actions currently available.';
                     }
+                    if ($quote['quote_status'] == "approved") {
+                        echo '<button class="quote-actions__accept">Accept Order</button>';
+                    } 
                 ?>
             </div>
         </div>

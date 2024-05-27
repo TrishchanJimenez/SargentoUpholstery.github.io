@@ -48,7 +48,7 @@
                 </thead>
                 <thead>
                     <tr>
-                        <th class="onq__th--corner">#</th>
+                        <th class="onq__th--corner">Quote ID</th>
                         <th class="onq__th onq__th--quote">Furniture Type</th>
                         <th class="onq__th onq__th--quote">Service Type</th>
                         <th class="onq__th onq__th--quote">Quantity</th>
@@ -64,10 +64,10 @@
                                 $i++;
                                 echo '
                                     <tr>
-                                        <td class="onq__td--edge">' . $i . '</td>
+                                        <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quote_id"]) . '</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . '</td>
+                                        <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">
@@ -113,7 +113,7 @@
                 </thead>
                 <thead>
                     <tr>
-                        <th class="onq__th--corner">#</th>
+                        <th class="onq__th--corner">Order ID</th>
                         <th class="onq__th onq__th--order">Furniture Type</th>
                         <th class="onq__th onq__th--order">Service Type</th>
                         <th class="onq__th onq__th--order">Quantity</th>
@@ -131,10 +131,10 @@
                                 $i++;
                                 echo '
                                     <tr>
-                                        <td class="onq__td--edge">' . $i . '</td>
+                                        <td class="onq__td--edge">' . htmlspecialchars($row["order_id"]) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . '</td>
+                                        <td class="onq__td onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["del_method"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quoted_price"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["order_status"] ?? 'N/A'))) . '</td>
