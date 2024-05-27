@@ -18,16 +18,14 @@
     display: flex;
 }
 
-.order-details__wrapper {
+.orders__details-wrapper {
     width: 60%;
     height: auto;
     padding: 2.5%;
     margin: 2.5vmin;
 }
 
-.order-details__title,
-.order-price__title,
-.order-actions__title {
+.orders__title {
     width: 100%;
     height: auto;
     text-align: center;
@@ -45,14 +43,14 @@
     align-items: center;
 }
 
-.order-details__table {
+.orders__table {
     width: 100%;
     height: auto;
     border: 1px solid black;
     margin-bottom: 10vmin;
 }
 
-.order-details__th {
+.orders__th {
     width: 50%;
     text-align: center;
     background-color: #555;
@@ -61,20 +59,21 @@
     border: 1px solid black;
 }
 
-.order-details__td {
+.orders__td {
     width: 50%;
+    max-width: 50%;
     text-align: center;
     padding: 5vmin;
     background-color: #eee;
     border: 1px solid black;
 }
 
-.order-details__td--price {
+.orders__td--price {
     font-size: 6.25vmin;
 }
 
 .order-details__ref-img {
-    width: 100%;
+    max-width: 200px;
     height: auto;
 }
 
@@ -94,10 +93,6 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 7.5vmin;
-}
-
-.order-price__title {
-    text-align: center;
 }
 
 .order-price {

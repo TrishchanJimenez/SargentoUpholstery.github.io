@@ -11,43 +11,45 @@
         $af_address = isset($_SESSION['user_address']) ? $_SESSION['user_address'] : '';
     }
 ?>
-<div class="soa">
-    <form class="soa__form" method="post">
-        <?php if($enablePickup): ?>
-        <div class="pickup__wrapper">
-            <h1 class="pickup__title">Set Pickup Details</h1>
 
-            <label for="pickup_method">Pickup Method</label>
-            <select name="pickup_method" id="pickup_method" required>
-                <option value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
-                <option value="self">Self Drop Off/Hand Delivery</option>
+<div class="soa">
+    <form class="form" method="post">
+        <?php if($enablePickup): ?>
+        <div class="form__wrapper form__wrapper--pickup">
+            <h1 class="form__title">Set Pickup Details</h1>
+
+            <label class="form__label" for="pickup_method">Pickup Method</label>
+            <select class="form__select" name="pickup_method" id="pickup_method" required>
+                <option class="form__option" value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
+                <option class="form__option" value="self">Self Drop Off/Hand Delivery</option>
             </select>
 
-            <label for="pickup_address">Pickup Address</label>
-            <input type="text" id="pickup_address" name="pickup_address" value="<?= $af_address ?>" required>
+            <label class="form__label" for="pickup_address">Pickup Address</label>
+            <input class="form__input" type="text" id="pickup_address" name="pickup_address" value="<?= $af_address ?>" required>
         </div>
         <?php endif ?>
-        <div class="delivery__wrapper">
-            <h1 class="delivery__title">Set Delivery Details</h1>
+        <div class="form__wrapper form__wrapper--delivery">
+            <h1 class="form__title">Set Delivery Details</h1>
 
-            <label for="delivery_method">Delivery Method</label>
-            <select name="delivery_method" id="delivery_method" required>
-                <option value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
-                <option value="self">Self Pickup/Hand Delivery</option>
+            <label class="form__label" for="delivery_method">Delivery Method</label>
+            <select class="form__select" name="delivery_method" id="delivery_method" required>
+                <option class="form__option" value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
+                <option class="form__option" value="self">Self Pickup/Hand Delivery</option>
             </select>
 
-            <label for="delivery_address">Delivery Address</label>
-            <input type="text" id="delivery_address" name="delivery_address" value="<?= $af_address ?>" required>
+            <label class="form__label" for="delivery_address">Delivery Address</label>
+            <input class="form__select" type="text" id="delivery_address" name="delivery_address" value="<?= $af_address ?>" required>
         </div>
-        <input type="submit" value="Set Order Address/es">
+        <input class="form__submit" type="submit" value="Set Order Address/es">
     </form>
 </div>
+
 <?php
     // Include database connection
     require_once('../database_connection.php');
     include_once('../api/CheckAddress.php');
     // Check if the form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         // Retrieve form data
         $delivery_method = $_POST['delivery_method'];
         $delivery_address = $_POST['delivery_address'];
