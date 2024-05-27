@@ -14,32 +14,32 @@
 <div class="soa">
     <form class="soa__form" method="post">
         <?php if($enablePickup): ?>
-        <div class="pickup__wrapper">
-            <h1 class="pickup__title">Set Pickup Details</h1>
+        <div class="soa__pickup-wrapper">
+            <h1 class="soa__pickup-title">Set Pickup Details</h1>
 
-            <label for="pickup_method">Pickup Method</label>
-            <select name="pickup_method" id="pickup_method" required>
+            <label class="soa__label" for="pickup_method">Pickup Method</label>
+            <select class="soa__select" name="pickup_method" id="pickup_method" required>
                 <option value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
                 <option value="self">Self Drop Off/Hand Delivery</option>
             </select>
 
-            <label for="pickup_address">Pickup Address</label>
-            <input type="text" id="pickup_address" name="pickup_address" value="<?= $af_address ?>" required>
+            <label class="soa__label" for="pickup_address">Pickup Address</label>
+            <input class="soa__input" type="text" id="pickup_address" name="pickup_address" value="<?= $af_address ?>" required>
         </div>
         <?php endif ?>
-        <div class="delivery__wrapper">
-            <h1 class="delivery__title">Set Delivery Details</h1>
+        <div class="soa__delivery-wrapper">
+            <h1 class="soa__delivery-title">Set Delivery Details</h1>
 
-            <label for="delivery_method">Delivery Method</label>
-            <select name="delivery_method" id="delivery_method" required>
+            <label class="soa__label" for="delivery_method">Delivery Method</label>
+            <select class="soa__select" name="delivery_method" id="delivery_method" required>
                 <option value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
                 <option value="self">Self Drop Off/Hand Delivery</option>
             </select>
-
-            <label for="delivery_address">Delivery Address</label>
-            <input type="text" id="delivery_address" name="delivery_address" value="<?= $af_address ?>" required>
+            
+            <label class="soa__label" for="delivery_address">Delivery Address</label>
+            <input class="soa__input" type="text" id="delivery_address" name="delivery_address" value="<?= $af_address ?>" required>
         </div>
-        <input type="submit" value="Set Order Address/es">
+        <input class="soa__submit" type="submit" value="Set Order Address/es">
     </form>
 </div>
 <?php
@@ -93,21 +93,19 @@
                 o.user_id = :user_id
         ";
 
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':pickup_method', $pickup_method);
-        $stmt->bindParam(':pickup_address', $pickup_address);
-        $stmt->bindParam(':delivery_method', $delivery_method);
-        $stmt->bindParam(':delivery_address', $delivery_address);
-        $stmt->bindParam(':user_id', $_SESSION['user_id']);
+        try {
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':pickup_method', $pickup_method);
+            $stmt->bindParam(':pickup_address', $pickup_address);
+            $stmt->bindParam(':delivery_method', $delivery_method);
+            $stmt->bindParam(':delivery_address', $delivery_address);
+            $stmt->bindParam(':user_id', $_SESSION['user_id']);
 
-        // Execute the query
-        if ($stmt->execute()) {
-            // Redirect or provide feedback to the user upon successful update
-            sendAlert("success", "Let's fucking gooo");
-            exit;
-        } else {
-            // Handle database error
-            sendAlert("error", "Noooo bobo ka");
+            // Execute the query
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo '<script>alert("Could not update order address.")</script>';
+            echo '<script>console.log("' . $e . '")</script>';
         }
     }
 ?>

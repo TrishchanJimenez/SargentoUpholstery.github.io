@@ -90,155 +90,74 @@
     height: auto;
     border: 1px solid #bbb;
     text-align: center;
+}   
+
+/* ---------- Set Order Address ---------- */
+
+.soa {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* ---------- Quotes ---------- */
-
-.quotes {
-    width: 90%;
-    height: auto;
+.soa__form {
     display: flex;
-    margin: 5%;
-    font-family: "Inter", sans-serif;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
 }
-    .quote-details__wrapper {
-        width: 60%;
-        height: auto;
-        padding: 2.5%;
-    }
-        .quote-details__title,
-        .quote-actions__title {
-            width: 100%;
-            height: auto;
-            text-align: center;
-            margin-bottom: 0;
-            background-color: #ddd;
-            padding: 2.5vmin;
-        }
-        .quote-details {
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .quote-details__table {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            margin: 5%;
-            margin-top: 0;
-        }
-            .quote-details__th {
-                width: 50%;
-                text-align: center;
-                background-color: #bbb;
-            }
-            .quote-details__td {
-                width: 50%;
-                text-align: center;
-                padding: 5vmin;
-                background-color: #eee;
-            }
-            .quote-details__ref-img {
-                width: 100%;
-                height: auto;
-            }
-    .quote-actions__wrapper {
-        width: 40%;
-        height: auto;
-        padding: 2.5%;
-    }
-        .quote-actions__title {
-            text-align: center;
-            margin-bottom: 5vmin;
-        }
-        .quote-actions {
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-            .quote-actions__cancel,
-            .quote-actions__accept {
-                margin: 1.25vmin;
-                margin-top: 12.5vmin;
-                padding: 1.25vmin;
-                width: 60%;
-            }
 
-/* ---------- Orders ---------- */
-
-.orders {
-    width: 90%;
-    height: auto;
+/* Pickup and Delivery wrapper styling */
+.soa__pickup-wrapper,
+.soa__delivery-wrapper {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     display: flex;
-    margin: 5%;
-    font-family: "Inter", sans-serif;
+    flex-direction: column;
 }
-    .order-details__wrapper {
-        width: 60%;
-        height: auto;
-        padding: 2.5%;
-    }
-        .order-details__title,
-        .order-actions__title {
-            width: 100%;
-            height: auto;
-            text-align: center;
-            margin-bottom: 0;
-            background-color: #ddd;
-            padding: 2.5vmin;
-        }
-        .order-details {
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .order-details__table {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            margin: 5%;
-            margin-top: 0;
-        }
-            .order-details__th {
-                width: 50%;
-                text-align: center;
-                background-color: #bbb;
-            }
-            .order-details__td {
-                width: 50%;
-                text-align: center;
-                padding: 5vmin;
-                background-color: #eee;
-            }
-            .order-details__ref-img {
-                width: 100%;
-                height: auto;
-            }
-    .order-actions__wrapper {
-        width: 40%;
-        height: auto;
-        padding: 2.5%;
-    }
-        .order-actions__title {
-            text-align: center;
-            margin-bottom: 5vmin;
-        }
-        .order-actions {
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-            .order-actions__button {
-                margin: 1.25vmin;
-                margin-top: 12.5vmin;
-                padding: 1.25vmin;
-                width: 60%;
-            }
+
+.soa__pickup-title,
+.soa__delivery-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.soa__label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.soa__input,
+.soa__select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.soa__submit {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.soa__submit:hover {
+    background-color: #0056b3;
+}
