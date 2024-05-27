@@ -46,9 +46,12 @@ body {
 .regForm{
 }
 
-input:not([type="submit"]) {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
     width: 100%;
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 1rem; 
     border-radius: 0.5rem;
     border: 2px solid #111;
 }
@@ -65,7 +68,7 @@ input::placeholder{
     margin-top: 5%;
     cursor: pointer;
     border: none;
-    border-radius: 2.5rem;
+    border-radius: 0.5rem;
     background: #111;
 }
 
@@ -99,29 +102,19 @@ a{
 .error_message {
     color: red;
     animation: shake 0.5s ease-in-out;
+    text-align: center;
 }
 
 .hide {
     display: none;
 }
 
-label[for="password"] {
+.show-password {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
 
-    span {
-        display: flex;
-        align-items: center;
-
-        img {
-            margin-right: 0.125rem;
-            width: 16px;
-            height: 16px;
-        }
-    }
-    
-    .toggle-password {
-        font-size: 0.875rem;
-        cursor: pointer;
+    label {
+        margin-left: 0.25rem;
     }
 }

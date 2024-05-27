@@ -5,13 +5,12 @@ const registrationForm = document.querySelector('#signUpForm');
 
 const passwordErrorMesssage = document.querySelector(' .password');
 
-const passwordShowToggle = document.querySelector('.toggle-password');
+const passwordShowToggle = document.querySelector('input[name="show-password"]');
 const toggleImg = document.querySelector('.toggle-img');
 const toggleText = document.querySelector('.toggle-text');
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-
     if(passwordField.value.length < 8) {
         // IF PASSWORD IS LESS THAN 8 CHARACTERS
         passwordErrorMesssage.innerText = "Use 8 or more characters with a mix of letters, numbers & symbols";
@@ -31,16 +30,18 @@ passwordField.addEventListener('keyup', () => {
     }
 })
 
-passwordShowToggle.addEventListener('click', () => {
-    passwordShowToggle.classList.toggle('show-pass');
-    
-    if(passwordShowToggle.classList.contains('show-pass')) {
-        toggleImg.src = '/websiteimages/icons/show.svg';
-        toggleText.innerText = "Hide";
+confirmPasswordField.addEventListener('keyup', () => {
+    if(!passwordErrorMesssage.classList.contains('hide')) {
+        passwordErrorMesssage.classList.add('hide');
+    }
+})
+
+passwordShowToggle.addEventListener('change', () => {
+    if(passwordShowToggle.checked) {
         passwordField.setAttribute('type', 'text');
+        confirmPasswordField.setAttribute('type', 'text');
     } else {
-        toggleImg.src = '/websiteimages/icons/hide.svg';
-        toggleText.innerText = "Show";
         passwordField.setAttribute('type', 'password');
+        confirmPasswordField.setAttribute('type', 'password');
     }
 })
