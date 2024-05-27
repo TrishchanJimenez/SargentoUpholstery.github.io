@@ -119,7 +119,7 @@
                             Well-crafted & Timeless
                             <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
                         </h2>
-                        <a href="order.php" class="btn btn-black">Get a free quote</a>
+                        <a href="/quote.php" class="btn btn-black">Get a free quote</a>
                     </div>
                     <div class="product">
                         <h2 class="product-category-title editable short-text" data-id="HOMECRAFTSTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMECRAFTSTITLE"]["content_text"])) ?></h2>
@@ -182,7 +182,7 @@
                     <div class="intro-section">
                         <h2 class="intro-title editable short-text" data-id="CRAFTSHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTITLE"]["content_text"])) ?></h2>
                         <p class="intro-info editable long-text" data-id="CRAFTSHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSHEADERTEXT"]["content_text"])) ?></p>
-                        <a href="order.php" class="btn btn-black">Get Free Quote</a>
+                        <a href="/quote.php" class="btn btn-black">Get Free Quote</a>
                     </div>
                     <div class="services_craftmanship_card_container">
                         <div class="services_craftmanship_card">
@@ -224,7 +224,7 @@
                     <div class="intro-section">
                         <h2 class="intro-title editable short-text" data-id="WORKSINTROTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTROTITLE"]["content_text"])) ?></h2>
                         <p class="intro-info editable long-text" data-id="WORKSINTRODESC"><?= stripslashes(htmlspecialchars_decode($contentsById["WORKSINTRODESC"]["content_text"])) ?></p>
-                        <a href="order.php" class="btn btn-black">Get Free Quote</a>
+                        <a href="/quote.php" class="btn btn-black">Get Free Quote</a>
                     </div> 
                     <div class="product-gallery">
                         <div class="selector-container">
@@ -330,7 +330,7 @@
                     <div class="testimonials-title">
                         <h2 class="editable short-text" data-id="TESTIMONIALHEADERTITLE"><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERTITLE"]["content_text"])) ?></h2>
                         <p class="editable long-text" data-id="TESTIMONIALHEADERSUBTEXT"><?= stripslashes(html_entity_decode($contentsById["TESTIMONIALHEADERSUBTEXT"]["content_text"])) ?></p>
-                        <a href="order.php">Get a Free Quote</a>
+                        <a href="/quote.php">Get a Free Quote</a>
                     </div>
                 </div>
                 <div class="tab" data-page="about">
@@ -338,7 +338,7 @@
                     <div class="about-us-container">
                         <h2 class="editable short-text" data-id="ABOUTHEADERTITLE"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTITLE"]["content_text"])) ?></h2>
                         <p class="editable long-text" data-id="ABOUTHEADERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["ABOUTHEADERTEXT"]["content_text"])) ?></p>
-                        <a href="order.php" class="btn btn-black">Get a Free Quote</a>
+                        <a href="/quote.php" class="btn btn-black">Get a Free Quote</a>
                     </div>
                     <div class="about-us-history about-us-container">
                         <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTITLE"]["content_text"]))?></h2>

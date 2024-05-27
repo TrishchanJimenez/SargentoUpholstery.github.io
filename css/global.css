@@ -118,6 +118,7 @@ body {
     padding: 0.75rem 1.25rem;
     text-decoration: none;
     column-gap: 0.25rem;
+    z-index: 999;
 }
 
 .account-menu>* {

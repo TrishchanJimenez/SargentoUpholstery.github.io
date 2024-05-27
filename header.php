@@ -11,7 +11,7 @@
 
         // Fetch all records from notifs table where user_id matches session user_id
         $user_id = $_SESSION['user_id'];
-        $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id ORDER BY `created_at` DESC";
+        $query = "SELECT * FROM `notifs` WHERE `user_id` = :user_id ORDER BY `created_at` DESC LIMIT 10";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -106,9 +106,9 @@
                                 <img src='/websiteimages/icons/person-icon.svg' alt=''>
                                 <span>My Account</span>
                             </a>
-                            <a href='/my/user_orders.php'>
+                            <a href='/my/orders_and_quotes.php'>
                                 <img src='/websiteimages/icons/order-icon.svg' alt=''>
-                                <span>My Orders</span>
+                                <span>My Orders & Quotes</span>
                             </a>
                         ";
                     }

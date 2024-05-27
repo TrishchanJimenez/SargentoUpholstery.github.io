@@ -43,11 +43,11 @@
     <?php 
         require_once('header.php');
         $needs_cta = false;
-        // require_once('intro.php');
+        require_once('intro.php');
     ?>
     <div class="quote-page__content">
         <div class="quote">
-            <form class="quote-form" method="POST">
+            <form class="quote-form" method="POST" enctype="multipart/form-data">
                 <div class="quote-form__heading">
                     <h1 class="quote-form__title">Quotation Form</h1>
                     <p class="quote-form__subtext">
@@ -175,7 +175,7 @@
         </div>
     </div>
     <?php 
-        // require_once('outro.php');
+        require_once('outro.php');
         require_once('footer.php');
     ?>
     <script src="js/globals.js"></script>

@@ -1,0 +1,113 @@
+/* ---------- Orders and Quotes ---------- */
+
+.onq__tab-button-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.onq__tab {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.onq__table {
+    width: 95%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+.onq__th--corner {
+    width: calc(15%/2);
+    height: auto;
+    border: 1px solid #bbb;
+}
+
+.onq__th {
+    width: calc(85%/4);
+    height: auto;
+    border: 1px solid #bbb;
+}
+
+.onq__td {
+    max-width: calc((77.5%/4)-5px);
+    height: 15vh;
+    text-align: center;
+}
+
+.onq__td--edge {
+    min-width: calc((17.5%/2)-5px);
+    height: 15vh;
+    text-align: center;
+}
+
+.onq__td--end {
+    width: 100%;
+    height: auto;
+    border: 1px solid #bbb;
+    text-align: center;
+}
+
+/* ---------- Quote Details ---------- */
+
+.quotes {
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+    .quote-details__wrapper {
+        width: 60%;
+        height: auto;
+    }
+        .quote-details__title {
+            text-align: center;
+        }
+        .quote-details {
+            width: 100%;
+            height: auto;
+            display: flex;
+        }
+        .quote-details__table {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+            .quote-details__th {
+                width: 50%;
+                text-align: center;
+                background-color: #bbb;
+            }
+            .quote-details__td {
+                width: 50%;
+                text-align: center;
+                padding: 5vmin;
+                background-color: #eee;
+            }
+            .quote-details__ref-img {
+                width: 100%;
+                height: auto;
+            }
+    .quote-actions__wrapper {
+        width: 40%;
+        height: auto;
+    }
+        .quote-actions__title {
+            text-align: center;
+        }
+        .quote-actions {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+            .quote-actions__cancel,
+            .quote-actions__accept {
+                margin: 1.25vmin;
+                margin-top: 12.5vmin;
+                padding: 1.25vmin;
+                width: 60%;
+            }

@@ -30,7 +30,7 @@
         <h2 class="featured-title text-gold">
             Well-crafted & Timeless <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
         </h2>
-        <a href="order.php" class="btn btn-black">Get a free quote</a>
+        <a href="/quote.php" class="btn btn-black">Get a free quote</a>
     </div>
     <div class="product">
         <h2 class="product-category-title"><?= stripslashes(htmlspecialchars_decode($contentsById["HOMECRAFTSTITLE"]["content_text"])) ?></h2>

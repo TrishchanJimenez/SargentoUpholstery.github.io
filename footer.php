@@ -18,7 +18,7 @@
         <div class="link-container">
             <a href="services_craftsmanship.php">Services</a>
             <a href="services_works.php">Our Works</a>
-            <a href="order.php">Order</a>
+            <a href="/quote.php">Request Quote</a>
             <a href="testimonials.php">Testimonials</a>
             <a href="about_us.php">About Us</a>
             <a href="contact_us.php">Contact Us</a>

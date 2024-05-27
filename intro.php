@@ -38,7 +38,7 @@
                 <p class="intro-banner__description"><?= stripslashes(html_entity_decode($introContentsById["INTRO_DESC"]["content_text"])) ?></p>
             <?php endif; ?>
             <?php if ($needs_cta): ?>
-                <a class="intro-banner__cta" href="/order.php">Get a Free Quote</a>
+                <a class="intro-banner__cta" href="/quote.php">Get a Free Quote</a>
             <?php endif; ?>
         </div>
     </div>

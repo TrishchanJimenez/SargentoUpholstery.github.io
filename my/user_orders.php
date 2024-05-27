@@ -1,27 +1,25 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
-    exit();
-}
-
-include_once("../database_connection.php");
-$user_id = $_SESSION['user_id'];
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: ../login.php");
+        exit();
+    }
+    include_once("../database_connection.php");
+    $user_id = $_SESSION['user_id'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <title>Sargento Upholstery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/user_orders.css">
     <link rel="stylesheet" href="/css/review_submission.css">
-    <script src="/js/user_orders.js"></script>
-    <title>My Orders</title>
 </head>
 
 <body>
