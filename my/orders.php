@@ -60,6 +60,8 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/orders.css">
     <link rel="stylesheet" href="/css/set_order_address.css">
+    <link rel="stylesheet" href="/css/submit_review.css">
+    <script src="/js/my/submit_review.js"></script>
     <title>Order Details - Sargento Upholstery</title>
 </head>
 
@@ -162,7 +164,9 @@
                                         echo '<button class="order-actions__button">Confirm Delivery of Order</button>';
                                         break;
                                     case "received":
-                                        echo '<button class="order-actions__button">Review Order</button>';
+                                        echo '<td>';
+                                        include('submit_review.php');
+                                        echo '</td></tr>';
                                         break;
                                     default:
                                         echo 'No actions currently available.';

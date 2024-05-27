@@ -80,7 +80,7 @@
                                 <!-- <select class="quote-form__output" id="country-code" name="country-code" required>
                                     <option value="+63">+63</option>
                                 </select> -->
-                                <input class="quote-form__input quote-form__input--text" type="tel" id="contact_no" name="contact_no" pattern="[0-9]{11}" value="<?= $af_contact ?>" required>
+                                <input class="quote-form__input quote-form__input--text" type="tel" id="contact_no" name="contact_no" pattern="[0-9]{11}" value="<?= $af_contact ?>" required readonly>
                             </div>
                         </div>
                     </div>
