@@ -210,7 +210,7 @@ $ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="rise-value"><span class="<?= $total_revenue_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $total_revenue_stat_change ?>%</span> from last week</p> 
                         </div>
                         <div class="stat-category category-new">
-                            <p class="category-title">New Orders</p>
+                            <p class="category-title">New <br>Orders</p>
                             <p class="category-value"><?= $new_orders_current_week ?></p> 
                             <p class="rise-value"><span class="<?= $new_order_stat_change >= 0 ? 'stat-up' : 'stat-down' ?>"><?= $new_order_stat_change ?>%</span> from last week</p> 
                         </div>
