@@ -27,7 +27,7 @@
         INNER JOIN 
             `quotes` q
             ON o.quote_id = q.quote_id
-        INNER JOIN 
+        LEFT JOIN 
             `addresses` a
             ON o.del_address_id = a.address_id
         WHERE 

@@ -33,7 +33,7 @@
             <label for="delivery_method">Delivery Method</label>
             <select name="delivery_method" id="delivery_method" required>
                 <option value="third_party">Courier Service (Lalamove, LBC, etc.)</option>
-                <option value="self">Self Drop Off/Hand Delivery</option>
+                <option value="self">Self Pickup/Hand Delivery</option>
             </select>
 
             <label for="delivery_address">Delivery Address</label>
@@ -45,6 +45,7 @@
 <?php
     // Include database connection
     require_once('../database_connection.php');
+    include_once('../api/CheckAddress.php');
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
@@ -55,37 +56,30 @@
         $delivery_method = htmlspecialchars($delivery_method);
         $delivery_address = htmlspecialchars($delivery_address);
 
+        $delivery_address_id = getAddressId($delivery_address, $conn, $_SESSION['user_id']);
+
         if($enablePickup) {
             $pickup_method = $_POST['pickup_method'];
             $pickup_address = $_POST['pickup_address'];
             $pickup_method = htmlspecialchars($pickup_method);
             $pickup_address = htmlspecialchars($pickup_address);    
+
+            $pickup_address_id = getAddressId($pickup_address, $conn, $_SESSION['user_id']);
             try {
                 $query = "
                     UPDATE 
-                        pickup p
-                    JOIN
-                        orders o ON o.order_id = p.order_id
+                        pickup
                     SET 
-                        p.pickup_method = :pickup_method, 
-                        p.pickup_address_id = (
-                            SELECT
-                                address_id
-                            FROM
-                                addresses
-                            WHERE
-                                user_id = :user_id
-                                AND
-                                address = :pickup_address
-                        )
-                    WHERE 
-                        o.user_id = :user_id;
+                        pickup_method = :pickup_method, 
+                        pickup_address_id = :pickup_address_id
+                    WHERE
+                        order_id = :order_id
                 ";
 
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':pickup_method', $pickup_method);
-                $stmt->bindParam(':pickup_address', $pickup_address);
-                $stmt->bindParam(':user_id', $_SESSION['user_id']);
+                $stmt->bindParam(':pickup_address_id', $pickup_address_id);
+                $stmt->bindParam(':order_id', $order_id);
 
                 // Execute the query
                 $stmt->execute();
@@ -99,27 +93,18 @@
             // Update database table with the new address information
             $query = "
                 UPDATE 
-                    orders o
+                    orders
                 SET 
-                    o.del_method = :delivery_method, 
-                    o.del_address_id = (
-                        SELECT
-                            address_id
-                        FROM
-                            addresses
-                        WHERE
-                            user_id = :user_id
-                            AND
-                            address = :delivery_address
-                    )
+                    del_method = :delivery_method, 
+                    del_address_id = :delivery_address_id
                 WHERE 
-                    o.user_id = :user_id;
+                    order_id = :order_id;
             ";
 
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':delivery_method', $delivery_method);
-            $stmt->bindParam(':delivery_address', $delivery_address);
-            $stmt->bindParam(':user_id', $_SESSION['user_id']);
+            $stmt->bindParam(':delivery_address_id', $delivery_address_id);
+            $stmt->bindParam(':order_id', $order_id);
 
             // Execute the query
             $stmt->execute();

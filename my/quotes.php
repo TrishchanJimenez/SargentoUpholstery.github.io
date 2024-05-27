@@ -125,8 +125,10 @@
             </div>
         </div>
     </div>
+    <script>
+        const quoteId = <?= $quote_id ?>;
+    </script>
     <script src="/js/my/quotes.js">
-        const quoteId = <?= json_encode($quote_id) ?>;
     </script>
 </body>
 </html>
