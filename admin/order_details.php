@@ -55,6 +55,24 @@
 
     $payment_status = str_replace("_", "-", $order['payment_status']);
     $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
+
+    $multi_orders = null;
+    if($order['furniture_type'] === 'multiple') {
+        $sql = "
+            SELECT 
+                * 
+            FROM 
+                multis
+            LEFT JOIN
+                quote_customs USING(custom_id) 
+            WHERE 
+                quote_id = :quote_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':quote_id', $order['quote_id']);
+        $stmt->execute();
+        $multi_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // var_dump($multi_orders);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,8 +97,8 @@
                 <div class="order-information">
                     <p class="info-title">
                         ORDER INFORMATION   
-                        <div class="info-order-detail">
                     </p>
+                    <div class="info-order-detail">
                         <div class="info">
                             <span class="info-name"> ORDER ID </span>
                             <span class="info-detail">
@@ -99,7 +117,7 @@
                         <div class="info">
                             <span class="info-name"> FURNITURE TYPE </span>
                             <span class="info-detail">
-                                <?= $order['furniture_type'] ?>
+                                <?= ucfirst($order['furniture_type']) ?>
                             </span>
                         </div>
                         <div class="info">
@@ -158,13 +176,15 @@
                                 </select>
                             </span>
                         </div>
-                        <div class="info">
-                            <span class="info-name"> NOTE </span>
-                            <span class="info-detail">
-                                <?= $order['description'] ?>
-                            </span>
-                        </div>
-                        <?php if(!is_null($order['ref_img_path'])): ?>
+                        <?php if($order['furniture_type'] !== 'multiple') : ?>
+                            <div class="info">
+                                <span class="info-name"> DESCRIPTION </span>
+                                <span class="info-detail">
+                                    <?= $order['description'] ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if(!is_null($order['ref_img_path']) && $order['furniture_type'] !== 'multiple'): ?>
                             <div class="info">
                                 <span class="info-name">PICTURE</span>
                                 <span class="info-detail">
@@ -172,12 +192,94 @@
                                 </span>
                             </div>
                         <?php endif; ?>
+                        <?php if($order['furniture_type'] === 'multiple') : ?>
+                            <div class="info">
+                                <span class="info-name"> FURNITURE DETAILS </span>
+                                <span class="info-detail">
+                                    <button class="toggle-furniture-display">SHOW FURNITURE DETAILS</button>
+                                </span>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
+                <?php if($order['furniture_type'] === 'multiple') : ?>
+                    <div class="multi-order-information order-information hidden">
+                        <p class="info-title">
+                            FURNITURE LIST   
+                        </p>
+                        <?php if($order['furniture_type'] === 'multiple'): ?>
+                            <?php $counter = 0; foreach($multi_orders as $multi): $counter++; ?> 
+                                <div class="order-information">
+                                    <p class="info-title">FURNITURE <?= $counter ?></p>   
+                                    <div class="info-order-detail"> 
+                                        <div class="info">
+                                            <span class="info-name"> TYPE </span>
+                                            <span class="info-detail">
+                                                <?= ucfirst($multi['furniture_type']) ?>
+                                            </span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="info-name"> QUANTITY </span>
+                                            <span class="info-detail">
+                                                <?= $multi['quantity'] ?>
+                                            </span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="info-name"> NOTE </span>
+                                            <span class="info-detail">
+                                                <?= $multi['description'] ?>
+                                            </span>
+                                        </div>
+                                        <?php if(!is_null($multi['dimensions']) && $multi['dimensions'] !== ''): ?>
+                                            <div class="info">
+                                                <span class="info-name">DIMENSIONS</span>
+                                                <span class="info-detail">
+                                                    <?= $multi['dimensions'] ?>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(!is_null($multi['materials']) && $multi['materials'] !== ''): ?>
+                                            <div class="info">
+                                                <span class="info-name">MATERIALS</span>
+                                                <span class="info-detail">
+                                                    <?= $multi['materials'] ?>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(!is_null($multi['fabric']) && $multi['fabric'] !== ''): ?>
+                                            <div class="info">
+                                                <span class="info-name">FABRIC</span>
+                                                <span class="info-detail">
+                                                    <?= $multi['fabric'] ?>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(!is_null($multi['color']) && $multi['color'] !== ''): ?>
+                                            <div class="info">
+                                                <span class="info-name">COLOR</span>
+                                                <span class="info-detail">
+                                                    <?= $multi['color'] ?>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(!is_null($multi['ref_img_path']) && $multi['ref_img_path'] !== ''): ?>
+                                            <div class="info">
+                                                <span class="info-name">PICTURE</span>
+                                                <span class="info-detail">
+                                                    <img src='/<?= $multi['ref_img_path'] ?>' alt='' class='repair-img'>
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
                 <?php
                     if(!is_null($order['downpayment_method'])) {
                         $method = ucfirst($order['downpayment_method']);
-                        $verification_status = ucfirst(str_replace("_", " ", $order['downpayment_verification_status']));
+                        $verification_status = ucfirst(str_replace("_", " ", $order['downpayment_verification_status'] ?? ''));
                         $verification_buttons = $order['downpayment_verification_status'] === 'waiting_for_verification' ? "
                             <div class='verification-buttons button-container downpayment'>
                                 <input type='button' value='Verify' class='green-button accept-verification'>
@@ -277,7 +379,7 @@
                         <?php endif; ?>                             
                     </div>
                 </div>
-                <?php if($order['order_status'] === "pending_downpayment") : ?>
+                <?php if($order['order_status'] === "pending_downpayment" && $order['is_cancelled'] == 0) : ?>
                     <div class='order-action'>
                         <p class="info-title">
                             ACTIONS
@@ -293,12 +395,8 @@
                                     <label for="rejection-reason">Reason for rejection</label>
                                     <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
                                 </div>
-                                <div class="on-accept action-input">
-                                    <label for="price">Price for the Order</label>
-                                    <input type="number" name="price" class="price-input" placeholder="₱12131" required>
-                                </div>
                                 <div class="on-click">
-                                    <input type="submit" value="save" class="green-button action-button">
+                                    <input type="submit" value="save" class="green-button action-button" name="reject-order">
                                     <input type="button" value="cancel" class="red-button action-button">
                                 </div>
                             </form>
@@ -314,26 +412,17 @@
 </html>
 <?php
     include_once("../notif.php");
-    if(isset($_POST['is_accepted']) && $_SERVER['REQUEST_METHOD'] === "POST") {
+    if(isset($_POST['reject-order']) && $_SERVER['REQUEST_METHOD'] === "POST") {
         $order_id = $_POST['order_id'];
-        $is_accepted = $_POST['is_accepted'] === 'true' ? true : false;
 
-        if($is_accepted) {
-            $price = $_POST['price'];
-            $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'accepted', order_status = 'pending_downpayment', quoted_price = :price WHERE order_id = :order_id");
-            $stmt->bindParam(':price', $price);
-            $stmt->bindParam(':order_id', $order_id);
-            $stmt->execute();
-            createNotif($order['user_id'], "Your order has been accepted", "/my/user_order_details.php?order-id=" . $order['order_id']);
-        } else {
-            $rejection_reason = $_POST['rejection-reason'];
-            $stmt = $conn->prepare("UPDATE orders SET is_accepted = 'rejected', refusal_reason = :reason WHERE order_id = :order_id");
-            $stmt->bindParam(':reason', $rejection_reason);
-            $stmt->bindParam(':order_id', $order_id);
-            $stmt->execute();
-            createNotif($order['user_id'], "Your order has unfortunately been rejected. Click to see Reason", "/my/user_order_details.php?order-id={$order_id}");
-        }
+        $rejection_reason = $_POST['rejection-reason'];
+        $stmt = $conn->prepare("UPDATE orders SET is_cancelled = 1, refusal_reason = :reason WHERE order_id = :order_id");
+        $stmt->bindParam(':reason', $rejection_reason);
+        $stmt->bindParam(':order_id', $order_id);
+        $stmt->execute();
+        // createNotif($order['user_id'], "Your order has unfortunately been rejected. Click to see Reason", "/my/user_order_details.php?order-id={$order_id}");
         // header("Location: ".$_SERVER['PHP_SELF']);
+        echo "<script>window.location.href = window.location.href</script>";
         // exit();
     }
 ?>

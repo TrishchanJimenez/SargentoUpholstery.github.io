@@ -493,3 +493,21 @@ input[type="number"] {
     transition: 0.4s;
    /* background-color: #c5c5c5; */
 }
+
+.toggle-furniture-display {
+    border: 1px solid #7C7E83;
+    background: black;
+    color: white;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+
+    &:hover {
+        color: black;
+        background-color: white;
+    }
+}
+
+.hidden {
+    display: none;
+}

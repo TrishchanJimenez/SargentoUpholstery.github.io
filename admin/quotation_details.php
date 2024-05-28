@@ -23,8 +23,6 @@
             users U ON Q.customer_id = U.user_id
         WHERE 
             Q.quote_id = :quote_id
-        ORDER BY 
-            Q.created_at DESC
     ";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':quote_id', $quote_id);

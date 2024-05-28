@@ -203,7 +203,6 @@
                             $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
                             $order_status = str_replace("_", "-", $order['prod_status']);
                             $statuses = [
-                                "new-order" => "New Order",
                                 "pending-downpayment" => "Pending Downpayment",
                                 "ready-for-pickup" => "Ready for Pickup",
                                 "in-production" => "In Production",

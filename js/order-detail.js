@@ -3,7 +3,6 @@ if(actionButtons !== null) {
     const acceptOrder = actionButtons.querySelector(' .accept-order');
     const rejectOrder = actionButtons.querySelector(' .reject-order');
 
-    const onAccept = document.querySelector('.on-accept');
     const onReject = document.querySelector('.on-reject');
 
     const formButtons = document.querySelector('.on-click');
@@ -11,47 +10,29 @@ if(actionButtons !== null) {
     const cancelButton = formButtons.querySelector('input[type="button"]');
 
     const rejectionInput = onReject.querySelector('.rejection-input');
-    const priceInput = onAccept.querySelector('.price-input');
 
-    const isAcceptedInput = document.querySelector('[name="is_accepted"]');
     const orderAcceptForm = document.querySelector('#order-accept-form');
 
-    acceptOrder.addEventListener('click', (e) => {
-        priceInput.required = true;
-        rejectionInput.required = false;
-    
-        actionButtons.style.display = "none";
-        onAccept.style.display = "block";
-        formButtons.style.display = "block";
-        isAcceptedInput.value = true;
-        console.log(isAcceptedInput.value);
-    })
-    
     rejectOrder.addEventListener('click', (e) => {
-        priceInput.required = false;
         rejectionInput.required = true;
     
         actionButtons.style.display = "none";
-        onAccept.style.display = "none";
         onReject.style.display = "block";
         formButtons.style.display = "block";
-        isAcceptedInput.value = false;
-        console.log(isAcceptedInput.value);
     })
 
     cancelButton.addEventListener('click', (e) => {
         onReject.style.display = "none";
-        onAccept.style.display = "none";
         formButtons.style.display = "none";
         actionButtons.style.display = "flex";
     })
 
-    orderAcceptForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      isAcceptedInput.value = isAcceptedInput.value === "true" ? true : false;
+    // orderAcceptForm.addEventListener("submit", (e) => {
+    //   e.preventDefault();
+    //   isAcceptedInput.value = isAcceptedInput.value === "true" ? true : false;
 
-      orderAcceptForm.submit();
-    });
+    //   orderAcceptForm.submit();
+    // });
 }
 
 function verifyFullpayment() {
@@ -137,4 +118,14 @@ if (fullpaymentInfo !== null) {
 
     fullpaymentInfo.querySelector('.verify-button').addEventListener('click', verifyFullpayment);
     fullpaymentInfo.querySelector('.reverify-button').addEventListener('click', reverifyFullpayment);
+}
+
+const toggleDisplayFurnitureBtn = document.querySelector( ".toggle-furniture-display");
+if(toggleDisplayFurnitureBtn !== null) {
+    toggleDisplayFurnitureBtn.addEventListener('click', toggleFurnitureDisplay);
+}
+
+function toggleFurnitureDisplay() {
+    const furnitureDisplay = document.querySelector( " .multi-order-information");
+    furnitureDisplay.classList.toggle("hidden");
 }

@@ -21,6 +21,8 @@
         JOIN users O ON Q.customer_id = O.user_id  
         WHERE
             quote_status IN ('pending', 'approved')
+        ORDER
+            BY quote_id DESC
     ";
 
     $stmt = $conn->prepare($quotationSql);
