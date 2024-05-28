@@ -62,6 +62,8 @@
     <link rel="stylesheet" href="/css/set_order_address.css">
     <link rel="stylesheet" href="/css/submit_review.css">
     <script src="/js/my/submit_review.js"></script>
+    <script src="/js/globals.js"></script>
+    <script src="/js/orders.js"></script>
     <title>Order Details - Sargento Upholstery</title>
 </head>
 
@@ -147,25 +149,27 @@
                             <?php
                                 switch ($order['order_status']) {
                                     case "pending_downpayment":
-                                        $enablePickup = ($order['service_type'] == "repair") ? true : false;
+                                        $_SESSION['enablePickup'] = ($order['service_type'] == "repair") ? true : false;
                                         echo '<td>';
-                                        include('set_order_address.php');
+                                        include_once('set_order_address.php');
                                         echo '</td></tr>';
                                         echo '<tr><td>';
-                                        include('upload_proof_of_downpayment.php');
+                                        include_once('upload_proof_of_downpayment.php');
                                         echo '</td>';
                                         break;
                                     case "pending_fullpayment":
                                         echo '<td>';
-                                        include('upload_proof_of_fullpayment.php');
+                                        include_once('upload_proof_of_fullpayment.php');
                                         echo '</td></tr>';
                                         break;
                                     case "out_for_delivery":
-                                        echo '<button class="order-actions__button">Confirm Delivery of Order</button>';
+                                        echo '<td>';
+                                        include_once('confirm_arrival.php');
+                                        echo '</td></tr>';
                                         break;
                                     case "received":
                                         echo '<td>';
-                                        include('submit_review.php');
+                                        include_once('submit_review.php');
                                         echo '</td></tr>';
                                         break;
                                     default:
@@ -179,6 +183,11 @@
             </div>
         </div>
     </div>
-    <script src="/js/globals.js"></script>
 </body>
 </html>
+
+<?php
+    function reloadPage() {
+        echo '<script type="text/javascript"> window.location.reload(); </script>';
+    }
+?>
