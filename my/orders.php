@@ -155,14 +155,14 @@
                                             include_once('set_order_address.php');
                                             echo '</td></tr>';
                                         } else {
-                                            echo 'You have already set the order address.';
+                                            echo 'You have already set the order address. <br>';
                                         }
                                         if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])) {
                                             echo '<tr><td>';
                                             include_once('upload_proof_of_downpayment.php');
                                             echo '</td></tr>';
                                         } else {
-                                            echo 'You have already uploaded a proof of downpayment';
+                                            echo 'You have already uploaded a proof of downpayment. <br>';
                                         }
                                         break;
                                     case "pending_fullpayment":
@@ -171,7 +171,7 @@
                                             include_once('upload_proof_of_fullpayment.php');
                                             echo '</td></tr>';
                                         } else {
-                                            echo 'You have already uploaded a proof of fullpayment';
+                                            echo 'You have already uploaded a proof of fullpayment. <br>';
                                         }
                                         break;
                                     case "out_for_delivery":
@@ -185,11 +185,11 @@
                                             include_once('submit_review.php');
                                             echo '</td></tr>';
                                         } else {
-                                            echo 'You have already submitted a review.';
+                                            echo 'You have already submitted a review. <br>';
                                         }
                                         break;
                                     default:
-                                        echo 'No actions currently available.';
+                                        echo 'No actions currently available. <br>';
                                         break;
                                 }
                             ?>
