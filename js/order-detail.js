@@ -36,17 +36,6 @@ if(actionButtons !== null) {
 }
 
 function verifyFullpayment() {
-    let verificationData = new FormData();
-    verificationData.append('order_id', orderId);
-    verificationData.append('payment_phase', 'downpayment');
-    console.log(verificationData);
-    fetch('../api/payment_update_admin.php', {
-        method: 'POST',
-        body: verificationData })
-        .then(response => response.json())
-        .then(data => {
-            downpaymentVerificationStatus.textContent = data.status;
-        })
 }
 
 function reverifyFullpayment() {
@@ -100,7 +89,7 @@ if (downpaymentInfo !== null) {
         reverifyDownpaymentBtn.addEventListener('click', (e) => {
             let verificationData = new FormData();
             verificationData.append('order_id', orderId);
-            verificationData.append('payment_phase', 'downpayment');
+            verificationData.append('payment_phase', 'fullpayment');
             console.log(verificationData);
             fetch('../api/payment_update_admin.php', {
                 method: 'POST',
@@ -124,7 +113,7 @@ if (fullpaymentInfo !== null) {
             console.log("verify downpayment");
             let verificationData = new FormData();
             verificationData.append("order_id", orderId);
-            verificationData.append("payment_phase", "downpayment");
+            verificationData.append("payment_phase", "fullpayment");
             verificationData.append("is_verified", true);
             console.log(verificationData);
             fetch("/api/payment_update_admin.php", {
@@ -132,7 +121,7 @@ if (fullpaymentInfo !== null) {
                 body: verificationData,
             })
                 .then((response) => {
-                    // console.log(response.text());
+                    console.log(response.text());
                     return response.json();
                 })
                 .then((data) => {
@@ -164,7 +153,20 @@ if (fullpaymentInfo !== null) {
                 });
         });
     }
-    fullpaymentInfo.querySelector('.accept-verification').addEventListener('click', verifyFullpayment);
+    fullpaymentInfo.querySelector('.accept-verification').addEventListener('click', () => {
+        let verificationData = new FormData();
+        verificationData.append("order_id", orderId);
+        verificationData.append("payment_phase", "fullpayment");
+        console.log(verificationData);
+        fetch("../api/payment_update_admin.php", {
+            method: "POST",
+            body: verificationData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                downpaymentVerificationStatus.textContent = data.status;
+            });
+    });
     fullpaymentInfo.querySelector('.reject-verification').addEventListener('click', reverifyFullpayment);
 }
 

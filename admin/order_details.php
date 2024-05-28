@@ -336,7 +336,7 @@
                             <div class="info">
                                 <span class="info-name">PROOF OF PAYMENT</span>
                                 <span class="info-detail">
-                                    <img src="<?= $order["fullpayment_img"] ?>" alt="">
+                                    <img src="<?= '/' . $order["fullpayment_img"] ?>" alt="">
                                 </span>
                             </div>
                             <?php if($order['fullpayment_verification_status'] === "waiting_for_verification") : ?>
