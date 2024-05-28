@@ -225,38 +225,19 @@
         return $data;
     }
 
-    function uploadReferenceImage() : string {
+    function uploadReferenceImage($name, $temp_name) : string {
         $target_dir = "uploadedImages/referenceImages/";
-        $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
+        $target_file = $target_dir . basename($name);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        // Check if file is a valid image
-        $check = getimagesize($_FILES["ref_img"]["tmp_name"]);
-        if($check === false) {
-            // Invalid image file
-            return '';
-        }
 
         // Check if file already exists
         if (file_exists($target_file)) {
             // File already exists
-            return '';
-        }
-
-        // Check file size
-        if ($_FILES["ref_img"]["size"] > 500000) {
-            // File size exceeds limit
-            return '';
-        }
-
-        // Allow only specific file formats
-        if($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif") {
-            // Invalid file format
-            return '';
+            return $target_file;
         }
 
         // Move uploaded file to target directory
-        if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
+        if (move_uploaded_file($temp_name, $target_file)) {
             // File uploaded successfully
             return $target_file;
         } else {
@@ -311,6 +292,9 @@
                 $quantity = $quantities[0];
                 $description = $descriptions[0];
                 $ref_img = $ref_imgs['name'][0] ?? '';
+                if (!empty($ref_img) && $ref_imgs['error'][0] == 0) {
+                    $ref_img = uploadReferenceImage($ref_img, $ref_imgs['tmp_name'][0]);
+                }
 
                 $dimensions = $_POST['dimensions'][0];
                 $materials = $_POST['materials'][0];
@@ -320,23 +304,6 @@
                 if(!empty($dimensions) || !empty($materials) || !empty($fabric) || !empty($color)) {
                     $custom_id = insertCustom($dimensions, $materials, $fabric, $color);
                 }
-
-                // if (isset($_FILES["ref_img"]) && $_FILES["ref_img"]["error"] == 0) {
-                //     $target_dir = "uploadedImages/referenceImages/";
-                //     $target_file = $target_dir . basename($_FILES["ref_img"]["name"]);
-                //     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-                //     // Check if $uploadOk is set to 0 by an error
-                //     if ($uploadOk) {
-                //         if (move_uploaded_file($_FILES["ref_img"]["tmp_name"], $target_file)) {
-                //             $ref_img_path = $target_file;
-                //             echo "The file ". basename( $_FILES["ref_img"]["name"]). " has been uploaded.";
-                //         } else {
-                //             echo "Sorry, there was an error uploading your file.";
-                //             $uploadOk = 0;
-                //         }
-                //     }
-                // }
 
                 $query = "
                     INSERT INTO
@@ -402,6 +369,10 @@
                     $description = $descriptions[$i];
                     $ref_img = $ref_imgs['name'][$i];
 
+                    if (!empty($ref_img) && $ref_imgs['error'][$i] == 0) {
+                        $ref_img = uploadReferenceImage($ref_img, $ref_imgs['tmp_name'][$i]);
+                    }
+
                     $dimensions = $_POST['dimensions'][$i];
                     $materials = $_POST['materials'][$i];
                     $fabric = $_POST['fabric'][$i];
@@ -452,7 +423,10 @@
                 $furniture_type = $furniture_types[0];
                 $quantity = $quantities[0];
                 $description = $descriptions[0];
-                $ref_img = $ref_imgs['name'][0];
+                $ref_img = $ref_imgs['name'][0] ?? '';
+                if(!empty($ref_img) && $ref_imgs['error'][0] == 0) {
+                    $ref_img = uploadReferenceImage($ref_img, $ref_imgs['tmp_name'][0]);
+                }
 
                 $query = "
                     INSERT INTO
@@ -509,6 +483,9 @@
                     $quantity = $quantities[$i];
                     $description = $descriptions[$i];
                     $ref_img = $ref_imgs['name'][$i];
+                    if (!empty($ref_img) && $ref_imgs['error'][$i] == 0) {
+                        $ref_img = uploadReferenceImage($ref_img, $ref_imgs['tmp_name'][$i]);
+                    }
 
                     $query = "
                         INSERT INTO
@@ -667,7 +644,7 @@
             // Call the createNotif function
             if (createNotif($_SESSION['user_id'], $notif_msg, "/my/user_orders.php")) {
                 // Notification created successfully
-                echo "Notification created successfully";
+                // echo "Notification created successfully";
                 sendAlert("success", "You have successfully placed a quote request. Please await confirmation of order.");
             } else {
                 // Failed to create notification
