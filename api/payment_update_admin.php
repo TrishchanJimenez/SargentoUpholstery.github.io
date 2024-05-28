@@ -70,7 +70,11 @@
             $stmt->execute();
             if($stmt->rowCount() > 0) {
                 // Update successful
-                echo "Downpayment verification status updated to verified";
+                $query = "UPDATE orders SET order_status = 'out_for_delivery' WHERE order_id = :order_id";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':order_id', $order_id);
+                $stmt->execute();
+                echo "Fullpayment verification status updated to verified";
             } else {
                 // Update failed
                 echo "Failed to update downpayment verification status";

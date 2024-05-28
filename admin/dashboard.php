@@ -255,19 +255,17 @@ $ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php } ?>
                         </span>
                     </div>
-                    <?php if(isset($ratings[1]['average_rating'])) : ?>
-                        <p class="sub-category">Repair</p>
-                        <div class="average-rating">
-                            <span class="rating-text"> <?= round($ratings_by_type[1]['average_rating'],2) ?> </span>
-                            <span class="rating-stars">
-                                <?php for ($i = 1; $i <= 5; $i++) { ?>
-                                    <span class="fa fa-star
-                                        <?= $i <= $ratings_by_type[1]['average_rating'] ? 'checked' : '' ?>">
-                                    </span>
-                                <?php } ?>
-                            </span>
-                        </div>
-                    <?php endif ?>
+                    <p class="sub-category">Repair</p>
+                    <div class="average-rating">
+                        <span class="rating-text"> <?= round($ratings_by_type[1]['average_rating'],2) ?> </span>
+                        <span class="rating-stars">
+                            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                <span class="fa fa-star
+                                    <?= $i <= $ratings_by_type[1]['average_rating'] ? 'checked' : '' ?>">
+                                </span>
+                            <?php } ?>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="bottom-charts">

@@ -230,12 +230,13 @@
                                     $include = true;
                                 }
                             }
+                            $item = ucfirst($order['item']);
                             echo "
                             <tr data-id='{$order['order_id']}'>
                                 <td><input type='checkbox' name='' id=''></td>
                                 <td>{$order['order_id']}</td>
                                 <td>{$order['customer_name']}</td>
-                                <td>{$order['item']}</td>
+                                <td>{$item}</td>
                                 <td>{$type}</td>
                                 <td>{$price}</td>
                                 <td>{$date}</td>
