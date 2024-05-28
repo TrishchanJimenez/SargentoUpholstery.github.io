@@ -29,6 +29,25 @@
     margin: 0;
 }
 
+.modal__open {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button--review {
+    background-color: #f39c12;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 60%;
+    height: auto;
+    padding: 2.5vmin;
+    margin: 1.25vmin;
+}
+
 .modal__close {
     cursor: pointer;
 }
@@ -45,6 +64,12 @@
 .form__label {
     font-weight: bold;
     display: block;
+}
+
+.rating__star {
+    width: 50px;
+    height: auto;
+    cursor: pointer;
 }
 
 .form__textarea {

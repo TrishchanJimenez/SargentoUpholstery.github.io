@@ -61,9 +61,6 @@
     <link rel="stylesheet" href="/css/orders.css">
     <link rel="stylesheet" href="/css/set_order_address.css">
     <link rel="stylesheet" href="/css/submit_review.css">
-    <script src="/js/my/submit_review.js"></script>
-    <script src="/js/globals.js"></script>
-    <script src="/js/orders.js"></script>
     <title>Order Details - Sargento Upholstery</title>
 </head>
 
@@ -183,6 +180,9 @@
             </div>
         </div>
     </div>
+    <script src="/js/my/submit_review.js"></script>
+    <script src="/js/globals.js"></script>
+    <script src="/js/orders.js"></script>
 </body>
 </html>
 

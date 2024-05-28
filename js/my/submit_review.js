@@ -77,30 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.modal--review').style.display = 'none';
     };
 
-    // Handle form submission
-    reviewForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const reviewData = new FormData(reviewForm);
-        fetch('/api/submit_review.php', {
-            method: 'POST',
-            body: reviewData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Review submitted successfully!');
-                closeReviewModal();
-                window.location.href = '/testimonials.php';
-            } else {
-                alert('An error occurred while submitting the review. 1');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while submitting the review. 2');
-        });
-    });
-
     // Simulate click to upload image
     window.clickUploadImage = function() {
         reviewImageInput.click();

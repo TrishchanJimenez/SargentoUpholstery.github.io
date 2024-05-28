@@ -42,24 +42,10 @@
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
         // Set the allowed file types and maximum file size (5MB)
-        $allowedTypes = array('jpg', 'jpeg', 'png', 'pdf');
+        $allowedTypes = array('jpg', 'jpeg', 'png');
         $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
         $payment_method = $_POST['payment_method'];
-
-        $query = "
-            UPDATE 
-                `payment` 
-            SET 
-                `fullpayment_method` = :payment_method, 
-                `fullpayment_img` = :targetFilePath 
-            WHERE 
-                `order_id` = :order_id";
-
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
-        $stmt->bindParam(':targetFilePath', $targetFilePath, PDO::PARAM_STR);
-        $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
 
         // Check if the file type is allowed
         if (in_array(strtolower($fileType), $allowedTypes)) {
@@ -67,11 +53,27 @@
             if ($_FILES["proof_upload"]["size"] <= $maxFileSize) {
                 // Move the uploaded file to the target directory
                 if (move_uploaded_file($_FILES["proof_upload"]["tmp_name"], $targetFilePath)) {
-                    echo "<script>alert('The file " . htmlspecialchars($fileName) . " has been uploaded successfully.')</script>";
                     try {
+                        // Write the query
+                        $query = "
+                            UPDATE 
+                                `payment` 
+                            SET 
+                                `fullpayment_method` = :payment_method, 
+                                `fullpayment_img` = :targetFilePath 
+                            WHERE 
+                                `order_id` = :order_id";
+                        // Prepare the query
+                        $stmt = $conn->prepare($query);
+                        $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
+                        $stmt->bindParam(':targetFilePath', $targetFilePath, PDO::PARAM_STR);
+                        $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                        // Execute the query
                         $stmt->execute();
+                        echo '<script type="text/javascript"> alert("You have successfully uploaded a proof of fullpayment.") </script>'; 
                     } catch (PDOException $e) {
-                        echo "<script>alert(" . $e->getMessage() . ")</script>";
+                        // Handle database error
+                        echo "<script>console.log(" . $e->getMessage() . ")</script>";
                     }
                 } else {
                     echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
