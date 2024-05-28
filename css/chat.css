@@ -79,7 +79,7 @@
 
 .chat-window__messages {
     flex: 1;
-    padding: 10px;
+    padding: 3px;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
