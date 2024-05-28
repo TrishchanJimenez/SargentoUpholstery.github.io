@@ -1,13 +1,10 @@
 // Select the confirmation button
-const confirmDeliveryBtn = document.querySelector('.order-actions__confirm-delivery-button');
+const confirmBtn = document.querySelector('.form__submit--confirm');
 
 // Add click event listener to the confirmation button
-confirmDeliveryBtn.addEventListener('click', () => {
-    // Get the order ID from the HTML attribute or from a hidden input field
-    const orderId = /* Code to get the order ID */;
-
+confirmBtn.addEventListener('click', () => {
     // Make an AJAX request to the PHP script
-    fetch('../my/confirm_delivery.php', {
+    fetch('../my/confirm_arrival.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,6 +18,7 @@ confirmDeliveryBtn.addEventListener('click', () => {
             // Display a success message to the user
             alert('Order delivery confirmed successfully!');
             // You can also redirect the user to another page or perform any other action
+            location.reload();
         } else {
             // Display an error message to the user
             alert('Failed to confirm order delivery. Please try again later.');

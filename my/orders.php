@@ -22,15 +22,19 @@
             o.*, 
             q.*,
             p.*,
+            r.*,
             a.address
         FROM 
             `orders` o
         INNER JOIN 
             `quotes` q
             ON o.quote_id = q.quote_id
-        INNER JOIN 
+        LEFT JOIN 
             `payment` p
             ON p.order_id = :order_id
+        LEFT JOIN
+            `reviews` r
+            ON r.order_id = :order_id
         LEFT JOIN 
             `addresses` a
             ON o.del_address_id = a.address_id
@@ -61,7 +65,6 @@
     <link rel="stylesheet" href="/css/orders.css">
     <link rel="stylesheet" href="/css/set_order_address.css">
     <link rel="stylesheet" href="/css/submit_review.css">
-    <script src="/js/my/submit_review.js"></script>
     <title>Order Details - Sargento Upholstery</title>
 </head>
 
@@ -143,30 +146,47 @@
                         <div class="orders__title">
                             <h1>Order Actions</h1>
                         </div>  
-                        <tr>
                             <?php
                                 switch ($order['order_status']) {
                                     case "pending_downpayment":
-                                        $enablePickup = ($order['service_type'] == "repair") ? true : false;
-                                        echo '<td>';
-                                        include('set_order_address.php');
-                                        echo '</td></tr>';
-                                        echo '<tr><td>';
-                                        include('upload_proof_of_downpayment.php');
-                                        echo '</td>';
+                                        $_SESSION['enablePickup'] = ($order['service_type'] == "repair") ? true : false;
+                                        if(!isset($order['del_method']) && !isset($order['del_address_id'])) {
+                                            echo '<tr><td>';
+                                            include_once('set_order_address.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already set the order address.';
+                                        }
+                                        if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])) {
+                                            echo '<tr><td>';
+                                            include_once('upload_proof_of_downpayment.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already uploaded a proof of downpayment';
+                                        }
                                         break;
                                     case "pending_fullpayment":
-                                        echo '<td>';
-                                        include('upload_proof_of_fullpayment.php');
-                                        echo '</td></tr>';
+                                        if(!isset($order['fullpayment_method']) && !isset($order['fullpayment_img'])) {
+                                            echo '<tr><td>';
+                                            include_once('upload_proof_of_fullpayment.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already uploaded a proof of fullpayment';
+                                        }
                                         break;
                                     case "out_for_delivery":
-                                        echo '<button class="order-actions__button">Confirm Delivery of Order</button>';
+                                        echo '<tr><td>';
+                                        include_once('confirm_arrival.php');
+                                        echo '</td></tr>';
                                         break;
                                     case "received":
-                                        echo '<td>';
-                                        include('submit_review.php');
-                                        echo '</td></tr>';
+                                        if(!isset($order['review_id'])) {
+                                            echo '<tr><td>';
+                                            include_once('submit_review.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already submitted a review.';
+                                        }
                                         break;
                                     default:
                                         echo 'No actions currently available.';
@@ -179,6 +199,14 @@
             </div>
         </div>
     </div>
+    <script src="/js/my/submit_review.js"></script>
     <script src="/js/globals.js"></script>
+    <script src="/js/orders.js"></script>
 </body>
 </html>
+
+<?php
+    function reloadPage() {
+        echo '<script type="text/javascript"> window.location.reload(); </script>';
+    }
+?>

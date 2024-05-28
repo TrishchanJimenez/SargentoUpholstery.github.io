@@ -22,8 +22,8 @@
     $sql = "
         SELECT
             U.name,
-            IF(O.order_type = 'mto', 'MTO', 'Repair') AS order_type,
-            O.furniture_type,
+            IF(Q.service_type = 'mto', 'MTO', 'Repair') AS order_type,
+            Q.furniture_type,
             R.review_id,
             R.comment,
             R.date,
@@ -35,6 +35,8 @@
             reviews R 
         JOIN 
             orders O ON R.order_id = O.order_id
+        JOIN
+            quotes Q ON O.quote_id = Q.quote_id
         JOIN 
             users U ON U.user_id = O.user_id
         LEFT JOIN 
