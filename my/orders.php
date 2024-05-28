@@ -21,17 +21,21 @@
         SELECT 
             o.*, 
             q.*,
-            p.*,
+            pa.*,
+            pi.*,
             r.*,
-            a.address
+            a.address AS del_address
         FROM 
             `orders` o
         INNER JOIN 
             `quotes` q
             ON o.quote_id = q.quote_id
         LEFT JOIN 
-            `payment` p
-            ON p.order_id = :order_id
+            `payment` pa
+            ON pa.order_id = :order_id
+        LEFT JOIN
+            `pickup` pi
+            ON pi.order_id = :order_id
         LEFT JOIN
             `reviews` r
             ON r.order_id = :order_id
@@ -53,6 +57,19 @@
         echo "Order not found or you do not have permission to view this quote.";
         exit;
     }
+
+    $query_pickup = "
+        SELECT 
+            `address`
+        FROM 
+            `addresses`
+        WHERE
+            `address_id` = :pickup_address_id
+    ";
+    $stmt_pickup = $conn->prepare($query_pickup);
+    $stmt_pickup->bindParam(':pickup_address_id', $order['pickup_address_id'], PDO::PARAM_INT);
+    $stmt_pickup->execute();
+    $pickup = $stmt_pickup->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +117,7 @@
                         </tr>
                         <tr>
                             <td class="orders__td"> <?= ucwords(str_replace('_', ' ', html_entity_decode($order["pickup_method"] ?? 'N/A'))) ?> </td>
-                            <td class="orders__td"> <?= ucwords(html_entity_decode($order["pickup_address"] ?? 'N/A')) ?> </td>
+                            <td class="orders__td"> <?= ucwords(html_entity_decode($pickup["address"] ?? 'N/A')) ?> </td>
                         </tr>
                         <?php endif ?>
                         <tr>
@@ -154,15 +171,11 @@
                                             echo '<tr><td>';
                                             include_once('set_order_address.php');
                                             echo '</td></tr>';
-                                        } else {
-                                            echo 'You have already set the order address. <br>';
                                         }
                                         if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])) {
                                             echo '<tr><td>';
                                             include_once('upload_proof_of_downpayment.php');
                                             echo '</td></tr>';
-                                        } else {
-                                            echo 'You have already uploaded a proof of downpayment. <br>';
                                         }
                                         break;
                                     case "pending_fullpayment":
@@ -170,8 +183,6 @@
                                             echo '<tr><td>';
                                             include_once('upload_proof_of_fullpayment.php');
                                             echo '</td></tr>';
-                                        } else {
-                                            echo 'You have already uploaded a proof of fullpayment. <br>';
                                         }
                                         break;
                                     case "out_for_delivery":
@@ -184,8 +195,6 @@
                                             echo '<tr><td>';
                                             include_once('submit_review.php');
                                             echo '</td></tr>';
-                                        } else {
-                                            echo 'You have already submitted a review. <br>';
                                         }
                                         break;
                                     default:
