@@ -6,12 +6,13 @@
         $is_verified = $_POST['is_verified'] === "true" ? true : false;     
         $order_id = $_POST['order_id'];
 
-        $query = "SELECT user_id, order_type FROM orders WHERE order_id = :order_id";
+        $query = "SELECT user_id, service_type FROM orders JOIN quotes USING(quote_id) WHERE order_id = :order_id";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':order_id', $order_id);
         $stmt->execute();
-        $order_type = $stmt->fetch(PDO::FETCH_ASSOC)['order_type'];
-        $user_id = $stmt->fetch(PDO::FETCH_ASSOC)['user_id'];
+        $order_data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $order_type = $order_data['service_type'];
+        $user_id = $order_data['user_id'];
         
         if($payment_phase === "downpayment" && $is_verified) {
             // Update downpayment verification status to verified

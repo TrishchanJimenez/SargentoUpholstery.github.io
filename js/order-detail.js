@@ -71,44 +71,46 @@ if (downpaymentInfo !== null) {
     const reverifyDownpaymentBtn = document.querySelector('.downpayment .reject-verification');
     const downpaymentVerificationStatus = document.querySelector('.downpayment-status');
     
-    verifyDownpaymentBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        console.log("verify downpayment");
-        let verificationData = new FormData();
-        verificationData.append("order_id", orderId);
-        verificationData.append("payment_phase", "downpayment");
-        verificationData.append("is_verified", true);
-        console.log(verificationData);
-        fetch("/api/payment_update_admin.php", {
-            method: "POST",
-            body: verificationData,
-        })
-        .then((response) => {
-            // console.log(response.text());
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            downpaymentVerificationStatus.textContent = data.payment_status;
-            document.querySelector(".verification-buttons.downpayment").display = "none";
-            document.querySelector(".payment-status").dataset.payment = "partially-paid";
-            document.querySelector(".payment-status").innerText = "Partially Paid";
-        });
-    });
-
-    reverifyDownpaymentBtn.addEventListener('click', (e) => {
-        let verificationData = new FormData();
-        verificationData.append('order_id', orderId);
-        verificationData.append('payment_phase', 'downpayment');
-        console.log(verificationData);
-        fetch('../api/payment_update_admin.php', {
-            method: 'POST',
-            body: verificationData })
-            .then(response => response.json())
-            .then(data => {
-                downpaymentVerificationStatus.textContent = data.status;
+    if(verifyDownpaymentBtn !== null) {
+        verifyDownpaymentBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log("verify downpayment");
+            let verificationData = new FormData();
+            verificationData.append("order_id", orderId);
+            verificationData.append("payment_phase", "downpayment");
+            verificationData.append("is_verified", true);
+            console.log(verificationData);
+            fetch("/api/payment_update_admin.php", {
+                method: "POST",
+                body: verificationData,
             })
-    });
+            .then((response) => {
+                // console.log(response.text());
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                downpaymentVerificationStatus.textContent = data.payment_status;
+                document.querySelector(".verification-buttons.downpayment").display = "none";
+                document.querySelector(".payment-status").dataset.payment = "partially-paid";
+                document.querySelector(".payment-status").innerText = "Partially Paid";
+            });
+        });
+
+        reverifyDownpaymentBtn.addEventListener('click', (e) => {
+            let verificationData = new FormData();
+            verificationData.append('order_id', orderId);
+            verificationData.append('payment_phase', 'downpayment');
+            console.log(verificationData);
+            fetch('../api/payment_update_admin.php', {
+                method: 'POST',
+                body: verificationData })
+                .then(response => response.json())
+                .then(data => {
+                    downpaymentVerificationStatus.textContent = data.status;
+                })
+        });
+    }
 }
 
 if (fullpaymentInfo !== null) {
@@ -116,8 +118,54 @@ if (fullpaymentInfo !== null) {
     const reverifyFullpaymentBtn = document.querySelector('.fullpayment .reject-verification');
     const fullpaymentVerificationStatus = document.querySelector('.fullpayment-status');
 
-    fullpaymentInfo.querySelector('.verify-button').addEventListener('click', verifyFullpayment);
-    fullpaymentInfo.querySelector('.reverify-button').addEventListener('click', reverifyFullpayment);
+    if (verifyFullpaymentBtn !== null) {
+        verifyFullpaymentBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            console.log("verify downpayment");
+            let verificationData = new FormData();
+            verificationData.append("order_id", orderId);
+            verificationData.append("payment_phase", "downpayment");
+            verificationData.append("is_verified", true);
+            console.log(verificationData);
+            fetch("/api/payment_update_admin.php", {
+                method: "POST",
+                body: verificationData,
+            })
+                .then((response) => {
+                    // console.log(response.text());
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    downpaymentVerificationStatus.textContent =
+                        data.payment_status;
+                    document.querySelector(
+                        ".verification-buttons.downpayment"
+                    ).display = "none";
+                    document.querySelector(".payment-status").dataset.payment =
+                        "partially-paid";
+                    document.querySelector(".payment-status").innerText =
+                        "Partially Paid";
+                });
+        });
+
+        reverifyDownpaymentBtn.addEventListener("click", (e) => {
+            let verificationData = new FormData();
+            verificationData.append("order_id", orderId);
+            verificationData.append("payment_phase", "downpayment");
+            console.log(verificationData);
+            fetch("../api/payment_update_admin.php", {
+                method: "POST",
+                body: verificationData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    downpaymentVerificationStatus.textContent = data.status;
+                });
+        });
+    }
+    fullpaymentInfo.querySelector('.accept-verification').addEventListener('click', verifyFullpayment);
+    fullpaymentInfo.querySelector('.reject-verification').addEventListener('click', reverifyFullpayment);
 }
 
 const toggleDisplayFurnitureBtn = document.querySelector( ".toggle-furniture-display");

@@ -29,7 +29,7 @@
     require_once('../database_connection.php');
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--upod"])) {
         // Define the target directory for uploads
-        $targetDir = "/uploadedImages/paymentImages/down/";
+        $targetDir = "../uploadedImages/paymentImages";
         
         // Create the uploads directory if it doesn't exist
         if (!file_exists($targetDir)) {
@@ -38,7 +38,8 @@
 
         // Get the uploaded file information
         $fileName = basename($_FILES["proof_upload"]["name"]);
-        $targetFilePath = $targetDir . $fileName;
+        $targetFilePath = $targetDir . '/' . $fileName;
+        $dbpath = "uploadedImages/paymentImages/" . $fileName;
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
         // Set the allowed file types and maximum file size (5MB)
@@ -60,13 +61,14 @@
                                 `payment` 
                             SET 
                                 `downpayment_method` = :payment_method, 
-                                `downpayment_img` = :targetFilePath 
+                                `downpayment_img` = :targetFilePath,
+                                `downpayment_verification_status` = 'waiting_for_verification'
                             WHERE 
                                 `order_id` = :order_id";
                         // Prepare the query
                         $stmt = $conn->prepare($query);
                         $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
-                        $stmt->bindParam(':targetFilePath', $targetFilePath, PDO::PARAM_STR);
+                        $stmt->bindParam(':targetFilePath', $dbpath, PDO::PARAM_STR);
                         $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
                         // Execute the query
                         $stmt->execute();

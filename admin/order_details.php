@@ -306,7 +306,7 @@
                                     <div class='info'>
                                         <span class='info-name'>PROOF OF PAYMENT</span>
                                         <span class='info-detail'>
-                                            <img src='{$order['downpayment_img']}' alt=''>
+                                            <img src='/{$order['downpayment_img']}' alt=''>
                                         </span>
                                     </div>
                                     {$verification_buttons}
@@ -324,13 +324,13 @@
                             <div class="info">
                                 <span class="info-name">METHOD</span>
                                 <span class="info-detail">
-                                    <?= $order["fullpayment_method"] ?>
+                                    <?= ucfirst($order["fullpayment_method"]) ?>
                                 </span>
                             </div>
                             <div class="info">
                                 <span class="info-name">VERIFICATION STATUS</span>
                                 <span class="info-detail">
-                                    <?= $order["fullpayment_verification_status"]  ?>
+                                    <?= ucfirst(str_replace('_', ' ', $order["fullpayment_verification_status"]))  ?>
                                 </span>
                             </div>
                             <div class="info">
