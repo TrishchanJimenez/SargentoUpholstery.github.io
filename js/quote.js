@@ -155,10 +155,10 @@ function displayAppropriateInput(event) {
         furnitureContainer.style.display = 'block';
         repairContainer.style.display = 'none';
         disableInputs(repairContainer);
-        
         enableInputs(furnitureContainer);
         if(!changed) {
-            addItemButton.insertAdjacentElement('beforebegin', itemRepairInput);
+            console.log(changed);
+            addItem();
             changed = true;
         }
     } else {
