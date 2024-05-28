@@ -22,6 +22,7 @@
             o.*, 
             q.*,
             p.*,
+            r.*,
             a.address
         FROM 
             `orders` o
@@ -31,6 +32,9 @@
         INNER JOIN 
             `payment` p
             ON p.order_id = :order_id
+        INNER JOIN
+            `reviews` r
+            ON r.order_id = :order_id
         LEFT JOIN 
             `addresses` a
             ON o.del_address_id = a.address_id
@@ -142,32 +146,47 @@
                         <div class="orders__title">
                             <h1>Order Actions</h1>
                         </div>  
-                        <tr>
                             <?php
                                 switch ($order['order_status']) {
                                     case "pending_downpayment":
                                         $_SESSION['enablePickup'] = ($order['service_type'] == "repair") ? true : false;
-                                        echo '<td>';
-                                        include_once('set_order_address.php');
-                                        echo '</td></tr>';
-                                        echo '<tr><td>';
-                                        include_once('upload_proof_of_downpayment.php');
-                                        echo '</td>';
+                                        if(!isset($order['del_method']) && !isset($order['del_address_id'])) {
+                                            echo '<tr><td>';
+                                            include_once('set_order_address.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already set the order address.';
+                                        }
+                                        if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])) {
+                                            echo '<tr><td>';
+                                            include_once('upload_proof_of_downpayment.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already uploaded a proof of downpayment';
+                                        }
                                         break;
                                     case "pending_fullpayment":
-                                        echo '<td>';
-                                        include_once('upload_proof_of_fullpayment.php');
-                                        echo '</td></tr>';
+                                        if(!isset($order['fullpayment_method']) && !isset($order['fullpayment_img'])) {
+                                            echo '<tr><td>';
+                                            include_once('upload_proof_of_fullpayment.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already uploaded a proof of fullpayment';
+                                        }
                                         break;
                                     case "out_for_delivery":
-                                        echo '<td>';
+                                        echo '<tr><td>';
                                         include_once('confirm_arrival.php');
                                         echo '</td></tr>';
                                         break;
                                     case "received":
-                                        echo '<td>';
-                                        include_once('submit_review.php');
-                                        echo '</td></tr>';
+                                        if(!isset($order['review_id'])) {
+                                            echo '<tr><td>';
+                                            include_once('submit_review.php');
+                                            echo '</td></tr>';
+                                        } else {
+                                            echo 'You have already submitted a review.';
+                                        }
                                         break;
                                     default:
                                         echo 'No actions currently available.';
