@@ -54,7 +54,7 @@
     height: auto;
     border: 1px solid #bbb;
     padding: 2.5vmin;
-    font-size: 3.75vmin;
+    font-size: 100%;
 }
 
 .onq__th,
@@ -81,7 +81,6 @@
 .onq__td {
     height: 15vh;
     text-align: center;
-    font-size: 3.75vmin;
 }
 
 .onq__td--alt,
