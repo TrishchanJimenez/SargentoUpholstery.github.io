@@ -17,7 +17,7 @@
     <?php 
         require_once('header.php');
     ?>
-        <div class="content_container">
+        <div class="content_container" id="terms-and-conditions">
             <h1>Terms and Conditions</h1>
             <div class="divider"></div>
             <div class="terms_container">
@@ -129,56 +129,87 @@
                 We believe in fair and transparent resolutions.
                 Your satisfaction remains our priority.
             </p>
-            <p>
-                <span class="section-title">10. Privacy and Data</span>
-            </p>
+</div>
+</div>
+
+            <div class="content_container" id="data-privacy">
+                <h1>Data Privacy</h1>
+                <div class="divider"></div>
+                <div class="terms_container">
             <p>At Sargento Upholsery, we take your privacy seriously. Here’s how we handle your personal information:</p>
-            <ul>
-                <li>
-                    <span class="section-title">Collection and Use:</span>
-                    We collect necessary information to provide our services. This includes details about the furniture item, your contact information, and any specific repair requests.
-                    Your data is used solely for repair-related purposes. We do not share it with third parties without your consent.
-                    Our team adheres to strict confidentiality standards.
-                </li>
-                <li>
-                    <span class="section-title">Security Measures:</span>
-                    We implement industry-standard security measures to protect your data from unauthorized access, loss, or misuse.
-                    Our secure servers and encrypted databases ensure that your information remains confidential.
-                    Regular security audits and updates are part of our commitment to safeguarding your data.
-                </li>
-                <li>
-                    <span class="section-title">Retention Period:</span>
-                    We retain your information only as long as necessary to fulfill our contractual obligations or legal requirements.
-                    Once the repair process is complete, we securely dispose of any unnecessary data.
-                </li>
-                <li>
-                    <span class="section-title">Marketing Communications:</span>
-                    We may occasionally send you relevant updates, promotions, or newsletters related to our services.
-                    You have the option to opt out of marketing communications at any time.
-                </li>
-                <li>
-                    <span class="section-title">Cookies and Tracking:</span>
-                    Our website may use cookies to enhance your browsing experience.
-                    Cookies help us analyze website traffic, improve functionality, and personalize content.
-                    You can adjust your browser settings to manage or disable cookies.
-                </li>
-                <li>
-                    <span class="section-title">Third-Party Services:</span>
-                    We may use third-party tools (e.g., payment gateways) to process transactions.
-                    These services have their own privacy policies, and we encourage you to review them.
-                </li>
-                <li>
-                    <span class="section-title">Your Rights:</span>
-                    You have the right to access, correct, or delete your personal information.
-                    If you wish to exercise these rights, please contact us.
-                </li>
-            </ul>
+            <p>
+                <span class="section-title">1.Collection and Use:</span>
+            </p>
+            <p>
+            We collect necessary information to provide our services. This includes details about the furniture item, your contact information, and any specific repair requests.
+                Your data is used solely for repair-related purposes. We do not share it with third parties without your consent.
+                Our team adheres to strict confidentiality standards.
+            </p>
+            <p>
+                <span class="section-title">2.Security Measures:</span>
+
+            </p>
+            <p>
+            We implement industry-standard security measures to protect your data from unauthorized access, loss, or misuse.
+                Our secure servers and encrypted databases ensure that your information remains confidential.
+                Regular security audits and updates are part of our commitment to safeguarding your data.
+            </p>
+            <p>
+                <span class="section-title">3.Retention Period:</span>
+
+            </p>
+            <p>
+            We retain your information only as long as necessary to fulfill our contractual obligations or legal requirements.
+                Once the repair process is complete, we securely dispose of any unnecessary data.
+            </p>
+            <p>
+                <span class="section-title">4.Marketing Communications:</span>
+
+            </p>
+            <p>
+            We may occasionally send you relevant updates, promotions, or newsletters related to our services.
+                You have the option to opt out of marketing communications at any time.
+            </p>
+            <p>
+                <span class="section-title">5.Cookies and Tracking:</span>
+
+            </p>
+            <p>
+            Our website may use cookies to enhance your browsing experience.
+                Cookies help us analyze website traffic, improve functionality, and personalize content.
+                You can adjust your browser settings to manage or disable cookies.
+            </p>
+            <p>
+                <span class="section-title">6.Third-Party Services:</span>
+
+            </p>
+            <p>
+            We may use third-party tools (e.g., payment gateways) to process transactions.
+                These services have their own privacy policies, and we encourage you to review them.
+            </p>
+            <p>
+                <span class="section-title">7.Your Rights:</span>
+
+            </p>
+            <p> You have the right to access, correct, or delete your personal information.
+                If you wish to exercise these rights, please contact us.
+            </p>
             <p>
                 By using our services, you acknowledge and agree to the terms outlined in this privacy and data section. Your trust is essential to us, and we are committed to maintaining the highest standards of privacy protection.
             </p>
+            </div>
 
             </div>
         </div>
+        <style>
+            #terms-and-conditions, #data-privacy {
+                display: none;
+            }
+        </style>
+        <script>
+            const hash = (location.href.split('#')[1]);
+            document.querySelector((hash === 'terms-and-conditions') ? '#terms-and-conditions' : '#data-privacy').style.display = 'flex';
+        </script>
     <?php
         require_once('footer.php');
     ?>

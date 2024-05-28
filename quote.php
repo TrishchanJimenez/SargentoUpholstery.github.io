@@ -181,12 +181,12 @@
 
                         <div class="quote-form__input-container quote-form__input-container--checkbox">
                             <input class="quote-form__input quote-form__input--checkbox" type="checkbox" id="legal-terms" name="legal-terms" required>
-                            <label class="quote-form__label" for="legal-terms">I have read and agree to the <a href="/legal-agreements#terms-and-conditions" target="_blank">Terms and Conditions</a></label>
+                            <label class="quote-form__label" for="legal-terms">I have read and agree to the <a href="/legal-agreements.php#terms-and-conditions" target="_blank">Terms and Conditions</a></label>
                         </div>
 
                         <div class="quote-form__input-container quote-form__input-container--checkbox">
                             <input class="quote-form__input quote-form__input--checkbox" type="checkbox" id="legal-data" name="legal-data" required>
-                            <label class="quote-form__label" for="legal-data">I have read and agree to the <a href="/legal-agreements#data-privacy" target="_blank">Data Privacy Notice</a></label>
+                            <label class="quote-form__label" for="legal-data">I have read and agree to the <a href="/legal-agreements.php#data-privacy" target="_blank">Data Privacy Notice</a></label>
                         </div>
 
                         <!-- Submit Button -->
