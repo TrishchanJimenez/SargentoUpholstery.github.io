@@ -29,10 +29,10 @@
         INNER JOIN 
             `quotes` q
             ON o.quote_id = q.quote_id
-        INNER JOIN 
+        LEFT JOIN 
             `payment` p
             ON p.order_id = :order_id
-        INNER JOIN
+        LEFT JOIN
             `reviews` r
             ON r.order_id = :order_id
         LEFT JOIN 
