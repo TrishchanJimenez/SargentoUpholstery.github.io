@@ -32,32 +32,36 @@
             <button class="onq__tab-button onq__tab-button--quotes">All Quotes</button>
             <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
-        <div class="onq__tab onq__tab--quotes">
-            <?php
-                $query = "SELECT * FROM `quotes` WHERE `customer_id` = :customer_id";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                $stmt->execute();
-                $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            ?>
-            <table class="onq__table">
-                <thead>
-                    <tr>
-                        <th class="onq__th onq__th--quote onq__th--title" colspan="6">All Quotes</th>
+        <div class="onq__tab   --quotes">
+            <table class="onq__table   --quotes">
+                <thead class="onq__thead   --quotes">
+                    <tr class="onq__tr   --quotes">
+                        <th class="onq__th   --quotes" id="onq__th-title" colspan="6">All Quotes</th>
                     </tr>
                 </thead>
-                <thead>
-                    <tr>
-                        <th class="onq__th--corner">Quote ID</th>
-                        <th class="onq__th onq__th--quote">Furniture Type</th>
-                        <th class="onq__th onq__th--quote">Service Type</th>
-                        <th class="onq__th onq__th--quote">Quantity</th>
-                        <th class="onq__th onq__th--quote">Status</th>
-                        <th class="onq__th--corner"></th>
+                <!-- Table headers of all quotes -->
+                <thead class="onq__thead   --quotes">
+                    <tr class="onq__tr   --quotes">
+                        <th class="onq__th   onq__tc   --quotes">Quote ID</th>
+                        <th class="onq__th   --quotes">Furniture Type</th>
+                        <th class="onq__th   --quotes">Service Type</th>
+                        <th class="onq__th   --quotes">Quantity</th>
+                        <th class="onq__th   --quotes">Status</th>
+                        <th class="onq__th   onq__tc   --quotes"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="onq__tbody   --quotes">
                     <?php
+                        // : Write the query
+                        $query = "SELECT * FROM `quotes` WHERE `customer_id` = :customer_id";
+                        // : Prepare the query
+                        $stmt = $conn->prepare($query);
+                        $stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
+                        // : Execute the query
+                        $stmt->execute();
+                        $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        // DESC: $quotes is an associative array that holds
+
                         if($quotes) {
                             $i = 0;
                             foreach ($quotes as $row) {
@@ -87,7 +91,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="onq__tab onq__tab--orders">
+        <div class="onq__tab   onq__tab--orders">
             <?php
                 $query = "
                     SELECT 
