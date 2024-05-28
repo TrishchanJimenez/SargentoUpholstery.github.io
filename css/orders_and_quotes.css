@@ -7,13 +7,17 @@
     flex-direction: column;
 }
 
+.onq__title {
+    margin: 7.5vmin;
+    text-align: center;
+}
+
 .onq__tab-button-container {
     width: 90%;
     height: auto;
     display: flex;
     justify-content: center;
-    margin: 5%;
-    margin-bottom: 0;
+    margin: 0 5%;
 }
 
 .onq__tab-button {
@@ -53,6 +57,12 @@
     font-size: 100%;
 }
 
+.onq__th,
+.onq__th--corner {
+    background-color: #555;
+    color: white;
+}
+
 .onq__th--quote {
     width: calc(85%/4);
 }
@@ -64,11 +74,18 @@
 .onq__th--title {
     padding: 2.5vmin;
     font-size: xx-large;
+    background-color: #333;
+    color: white;
 }
 
 .onq__td {
     height: 15vh;
     text-align: center;
+}
+
+.onq__td--alt,
+.onq__td--edge {
+    background-color: #eee;
 }
 
 .onq__td--quote {

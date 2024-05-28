@@ -65,9 +65,9 @@
                                 echo '
                                     <tr>
                                         <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quote_id"]) . '</td>
-                                        <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--alt onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
+                                        <td class="onq__td onq__td--alt onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">
@@ -99,6 +99,8 @@
                             USING (quote_id)
                     WHERE 
                         `user_id` = :user_id
+                    ORDER BY
+                        `last_updated` DESC
                 ";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -131,12 +133,12 @@
                                 $i++;
                                 echo '
                                     <tr>
-                                        <td class="onq__td--edge">' . htmlspecialchars($row["order_id"]) . '</td>
-                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) . '</td>
+                                        <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
+                                        <td class="onq__td onq__td--alt onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["del_method"] ?? 'N/A'))) . '</td>
-                                        <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quoted_price"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quoted_price"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["order_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="orders.php?order_id=' . htmlspecialchars($row["order_id"]) . '">
