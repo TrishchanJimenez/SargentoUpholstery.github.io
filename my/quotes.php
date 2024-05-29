@@ -145,7 +145,7 @@
                                     </td>
                                 </tr>
                             <?php endif; ?>
-                            <?php if($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "accepted"): ?>
+                            <?php if($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "rejected" && $quote['quote_status'] != "accepted"): ?>
                                 <tr>
                                     <td class="td--top   td--actions">
                                         <button class="quote-actions__cancel   quote-actions__btn" onclick="openModal('cancel')">Cancel Order</button>
@@ -163,51 +163,110 @@
                 </div>
                 <div class="quote-items__wrapper">
                     <?php
-                        $query = "SELECT * FROM `items` WHERE `quote_id` = :quote_id";
+                        $items_per_page = 5;
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        $offset = ($page - 1) * $items_per_page;
+                    
+                        $query = "SELECT * FROM `items` WHERE `quote_id` = :quote_id LIMIT :limit OFFSET :offset";
                         $stmt = $conn->prepare($query);
                         $stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
+                        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
                         $stmt->execute();
-
                         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        $query_total = "SELECT COUNT(*) as total FROM `items` WHERE `quote_id` = :quote_id";
+                        $stmt_total = $conn->prepare($query_total);
+                        $stmt_total->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
+                        $stmt_total->execute();
+                        $total_items = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'];
+                        $total_pages = ceil($total_items / $items_per_page);
                     ?>
-                    <table class="quote-items">
-                        <thead class="quote-items__thead">
-                            <tr class="quote-items__tr quote-items__tr--header">
-                                <th class="quote-items__th">#</th>
-                                <th class="quote-items__th">Furniture Type</th>
-                                <th class="quote-items__th">Description</th>
-                                <th class="quote-items__th">Quantity</th>
-                                <th class="quote-items__th">Price</th>
-                                <th class="quote-items__th">Reference Image</th>
-                            </tr>
-                        </thead>
-                        <tbody class="quote-items__tbody">
-                            <?php if ($stmt->rowCount() > 0): ?>
-                                <?php foreach ($items as $i => $item): ?>
-                                    <tr class="quote-items__tr">
-                                        <td class="quote-items__td"> <?= $i + 1 ?></td>
-                                        <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
-                                        <td class="quote-items__td"> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
-                                        <td class="quote-items__td"> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
-                                        <td class="quote-items__td"> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
-                                        <td class="quote-items__td"> 
-                                        <?php if (!empty($item["item_img_path"])): ?>
-                                            <img src="<?= htmlspecialchars($item["item_img_path"]) ?>" alt="Item image">
-                                        <?php else: ?>
-                                            None.
-                                        <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr class="quote-items__tr">
-                                    <td colspan="5">No records found.</td>
+                    <div id="quote-items-container">
+                        <table class="quote-items">
+                            <thead class="quote-items__thead">
+                                <tr class="quote-items__tr quote-items__tr--header">
+                                    <th class="quote-items__th">#</th>
+                                    <th class="quote-items__th">Furniture Type</th>
+                                    <th class="quote-items__th">Description</th>
+                                    <th class="quote-items__th">Quantity</th>
+                                    <th class="quote-items__th">Price</th>
+                                    <th class="quote-items__th">Reference Image</th>
                                 </tr>
+                            </thead>
+                            <tbody class="quote-items__tbody">
+                                <?php if ($stmt->rowCount() > 0): ?>
+                                    <?php foreach ($items as $i => $item): ?>
+                                        <tr class="quote-items__tr">
+                                            <td class="quote-items__td"> <?= $i + 1 ?></td>
+                                            <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
+                                            <td class="quote-items__td"> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
+                                            <td class="quote-items__td"> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
+                                            <td class="quote-items__td"> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
+                                            <td class="quote-items__td"> 
+                                            <?php if (!empty($item["item_ref_img"])): ?>
+                                                <img src="/<?= htmlspecialchars($item["item_ref_img"]) ?>" alt="Item image" width="200px">
+                                            <?php else: ?>
+                                                No image uploaded.
+                                            <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr class="quote-items__tr">
+                                        <td colspan="5">No records found.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination-controls">
+                        <div class="pagination">
+                            <?php if ($page > 1): ?>
+                                <a href="?quote_id=<?= $quote_id ?>&page=<?= $page - 1 ?>">&laquo; Previous</a>
                             <?php endif; ?>
-                        </tbody>
-                    </table>
+
+                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                <a href="?quote_id=<?= $quote_id ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+                            <?php endfor; ?>
+
+                            <?php if ($page < $total_pages): ?>
+                                <a href="?quote_id=<?= $quote_id ?>&page=<?= $page + 1 ?>">Next &raquo;</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for Item Details -->
+    <div class="modal   modal--item-details" id="itemDetailsModal">
+        <div class="modal__content">
+            <span class="modal__close" id="closeItemDetails">&times;</span>
+            <h2 class="modal__title">Item Details</h2>
+            <table class="modal__table">
+                <tr>
+                    <th>Furniture Type:</th>
+                    <td id="modalFurnitureType"></td>
+                </tr>
+                <tr>
+                    <th>Description:</th>
+                    <td id="modalDescription"></td>
+                </tr>
+                <tr>
+                    <th>Quantity:</th>
+                    <td id="modalQuantity"></td>
+                </tr>
+                <tr>
+                    <th>Price:</th>
+                    <td id="modalPrice"></td>
+                </tr>
+                <tr>
+                    <th>Reference Image:</th>
+                    <td id="modalRefImage"></td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -233,7 +292,73 @@
     <script>
         const quoteId = <?= $quote_id ?>;
     </script>
-    <script src="/js/my/quotes.js">
+    <script src="/js/my/quotes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quoteId = <?= $quote_id ?>;
+            const itemsPerPage = 10;
+            let currentPage = 1;
+
+            function fetchItems(page) {
+                fetch(`../api/quotes_pagination.php?quote_id=${quoteId}&page=${page}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateTable(data.items);
+                        updatePagination(data.totalPages, page);
+                    })
+                    .catch(error => console.error('Error fetching items:', error));
+            }
+
+            function updateTable(items) {
+                const tableBody = document.querySelector('.quote-items__tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+                items.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'quote-items__tr';
+                    row.innerHTML = `
+                        <td class="quote-items__td">${index + 1}</td>
+                        <td class="quote-items__td">${item.furniture}</td>
+                        <td class="quote-items__td">${item.description}</td>
+                        <td class="quote-items__td">${item.quantity}</td>
+                        <td class="quote-items__td">₱ ${item.item_price}</td>
+                        <td class="quote-items__td"><img src="/${item.item_ref_img}" alt="Item image" width="200px"></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            function updatePagination(totalPages, currentPage) {
+                const paginationControls = document.getElementById('pagination-controls');
+                paginationControls.innerHTML = ''; // Clear existing controls
+
+                if (currentPage > 1) {
+                    const prevLink = document.createElement('a');
+                    prevLink.href = `#`;
+                    prevLink.innerHTML = '&laquo; Previous';
+                    prevLink.addEventListener('click', () => fetchItems(currentPage - 1));
+                    paginationControls.appendChild(prevLink);
+                }
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageLink = document.createElement('a');
+                    pageLink.href = `#`;
+                    pageLink.innerText = i;
+                    pageLink.className = i === currentPage ? 'active' : '';
+                    pageLink.addEventListener('click', () => fetchItems(i));
+                    paginationControls.appendChild(pageLink);
+                }
+
+                if (currentPage < totalPages) {
+                    const nextLink = document.createElement('a');
+                    nextLink.href = `#`;
+                    nextLink.innerHTML = 'Next &raquo;';
+                    nextLink.addEventListener('click', () => fetchItems(currentPage + 1));
+                    paginationControls.appendChild(nextLink);
+                }
+            }
+
+            fetchItems(currentPage);
+        });
     </script>
 </body>
 </html>

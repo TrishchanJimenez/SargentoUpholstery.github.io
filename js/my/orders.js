@@ -30,3 +30,48 @@ confirmBtn.addEventListener('click', () => {
         alert('An unexpected error occurred. Please try again later.');
     });
 });
+
+// ---------- Modal for item details ---------- //
+
+document.addEventListener('DOMContentLoaded', function() {
+    const itemRows = document.querySelectorAll('.order-items__tr');
+    const itemDetailsModal = document.getElementById('itemDetailsModal');
+    const closeItemDetails = document.getElementById('closeItemDetails');
+
+    itemRows.forEach(row => {
+        row.addEventListener('click', function() {
+            const cells = row.querySelectorAll('td');
+            if (cells.length > 0) {
+                document.getElementById('modalFurnitureType').innerText = cells[1].innerText;
+                document.getElementById('modalDescription').innerText = cells[2].innerText;
+                document.getElementById('modalQuantity').innerText = cells[3].innerText;
+                document.getElementById('modalPrice').innerText = cells[4].innerText;
+
+                const refImageCell = cells[5].querySelector('img');
+                const refImageContainer = document.getElementById('modalRefImage');
+                refImageContainer.innerHTML = ''; // Clear previous content
+                if (refImageCell) {
+                    const refImage = document.createElement('img');
+                    refImage.src = refImageCell.src;
+                    refImage.alt = 'Item image';
+                    refImage.width = 200;
+                    refImageContainer.appendChild(refImage);
+                } else {
+                    refImageContainer.innerText = 'No image uploaded.';
+                }
+
+                itemDetailsModal.style.display = 'flex';
+            }
+        });
+    });
+
+    closeItemDetails.addEventListener('click', function() {
+        itemDetailsModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == itemDetailsModal) {
+            itemDetailsModal.style.display = 'none';
+        }
+    });
+});
