@@ -25,7 +25,7 @@
                 RIGHT JOIN
             `items` i ON q.quote_id = i.quote_id
                 LEFT JOIN
-            `customs` c ON i.item_id = c.item_id
+            `customs` c ON i.item_id = c.item_id    
         WHERE
             q.quote_id = :quote_id
                 AND
@@ -59,27 +59,24 @@
     <div class="quotes__wrapper">
         <a href="orders_and_quotes.php" class="quotes__back-button">< Back to Orders and Quotes</a>
         <div class="quotes"> 
-            <div class="quotes__top">
-                <div class="quote-number__wrapper   quote-section__wrapper">
-                    <div class="quote-number__wrapper   quote-section__wrapper">
-                        <div class="quote-number__title   quote-nuber__title">
-                            <h1>Quote ID</h1>
+            <div class="quotes-top   quotes-half">
+                <div class="quotes-top__intro   quotes-half__intro">
+                    <h1 class="quotes-top__title   quotes-half__title">Quote Information</h1>
+                    <p class="quotes-top__desc   quotes-half__desc">
+                        This is the detailed information about the quote you submitted. 
+                        It includes all the necessary details, actions, and a comprehensive 
+                        list of items included in the quote. You can review the information 
+                        here to ensure accuracy.
+                    </p>
+                </div>
+                <div class="quote-identif">
+                    <div class="quote-number__wrapper   quote-identif__section">
+                        <div class="quote-number__title   quote-section__title">
+                            <h1>Quote Number: </h1>
                         </div>
                         <table class="quote-number">
                             <tr>
                                 <td class="td--top"><?= ($quote["quote_id"]) ?></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="quote-general__wrapper">
-                    <div class="quote-type__wrapper   quote-section__wrapper">
-                        <div class="quote-type__title   quote-section__title">
-                            <h1>Service Type</h1>
-                        </div>
-                        <table class="quote-type">
-                            <tr>
-                                <td class="td--top"><?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?></td>
                             </tr>
                         </table>
                     </div>
@@ -104,9 +101,9 @@
                                 break;
                         }
                     ?>
-                    <div class="quote-status__wrapper quote-section__wrapper <?= $status_class ?>">
+                    <div class="quote-status__wrapper   quote-identif__section   <?= $status_class ?>">
                         <div class="quote-status__title quote-section__title">
-                            <h1>Current Status</h1>
+                            <h1>Current Status: </h1>
                         </div>
                         <table class="quote-status">
                             <tr>
@@ -115,43 +112,56 @@
                         </table>
                     </div>
                 </div>
-                <div class="quote-price__wrapper   quote-section__wrapper">
-                    <div class="quote-price__title   quote-section__title">
-                        <h1>Total Price</h1>
+                <div class="quote-info">
+                    <div class="quote-type__wrapper   quote-info__section">
+                        <div class="quote-type__title   quote-section__title">
+                            <h1>Service Type</h1>
+                        </div>
+                        <table class="quote-type">
+                            <tr>
+                                <td class="td--top"><?= ucwords(str_replace('_', ' ', htmlspecialchars($quote["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?></td>
+                            </tr>
+                        </table>
                     </div>
-                    <table class="quote-price">
-                        <tr>
-                            <td class="td--top   --price">₱ <?= number_format($quote["total_price"] ?? 0, 2, '.', ',') ?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="quote-actions__wrapper   quote-section__wrapper">
-                    <div class="quote-actions__title   quote-section__title">
-                        <h1>Quote Actions</h1>
+                    <div class="quote-price__wrapper   quote-info__section">
+                        <div class="quote-price__title   quote-section__title">
+                            <h1>Total Price</h1>
+                        </div>
+                        <table class="quote-price">
+                            <tr>
+                                <td class="td--top">₱ <?= number_format($quote["total_price"] ?? 0, 2, '.', ',') ?></td>
+                            </tr>
+                        </table>
                     </div>
-                    <table class="quote-actions">
+                    <div class="quote-actions__wrapper   quote-info__section">
+                        <div class="quote-actions__title   quote-section__title">
+                            <h1>Quote Actions</h1>
+                        </div>
+                        <table class="quote-actions">
                             <?php if($quote['quote_status'] == "approved"): ?>
                                 <tr>
-                                    <td class="td--top">
-                                        <button class="quote-actions__accept   quote-actions" onclick="openModal('accept')">Accept Order</button>
+                                    <td class="td--top   td--actions">
+                                        <button class="quote-actions__accept   quote-actions__btn" onclick="openModal('accept')">Accept Order</button>
                                     </td>
                                 </tr>
                             <?php endif; ?>
                             <?php if($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "accepted"): ?>
                                 <tr>
-                                    <td class="td--top">
-                                        <button class="quote-actions__cancel   quote-actions" onclick="openModal('cancel')">Cancel Order</button>
+                                    <td class="td--top   td--actions">
+                                        <button class="quote-actions__cancel   quote-actions__btn" onclick="openModal('cancel')">Cancel Order</button>
                                     </td>
                                 </tr>
                             <?php endif; ?>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="quotes__bottom">
-                <div class="quote-details__wrapper">
-                    <div class="quote-details__title quote-section__title">
-                        <h1>Quote Items</h1>
-                    </div>
+            <div class="quotes-bottom   quotes-half">
+                <div class="quotes-bottom__intro   quotes-half__intro">
+                    <h1 class="quotes-bottom__title   quotes-half__title">Quote Items</h1>
+                    <p class="quotes-bottom__desc   quotes-half__desc">This is the list of items you have wished to request a quote on.</p>
+                </div>
+                <div class="quote-items__wrapper">
                     <?php
                         $query = "SELECT * FROM `items` WHERE `quote_id` = :quote_id";
                         $stmt = $conn->prepare($query);
@@ -160,27 +170,27 @@
 
                         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
-                    <table class="quote-details">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Furniture Type</th>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Reference Image</th>
+                    <table class="quote-items">
+                        <thead class="quote-items__thead">
+                            <tr class="quote-items__tr quote-items__tr--header">
+                                <th class="quote-items__th">#</th>
+                                <th class="quote-items__th">Furniture Type</th>
+                                <th class="quote-items__th">Description</th>
+                                <th class="quote-items__th">Quantity</th>
+                                <th class="quote-items__th">Price</th>
+                                <th class="quote-items__th">Reference Image</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="quote-items__tbody">
                             <?php if ($stmt->rowCount() > 0): ?>
                                 <?php foreach ($items as $i => $item): ?>
-                                    <tr>
-                                        <td> <?= $i + 1 ?></td>
-                                        <td> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
-                                        <td> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
-                                        <td> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
-                                        <td> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
-                                        <td> 
+                                    <tr class="quote-items__tr">
+                                        <td class="quote-items__td"> <?= $i + 1 ?></td>
+                                        <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
+                                        <td class="quote-items__td"> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
+                                        <td class="quote-items__td"> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
+                                        <td class="quote-items__td"> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
+                                        <td class="quote-items__td"> 
                                         <?php if (!empty($item["item_img_path"])): ?>
                                             <img src="<?= htmlspecialchars($item["item_img_path"]) ?>" alt="Item image">
                                         <?php else: ?>
@@ -190,7 +200,7 @@
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <tr>
+                                <tr class="quote-items__tr">
                                     <td colspan="5">No records found.</td>
                                 </tr>
                             <?php endif; ?>
