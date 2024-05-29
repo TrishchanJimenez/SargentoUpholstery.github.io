@@ -1,0 +1,56 @@
+.quotes__wrapper {
+    width: calc(100%-5vmin);
+    height: auto;
+    margin: 5vmin;
+    font-family: "Inter", sans-serif;
+}
+
+    .quotes__btn--back {
+        margin: 5vmin;
+        text-decoration: none;
+        color: black;
+    }
+
+    .quotes {
+        width: calc(100%-5vmin);
+        height: auto;
+        margin: 5vmin;
+    }
+
+        .quotes__top,
+        .quotes__bottom {
+            width: 90%;
+            display: flex;
+            margin: 5vmin;
+        }
+
+        .quotes__top {
+            background-color: #eee;
+        }
+
+            .quote-general__wrapper {
+                width: 100%;
+                display: flex;
+            }
+
+                .quote-type__wrapper,
+                .quote-status__wrapper {
+                    width: 50%;
+                }
+
+            .quote-price__wrapper,
+            .quote-actions__wrapper {
+                width: 50%;
+            }
+
+        .quotes__bottom {
+            background-color: #ddd;
+        }
+
+            .quote-details__wrapper {
+                width: 100%;
+            }
+
+                .quote-details {
+                    width: 100%;
+                }

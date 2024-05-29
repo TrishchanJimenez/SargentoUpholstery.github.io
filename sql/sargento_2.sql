@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 29, 2024 at 01:16 AM
+-- Generation Time: May 29, 2024 at 01:51 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -191,6 +191,7 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 
 CREATE TABLE `customs` (
   `custom_id` int NOT NULL,
+  `item_id` int DEFAULT NULL,
   `dimensions` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `materials` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fabric` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -201,27 +202,27 @@ CREATE TABLE `customs` (
 -- Dumping data for table `customs`
 --
 
-INSERT INTO `customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES
-(1, 'test', 'test', 'test', 'test'),
-(2, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
-(3, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
-(4, 'test', 'test', 'test', 'test'),
-(5, 'test', 'test', 'test', 'test'),
-(6, '0.5m x 2.5m x 1.5m', 'galvanized square steel beams, eco-friendly wood veneers', '', 'sky blue'),
-(7, '', 'galvanized square steel beams, eco-friendly wood veneer', 'linen from auntie&#039;s house', 'light brown'),
-(8, '', '', 'leather', 'orange'),
-(9, '12x12x12', '', 'Linen', ''),
-(10, '12x12x12', '', 'Linen', 'black'),
-(11, '12x12x12', '', 'Linen', 'black'),
-(12, '2x2x2', 'wood', '', ''),
-(13, '12x12x12', '', 'Linen', 'black'),
-(14, '12x6x2', 'wood', 'silk', 'black'),
-(15, 'asdfa', 'asdf', '', ''),
-(16, '', '', 'adfa', ''),
-(17, '12x12x12', 'wood', 'Linen', 'black'),
-(18, '12x12x12', 'Uratex Foam', 'Linen', 'black'),
-(19, '0.001m^3', 'galvanized square steel, eco-friendly wood veneer', '', 'White paint'),
-(20, '', 'Metal', 'Leather', 'Orange');
+INSERT INTO `customs` (`custom_id`, `item_id`, `dimensions`, `materials`, `fabric`, `color`) VALUES
+(1, NULL, 'test', 'test', 'test', 'test'),
+(2, NULL, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
+(3, NULL, '1m x 1m x 2.5m', 'metal', 'leather', 'black'),
+(4, NULL, 'test', 'test', 'test', 'test'),
+(5, NULL, 'test', 'test', 'test', 'test'),
+(6, NULL, '0.5m x 2.5m x 1.5m', 'galvanized square steel beams, eco-friendly wood veneers', '', 'sky blue'),
+(7, NULL, '', 'galvanized square steel beams, eco-friendly wood veneer', 'linen from auntie&#039;s house', 'light brown'),
+(8, NULL, '', '', 'leather', 'orange'),
+(9, NULL, '12x12x12', '', 'Linen', ''),
+(10, NULL, '12x12x12', '', 'Linen', 'black'),
+(11, NULL, '12x12x12', '', 'Linen', 'black'),
+(12, NULL, '2x2x2', 'wood', '', ''),
+(13, NULL, '12x12x12', '', 'Linen', 'black'),
+(14, NULL, '12x6x2', 'wood', 'silk', 'black'),
+(15, NULL, 'asdfa', 'asdf', '', ''),
+(16, NULL, '', '', 'adfa', ''),
+(17, NULL, '12x12x12', 'wood', 'Linen', 'black'),
+(18, NULL, '12x12x12', 'Uratex Foam', 'Linen', 'black'),
+(19, NULL, '0.001m^3', 'galvanized square steel, eco-friendly wood veneer', '', 'White paint'),
+(20, NULL, '', 'Metal', 'Leather', 'Orange');
 
 -- --------------------------------------------------------
 
@@ -305,10 +306,9 @@ CREATE TABLE `fullpayment` (
 CREATE TABLE `items` (
   `item_id` int NOT NULL,
   `quote_id` int DEFAULT NULL,
-  `custom_id` int DEFAULT NULL,
   `furniture` varchar(255) DEFAULT NULL,
   `description` text,
-  `item_ref_img` text,
+  `item_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `quantity` int UNSIGNED DEFAULT NULL,
   `item_price` float DEFAULT NULL,
   `item_status` enum('pending','approved','modified','rejected','accepted','cancelled') DEFAULT 'pending'
@@ -422,6 +422,35 @@ CREATE TABLE `quotes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reset_tokens`
+--
+
+CREATE TABLE `reset_tokens` (
+  `email` varchar(50) DEFAULT NULL,
+  `token_hash` varchar(64) DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `reset_tokens`
+--
+
+INSERT INTO `reset_tokens` (`email`, `token_hash`, `expires_at`) VALUES
+('trishchanjimenez01@gmail.com', 'c4a852181bc05cea5314de6d365ba60fe86c2fefb323a0e6532a34ea3140b597', '2024-05-14 09:16:59'),
+('trishchanjimenez06@gmail.com', '9c60c2620e6614cb8c372e4745d31461ae0ccedb9cfd728cccff2eac8d7d22ba', '2024-05-14 09:52:23'),
+('trishchanjimenez01@gmail.com', 'eecc50628fb7d52c8ff71441070943110dcd176c672c18c9233e4488e93b867a', '2024-05-15 02:25:15'),
+('trishchanjimenez01@gmail.com', '57f4e38202b655d5cbd8271b8935348f995f7d5d33839c531ff5850aeee03bd2', '2024-05-16 10:56:25'),
+('trishchanjimenez01@gmail.com', 'a96f20700301030dc219d814ce47b9d02184ee893babc99d61406f108390fb8d', '2024-05-16 11:09:52'),
+('trishchanjimenez01@gmail.com', 'a2a9a633eaae6213f4d62a216e2a164e01b2233c6978e17e710f6946ecd5d831', '2024-05-16 19:21:51'),
+('trishchanjimenez01@gmail.com', '768bedfe04a41b5cb076e18a6272679c2cb8a61b754a05d746853c6637b776d4', '2024-05-16 20:09:30'),
+('', '651d22a2c87f7582137d8fb0ff1e794f65f46b1368f1f4746eebd937b8e132a2', '2024-05-16 23:28:21'),
+('', '1325da0d509185843266301a45411f9e2c6ad673f4565c74445b15e0eb4bae77', '2024-05-16 23:28:47'),
+('trishchanjimenez01@gmail.com', '16a69176a03deaef932d2d2037e7523e21bc99f42a9ed0b2ae0ddf84669d077c', '2024-05-16 23:29:05'),
+('trishchanjimenez01@gmail.com', 'fca74f9c325f9e9ed9409ba228e80d23bc76b062b60f5b41308595c6c98f9cbf', '2024-05-19 10:42:38');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reviews`
 --
 
@@ -485,41 +514,39 @@ CREATE TABLE `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_type` enum('customer','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `token_hash` varchar(255) DEFAULT NULL,
-  `token_expiry` datetime DEFAULT NULL
+  `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`, `token_hash`, `token_expiry`) VALUES
-(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09123456789', NULL, NULL),
-(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09234567890', NULL, NULL),
-(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', '09345678901', NULL, NULL),
-(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', '09456789012', NULL, NULL),
-(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', '09567890123', NULL, NULL),
-(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', '09678901234', NULL, NULL),
-(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', '09789012345', NULL, NULL),
-(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', '09890123456', NULL, NULL),
-(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', '09901234567', NULL, NULL),
-(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', '09112345678', NULL, NULL),
-(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', '09223456789', NULL, NULL),
-(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', '09334567890', NULL, NULL),
-(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', '09445678901', NULL, NULL),
-(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', '09556789012', NULL, NULL),
-(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', '09667890123', NULL, NULL),
-(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', '09778901234', NULL, NULL),
-(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', '09889012345', NULL, NULL),
-(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', '09990123456', NULL, NULL),
-(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09101234567', NULL, NULL),
-(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09212345678', NULL, NULL),
-(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', '09123412014', NULL, NULL),
-(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', '09052669619', NULL, NULL),
-(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', '09123456789', NULL, NULL),
-(24, 'Lance Jimenez', 'trishchan@gmail.com', '$2y$10$YEHSUssJkiVGzdmnzbyxwuaWrCtxVV7BegI6/I80StyNAtEi0rapG', 'admin', '09791406736', NULL, NULL),
-(25, 'Chris Paul', 'chispaul@gmail.com', '$2y$10$dXItxFQz3d2n.9KS0MF9GOWDqBhUS8k28HEEDz3a/NkRwSBOGnLAa', 'customer', '09312818482', NULL, NULL);
+INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `contact_number`) VALUES
+(1, 'Juan dela Cruz', 'juan@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09123456789'),
+(2, 'Maria Clara', 'maria@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09234567890'),
+(3, 'Pedro Penduko', 'pedro@example.com', '$2y$10$Y/mvA3bZ.96vZ67MK2OlFe2X7t66MOli5A0tQBKQsglvIJeHahFue', 'customer', '09345678901'),
+(4, 'Teresa Magtanggol', 'teresa@example.com', '$2y$10$Mtu42SKTqeZGDfUwhlSMkewZE2ALM1IT.CtgjmZ8MvWwgq5Ti9TZm', 'customer', '09456789012'),
+(5, 'Diego Silang', 'diego@example.com', '$2y$10$X4RJKuRPNu9PpdfiyVL0WuRBjdcKCGBnC4kkHGPVkctJ12ephksNO', 'customer', '09567890123'),
+(6, 'Gabriela Silang', 'gabriela@example.com', '$2y$10$A2tGF2PXqruSu.tgkFl5vuWZJdCkpkyyWlSshUQwNexeL9V8VwdPy', 'customer', '09678901234'),
+(7, 'Jose Rizal', 'jose@example.com', '$2y$10$CqR18V44JZRie/tfC1RwtOPK0LO04MgHOCfO5zAnW.v/p8QH3ux/6', 'customer', '09789012345'),
+(8, 'Andres Bonifacio', 'andres@example.com', '$2y$10$V566ca4gSFvijfm9ep8xu.ZL0P7HJJjc8AOjdY4vNMQqA7kU1ib1C', 'customer', '09890123456'),
+(9, 'Emilio Aguinaldo', 'emilio@example.com', '$2y$10$IEqX6y3iRqtSbp5Er9E52uaDF7DIkFaGw9CLz0rP7T4/1NVnSHQH6', 'customer', '09901234567'),
+(10, 'Melchora Aquino', 'melchora@example.com', '$2y$10$VG8UE5zZsmbfZZWq1aNvOOeojnmUiISbsnaxeMR/w3s32BptpPWAK', 'customer', '09112345678'),
+(11, 'Antonio Luna', 'antonio@example.com', '$2y$10$sIG5f6pQVOUp6Z7hPCBRse5Nye2u5XKvJu1zw.hFnL.e/LcRW0ta2', 'customer', '09223456789'),
+(12, 'Gregoria de Jesus', 'gregoria@example.com', '$2y$10$GQaVWs.Cr/wa.iUR6E6EROJ4DY5K3pQAzr0uMUuLvUAKMogoih64O', 'customer', '09334567890'),
+(13, 'Apolinario Mabini', 'apolinario@example.com', '$2y$10$St9Q3wIs0rRufASswms.5uTEzE2y7Fczr.FinVvw5YI3FESsE5sN2', 'customer', '09445678901'),
+(14, 'Heneral Luna', 'heneral@example.com', '$2y$10$dx//Mn82CZ0IOr5hZGjt8.xsv3p.ajqGgD6TR8/5ThQUb1pVEHgnq', 'customer', '09556789012'),
+(15, 'Andres Bonifacio', 'andresb@example.com', '$2y$10$2X/7K1h6mnE2UBBkLaW2AOSnBpVEVXXmpdrtgz6kcvz/xajhMmU.q', 'customer', '09667890123'),
+(16, 'Emilio Jacinto', 'emilioj@example.com', '$2y$10$ijuW6lg57WDdqlrGCyRQp.v51P.NMC/ub9JHYQ04tbLGw07itjnS2', 'customer', '09778901234'),
+(17, 'Lapu-Lapu', 'lapu-lapu@example.com', '$2y$10$PeQ4eyYKKWVCiYtvk2pE/ehmGGjJTKZ5V9.1TDjPEB.jzohkkflvi', 'customer', '09889012345'),
+(18, 'Heneral del Pilar', 'heneralp@example.com', '$2y$10$GSRixKMthdbMtlKnw0LhAOTBlUyAGe7IygRc.zdBA7DA2bUwuaZye', 'customer', '09990123456'),
+(19, 'Gabriela Silang', 'gabrielas@example.com', '$2y$10$XX4Cu6WK3Ysu8TW2pA6TbuUk.vRXRtOHoZ0hf/N3fBsI4mr23YQVO', 'customer', '09101234567'),
+(20, 'Diego Silang', 'diegos@example.com', '$2y$10$Hq.6m2ep1oCPqd7MTB7ujOmCMjL6b5Rv5rloJvbhLKSx.gseh7pYu', 'customer', '09212345678'),
+(21, 'Sargento Upholstery', 'sargento@gmail.com', '$2y$10$WhGORuLG.Fw6yO1ib7GhX.PK2xkNB7GDSI/5HaCbXsOycNlMLNgCy', 'admin', '09123412014'),
+(22, 'Joaquin Luis Guevarra', 'joaquinguevarra177@gmail.com', '$2y$10$73WniKD5wNWwenDCH93TGuDWbmfm5WtzmfV/vmQQm9d892x0uD112', 'customer', '09052669619'),
+(23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', '09123456789'),
+(24, 'Lance Jimenez', 'trishchan@gmail.com', '$2y$10$YEHSUssJkiVGzdmnzbyxwuaWrCtxVV7BegI6/I80StyNAtEi0rapG', 'admin', '09791406736'),
+(25, 'Chris Paul', 'chispaul@gmail.com', '$2y$10$dXItxFQz3d2n.9KS0MF9GOWDqBhUS8k28HEEDz3a/NkRwSBOGnLAa', 'customer', '09312818482');
 
 -- --------------------------------------------------------
 
@@ -623,7 +650,8 @@ ALTER TABLE `contents`
 -- Indexes for table `customs`
 --
 ALTER TABLE `customs`
-  ADD PRIMARY KEY (`custom_id`);
+  ADD PRIMARY KEY (`custom_id`),
+  ADD KEY `customs_item_id_fk` (`item_id`);
 
 --
 -- Indexes for table `delivery`
@@ -657,8 +685,7 @@ ALTER TABLE `fullpayment`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`item_id`),
-  ADD KEY `items_quote_id_fk` (`quote_id`),
-  ADD KEY `items_custom_id_fk` (`custom_id`);
+  ADD KEY `items_quote_id_fk` (`quote_id`);
 
 --
 -- Indexes for table `notifs`
@@ -825,6 +852,12 @@ ALTER TABLE `chats`
   ADD CONSTRAINT `chat_sender_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
+-- Constraints for table `customs`
+--
+ALTER TABLE `customs`
+  ADD CONSTRAINT `customs_item_id_fk` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Constraints for table `delivery`
 --
 ALTER TABLE `delivery`
@@ -841,13 +874,6 @@ ALTER TABLE `downpayment`
 --
 ALTER TABLE `fullpayment`
   ADD CONSTRAINT `fullpayment_order_id_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `items`
---
-ALTER TABLE `items`
-  ADD CONSTRAINT `items_custom_id_fk` FOREIGN KEY (`custom_id`) REFERENCES `customs` (`custom_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `items_quote_id_fk` FOREIGN KEY (`quote_id`) REFERENCES `quotes` (`quote_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `notifs`
