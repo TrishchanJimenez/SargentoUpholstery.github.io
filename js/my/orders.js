@@ -1,4 +1,4 @@
-// Select the confirmation button
+/* // Select the confirmation button
 const confirmBtn = document.querySelector('.form__submit--confirm');
 
 // Add click event listener to the confirmation button
@@ -29,7 +29,7 @@ confirmBtn.addEventListener('click', () => {
         // Display an error message to the user
         alert('An unexpected error occurred. Please try again later.');
     });
-});
+}); */
 
 // ---------- Modal for item details ---------- //
 

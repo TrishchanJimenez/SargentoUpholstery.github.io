@@ -59,7 +59,9 @@
 <body>
     <?php require_once('../header.php'); ?>
     <div class="orders__wrapper">
-        <a href="orders_and_quotes.php" class="orders__back-button">< Back to Orders and Quotes</a>
+        <div class="orders__sidebar">
+            <a href="orders_and_quotes.php" class="orders__back-button">< Back to Orders and Quotes</a>
+        </div>
         <div class="orders"> 
             <div class="orders-top   orders-half">
                 <div class="orders-top__intro   orders-half__intro">
@@ -82,14 +84,32 @@
                         </table>
                     </div>
                     <?php
-                        $status_class = '';
+                        $phase_class = '';
                         switch ($order["order_phase"]) {
+                            case 'pending_down':
+                                $phase_class = 'status-pending-down';
+                                break;
+                            case 'pickup':
+                                $phase_class = 'status-pickup';
+                                break;
+                            case 'production':
+                                $phase_class = 'status-production';
+                                break;
+                            case 'pending_full':
+                                $phase_class = 'status-pending-full';
+                                break;
+                            case 'delivery':
+                                $phase_class = 'status-delivery';
+                                break;
+                            case 'received':
+                                $phase_class = 'status-received';
+                                break;
                             default:
-                                $status_class = 'status-default';
+                                $phase_class = 'status-default';
                                 break;
                         }
                     ?>
-                    <div class="order-status__wrapper   order-identif__section   <?= $status_class ?>">
+                    <div class="order-status__wrapper   order-identif__section   <?= $phase_class ?>">
                         <div class="order-status__title order-section__title">
                             <h1>Current Phase: </h1>
                         </div>
@@ -166,7 +186,11 @@
                                     </tr>
                                 <?php endif; ?>
                             <?php else: ?>
-                                No actions currently available. <br>
+                                <tr>
+                                    <td>
+                                        No actions currently available.
+                                    </td>
+                                </tr>
                             <?php endif; ?>
                         </table>
                     </div>
@@ -175,7 +199,9 @@
             <div class="orders-bottom   orders-half">
                 <div class="orders-bottom__intro   orders-half__intro">
                     <h1 class="orders-bottom__title   orders-half__title">Order Items</h1>
-                    <p class="orders-bottom__desc   orders-half__desc">This is the list of items you have placed an order on.</p>
+                    <p class="orders-bottom__desc   orders-half__desc">
+                        This is the list of items you have placed an order on.
+                    </p>
                 </div>
                 <div class="order-items__wrapper">
                     <?php
@@ -302,18 +328,15 @@
         </div>
     </div>
 
-    <script>
-        const orderId = <?= $order_id ?>;
-    </script>
     <script src="/js/my/orders.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const orderId = <?= $order_id ?>;
+            const quoteId = <?= $order['quote_id'] ?>;
             const itemsPerPage = 10;
             let currentPage = 1;
 
             function fetchItems(page) {
-                fetch(`../api/orders_pagination.php?order_id=${orderId}&page=${page}`)
+                fetch(`../api/orders_pagination.php?quote_id=${quoteId}&page=${page}`)
                     .then(response => response.json())
                     .then(data => {
                         updateTable(data.items);
