@@ -265,10 +265,10 @@
                                         <tr class="order-items__tr order-items__tr--header">
                                             <th class="order-items__th">#</th>
                                             <th class="order-items__th">Furniture Type</th>
-                                            <th class="order-items__th">Description</th>
+                                            <th class="order-items__th" hidden>Description</th>
                                             <th class="order-items__th">Quantity</th>
                                             <th class="order-items__th">Price</th>
-                                            <th class="order-items__th">Reference Image</th>
+                                            <th class="order-items__th" hidden>Reference Image</th>
                                         </tr>
                                     </thead>
                                     <tbody class="order-items__tbody">
@@ -277,10 +277,10 @@
                                                 <tr class="order-items__tr">
                                                     <td class="order-items__td"> <?= $i + 1 ?></td>
                                                     <td class="order-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
-                                                    <td class="order-items__td"> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
+                                                    <td class="order-items__td" hidden> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
                                                     <td class="order-items__td"> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
                                                     <td class="order-items__td"> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
-                                                    <td class="order-items__td"> 
+                                                    <td class="order-items__td" hidden> 
                                                     <?php if (!empty($item["item_ref_img"])): ?>
                                                         <img src="/<?= htmlspecialchars($item["item_ref_img"]) ?>" alt="Item image" width="200px">
                                                     <?php else: ?>
@@ -325,8 +325,8 @@
                 <h2 class="modal__title">Item Details</h2>
                 <table class="modal__table">
                     <tr>
-                        <th>Furniture Type:</th>
-                        <td id="modalFurnitureType"></td>
+                        <th>Furniture:</th>
+                        <td id="modalFurniture"></td>
                     </tr>
                     <tr>
                         <th>Description:</th>

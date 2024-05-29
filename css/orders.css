@@ -171,8 +171,9 @@
                         padding: 2.5vmin;
                         text-align: center;
                     }
-
-
+                    .quote-items__td {
+                        cursor: pointer;
+                    }
 
 /* ---------- Modal ---------- */
 
@@ -188,7 +189,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
-    padding-top: 60px;
+    font-family: "Inter", sans-serif;
 }
 
 .modal__content {
@@ -252,16 +253,17 @@
     background-color: #c82333;
 }
 
-.modal__table {
+/* ---------- Modal for item details ---------- */
+
+.modal--item-details {
     width: 100%;
-    border-collapse: collapse;
 }
 
-.modal__table th, .modal__table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.modal__content--item-details {
+    max-width: 60%;
+    overflow-y: scroll;
 }
+
 
 /* ---------- Pagination ---------- */
 

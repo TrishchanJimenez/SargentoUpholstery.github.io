@@ -111,6 +111,25 @@
                     display: flex;
                     align-items: center;
                 }
+                .status-pending {
+                    background-color: #ffd9b3; /* Light Orange */
+                }
+                
+                .status-approved {
+                    background-color: #ffffcc; /* Light Yellow */
+                }
+                
+                .status-accepted {
+                    background-color: #ccffcc; /* Light Green */
+                }
+                
+                .status-rejected {
+                    background-color: #ffcccc; /* Light Red */
+                }
+                
+                .status-default {
+                    background-color: lightgray; /* Default color for any unspecified status */
+                }
                     .quote-number__title,
                     .quote-number,
                     .quote-status__title,
@@ -171,8 +190,9 @@
                         padding: 2.5vmin;
                         text-align: center;
                     }
-
-
+                    .quote-items__td {
+                        cursor: pointer;
+                    }
 
 /* ---------- Modal ---------- */
 
@@ -188,7 +208,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
-    padding-top: 60px;
+    font-family: "Inter", sans-serif;
 }
 
 .modal__content {
@@ -250,6 +270,17 @@
 
 #cancelAction:hover {
     background-color: #c82333;
+}
+
+/* ---------- Modal for item details ---------- */
+
+.modal--item-details {
+    width: 100%;
+}
+
+.modal__content--item-details {
+    max-width: 60%;
+    overflow-y: scroll;
 }
 
 .modal__table {

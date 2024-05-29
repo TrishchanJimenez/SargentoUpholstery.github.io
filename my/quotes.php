@@ -211,10 +211,10 @@
                                     <tr class="quote-items__tr quote-items__tr--header">
                                         <th class="quote-items__th">#</th>
                                         <th class="quote-items__th">Furniture Type</th>
-                                        <th class="quote-items__th">Description</th>
+                                        <th class="quote-items__th" hidden>Description</th>
                                         <th class="quote-items__th">Quantity</th>
                                         <th class="quote-items__th">Price</th>
-                                        <th class="quote-items__th">Reference Image</th>
+                                        <th class="quote-items__th" hidden>Reference Image</th>
                                     </tr>
                                 </thead>
                                 <tbody class="quote-items__tbody">
@@ -223,10 +223,10 @@
                                             <tr class="quote-items__tr">
                                                 <td class="quote-items__td"> <?= $i + 1 ?></td>
                                                 <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
-                                                <td class="quote-items__td"> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
+                                                <td class="quote-items__td" hidden> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
                                                 <td class="quote-items__td"> <?= htmlspecialchars($item["quantity"] ?? 'N/A') ?> </td>
                                                 <td class="quote-items__td"> ₱ <?= number_format($item["item_price"] ?? 0, 2, '.', ',') ?> </td>
-                                                <td class="quote-items__td"> 
+                                                <td class="quote-items__td" hidden> 
                                                 <?php if (!empty($item["item_ref_img"])): ?>
                                                     <img src="/<?= htmlspecialchars($item["item_ref_img"]) ?>" alt="Item image" width="200px">
                                                 <?php else: ?>
@@ -266,13 +266,13 @@
 
     <!-- Modal for Item Details -->
     <div class="modal   modal--item-details" id="itemDetailsModal">
-        <div class="modal__content">
+        <div class="modal__content   modal__content--item-details">
             <span class="modal__close" id="closeItemDetails">&times;</span>
             <h2 class="modal__title">Item Details</h2>
             <table class="modal__table">
                 <tr>
-                    <th>Furniture Type:</th>
-                    <td id="modalFurnitureType"></td>
+                    <th>Furniture:</th>
+                    <td id="modalFurniture"></td>
                 </tr>
                 <tr>
                     <th>Description:</th>
@@ -296,7 +296,7 @@
 
     <!-- Modal for Accept Order -->
     <div class="modal   modal--accept" id="acceptModal">
-        <div class="modal__content">
+        <div class="modal__content   modal__content--accept">
             <p class="modal__message">Please read our <a href="/legal-agreements.php#cancellation" target="_blank">terms and conditions</a> before accepting the order. Do you want to proceed?</p>
             <input type="checkbox" name="legallyConsented" id="legallyConsented"> I have read and agree to the terms and conditions.
             <button class="modal__action" id="confirmAcceptAction">Accept Order</button>
