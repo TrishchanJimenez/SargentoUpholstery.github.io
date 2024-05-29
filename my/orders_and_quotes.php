@@ -56,8 +56,8 @@
             <button class="onq__tab-button onq__tab-button--quotes">All Quotes</button>
             <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
-        <div class="quote-buttons">
-            <form class="order-filters" method="get" action="">
+        <div class="onq__tab onq__tab--quotes" style="display:flex; flex-direction:column; align-items:center;">
+        <form class="order-filters" method="get" action="">
                 <table class="filter-table">
                     <tr>
                         <td>
@@ -87,9 +87,7 @@
                         </td>
                     </tr>
                 </table>
-            </form>
-        </div>
-        <div class="onq__tab onq__tab--quotes">
+            </form> 
             <table class="onq__table">
                 <thead>
                     <tr>
@@ -112,9 +110,7 @@
                                 echo '
                                     <tr>
                                         <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quote_id"]) . '</td>
-                                        <td class="onq__td onq__td--alt onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--alt onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">
