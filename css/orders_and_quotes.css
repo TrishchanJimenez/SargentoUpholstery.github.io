@@ -20,6 +20,31 @@
     margin: 0 5%;
 }
 
+
+.quote-buttons{
+    width: 90%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin: 0 5%; 
+}
+
+.quote-button{
+    width: 50%;
+    height: auto;
+    padding: 2.5vmin;
+    font-size: larger;
+    cursor: pointer;
+    border: 1px solid #ccc;  
+}
+.order-filters {
+    width: 90%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin: 0 5%;
+}
+
 .onq__tab-button {
     width: 50%;
     height: auto;
@@ -178,4 +203,8 @@
 
 .soa__submit:hover {
     background-color: #0056b3;
+}
+
+.pagination{
+    display: flex;
 }

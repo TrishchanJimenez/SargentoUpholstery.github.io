@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newMessageIndicator = document.getElementById('newMessageIndicator');
 
     let isChatOpen = false;
+
     // Function to display a message in the chat window
     function displayMessage(message, sender) {
         const messageElement = document.createElement('div');
@@ -77,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
         })
         .then(response => {
-            // console.log(response.text());
             if (response.ok) {
                 return response.json();
             } else {
