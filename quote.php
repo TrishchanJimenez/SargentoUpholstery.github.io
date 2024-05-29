@@ -201,19 +201,17 @@
         }
     }
 
-    function insertCustom($item_id, $dimensions, $materials, $fabric, $color) {
+    function insertCustom($dimensions, $materials, $fabric, $color) {
         global $conn;
         $query = "
             INSERT INTO
                 `customs` (
-                    `item_id`
                     `dimensions`,
                     `materials`,
                     `fabric`,
                     `color`
                 )
             VALUES (
-                :item_id
                 :dimensions,
                 :materials,
                 :fabric,
@@ -221,7 +219,6 @@
             )";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':dimensions', $dimensions);
-        $stmt->bindParam(':item_id', $item_id);
         $stmt->bindParam(':materials', $materials);
         $stmt->bindParam(':fabric', $fabric);
         $stmt->bindParam(':color', $color);
@@ -239,20 +236,22 @@
         $descriptions = $_POST['description'];
         $item_imgs = $_FILES['item_img'];
         // IF MTO
-        $dimensions = $_POST['dimensions'];
-        $materials = $_POST['materials'];
-        $fabric = $_POST['fabric'];
-        $colors = $_POST['color'];
+        if($_POST['service_type'] === 'mto') {
+            $dimensions = $_POST['dimensions'];
+            $materials = $_POST['materials'];
+            $fabric = $_POST['fabric'];
+            $colors = $_POST['color'];
+        }
 
         $sql = "
             INSERT INTO
                 `quotes` (
                     `customer_id`,
-                    `service_type`,
+                    `service_type`
                 )
             VALUES (
                 :customer_id,
-                :service_type,
+                :service_type
             )
         ";
 
@@ -265,8 +264,10 @@
         for($i = 0; $i < count($furnitures); $i++) {
             $furniture = $furnitures[$i];
             $description = $descriptions[$i];
-            $item_img = $item_imgs['name'][$i];
+            $item_img = $item_imgs['name'][$i] === '' ? null : $item_imgs['name'][$i];
             $quantity = $quantities[$i];
+
+            // echo "<script>alert('testing1')</script>";
 
             if (!empty($item_img) && $item_imgs['error'][$i] == 0) {
                 $item_img = uploadReferenceImage($item_img, $item_imgs['tmp_name'][$i]);
@@ -276,13 +277,15 @@
                 INSERT INTO
                     `items` (
                         `quote_id`,
+                        `custom_id`,
                         `furniture`,
                         `description`,
-                        `item_img_path`,
+                        `item_ref_img`,
                         `quantity`
                         )
                 VALUES (
                     :quote_id,
+                    :custom_id,
                     :furniture,
                     :description,
                     :item_img_path,
@@ -295,34 +298,34 @@
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':item_img_path', $item_img);
             $stmt->bindParam(':quantity', $quantity);
-            $stmt->execute();
 
-            $item_id = $conn->lastInsertId();
-
-            $dimensions = $_POST['dimensions'][$i];
-            $materials = $_POST['materials'][$i];
-            $fabric = $_POST['fabric'][$i];
-            $color = $_POST['color'][$i];
-
+            $custom_id = null;
             if (!empty($dimensions[$i]) || !empty($materials[$i]) || !empty($fabric[$i]) || !empty($colors[$i])) {
+                $dimensions = $_POST['dimensions'][$i];
+                $materials = $_POST['materials'][$i];
+                $fabric = $_POST['fabric'][$i];
+                $color = $_POST['color'][$i];
                 // Code to execute if any of the variables is not empty
                 $dimension = !empty($dimensions[$i]) ? $dimensions[$i] : '';
                 $material = !empty($materials[$i]) ? $materials[$i] : '';
                 $fab = !empty($fabric[$i]) ? $fabric[$i] : '';
                 $color = !empty($colors[$i]) ? $colors[$i] : '';
 
-                insertCustom($item_id, $dimensions, $materials, $fabric, $color);
+                insertCustom($dimensions, $materials, $fabric, $color);
             }
+
+            $stmt->bindParam(':custom_id', $custom_id);
+            $stmt->execute();
         }
         
         try {
             // Create a new notification message
-            $notif_msg = "You have successfully placed a quote request. Please await confirmation of order."; // Customize the message as needed
+            $notif_msg = "You have successfully placed a quote request. Please wait for us to evaluate your request"; // Customize the message as needed
             // Call the createNotif function
             if (createNotif($_SESSION['user_id'], $notif_msg, "/my/user_orders.php")) {
                 // Notification created successfully
                 // echo "Notification created successfully";
-                sendAlert("success", "You have successfully placed a quote request. Please await confirmation of order.");
+                sendAlert("success", $notif_msg);
             } else {
                 // Failed to create notification
                 echo "Failed to create notification";

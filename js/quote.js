@@ -196,7 +196,7 @@ const furnitureInput = `
     <div class="quote-form_furniture-item_main-detail">
         <div class="quote-form__input-container">
             <label class="quote-form__label" for="furniture_type">Furniture Type *</label> 
-            <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture_type[]" placeholder="E.g. sofa, dining seats, bed" required cols="25">
+            <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture[]" placeholder="E.g. sofa, dining seats, bed" required cols="25">
         </div>
 
         <div class="quote-form__input-container">
@@ -206,7 +206,7 @@ const furnitureInput = `
 
         <div class="quote-form__input-container quote-form__input-container--file">
             <label class="quote-form__label" for="ref_img">Reference Image</label> 
-            <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="ref_img[]" accept="images/*">
+            <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="item_img[]" accept="images/*">
         </div>
 
         <div class="quote-form__input-container">
@@ -244,7 +244,7 @@ const itemRepairInput = `
         <div class="quote-form_furniture-item_main-detail">
             <div class="quote-form__input-container">
                 <label class="quote-form__label" for="furniture_type">Furniture Type *</label> 
-                <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture_type[]" placeholder="E.g. sofa, dining seats, bed" required cols="25">
+                <input class="quote-form__input quote-form__input--text required" type="text" id="furniture_type" name="furniture[]" placeholder="E.g. sofa, dining seats, bed" required cols="25">
             </div>
 
             <div class="quote-form__input-container">
@@ -259,7 +259,7 @@ const itemRepairInput = `
 
             <div class="quote-form__input-container quote-form__input-container--file">
                 <label class="quote-form__label" for="ref_img">Reference Image</label> 
-                <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="ref_img[]" accept="images/*">
+                <input class="quote-form__input quote-form__input--file" type="file" id="ref_img" name="item_img[]" accept="images/*">
             </div>
         </div>
     </div>
