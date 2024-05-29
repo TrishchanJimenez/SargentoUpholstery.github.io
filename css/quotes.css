@@ -1,22 +1,74 @@
-.quotes__wrapper {
-    width: calc(100%-5vmin);
-    height: auto;
-    margin: 5vmin;
+.main-wrapper {
+    display: flex;
     font-family: "Inter", sans-serif;
 }
-    .quotes__back-button {
-        text-decoration: none;
-        color: black;
+.sidebar__wrapper {
+    width: 20%;
+    background-color: #ffeba1;
+    border-right: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 20px;
+}
+    .sidebar__container {
+        padding: 20px;
     }
+        .sidebar__back {
+            margin-bottom: 20px;
+        }
+            .quotes__back-button {
+                display: inline-block;
+                padding: 10px 15px;
+                background-color: #333;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .quotes__back-button:hover {
+                background-color: #555;
+            }
+        .sidebar__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+            .sidebar__item {
+                margin-bottom: 10px;
+            }
+                .sidebar__link {
+                    display: block;
+                    padding: 10px 15px;
+                    color: #111;
+                    text-decoration: none;
+                    background-color: #ffeba1;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease;
+                }
+                .sidebar__link:hover {
+                    background-color: #ffeeb1;
+                }
+                .sidebar__link.active {
+                    background-color: #ffeba1;  
+                    color: #fff;
+                }
+.quotes__wrapper {
+    width: 80%;
+    height: auto;
+    margin: 5vmin;
+    display: flex;
+}
     .quotes {
         padding: 2.5vmin;
     }
-        .quotes-half {
+        .quotes-segment {
             border: 1px solid #ccc;
             border-radius: 15px;
             margin-bottom: 2.5em;
         }
-            .quotes-half__intro {
+            .quotes-segment__intro {
                 background-color: #fff;
                 padding: 3.75vmin;
                 border-radius: 15px;
@@ -25,11 +77,11 @@
                 margin: 2.5vmin;
                 margin-bottom: 2.5em;
             }
-                .quotes-half__title {
+                .quotes-segment__title {
                     margin: 0 1.25vmin;
                     margin-bottom: 5vmin;
                 }
-                .quotes-half__desc {
+                .quotes-segment__desc {
                     margin: 0 1.25vmin;
                     max-width: 100%;
                     text-wrap: wrap;
@@ -59,6 +111,25 @@
                     display: flex;
                     align-items: center;
                 }
+                .status-pending {
+                    background-color: #ffd9b3; /* Light Orange */
+                }
+                
+                .status-approved {
+                    background-color: #ffffcc; /* Light Yellow */
+                }
+                
+                .status-accepted {
+                    background-color: #ccffcc; /* Light Green */
+                }
+                
+                .status-rejected {
+                    background-color: #ffcccc; /* Light Red */
+                }
+                
+                .status-default {
+                    background-color: lightgray; /* Default color for any unspecified status */
+                }
                     .quote-number__title,
                     .quote-number,
                     .quote-status__title,
@@ -72,8 +143,8 @@
                         font-size: 1.75em;
                     }
                 .quote-info__section {
-                    width: 33.333%;
-                    flex: 1 1 (33.333%-2.5vmin);
+                    width: 50%;
+                    flex: 1 1 (50%-2.5vmin);
                     margin: 1.25vmin;
                 }
                 .quote-type__wrapper,
@@ -119,8 +190,9 @@
                         padding: 2.5vmin;
                         text-align: center;
                     }
-
-
+                    .quote-items__td {
+                        cursor: pointer;
+                    }
 
 /* ---------- Modal ---------- */
 
@@ -136,7 +208,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
-    padding-top: 60px;
+    font-family: "Inter", sans-serif;
 }
 
 .modal__content {
@@ -200,6 +272,17 @@
     background-color: #c82333;
 }
 
+/* ---------- Modal for item details ---------- */
+
+.modal--item-details {
+    width: 100%;
+}
+
+.modal__content--item-details {
+    max-width: 60%;
+    overflow-y: scroll;
+}
+
 .modal__table {
     width: 100%;
     border-collapse: collapse;
@@ -210,6 +293,8 @@
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
+
+/* ---------- Pagination ---------- */
 
 .pagination {
     display: flex;
@@ -227,11 +312,13 @@
 }
 
 .pagination a.active {
-    background-color: #4CAF50;
+    background-color: #333;
     color: white;
-    border: 1px solid #4CAF50;
+    border: 1px solid #111;
 }
 
 .pagination a:hover {
-    background-color: #ddd;
+    background-color: #444;
+    color: white;
+    border: 1px solid #111;
 }

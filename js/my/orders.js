@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         row.addEventListener('click', function() {
             const cells = row.querySelectorAll('td');
             if (cells.length > 0) {
-                document.getElementById('modalFurnitureType').innerText = cells[1].innerText;
+                document.getElementById('modalFurniture').innerText = cells[1].innerText;
                 document.getElementById('modalDescription').innerText = cells[2].innerText;
                 document.getElementById('modalQuantity').innerText = cells[3].innerText;
                 document.getElementById('modalPrice').innerText = cells[4].innerText;
