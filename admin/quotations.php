@@ -42,7 +42,7 @@
     // echo $quotationSql;
     $stmt = $conn->prepare($quotationSql);
     if($status_filter !== 'default') {
-        echo "test2";
+        // echo "test2";
         $stmt->bindParam(':status_filter', $status_filter);
     }
 
@@ -93,13 +93,14 @@
                             $type = ($quote['type'] === "mto") ? "MTO" : "Repair";
                             $status = $quote['status'];
                             $status_text = ($status === "pending") ? "Pending" : "Approved";
+                            $item = strlen($quote['item']) > 12 ? substr($quote['item'], 0, 12) . '...' : $quote['item'];
                             // $item = ucfirst($quote['item']);
                             echo "
                             <tr data-id='{$quote['quote_id']}'>
                                 <td>{$quote['quote_id']}</td>
                                 <td>{$quote['name']}</td>
                                 <td>{$quote['email']}</td>
-                                <td>{$quote['item']}</td>
+                                <td>{$item}</td>
                                 <td>{$type}</td>
                                 <td>{$date}</td>
                                 <td class='prod-status status'>
@@ -121,12 +122,17 @@
     <script>
         const statusSelector = document.querySelector('[name="quote-status"]');
         statusSelector.addEventListener('change', (e) => {
-            if(e.target.value !== 'default') {
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('quote-status', e.target.value);
-                window.location.href = currentUrl.href;
-            }
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('quote-status', e.target.value);
+            window.location.href = currentUrl.href;
         });
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const quoteStatus = urlParams.get('quote-status');
+        if (quoteStatus) {
+            statusSelector.value = quoteStatus;
+        }
     </script>
 </body>
 </html>
