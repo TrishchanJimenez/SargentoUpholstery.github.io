@@ -8,15 +8,13 @@ $sql = "
         service_type AS order_type,
         COUNT(*) AS count
     FROM
-        orders
+        orders O
     JOIN
-        quotes USING(quote_id)
-    JOIN
-        order_date USING(order_id)
+        quotes Q USING(quote_id)
     WHERE
-        WEEK(placement_date) = WEEK(CURDATE())
-        AND YEAR(placement_date) = YEAR(CURDATE())
-        AND order_status NOT IN ('received', 'new_order')
+        WEEK(O.created_at) = WEEK(CURDATE())
+        AND YEAR(O.created_at) = YEAR(CURDATE())
+        AND order_phase NOT IN ('received', 'cancelled')
     GROUP BY order_type
 ";
 

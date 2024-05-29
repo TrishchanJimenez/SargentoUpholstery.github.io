@@ -9,75 +9,73 @@ if (!isset($_SESSION['user_id']) || $_SESSION['access_type'] !== 'admin') {
 $sql = "
     SELECT
         (SELECT
-            SUM(quoted_price)
+            SUM(total_price)
         FROM
-            orders
+            orders O
         JOIN
-            order_date USING(order_id)
-        JOIN
-            quotes USING(quote_id)    
+            quotes Q USING(quote_id)    
         WHERE
-            order_status <> 'received'
-            AND is_cancelled = 0
-            AND WEEK(placement_date) = WEEK(CURDATE()) 
-            AND YEAR(placement_date) = YEAR(CURDATE())) AS total_revenue_current_week,
+            order_phase <> 'received'
+            AND order_phase <> 'cancelled'
+            AND WEEK(O.created_at) = WEEK(CURDATE()) 
+            AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_week,
         (SELECT
-            SUM(quoted_price)
+            SUM(total_price)
         FROM
-            orders
+            orders O
         JOIN
-            order_date USING(order_id)
-        JOIN
-            quotes USING(quote_id)    
+            quotes Q USING(quote_id)    
         WHERE
-            order_status <> 'received'
-            AND is_cancelled = 0
-            AND YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS total_revenue_last_week,
+            order_phase <> 'received'
+            AND order_phase <> 'cancelled'
+            AND YEARWEEK(O.created_at, 1) = YEARWEEK(CURDATE(), 1) - 1) AS total_revenue_last_week,
         (SELECT 
             COUNT(*) 
         FROM 
-            orders
-        JOIN 
-            order_date USING(order_id)
+            orders O
         WHERE 
-            WEEK(placement_date) = WEEK(CURDATE()) 
-            AND YEAR(placement_date) = YEAR(CURDATE())) AS new_orders_current_week,
+            WEEK(O.created_at) = WEEK(CURDATE()) 
+            AND YEAR(O.created_at) = YEAR(CURDATE())) AS new_orders_current_week,
         (SELECT 
             COUNT(*) 
         FROM 
-            orders 
-        JOIN 
-            order_date USING(order_id)
+            orders O
         WHERE 
-            YEARWEEK(placement_date, 1) = YEARWEEK(CURDATE(), 1) - 1) AS new_orders_last_week,
+            YEARWEEK(O.created_at, 1) = YEARWEEK(CURDATE(), 1) - 1) AS new_orders_last_week,
         (SELECT
             COUNT(*)
         FROM
             orders
         WHERE 
-            is_cancelled = 1
-            AND WEEK(last_updated) = WEEK(CURDATE()) 
-            AND YEAR(last_updated) = YEAR(CURDATE())) AS cancelled_orders_current_week,
+            order_phase = 'cancelled'
+            AND WEEK(updated_at) = WEEK(CURDATE()) 
+            AND YEAR(updated_at) = YEAR(CURDATE())) AS cancelled_orders_current_week,
         (SELECT
             COUNT(*)
         FROM
-            orders
+            orders O
         WHERE 
-            is_cancelled = 1
-            AND YEARWEEK(last_updated, 1) = YEARWEEK(CURDATE(), 1) - 1) AS cancelled_orders_last_week,
+            order_phase = 'cancelled'
+            AND YEARWEEK(updated_at, 1) = YEARWEEK(CURDATE(), 1) - 1) AS cancelled_orders_last_week,
         (SELECT
             COUNT(*)
         FROM
             orders
+        JOIN
+            quotes Q USING(quote_id)
         JOIN (
-            SELECT U.user_id,
-            MIN(placement_date) AS first_order
-            FROM orders O
-            JOIN order_date OD USING(order_id)
-            JOIN users U ON O.user_id = U.user_id
+            SELECT 
+                Q.customer_id AS user_id,
+                MIN(O.created_at) AS first_order
+            FROM 
+                orders O
+            JOIN
+                quotes Q USING(quote_id)
+            JOIN 
+                users U ON Q.customer_id = U.user_id 
             WHERE user_type = 'customer'
-            GROUP BY U.user_id
-        ) AS first_orders ON orders.user_id = first_orders.user_id
+            GROUP BY user_id
+        ) AS first_orders ON Q.customer_id = first_orders.user_id
         WHERE 
             WEEK(first_order) = WEEK(CURDATE()) 
             AND YEAR(first_order) = YEAR(CURDATE())) AS new_customers_current_week,
@@ -85,15 +83,21 @@ $sql = "
             COUNT(*)
         FROM
             orders
+        JOIN
+            quotes Q USING(quote_id)
         JOIN (
-            SELECT U.user_id,
-            MIN(placement_date) AS first_order
-            FROM orders O
-            JOIN order_date OD USING(order_id)
-            JOIN users U ON O.user_id = U.user_id
+            SELECT 
+                Q.customer_id AS user_id,
+                MIN(O.created_at) AS first_order
+            FROM 
+                orders O
+            JOIN
+                quotes Q USING(quote_id)
+            JOIN 
+                users U ON Q.customer_id = U.user_id 
             WHERE user_type = 'customer'
             GROUP BY U.user_id
-        ) AS first_orders ON orders.user_id = first_orders.user_id
+        ) AS first_orders ON Q.customer_id = first_orders.user_id
         WHERE 
             YEARWEEK(first_order, 1) = YEARWEEK(CURDATE(), 1) - 1) AS new_customers_last_week,
         (SELECT
@@ -101,15 +105,15 @@ $sql = "
         FROM
             orders
         WHERE
-            order_status = 'received'
-            AND WEEK(last_updated) = WEEK(CURDATE())) AS completed_orders_current_week, 
+            order_phase = 'received'
+            AND WEEK(updated_at) = WEEK(CURDATE())) AS completed_orders_current_week, 
         (SELECT
             COUNT(*)
         FROM
             orders
         WHERE
-            order_status = 'received'
-            AND YEARWEEK(last_updated, 1) = YEARWEEK(CURDATE(), 1) - 1) AS completed_orders_last_week 
+            order_phase = 'received'
+            AND YEARWEEK(updated_at, 1) = YEARWEEK(CURDATE(), 1) - 1) AS completed_orders_last_week 
 ";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -169,18 +173,25 @@ $review_count = $stmt->fetch(PDO::FETCH_ASSOC)['review_count'];
 
 $ratings_by_type = "
     SELECT
-        service_type AS order_type,
-        AVG(rating) AS average_rating
-    FROM
-        reviews
-    JOIN orders USING (order_id)
-    JOIN quotes USING (quote_id)
-    GROUP BY order_type
+        (SELECT
+            AVG(rating) AS average_rating
+        FROM
+            reviews
+        JOIN orders USING (order_id)
+        JOIN quotes USING (quote_id)
+        WHERE service_type = 'mto') AS mto_average_rating,
+        (SELECT
+            AVG(rating) AS average_rating
+        FROM
+            reviews
+        JOIN orders USING (order_id)
+        JOIN quotes USING (quote_id)
+        WHERE service_type = 'repair') AS repair_average_rating
 ";
 
 $stmt = $conn->prepare($ratings_by_type);
 $stmt->execute();
-$ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$ratings_by_type = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -190,7 +201,7 @@ $ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin/orders.css">
-    <link rel="stylesheet" href="../css/dashboard_test.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -244,28 +255,32 @@ $ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </span>
                     </div>
                     <p class="orders-title by-type">By Type</p>
-                    <p class="sub-category">MTO</p>
-                    <div class="average-rating">
-                        <span class="rating-text"> <?= round($ratings_by_type[0]['average_rating'], 2) ?> </span>
-                        <span class="rating-stars">
-                            <?php for ($i = 1; $i <= 5; $i++) { ?>
-                                <span class="fa fa-star
-                                    <?= $i <= $ratings_by_type[0]['average_rating'] ? 'checked' : '' ?>">
-                                </span>
-                            <?php } ?>
-                        </span>
-                    </div>
-                    <p class="sub-category">Repair</p>
-                    <div class="average-rating">
-                        <span class="rating-text"> <?= round($ratings_by_type[1]['average_rating'],2) ?> </span>
-                        <span class="rating-stars">
-                            <?php for ($i = 1; $i <= 5; $i++) { ?>
-                                <span class="fa fa-star
-                                    <?= $i <= $ratings_by_type[1]['average_rating'] ? 'checked' : '' ?>">
-                                </span>
-                            <?php } ?>
-                        </span>
-                    </div>
+                    <?php if($ratings_by_type['mto_average_rating'] != null) { ?>
+                        <p class="sub-category">MTO</p>
+                        <div class="average-rating">
+                            <span class="rating-text"> <?= round($ratings_by_type['mto_average_rating'], 2) ?> </span>
+                            <span class="rating-stars">
+                                <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                    <span class="fa fa-star
+                                        <?= $i <= $ratings_by_type['mto_average_rating'] ? 'checked' : '' ?>">
+                                    </span>
+                                <?php } ?>
+                            </span>
+                        </div>
+                    <?php } ?>
+                    <?php if($ratings_by_type['repair_average_rating'] != null) { ?>
+                        <p class="sub-category">Repair</p>
+                        <div class="average-rating">
+                            <span class="rating-text"> <?= round($ratings_by_type['repair_average_rating'], 2) ?> </span>
+                            <span class="rating-stars">
+                                <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                    <span class="fa fa-star
+                                        <?= $i <= $ratings_by_type['repair_average_rating'] ? 'checked' : '' ?>">
+                                    </span>
+                                <?php } ?>
+                            </span>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
             <div class="bottom-charts">
@@ -291,6 +306,6 @@ $ratings_by_type = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/dashboard_test.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
