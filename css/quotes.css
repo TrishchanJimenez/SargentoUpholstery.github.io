@@ -1,139 +1,239 @@
-/* ---------- Quotes ---------- */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
 
 .quotes__wrapper {
-    width: 90%;
-    margin: 5%;
-    font-family: "Inter", sans-serif;
+    max-width: 1200px;
+    margin: 2em auto;
+    padding: 1em;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .quotes__back-button {
-    margin-left: 5%;
+    display: inline-block;
+    margin-bottom: 1em;
     text-decoration: none;
-    color: black;
-    font-weight: bolder;
+    color: #007bff;
 }
 
 .quotes {
-    height: auto;
     display: flex;
+    flex-direction: column;
 }
 
+.quotes__top,
+.quotes__bottom {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+/* Optional: Adding some padding and border radius for better visibility */
+.quote-status__wrapper {
+    padding: 1em;
+    border-radius: 5px;
+}
+
+.quote-number__wrapper,
+.quote-type__wrapper,
+.quote-status__wrapper,
+.quote-price__wrapper,
+.quote-actions__wrapper,
 .quote-details__wrapper {
-    width: 60%;
-    height: auto;
-    padding: 2.5%;
-    margin: 2.5vmin;
+    flex: 1 1 calc(25% - 1em);
+    margin: 0.5em;
+    padding: 1em;
+    border-radius: 8px;
 }
 
-.quote-details__title,
-.quote-price__title,
-.quote-actions__title {
-    width: 100%;
-    height: auto;
-    text-align: center;
-    margin-bottom: 0;
-    background-color: #333;
-    color: white;
-    padding: 2.5vmin;
+.quote-number__wrapper,
+.quote-type__wrapper,
+.quote-status__wrapper {
+    background-color: #e1e1e1;
 }
 
-.quote-details {
-    width: 100%;
-    height: auto;
+.quote-price__wrapper,
+.quote-actions__wrapper,
+.quote-details__wrapper {
+    background-color: #f1f1f1;
+}
+
+.quote-section__wrapper {
+    margin-bottom: 25px;
+}
+
+.quote-section__title h1 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #343a40;
+}
+
+.quote-general__wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    flex: 1 1 calc(50% - 1em);
 }
 
-.quote-details__table {
-    width: 100%;
-    height: auto;
-    border: 1px solid black;
+.status-pending {
+    background-color: #ffd9b3; /* Light Orange */
 }
 
-.quote-details__th {
-    width: 50%;
-    text-align: center;
-    background-color: #555;
-    color: white;
-    padding: 1.25vmin;
-    border: 1px solid black;
+.status-approved {
+    background-color: #ffffcc; /* Light Yellow */
 }
 
-.quote-details__td {
-    width: 50%;
-    text-align: center;
-    padding: 5vmin;
-    background-color: #eee;
-    border: 1px solid black;
+.status-accepted {
+    background-color: #ccffcc; /* Light Green */
 }
 
-.quote-details__td--price {
-    font-size: 6.25vmin;
+.status-rejected {
+    background-color: #ffcccc; /* Light Red */
 }
 
-.quote-details__ref-img {
-    width: 100%;
-    height: auto;
+.status-default {
+    background-color: lightgray; /* Default color for any unspecified status */
 }
 
-.quotes__right-wrapper {
-    width: 40%;
-    height: auto;
-    padding: 2.5%;
-    margin: 2.5vmin;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.td--top {
+    background-color: inherit;
+    border: none;
+    font-size: 1.5em;
 }
 
-.quote-price__wrapper {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 7.5vmin;
+.td--top.--price {
+    font-size: 3vw; /* Starts with a large size */
 }
 
-.quote-price__title {
-    text-align: center;
-}
+.--price {
+    text-align: right;
+    max-width: 100%; /* Ensures it doesn't overflow */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow if any */
+    text-overflow: ellipsis; /* Add ellipsis if overflow */
 
-.quote-price {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 7.5vmin;
-    background-color: #fff2c3;
-    padding: 2.5vmin;
-}
-
-.quote-actions__wrapper {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.quote-actions__title {
-    text-align: center;
-    margin-bottom: 5vmin;
 }
 
 .quote-actions {
     width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-.quote-actions__cancel,
-.quote-actions__accept {
-    margin: 1.25vmin;
-    margin-top: 12.5vmin;
-    padding: 1.25vmin;
-    width: 60%;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 0.5em;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+td {
+    background-color: #ffffff;
+}
+
+button {
+    padding: 0.5em 1em;
+    margin: 0.5em 0;
+    font-size: 1em;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #464646;
+}
+
+/* ---------- Modal ---------- */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.modal__content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.modal__close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.modal__close:hover,
+.modal__close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.modal__message {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal__action {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#confirmAction {
+    background-color: #28a745;
+    color: white;
+}
+
+#confirmAction:hover {
+    background-color: #218838;
+}
+
+#cancelAction {
+    background-color: #dc3545;
+    color: white;
+}
+
+#cancelAction:hover {
+    background-color: #c82333;
 }

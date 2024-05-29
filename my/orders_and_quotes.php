@@ -43,9 +43,7 @@
                 <thead class="onq__thead   --quotes">
                     <tr class="onq__tr   --quotes">
                         <th class="onq__th   onq__tc   --quotes">Quote ID</th>
-                        <th class="onq__th   --quotes">Furniture Type</th>
                         <th class="onq__th   --quotes">Service Type</th>
-                        <th class="onq__th   --quotes">Quantity</th>
                         <th class="onq__th   --quotes">Status</th>
                         <th class="onq__th   onq__tc   --quotes"></th>
                     </tr>
@@ -69,9 +67,7 @@
                                 echo '
                                     <tr>
                                         <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quote_id"]) . '</td>
-                                        <td class="onq__td onq__td--alt onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
-                                        <td class="onq__td onq__td--alt onq__td--quote">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--quote">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td--edge">
                                             <a href="quotes.php?quote_id=' . htmlspecialchars($row["quote_id"]) . '">

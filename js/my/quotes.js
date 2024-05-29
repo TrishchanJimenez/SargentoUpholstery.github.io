@@ -1,22 +1,39 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const cancelButton = document.querySelector(".quote-actions__cancel");
-    const acceptButton = document.querySelector(".quote-actions__accept");
+document.addEventListener('DOMContentLoaded', function () {
+    const acceptModal = document.getElementById('acceptModal');
+    const cancelModal = document.getElementById('cancelModal');
+    const confirmAcceptAction = document.getElementById('confirmAcceptAction');
+    const cancelAcceptAction = document.getElementById('cancelAcceptAction');
+    const confirmCancelAction = document.getElementById('confirmCancelAction');
+    const cancelCancelAction = document.getElementById('cancelCancelAction');
 
-    if (cancelButton) {
-        cancelButton.addEventListener("click", function() {
-            if (confirm("Are you sure you want to cancel this quote request? This action cannot be undone.")) {
-                updateQuoteStatus("cancelled");
-            }
-        });
+    function openModal(action) {
+        if (action === 'accept') {
+            acceptModal.style.display = 'block';
+        } else if (action === 'cancel') {
+            cancelModal.style.display = 'block';
+        }
     }
 
-    if (acceptButton) {
-        acceptButton.addEventListener("click", function() {
-            if (confirm("Are you sure you want to accept this quote?")) {
-                updateQuoteStatus("accepted");
-            }
-        });
+    function closeModal() {
+        acceptModal.style.display = 'none';
+        cancelModal.style.display = 'none';
     }
+
+    cancelAcceptAction.addEventListener('click', closeModal);
+    cancelCancelAction.addEventListener('click', closeModal);
+
+    confirmAcceptAction.addEventListener('click', function () {
+        updateQuoteStatus('accepted');
+        closeModal();
+    });
+
+    confirmCancelAction.addEventListener('click', function () {
+        updateQuoteStatus('cancelled');
+        closeModal();
+    });
+
+    // Expose openModal to global scope
+    window.openModal = openModal;
 
     function updateQuoteStatus(status) {
         fetch("../api/update_quote_status.php", {
