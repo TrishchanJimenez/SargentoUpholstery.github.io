@@ -201,32 +201,27 @@
         }
     }
 
-    function insertCustom($item_id, $dimensions, $materials, $fabric, $color) {
+    function insertCustom($dimensions, $materials, $fabric, $color) {
         global $conn;
         $query = "
             INSERT INTO
                 `customs` (
-                    `item_id`
                     `dimensions`,
                     `materials`,
                     `fabric`,
                     `color`
                 )
             VALUES (
-                :item_id
                 :dimensions,
                 :materials,
                 :fabric,
                 :color
             )";
-
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':item_id', $item_id);
         $stmt->bindParam(':dimensions', $dimensions);
         $stmt->bindParam(':materials', $materials);
         $stmt->bindParam(':fabric', $fabric);
         $stmt->bindParam(':color', $color);
-
         $stmt->execute();
     }
 
@@ -263,7 +258,6 @@
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':customer_id', $_SESSION['user_id']);
         $stmt->bindParam(':service_type', $_POST['service_type']);
-        
         $stmt->execute();
         $quote_id = $conn->lastInsertId();
 
@@ -283,6 +277,7 @@
                 INSERT INTO
                     `items` (
                         `quote_id`,
+                        `custom_id`,
                         `furniture`,
                         `description`,
                         `item_ref_img`,
@@ -290,6 +285,7 @@
                         )
                 VALUES (
                     :quote_id,
+                    :custom_id,
                     :furniture,
                     :description,
                     :item_img_path,
@@ -302,10 +298,8 @@
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':item_img_path', $item_img);
             $stmt->bindParam(':quantity', $quantity);
-            $stmt->execute();
 
-            $item_id = $conn->lastInsertId();
-
+            $custom_id = null;
             if (!empty($dimensions[$i]) || !empty($materials[$i]) || !empty($fabric[$i]) || !empty($colors[$i])) {
                 $dimensions = $_POST['dimensions'][$i];
                 $materials = $_POST['materials'][$i];
@@ -317,8 +311,11 @@
                 $fab = !empty($fabric[$i]) ? $fabric[$i] : '';
                 $color = !empty($colors[$i]) ? $colors[$i] : '';
 
-                insertCustom($item_id, $dimensions, $materials, $fabric, $color);
+                insertCustom($dimensions, $materials, $fabric, $color);
             }
+
+            $stmt->bindParam(':custom_id', $custom_id);
+            $stmt->execute();
         }
         
         try {
