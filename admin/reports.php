@@ -12,19 +12,21 @@
 
     $search_type = $_GET['search-order'] ?? '';
     $search_input = $_GET['search-input'] ?? '';
-    $order_type = $_GET['order-type'] ?? '';
+    $service_type = $_GET['service-type'] ?? '';
     $order_prod_status = $_GET['order-prod-status'] ?? '';
     $order_payment_status = $_GET['order-payment-status'] ?? '';
     $order_sort = $_GET['order-sort'] ?? '';
     $current_page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
 
     $count_query = "
-        SELECT COUNT(*) AS total_records
-        FROM orders O 
-        JOIN quotes USING(quote_id)
-        JOIN users U ON O.user_id = U.user_id
-        JOIN order_date OD ON OD.order_id = O.order_id
-        JOIN payment P ON P.order_id = O.order_id
+        SELECT 
+            COUNT(*) AS total_records
+        FROM 
+            orders O 
+        JOIN 
+            quotes Q USING(quote_id)
+        JOIN 
+            users U ON Q.customer_id = U.user_id
         WHERE 1
     ";
 
@@ -32,19 +34,20 @@
         SELECT
             O.order_id,
             U.name AS customer_name,
-            Q.furniture_type AS item,
             Q.service_type AS order_type,
-            Q.quantity,
-            Q.quoted_price AS price,
-            OD.placement_date,
-            O.order_status AS prod_status,
-            O.is_cancelled,
-            P.payment_status
-        FROM orders O 
-        JOIN quotes Q USING (quote_id)
-        JOIN users U ON O.user_id = U.user_id
-        JOIN order_date OD ON OD.order_id = O.order_id
-        JOIN payment P ON P.order_id = O.order_id
+            Q.total_price AS price,
+            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
+            O.created_at AS placement_date,
+            O.order_phase AS prod_status,
+            O.payment_phase AS payment_status
+        FROM 
+            orders O 
+        JOIN 
+            quotes Q USING (quote_id)
+        LEFT JOIN
+            items I USING (quote_id)
+        JOIN 
+            users U ON Q.customer_id = U.user_id
         WHERE 1
     ";
 
@@ -68,37 +71,45 @@
                 break;
         }
     }
-    if (!($order_type === 'default' || empty($order_type))) {
-        $count_query .= " AND service_type = '$order_type'";
-        $query .= " AND service_type = '$order_type'";
+    if (!($service_type === 'default' || empty($service_type))) {
+        $count_query .= " AND service_type = '$service_type'";
+        $query .= " AND service_type = '$service_type'";
     }
     if (!($order_prod_status === 'default' || empty($order_prod_status))) {
-        $count_query .= " AND O.order_status = '$order_prod_status'";
-        $query .= " AND O.order_status = '$order_prod_status'";
+        $count_query .= " AND order_phase = '$order_prod_status'";
+        $query .= " AND order_phase = '$order_prod_status'";
     }
     if (!($order_payment_status === 'default' || empty($order_payment_status))) {
-        $count_query .= " AND payment_status = '$order_payment_status'";
-        $query .= " AND payment_status = '$order_payment_status'";
+        $count_query .= " AND payment_phase = '$order_payment_status'";
+        $query .= " AND payment_phase = '$order_payment_status'";
     }
 
     $count_result = $conn->query($count_query);
     $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
 
+    $query .= " GROUP BY O.order_id";
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
         $query .= " ORDER BY $order_sort DESC";
     } else {
-        $query .= " ORDER BY O.last_updated DESC";
+        $query .= " ORDER BY O.updated_at DESC";
     }
 
+    $query .= " LIMIT 10";
+    if($current_page !== 1) {
+        $query .= " OFFSET " . (($current_page - 1) * 10);
+    }
 
     $stmt = $conn->query($query);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+    $page_count = $total_records < 10 ? 1 : ceil($total_records / 10);
+
+    if($current_page > $page_count) {
+        $current_page = $page_count;
+    }
+
+    //sql for tables
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -109,8 +120,27 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin/orders.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/report_generated.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
     <style>
-        @media print {
+        @media print{
+            body * {
+                visibility: hidden;
+            }
+            .content-container, .content-container * {
+                visibility: visible;
+            }
+            .content-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+
+        @media table_data.pdf{
             body * {
                 visibility: hidden;
             }
@@ -123,13 +153,15 @@
                 top: 0;
                 width: 100%;
                 height: 100%;
+            }
         }
-}
+
+
     </style>
 </head>
 <body>
-    <div class="orders" >
-            <div class="admin-sidebar">
+    <div class="orders">
+        <div class="admin-sidebar">
             <h1>
                 <p class="text-gold">Sargento</p>
                 <p class="text-gold">Upholstery</p>
@@ -193,173 +225,410 @@
                 </a>
             </ul>
         </div>
-        <div class="order-list">
-            <p class="main-title">Order</p>
-            <hr class="divider">
-            <form class="order-filters" method="get" action="">
-                <div class="order-filter-search">
-                    <select name="search-order" id="" class="search-selector">
-                        <option value="order_id">Order ID</option>
-                        <option value="customer_name">Cust. Name</option>
-                        <option value="item">Item</option>
-                    </select>
-                    <hr class="filter-divider">
-                    <div class="input-search">
-                        <input type="text" name="search-input" id="" size="12" placeholder="Search">
-                        <img src="../websiteimages/icons/Search.svg" alt="">
+
+        <div class="content-container">
+        <p class="main-title">Summarized Statistics</p>
+        <hr class="divider1">
+    <div class="stats_container">
+        <?php
+        // SQL queries for daily, weekly, monthly, and yearly statistics
+        $sql = "
+            SELECT
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND DATE(O.created_at) = CURDATE()) AS total_revenue_today,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND WEEK(O.created_at) = WEEK(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_week,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND MONTH(O.created_at) = MONTH(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_month,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_year,
+
+                (SELECT COUNT(*) FROM orders O WHERE DATE(O.created_at) = CURDATE()) AS new_orders_today,
+                (SELECT COUNT(*) FROM orders O WHERE WEEK(O.created_at) = WEEK(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS new_orders_current_week,
+                (SELECT COUNT(*) FROM orders O WHERE MONTH(O.created_at) = MONTH(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS new_orders_current_month,
+                (SELECT COUNT(*) FROM orders O WHERE YEAR(O.created_at) = YEAR(CURDATE())) AS new_orders_current_year,
+
+                (SELECT COUNT(*) FROM orders WHERE order_phase = 'cancelled' AND DATE(updated_at) = CURDATE()) AS cancelled_orders_today,
+                (SELECT COUNT(*) FROM orders O WHERE order_phase = 'cancelled' AND WEEK(updated_at) = WEEK(CURDATE()) AND YEAR(updated_at) = YEAR(CURDATE())) AS cancelled_orders_current_week,
+                (SELECT COUNT(*) FROM orders O WHERE order_phase = 'cancelled' AND MONTH(updated_at) = MONTH(CURDATE()) AND YEAR(updated_at) = YEAR(CURDATE())) AS cancelled_orders_current_month,
+                (SELECT COUNT(*) FROM orders O WHERE order_phase = 'cancelled' AND YEAR(updated_at) = YEAR(CURDATE())) AS cancelled_orders_current_year,
+
+                (SELECT COUNT(*) FROM orders JOIN quotes Q USING(quote_id) JOIN (SELECT Q.customer_id AS user_id, MIN(O.created_at) AS first_order FROM orders O JOIN quotes Q USING(quote_id) JOIN users U ON Q.customer_id = U.user_id WHERE user_type = 'customer' GROUP BY user_id) AS first_orders ON Q.customer_id = first_orders.user_id WHERE DATE(first_order) = CURDATE()) AS new_customers_today,
+                (SELECT COUNT(*) FROM orders JOIN quotes Q USING(quote_id) JOIN (SELECT Q.customer_id AS user_id, MIN(O.created_at) AS first_order FROM orders O JOIN quotes Q USING(quote_id) JOIN users U ON Q.customer_id = U.user_id WHERE user_type = 'customer' GROUP BY user_id) AS first_orders ON Q.customer_id = first_orders.user_id WHERE WEEK(first_order) = WEEK(CURDATE()) AND YEAR(first_order) = YEAR(CURDATE())) AS new_customers_current_week,
+                (SELECT COUNT(*) FROM orders JOIN quotes Q USING(quote_id) JOIN (SELECT Q.customer_id AS user_id, MIN(O.created_at) AS first_order FROM orders O JOIN quotes Q USING(quote_id) JOIN users U ON Q.customer_id = U.user_id WHERE user_type = 'customer' GROUP BY user_id) AS first_orders ON Q.customer_id = first_orders.user_id WHERE MONTH(first_order) = MONTH(CURDATE()) AND YEAR(first_order) = YEAR(CURDATE())) AS new_customers_current_month,
+                (SELECT COUNT(*) FROM orders JOIN quotes Q USING(quote_id) JOIN (SELECT Q.customer_id AS user_id, MIN(O.created_at) AS first_order FROM orders O JOIN quotes Q USING(quote_id) JOIN users U ON Q.customer_id = U.user_id WHERE user_type = 'customer' GROUP BY user_id) AS first_orders ON Q.customer_id = first_orders.user_id WHERE YEAR(first_order) = YEAR(CURDATE())) AS new_customers_current_year,
+
+                (SELECT COUNT(*) FROM orders WHERE order_phase = 'received' AND DATE(updated_at) = CURDATE()) AS completed_orders_today,
+                (SELECT COUNT(*) FROM orders WHERE order_phase = 'received' AND WEEK(updated_at) = WEEK(CURDATE())) AS completed_orders_current_week,
+                (SELECT COUNT(*) FROM orders WHERE order_phase = 'received' AND MONTH(updated_at) = MONTH(CURDATE()) AND YEAR(updated_at) = YEAR(CURDATE())) AS completed_orders_current_month,
+                (SELECT COUNT(*) FROM orders WHERE order_phase = 'received' AND YEAR(updated_at) = YEAR(CURDATE())) AS completed_orders_current_year
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $total_revenue_today = $stats['total_revenue_today'];
+        $total_revenue_current_week = $stats['total_revenue_current_week'];
+        $total_revenue_current_month = $stats['total_revenue_current_month'];
+        $total_revenue_current_year = $stats['total_revenue_current_year'];
+
+        $new_orders_today = $stats['new_orders_today'];
+        $new_orders_current_week = $stats['new_orders_current_week'];
+        $new_orders_current_month = $stats['new_orders_current_month'];
+        $new_orders_current_year = $stats['new_orders_current_year'];
+
+        $cancelled_orders_today = $stats['cancelled_orders_today'];
+        $cancelled_orders_current_week = $stats['cancelled_orders_current_week'];
+        $cancelled_orders_current_month = $stats['cancelled_orders_current_month'];
+        $cancelled_orders_current_year = $stats['cancelled_orders_current_year'];
+
+        $new_customers_today = $stats['new_customers_today'];
+        $new_customers_current_week = $stats['new_customers_current_week'];
+        $new_customers_current_month = $stats['new_customers_current_month'];
+        $new_customers_current_year = $stats['new_customers_current_year'];
+
+        $completed_orders_today = $stats['completed_orders_today'];
+        $completed_orders_current_week = $stats['completed_orders_current_week'];
+        $completed_orders_current_month = $stats['completed_orders_current_month'];
+        $completed_orders_current_year = $stats['completed_orders_current_year'];
+
+        $avg_rating_sql = "
+            SELECT AVG(rating) AS average_rating FROM reviews
+        ";
+
+        $stmt = $conn->prepare($avg_rating_sql);
+        $stmt->execute();
+        $avg_rating = round($stmt->fetch(PDO::FETCH_ASSOC)['average_rating'], 2);
+
+        $review_count_sql = "
+            SELECT COUNT(*) AS review_count FROM reviews
+        ";
+        $stmt = $conn->prepare($review_count_sql);
+        $stmt->execute();
+        $review_count = $stmt->fetch(PDO::FETCH_ASSOC)['review_count'];
+
+        $ratings_by_type_sql = "
+            SELECT
+                (SELECT AVG(rating) FROM reviews JOIN orders USING (order_id) JOIN quotes USING (quote_id) WHERE service_type = 'mto') AS mto_average_rating,
+                (SELECT AVG(rating) FROM reviews JOIN orders USING (order_id) JOIN quotes USING (quote_id) WHERE service_type = 'repair') AS repair_average_rating
+        ";
+
+        $stmt = $conn->prepare($ratings_by_type_sql);
+        $stmt->execute();
+        $ratings_by_type = $stmt->fetch(PDO::FETCH_ASSOC);
+        ?>
+        
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Daily Statistics</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Sales</td>
+                    <td><?= '₱ ' . $total_revenue_today ?></td>
+                </tr>
+                <tr>
+                    <td>Total Orders</td>
+                    <td><?= $new_orders_today ?></td>
+                </tr>
+                <tr>
+                    <td>Total Finished Orders</td>
+                    <td><?= $completed_orders_today ?></td>
+                </tr>
+                <tr>
+                    <td>Average Ratings</td>
+                    <td><?= $avg_rating ?></td>
+                </tr>
+                <tr>
+                    <td>New Customers</td>
+                    <td><?= $new_customers_today ?></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Weekly Statistics</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Sales</td>
+                    <td><?= '₱ ' . $total_revenue_current_week ?></td>
+                </tr>
+                <tr>
+                    <td>Total Orders</td>
+                    <td><?= $new_orders_current_week ?></td>
+                </tr>
+                <tr>
+                    <td>Total Finished Orders</td>
+                    <td><?= $completed_orders_current_week ?></td>
+                </tr>
+                <tr>
+                    <td>Average Ratings</td>
+                    <td><?= $avg_rating ?></td>
+                </tr>
+                <tr>
+                    <td>New Customers</td>
+                    <td><?= $new_customers_current_week ?></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Monthly Statistics</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Sales</td>
+                    <td><?= '₱ ' . $total_revenue_current_month ?></td>
+                </tr>
+                <tr>
+                    <td>Total Orders</td>
+                    <td><?= $new_orders_current_month ?></td>
+                </tr>
+                <tr>
+                    <td>Total Finished Orders</td>
+                    <td><?= $completed_orders_current_month ?></td>
+                </tr>
+                <tr>
+                    <td>Average Ratings</td>
+                    <td><?= $avg_rating ?></td>
+                </tr>
+                <tr>
+                    <td>New Customers</td>
+                    <td><?= $new_customers_current_month ?></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Yearly Statistics</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Sales</td>
+                    <td><?= '₱ ' . $total_revenue_current_year ?></td>
+                </tr>
+                <tr>
+                    <td>Total Orders</td>
+                    <td><?= $new_orders_current_year ?></td>
+                </tr>
+                <tr>
+                    <td>Total Finished Orders</td>
+                    <td><?= $completed_orders_current_year ?></td>
+                </tr>
+                <tr>
+                    <td>Average Ratings</td>
+                    <td><?= $avg_rating ?></td>
+                </tr>
+                <tr>
+                    <td>New Customers</td>
+                    <td><?= $new_customers_current_year ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+        
+
+            <div class="order-list-reports" id="order-list">
+                <p class="main-title">Order Filtering</p>
+                <hr class="divider1">
+                <form class="order-filters" method="get" action="">
+                    <div class="order-filter-search">
+                        <select name="search-order" id="" class="search-selector">
+                            <option value="order_id">Order ID</option>
+                            <option value="customer_name">Cust. Name</option>
+                            <option value="item">Item</option>
+                        </select>
+                        <hr class="filter-divider">
+                        <div class="input-search">
+                            <input type="text" name="search-input" id="" size="12" placeholder="Search">
+                            <img src="../websiteimages/icons/Search.svg" alt="">
+                        </div>
                     </div>
+                    <div class="filter-type selector-container">
+                        <select name="service-type" id="" class="selector">
+                            <option value="default">Type</option>
+                            <option value="mto">MTO</option>
+                            <option value="repair">Repair</option>
+                        </select>
+                    </div>
+                    <div class="filter-prod-status selector-container">
+                        <select name="order-prod-status" id="" class="selector">
+                            <option value="default">Prod. Status</option>
+                            <option value="pending_downpayment">Pending Downpayment</option>
+                            <option value="ready_for_pickup">Ready for Pickup</option>
+                            <option value="in_production">In Production</option>
+                            <option value="pending_fullpayment">Pending Fullpayment</option>
+                            <option value="out_for_delivery">Delivering</option>
+                            <option value="received">Received</option>
+                        </select>
+                    </div>
+                    <div class="filter-payment-status selector-container">
+                        <select name="order-payment-status" id="" class="selector">
+                            <option value="default">Payment</option>
+                            <option value="unpaid">Unpaid</option>
+                            <option value="partially_paid">Partially Paid</option>
+                            <option value="fully_paid">Fully Paid</option>
+                        </select>
+                    </div>
+                    <div class="filter-sort selector-container">
+                        <select name="order-sort" id="" class="selector">
+                            <option value="default">Sort By</option>
+                            <option value="order_id">Order ID</option>
+                            <option value="est_completion_date">Est. Delivery Date</option>
+                            <option value="item">Item</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Filter">
+                </form>
+                <div class="selected-multiple">
+                    <img src="/websiteimages/icons/close-icon-gray.svg" alt="" class="close-icon">
+                    <span class="selected-count"></span><span>selected</span>
+                    <span class="advance-next">Advance To Next Phase<img src="/websiteimages/icons/arrow-right.svg" alt=""></span>
                 </div>
-                <div class="filter-type selector-container">
-                    <select name="order-type" id="" class="selector">
-                        <option value="default">Type</option>
-                        <option value="mto">MTO</option>
-                        <option value="repair">Repair</option>
-                    </select>
-                </div>
-                <div class="filter-prod-status selector-container">
-                    <select name="order-prod-status" id="" class="selector">
-                        <option value="default">Prod. Status</option>
-                        <option value="pending_downpayment">Pending Downpayment</option>
-                        <option value="ready_for_pickup">Ready for Pickup</option>
-                        <option value="in_production">In Production</option>
-                        <option value="pending_fullpayment">Pending Fullpayment</option>
-                        <option value="out_for_delivery">Delivering</option>
-                        <option value="received">Received</option>
-                    </select>
-                </div>
-                <div class="filter-payment-status selector-container">
-                    <select name="order-payment-status" id="" class="selector">
-                        <option value="default">Payment</option>
-                        <option value="unpaid">Unpaid</option>
-                        <option value="partially_paid">Partially Paid</option>
-                        <option value="fully_paid">Fully Paid</option>
-                    </select>
-                </div>
-                <div class="filter-sort selector-container">
-                    <select name="order-sort" id="" class="selector">
-                        <option value="default">Sort By</option>
-                        <option value="order_id">Order ID</option>
-                        <option value="est_completion_date">Est. Delivery Date</option>
-                        <option value="item">Item</option>
-                    </select>
-                </div>
-                <input type="submit" value="Filter">
-            </form>
-            <div class="selected-multiple">
-                <img src="/websiteimages/icons/close-icon-gray.svg" alt="" class="close-icon">
-                <span class="selected-count"></span><span>selected</span>
-                <span class="advance-next">Advance To Next Phase<img src="/websiteimages/icons/arrow-right.svg" alt=""></span>
-            </div>
-            <table class="order-table" id="Print_area">
-                <thead>
-                    <tr>
-                        <th>Order Id</th>
-                        <th>Customer Name</th>
-                        <th>Item</th>
-                        <th>Type</th>
-                        <th>Price</th>
-                        <th>Placement Date</th>
-                        <th>Prod. Status</th>
-                        <th>Payment Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        foreach($orders AS $order) {
-                            $price = is_null($order['price']) ? "N/A" : "₱{$order['price']}";
-                            $date = date('M d, Y', strtotime($order['placement_date']));
-
-                            $prod_status = str_replace("_", "-", $order['prod_status']);
-                            $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
-
-                            $payment_status = str_replace("_", "-", $order['payment_status']);
-                            $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
-                            $newOrderOption = $order['prod_status'] === "new_order" ? "<option value='new-order'>New Order</option>" : "";
-                            $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
-                            $order_status = str_replace("_", "-", $order['prod_status']);
-                            $statuses = [
-                                "pending-downpayment" => "Pending Downpayment",
-                                "ready-for-pickup" => "Ready for Pickup",
-                                "in-production" => "In Production",
-                                "pending-fullpayment" => "Pending Fullpayment",
-                                "out-for-delivery" => "Out for Delivery",
-                                "received" => "Received"
-                            ];
-                            $prod_status_options = "";
-                            $include = false;
-                            $is_cancelled = $order['is_cancelled'] === 1 ? true : false;
-                            if($is_cancelled) {
-                                $prod_status = "cancelled";
-                                $prod_status_text = "Cancelled";
-                                // $prod_status_options .= "<option value='cancelled'>Cancelled</option>";
-                            } 
-                            foreach ($statuses as $status => $status_text) {
-                                if ($include) {
-                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                }
-                                if ($status === $order_status) {
-                                    if($status === "ready-for-pickup" && $type === "MTO") {
-                                        continue;
-                                    }
-                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                    $include = true;
-                                }
-                            }
-                            $item = ucfirst($order['item']);
-                            echo "
-                            <tr data-id='{$order['order_id']}'>
-                                <td>{$order['order_id']}</td>
-                                <td>{$order['customer_name']}</td>
-                                <td>{$item}</td>
-                                <td>{$type}</td>
-                                <td>{$price}</td>
-                                <td>{$date}</td>
-                                <td>
-                                    <span data-prod-status='{$prod_status}'>{$prod_status_text}</span>
-                                </td>
-                                <td class='payment-status status'>
-                                    <span data-payment='{$payment_status}'>{$payment_status_text}</span>
-                                </td>
-                            </tr>
-                            ";
-                        }
-                    ?>
-                </tbody>
-            </table>
-            <hr class="divider">
-            <div class="query-records">
-                <div class="record-count">
-                    Showing 
-                    <span>
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Customer Name</th>
+                            <th>ITEM/S</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Placement Date</th>
+                            <th>Prod. Status</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                            if($total_records === 0) echo 0;
-                            else echo (($current_page-1) * 10) + 1;
+                            foreach($orders AS $order) {
+                                $price = is_null($order['price']) ? "N/A" : "₱{$order['price']}";
+                                $date = date('M d, Y', strtotime($order['placement_date']));
+
+                                $prod_status = str_replace("_", "-", $order['prod_status']);
+                                $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
+
+                                $payment_status = str_replace("_", "-", $order['payment_status']);
+                                $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
+                                $type = ($order['order_type'] === "mto") ? "Made-To-Order" : "Repair";
+                                $order_status = str_replace("_", "-", $order['prod_status']);
+                                $statuses = [
+                                    "pending-downpayment" => "Pending Downpayment",
+                                    "awating-furniture" => "Awaiting Furniture",
+                                    "in-production" => "In Production",
+                                    "pending-fullpayment" => "Pending Fullpayment",
+                                    "out-for-delivery" => "Out for Delivery",
+                                    "received" => "Received",
+                                ];
+                                $prod_status_options = "";
+
+                                if($order_status === "cancelled") {
+                                    
+                                } else {
+                                    $include = false;
+                                    foreach ($statuses as $status => $status_text) {
+                                        if ($include) {
+                                            $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                        }
+                                        if ($status === $order_status) {
+                                            if($status === "ready-for-pickup" && $type === "MTO") {
+                                                continue;
+                                            }
+                                            $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                            $include = true;
+                                        }
+                                    }
+                                }
+
+                                $item = ucwords($order['item']);
+                                if (strlen($item) > 12) {
+                                    $item = substr($item, 0, 12) . '...';
+                                }
+                                echo "
+                                <tr data-id='{$order['order_id']}'>
+                                    <td>{$order['order_id']}</td>
+                                    <td>{$order['customer_name']}</td>
+                                    <td>{$item}</td>
+                                    <td>{$type}</td>
+                                    <td>{$price}</td>
+                                    <td>{$date}</td>
+                                    <td>
+                                        <span data-prod-status='{$prod_status}'>{$prod_status_text}</span>
+                                    </td>
+                                    <td class='payment-status status'>
+                                        <span data-payment='{$payment_status}'>{$payment_status_text}</span>
+                                    </td>
+                                </tr>
+                                ";
+                            }
                         ?>
-                    </span>
-                    to 
-                    <span>
-                    <?php 
-                        if($current_page * 10 > $total_records) echo $total_records;
-                        else echo $current_page * 10;
-                    ?>
-                    </span> of <span><?= $total_records ?></span> results
-                </div>
+                    </tbody>
+                </table>
+                <hr class="divider1">
+                <div class="query-records">
+                    <div class="record-count">
+                        Showing 
+                        </span> of <span><?= $total_records ?></span> results
+                    </div>
             </div>
-            <button id="print">Save As PDF</button>
+            <button id="print" class="Save_button">Save as pdf</button>
+            <button id="download_Btn">Download</button>
         </div>
     </div>
 
-    
+
+    <script src="../js/admin/order.js"></script>
+    <script src="../js/sidebar.js"></script>
     <script>
+
         const save_pdf=document.getElementById('print');
 
         save_pdf.addEventListener('click',function(){
             print()
         })
-    </script>
 
-    
-    <script src="../js/admin/order.js"></script>
-    <script src="../js/sidebar.js"></script>
+        const download_button =
+            document.getElementById('download_Btn');
+        const content =
+            document.getElementById('order-list');
+
+        download_button.addEventListener
+            ('click', async function () {
+                const filename = 'table_data.pdf';
+
+                try {
+                    const opt = {
+                        margin: 1,
+                        filename: filename,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2 },
+                        jsPDF: {
+                            unit: 'in', format: 'letter',
+                            orientation: 'portrait'
+                        }
+                    };
+                    await html2pdf().set(opt).
+                        from(content).save();
+                } catch (error) {   
+                    console.error('Error:', error.message);
+                }
+            });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </body>
 </html>
