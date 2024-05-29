@@ -1,7 +1,8 @@
 <?php
     require './database_connection.php';
+    include 'alert.php';
     if(isset($_GET['expired'])) {
-        echo "Your token has expired please place request another reset token";
+        sendAlert("error", "Your token has expired please place request another reset token");
     }
 ?>
 <!DOCTYPE html>
@@ -35,10 +36,12 @@
             date_default_timezone_set('Asia/Manila');
             $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
     
-            $sql = "INSERT INTO reset_tokens VALUES(?, ?, ?)";
-    
+            $sql = "UPDATE users SET token_hash = :hash, token_expiry = :expiry WHERE email = :email";
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$email, $token_hash, $expiry]);
+            $stmt->bindParam(':hash', $token_hash);
+            $stmt->bindParam(':expiry', $expiry);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
     
             if ($stmt->rowCount() > 0) {
                 $mail = require __DIR__ . "/mailer.php";
