@@ -8,14 +8,12 @@
     $token = $_GET['token'];
     
     $sql = "
-        SELECT
-            U.user_id
-        FROM users U
-        JOIN reset_tokens RT ON U.email = RT.email
+        SELECT 
+            * 
+        FROM users
         WHERE 
-            RT.token_hash = :token AND
-            RT.expires_at > NOW()
-        LIMIT 1
+            token_hash = :token
+            AND token_expiry > NOW()
     ";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(":token", $token);
@@ -41,7 +39,7 @@
         <img src="/websiteimages/login-splash.jpg" alt="" class="splash-image">
         <form action="changed_password.php" method="POST" class="forgot-password-form change-password-form">
             <p class="forgot-title">Reset Password</p>
-            <input type="hidden" name="user-id" <?php "value='{$user['user_id']}'" ?>>
+            <input type="hidden" name="user-id" <?= "value='{$user['user_id']}'" ?>>
             <label for="new-password">
                 New Password
             </label>

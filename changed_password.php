@@ -2,14 +2,17 @@
     require 'database_connection.php';
     if(isset($_POST['submit-new'])) {
         $password = $_POST['new-password'];
+        $id = $_POST['user-id'];
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $sql = "UPDATE users SET password = :password WHERE user_id = :id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":password", $password);
+        $stmt->bindParam(":password", $hashed_password);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
         $is_updated = $stmt->rowCount() === 1;
-        header("Location: changed_password.php");
+        if($is_updated) {
+            header("Location: changed_password.php");
+        }
     }
 ?>
 <!DOCTYPE html>

@@ -74,7 +74,7 @@ if (downpaymentInfo !== null) {
                 body: verificationData,
             })
             .then((response) => {
-                // console.log(response.text());
+                console.log(response.text());
                 return response.json();
             })
             .then((data) => {

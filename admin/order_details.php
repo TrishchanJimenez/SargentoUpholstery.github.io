@@ -14,65 +14,57 @@
     $order_id = $_GET['order-id'];
 
     $query = "
-        SELECT *
+        SELECT 
+            *,
+            O.created_at AS placement_date
         FROM (
             SELECT *
             FROM orders
             WHERE order_id = :order_id) AS O
         JOIN quotes Q USING(quote_id)
-        LEFT JOIN quote_customs QC ON Q.custom_id = QC.custom_id
-        JOIN order_date OD USING(order_id)
-        JOIN users U USING(user_id)
-        JOIN payment P USING(order_id)
-        LEFT JOIN ( 
-            SELECT
-                address_id,
-                address AS delivery_address
-            FROM addresses
-        ) AS A ON O.del_address_id = A.address_id
-        LEFT JOIN(
-            SELECT
-                order_id,
-                pickup_method,
-                address AS pickup_address
-            FROM pickup P
-            JOIN addresses A ON P.pickup_address_id = A.address_id
-            ) AS pickup USING(order_id)
+        JOIN users U ON U.user_id = Q.customer_id
+        LEFT JOIN
+            downpayment USING(order_id)
+        LEFT JOIN
+            fullpayment USING(order_id)
+        LEFT JOIN
+            items I USING(quote_id) 
+        LEFT JOIN
+            customs C USING(custom_id)  
+        LEFT JOIN
+            delivery D USING(order_id)
+        LEFT JOIN
+            pickup P USING(order_id)
     ";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':order_id', $order_id);
     $stmt->execute();
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
     // var_dump($order);
-    if($order['is_cancelled'] === 1) {
-        $prod_status = "cancelled";
-        $prod_status_text = "Cancelled";
-    }
-    else {
-        $prod_status = str_replace("_", "-", $order['order_status']);
-        $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
-    } 
+    $prod_status = str_replace("_", "-", $order['order_phase']);
+    $prod_status_text = ucwords(str_replace("-", " ", $prod_status));
 
-    $payment_status = str_replace("_", "-", $order['payment_status']);
-    $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
+    $payment_status = str_replace("_", "-", $order['payment_phase']);
+    $payment_status_text = ucwords(str_replace("_", " ", $order['payment_phase'])); 
 
-    $multi_orders = null;
-    if($order['furniture_type'] === 'multiple') {
-        $sql = "
-            SELECT 
-                * 
-            FROM 
-                multis
-            LEFT JOIN
-                quote_customs USING(custom_id) 
-            WHERE 
-                quote_id = :quote_id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':quote_id', $order['quote_id']);
-        $stmt->execute();
-        $multi_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    // var_dump($multi_orders);
+    $items = null;
+    $sql = "
+        SELECT 
+            I.*,
+            C.* 
+        FROM 
+            quotes Q
+        LEFT JOIN
+            items I USING(quote_id)
+        LEFT JOIN
+            customs C USING(custom_id)
+        WHERE 
+            quote_id = :quote_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':quote_id', $order['quote_id']);
+    $stmt->execute();
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($items);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,16 +100,9 @@
                         <div class="info">
                             <span class="info-name"> ORDER TYPE </span>
                             <span class="info-detail">
-                                <?php
-                                    if($order['service_type'] === "mto") echo "MTO";
-                                    else echo "Repair"
+                                <?=
+                                    $order['service_type'] === "mto" ? "Made-To-Order" : "Repair"
                                 ?>
-                            </span>
-                        </div>
-                        <div class="info">
-                            <span class="info-name"> FURNITURE TYPE </span>
-                            <span class="info-detail">
-                                <?= ucfirst($order['furniture_type']) ?>
                             </span>
                         </div>
                         <div class="info">
@@ -130,22 +115,13 @@
                         <div class="info">
                             <span class="info-name"> EST. DELIVERY DATE </span>
                             <span class="info-detail">
-                                <?php
-                                    if($order['est_completion_date'] === '0000-00-00')  {
-                                        echo "N/A";
-                                    } else {
-                                        echo date('M d, Y', strtotime($order['est_completion_date']));
-                                    }
-                                ?>
+                                <?= date('M d, Y', strtotime($order['est_completion_date'])); ?>
                             </span>
                         </div>
                         <div class="info">
-                            <span class="info-name"> QUOTED PRICE </span>
+                            <span class="info-name"> TOTAL PRICE </span>
                             <span class="info-detail">
-                                <?php
-                                    if(is_null($order['quoted_price'])) echo "N/A";
-                                    else echo "₱" . $order['quoted_price'];
-                                ?>
+                                <?= is_null($order['total_price']) ? "N/A" : "₱" . $order['total_price'] ?>
                             </span>
                         </div>
                         <div class="info">
@@ -176,109 +152,87 @@
                                 </select>
                             </span>
                         </div>
-                        <?php if($order['furniture_type'] !== 'multiple') : ?>
-                            <div class="info">
-                                <span class="info-name"> DESCRIPTION </span>
-                                <span class="info-detail">
-                                    <?= $order['description'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($order['ref_img_path']) && $order['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name">PICTURE</span>
-                                <span class="info-detail">
-                                    <img src='/<?= $order['ref_img_path'] ?>' alt='' class='repair-img'>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if($order['furniture_type'] === 'multiple') : ?>
-                            <div class="info">
-                                <span class="info-name"> FURNITURE DETAILS </span>
-                                <span class="info-detail">
-                                    <button class="toggle-furniture-display">SHOW FURNITURE DETAILS</button>
-                                </span>
-                            </div>
-                        <?php endif; ?>
+                        <div class="info">
+                            <span class="info-name"> FURNITURE DETAILS </span>
+                            <span class="info-detail">
+                                <button class="toggle-furniture-display">SHOW FURNITURE DETAILS</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <?php if($order['furniture_type'] === 'multiple') : ?>
                     <div class="multi-order-information order-information hidden">
                         <p class="info-title">
                             FURNITURE LIST   
                         </p>
-                        <?php if($order['furniture_type'] === 'multiple'): ?>
-                            <?php $counter = 0; foreach($multi_orders as $multi): $counter++; ?> 
-                                <div class="order-information">
-                                    <p class="info-title">FURNITURE <?= $counter ?></p>   
-                                    <div class="info-order-detail"> 
-                                        <div class="info">
-                                            <span class="info-name"> TYPE </span>
-                                            <span class="info-detail">
-                                                <?= ucfirst($multi['furniture_type']) ?>
-                                            </span>
-                                        </div>
-                                        <div class="info">
-                                            <span class="info-name"> QUANTITY </span>
-                                            <span class="info-detail">
-                                                <?= $multi['quantity'] ?>
-                                            </span>
-                                        </div>
-                                        <div class="info">
-                                            <span class="info-name"> NOTE </span>
-                                            <span class="info-detail">
-                                                <?= $multi['description'] ?>
-                                            </span>
-                                        </div>
-                                        <?php if(!is_null($multi['dimensions']) && $multi['dimensions'] !== ''): ?>
-                                            <div class="info">
-                                                <span class="info-name">DIMENSIONS</span>
-                                                <span class="info-detail">
-                                                    <?= $multi['dimensions'] ?>
-                                                </span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if(!is_null($multi['materials']) && $multi['materials'] !== ''): ?>
-                                            <div class="info">
-                                                <span class="info-name">MATERIALS</span>
-                                                <span class="info-detail">
-                                                    <?= $multi['materials'] ?>
-                                                </span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if(!is_null($multi['fabric']) && $multi['fabric'] !== ''): ?>
-                                            <div class="info">
-                                                <span class="info-name">FABRIC</span>
-                                                <span class="info-detail">
-                                                    <?= $multi['fabric'] ?>
-                                                </span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if(!is_null($multi['color']) && $multi['color'] !== ''): ?>
-                                            <div class="info">
-                                                <span class="info-name">COLOR</span>
-                                                <span class="info-detail">
-                                                    <?= $multi['color'] ?>
-                                                </span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if(!is_null($multi['ref_img_path']) && $multi['ref_img_path'] !== ''): ?>
-                                            <div class="info">
-                                                <span class="info-name">PICTURE</span>
-                                                <span class="info-detail">
-                                                    <img src='/<?= $multi['ref_img_path'] ?>' alt='' class='repair-img'>
-                                                </span>
-                                            </div>
-                                        <?php endif; ?>
+                        <?php $counter = 0; foreach($items as $item): $counter++; ?> 
+                            <div class="order-information">
+                                <p class="info-title">FURNITURE <?= $counter ?></p>   
+                                <div class="info-order-detail"> 
+                                    <div class="info">
+                                        <span class="info-name"> TYPE </span>
+                                        <span class="info-detail">
+                                            <?= ucfirst($item['furniture']) ?>
+                                        </span>
                                     </div>
+                                    <div class="info">
+                                        <span class="info-name"> QUANTITY </span>
+                                        <span class="info-detail">
+                                            <?= $item['quantity'] ?>
+                                        </span>
+                                    </div>
+                                    <div class="info">
+                                        <span class="info-name"> NOTE </span>
+                                        <span class="info-detail">
+                                            <?= $item['description'] ?>
+                                        </span>
+                                    </div>
+                                    <?php if(!is_null($item['dimensions']) && $item['dimensions'] !== ''): ?>
+                                        <div class="info">
+                                            <span class="info-name">DIMENSIONS</span>
+                                            <span class="info-detail">
+                                                <?= $item['dimensions'] ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if(!is_null($item['materials']) && $item['materials'] !== ''): ?>
+                                        <div class="info">
+                                            <span class="info-name">MATERIALS</span>
+                                            <span class="info-detail">
+                                                <?= $item['materials'] ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if(!is_null($item['fabric']) && $item['fabric'] !== ''): ?>
+                                        <div class="info">
+                                            <span class="info-name">FABRIC</span>
+                                            <span class="info-detail">
+                                                <?= $item['fabric'] ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if(!is_null($item['color']) && $item['color'] !== ''): ?>
+                                        <div class="info">
+                                            <span class="info-name">COLOR</span>
+                                            <span class="info-detail">
+                                                <?= $item['color'] ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if(!is_null($item['item_ref_img']) && $item['item_ref_img'] !== ''): ?>
+                                        <div class="info">
+                                            <span class="info-name">PICTURE</span>
+                                            <span class="info-detail">
+                                                <img src='/<?= $item['item_ref_img'] ?>' alt='' class='repair-img'>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
                 <?php
-                    if(!is_null($order['downpayment_method'])) {
-                        $method = ucfirst($order['downpayment_method']);
+                    if(!is_null($order['downpay_method'])) {
+                        $method = ucfirst($order['downpay_method']);
                         $verification_status = ucfirst(str_replace("_", " ", $order['downpayment_verification_status'] ?? ''));
                         $verification_buttons = $order['downpayment_verification_status'] === 'waiting_for_verification' ? "
                             <div class='verification-buttons button-container downpayment'>
@@ -315,7 +269,7 @@
                         ";
                     }
                 ?>
-                <?php if(!is_null($order['fullpayment_method'])) : ?>
+                <?php if(!is_null($order['fullpay_method'])) : ?>
                     <div class="payment-information fullpayment-info">
                         <p class="info-title">
                             FULLPAYMENT INFORMATION
@@ -324,7 +278,7 @@
                             <div class="info">
                                 <span class="info-name">METHOD</span>
                                 <span class="info-detail">
-                                    <?= ucfirst($order["fullpayment_method"]) ?>
+                                    <?= ucfirst($order["fullpay_method"]) ?>
                                 </span>
                             </div>
                             <div class="info">
@@ -367,10 +321,12 @@
                             <span class="info-name">CONTACT NO.</span>
                             <span class="info-detail"><?= $order['contact_number'] ?></span>
                         </div>
-                        <div class="info">
-                            <span class="info-name">DELIVERY ADDRESS</span>
-                            <span class="info-detail"><?= $order['delivery_address'] ?></span>
-                        </div>
+                        <?php if(!is_null($order['delivery_address'])): ?>
+                            <div class="info">
+                                <span class="info-name">PICKUP ADDRESS</span>
+                                <span class="info-detail"><?= $order['delivery_address'] ?></span>
+                            </div>
+                        <?php endif; ?>                             
                         <?php if(!is_null($order['pickup_address'])): ?>
                             <div class="info">
                                 <span class="info-name">PICKUP ADDRESS</span>
@@ -379,7 +335,7 @@
                         <?php endif; ?>                             
                     </div>
                 </div>
-                <?php if($order['order_status'] === "pending_downpayment" && $order['is_cancelled'] == 0) : ?>
+                <?php if($order['order_phase'] === "pending_downpayment") : ?>
                     <div class='order-action'>
                         <p class="info-title">
                             ACTIONS

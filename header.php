@@ -129,7 +129,7 @@
                 <li><a href="/index.php">Home</a></li>
                 <li><a href="/services_craftsmanship.php">Services</a></li>
                 <li><a href="/services_works.php">Our Works</a></li>
-                <li><a href="/order.php">Order</a></li>
+                <li><a href="/quote.php">Quote</a></li>
                 <li><a href="/testimonials.php">Testimonials</a></li>
                 <li><a href="/about_us.php">About Us</a></li>
                 <li><a href="/contact_us.php">Contact Us</a></li>

@@ -7,22 +7,27 @@
     }
 
     $quotationSql = "
-        SELECT
-            quote_id,
-            furniture_type AS item,
-            name AS customer_name,
-            email,
-            service_type AS type,
-            quantity,
-            quote_status AS status,
-            created_at AS placement_date
-        FROM
+        SELECT 
+            Q.quote_id, 
+            U.name, 
+            U.email, 
+            q.service_type AS type, 
+            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
+            q.created_at AS placement_date, 
+            q.quote_status AS status
+        FROM 
             quotes Q
-        JOIN users O ON Q.customer_id = O.user_id  
+        JOIN
+            users U ON U.user_id = Q.customer_id
+        LEFT JOIN
+            items I USING(quote_id)
         WHERE
-            quote_status IN ('pending', 'approved')
-        ORDER
-            BY quote_id DESC
+            Q.quote_status = 'pending'
+            OR Q.quote_status = 'approved'
+        GROUP BY 
+            Q.quote_id
+        ORDER BY
+            Q.quote_id DESC
     ";
 
     $stmt = $conn->prepare($quotationSql);
@@ -44,14 +49,22 @@
         <div class="order-list">
             <p class="main-title">Request For Quotes</p>
             <hr class="divider">
+            <form class="order-filters" method="get" action="">
+                <div class="filter-type selector-container">
+                    <select name="order-type" id="" class="selector">
+                        <option value="default">Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                    </select>
+                </div>
+            </form>
             <table class="order-table">
                 <thead>
                     <tr>
                         <th>Quote Id</th>
                         <th>Customer Name</th>
                         <th>Email</th>
-                        <th>Item</th>
-                        <th>Quantity</th>
+                        <th>Item(s)</th>
                         <th>Type</th>
                         <th>Placement Date</th>
                         <th>Status</th>
@@ -65,14 +78,13 @@
                             $type = ($quote['type'] === "mto") ? "MTO" : "Repair";
                             $status = $quote['status'];
                             $status_text = ($status === "pending") ? "Pending" : "Approved";
-                            $item = ucfirst($quote['item']);
+                            // $item = ucfirst($quote['item']);
                             echo "
                             <tr data-id='{$quote['quote_id']}'>
                                 <td>{$quote['quote_id']}</td>
-                                <td>{$quote['customer_name']}</td>
+                                <td>{$quote['name']}</td>
                                 <td>{$quote['email']}</td>
-                                <td>{$item}</td>
-                                <td>{$quote['quantity']}</td>
+                                <td>{$quote['item']}</td>
                                 <td>{$type}</td>
                                 <td>{$date}</td>
                                 <td class='prod-status status'>

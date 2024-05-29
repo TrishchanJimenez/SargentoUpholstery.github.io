@@ -10,42 +10,74 @@
         header("Location: ./orders.php");
         exit();
     }
-    
+
+    // PROCESS THE SET PRICE FORM
+    include_once("../notif.php");
+    include_once("../alert.php");
+    if($_SERVER['REQUEST_METHOD'] === "POST") {
+        // echo "helloj";
+        $total_price = 0;
+        // var_dump($_POST);
+        $quote_id = $_POST['quote_id'];
+        $item_ids = $_POST['item_id'];
+        $prices = $_POST['price'];
+
+        for($i = 0; $i < count($item_ids); $i++) {
+            $total_price += $prices[$i];
+            $sql = "UPDATE items SET item_price = :price WHERE item_id = :item_id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':price', $prices[$i]);
+            $stmt->bindParam(':item_id', $item_ids[$i]);
+            $stmt->execute();
+        }
+
+        $sql = "UPDATE quotes SET total_price = :total_price, quote_status = 'approved' WHERE quote_id = :quote_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':total_price', $total_price);
+        $stmt->bindParam(':quote_id', $quote_id);
+        $stmt->execute();
+        // sendAlert('success', 'Quote price has been set successfully');
+        // header("Refresh: 0");
+    }
+?>
+<?php
+
     $quote_id = $_GET['quote-id'];
     $sql = "
         SELECT 
-            * 
+            *
         FROM 
             quotes Q
         LEFT JOIN
-            quote_customs QC USING(custom_id) 
+            items I USING(quote_id)
         JOIN
             users U ON Q.customer_id = U.user_id
         WHERE 
             Q.quote_id = :quote_id
+        ORDER BY
+            Q.quote_id DESC
     ";
+
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':quote_id', $quote_id);
     $stmt->execute();
     $quote_details = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $orders = null;
-    if ($quote_details['furniture_type'] === 'multiple') {
-        $sql = "
-            SELECT 
-                * 
-            FROM 
-                multis
-            LEFT JOIN
-                quote_customs USING(custom_id) 
-            WHERE 
-                quote_id = :quote_id";
+    $sql = "
+        SELECT 
+            * 
+        FROM 
+            items
+        LEFT JOIN
+            customs USING(custom_id) 
+        WHERE 
+            quote_id = :quote_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':quote_id', $quote_id);
+    $stmt->execute();
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':quote_id', $quote_id);
-        $stmt->execute();
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    }
+    $quote_type = count($items) > 1 ? 'multiple' : 'Single';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,19 +117,11 @@
                             </span>
                         </div>
                         <div class="info">
-                            <span class="info-name"> FURNITURE TYPE </span>
+                            <span class="info-name"> QUOTE TYPE </span>
                             <span class="info-detail">
-                                <?= ucfirst($quote_details['furniture_type']) ?>
+                                <?= ucfirst($quote_type) ?>
                             </span>
                         </div>
-                        <?php if($quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name"> QUANTITY </span>
-                                <span class="info-detail">
-                                    <?= $quote_details['quantity'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
                         <div class="info">
                             <span class="info-name"> QUOTE PLACEMENT DATE </span>
                             <span class="info-detail">
@@ -113,131 +137,89 @@
                                 </span>
                             </span>
                         </div>
-                        <?php if(!is_null($quote_details['quoted_price']) && $quote_details['quoted_price'] !== ''): ?>
+                        <?php if(!is_null($quote_details['total_price']) && $quote_details['total_price'] !== ''): ?>
                             <div class="info">
                                 <span class="info-name">QUOTED PRICE</span>
                                 <span class="info-detail">
-                                    <?= '₱' . number_format($quote_details['quoted_price'], 2, '.', ',') ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if($quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name"> NOTE </span>
-                                <span class="info-detail">
-                                    <?= $quote_details['description'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($quote_details['dimensions']) && $quote_details['dimensions'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name">DIMENSIONS</span>
-                                <span class="info-detail">
-                                    <?= $quote_details['dimensions'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($quote_details['materials']) && $quote_details['materials'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name">MATERIALS</span>
-                                <span class="info-detail">
-                                    <?= $quote_details['materials'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($quote_details['fabric']) && $quote_details['fabric'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name">FABRIC</span>
-                                <span class="info-detail">
-                                    <?= $quote_details['fabric'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($quote_details['color']) && $quote_details['color'] !== '' && $quote_details['furniture_type'] !== 'multiple'): ?>
-                            <div class="info">
-                                <span class="info-name">COLOR</span>
-                                <span class="info-detail">
-                                    <?= $quote_details['color'] ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if(!is_null($quote_details['ref_img_path'])): ?>
-                            <div class="info">
-                                <span class="info-name">PICTURE</span>
-                                <span class="info-detail">
-                                    <img src='/<?= $quote_details['ref_img_path'] ?>' alt='' class='repair-img'>
+                                    <?= '₱' . number_format($quote_details['total_price'], 2, '.', ',') ?>
                                 </span>
                             </div>
                         <?php endif; ?>
                     </div>
                 </div>
-                <?php if($quote_details['furniture_type'] === 'multiple'): ?>
-                    <?php $counter = 0; foreach($orders as $order): $counter++; ?> 
-                        <div class="order-information">
-                            <p class="info-title">FURNITURE <?= $counter ?></p>   
-                            <div class="info-order-detail"> 
-                                <div class="info">
-                                    <span class="info-name"> TYPE </span>
-                                    <span class="info-detail">
-                                        <?= ucfirst($order['furniture_type']) ?>
-                                    </span>
-                                </div>
-                                <div class="info">
-                                    <span class="info-name"> QUANTITY </span>
-                                    <span class="info-detail">
-                                        <?= $order['quantity'] ?>
-                                    </span>
-                                </div>
-                                <div class="info">
-                                    <span class="info-name"> NOTE </span>
-                                    <span class="info-detail">
-                                        <?= $order['description'] ?>
-                                    </span>
-                                </div>
-                                <?php if(!is_null($order['dimensions']) && $order['dimensions'] !== ''): ?>
-                                    <div class="info">
-                                        <span class="info-name">DIMENSIONS</span>
-                                        <span class="info-detail">
-                                            <?= $order['dimensions'] ?>
-                                        </span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if(!is_null($order['materials']) && $order['materials'] !== ''): ?>
-                                    <div class="info">
-                                        <span class="info-name">MATERIALS</span>
-                                        <span class="info-detail">
-                                            <?= $order['materials'] ?>
-                                        </span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if(!is_null($order['fabric']) && $order['fabric'] !== ''): ?>
-                                    <div class="info">
-                                        <span class="info-name">FABRIC</span>
-                                        <span class="info-detail">
-                                            <?= $order['fabric'] ?>
-                                        </span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if(!is_null($order['color']) && $order['color'] !== ''): ?>
-                                    <div class="info">
-                                        <span class="info-name">COLOR</span>
-                                        <span class="info-detail">
-                                            <?= $order['color'] ?>
-                                        </span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if(!is_null($order['ref_img_path']) && $order['ref_img_path'] !== ''): ?>
-                                    <div class="info">
-                                        <span class="info-name">PICTURE</span>
-                                        <span class="info-detail">
-                                            <img src='/<?= $order['ref_img_path'] ?>' alt='' class='repair-img'>
-                                        </span>
-                                    </div>
-                                <?php endif; ?>
+                <?php $counter = 0; foreach($items as $item): $counter++; ?> 
+                    <div class="order-information">
+                        <p class="info-title">FURNITURE <?= $counter ?></p>   
+                        <div class="info-order-detail"> 
+                            <div class="info">
+                                <span class="info-name"> TYPE </span>
+                                <span class="info-detail">
+                                    <?= ucfirst($item['furniture']) ?>
+                                </span>
                             </div>
+                            <div class="info">
+                                <span class="info-name"> QUANTITY </span>
+                                <span class="info-detail">
+                                    <?= $item['quantity'] ?>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span class="info-name"> NOTE </span>
+                                <span class="info-detail">
+                                    <?= $item['description'] ?>
+                                </span>
+                            </div>
+                            <?php if(!is_null($item['item_price'])): ?>
+                                <div class="info">
+                                    <span class="info-name">ITEM PRICE</span>
+                                    <span class="info-detail">
+                                        <?= '₱' . number_format($item['item_price'], 2, '.', ',') ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(!is_null($item['dimensions']) && $item['dimensions'] !== ''): ?>
+                                <div class="info">
+                                    <span class="info-name">DIMENSIONS</span>
+                                    <span class="info-detail">
+                                        <?= $item['dimensions'] ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(!is_null($item['materials']) && $item['materials'] !== ''): ?>
+                                <div class="info">
+                                    <span class="info-name">MATERIALS</span>
+                                    <span class="info-detail">
+                                        <?= $item['materials'] ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(!is_null($item['fabric']) && $item['fabric'] !== ''): ?>
+                                <div class="info">
+                                    <span class="info-name">FABRIC</span>
+                                    <span class="info-detail">
+                                        <?= $item['fabric'] ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(!is_null($item['color']) && $item['color'] !== ''): ?>
+                                <div class="info">
+                                    <span class="info-name">COLOR</span>
+                                    <span class="info-detail">
+                                        <?= $item['color'] ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(!is_null($item['item_ref_img']) && $item['item_ref_img'] !== ''): ?>
+                                <div class="info">
+                                    <span class="info-name">PICTURE</span>
+                                    <span class="info-detail">
+                                        <img src='/<?= $item['item_ref_img'] ?>' alt='' class='repair-img'>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
             <div class="right">
                 <div class="customer-information">
@@ -266,41 +248,52 @@
                         </p>
                         <div class="info-order-detail">
                             <div class="action-buttons">
-                                <input type="button" value="quote" class="green-button accept-order action-button">
+                                <input type="button" value="quote" class="green-button accept-order action-button" onclick="openModal()">
                             </div>
-                            <form action="" method="post" id="order-accept-form">
-                                <input type="hidden" name="quote_id" <?= "value={$quote_id}" ?>>
-                                <div class="on-accept action-input">
-                                    <label for="price"> QUOTED PRICE</label>
-                                    <input type="number" name="price" class="price-input" placeholder="₱12131" required>
-                                </div>
-                                <div class="on-click">
-                                    <input type="submit" value="save" class="green-button action-button">
-                                    <input type="button" value="cancel" class="red-button action-button">
-                                </div>
-                            </form>
                         </div>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-    <script>let quoteId = <?= $quote_details['quote_id'] ?></script>
+    <div class="quote-modal-background">
+        <div class="quote-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Set Quote Price</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <form class="modal-body" method="post">
+                <input type="hidden" name="quote_id" value="<?= $quote_id ?>">
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Furniture</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>   
+                    <?php $counter = 0; foreach($items as $item): $counter++?>
+                        <input type="hidden" name="item_id[]" value="<?= $item['item_id'] ?>">
+                        <tr>
+                            <td class="item-counter"><?= $counter ?></td>
+                            <td><?= ucwords($item['furniture']) ?></td>
+                            <td><?= 'x'.$item['quantity'] ?></td>
+                            <td class="price-input">₱<input type="number" name="price[]" id="" required></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+                <div class="total">
+                    <span class="total-title">Total</span>
+                    <span>
+                        ₱<span class="total-price">0.00</span>
+                    </span>
+                </div>
+                <div class="action-buttons">
+                    <input type="submit" value="Save" class="save-button action-button" name="submit-price">
+                    <input type="button" value="Cancel" class="cancel-button action-button">
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="/js/quotation.js"></script>
 </body>
 </html>
-<?php
-    include_once("../notif.php");
-    if($_SERVER['REQUEST_METHOD'] === "POST") {
-        $quote_id = $_POST['quote_id'];
-        $price = $_POST['price'];
-
-        $stmt = $conn->prepare("UPDATE quotes SET quote_status = 'approved', quoted_price = :price WHERE quote_id = :quote_id");
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':quote_id', $quote_id);
-        $stmt->execute();
-        createNotif($quote_details['customer_id'], "Your request for quotation has been evaluated", "/my/user_order_details.php?quote-id=" . $quote_details['quote_id']);
-        // header("Location: ".$_SERVER['PHP_SELF']);
-        // exit();
-    }
-?>
