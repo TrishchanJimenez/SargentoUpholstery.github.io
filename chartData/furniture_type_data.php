@@ -3,16 +3,18 @@ require_once '../database_connection.php'; // Include database connection script
 
 $sqlD = "
     SELECT 
-        furniture_type, 
+        furniture AS furniture_type, 
         COUNT(*) AS order_count
-    FROM orders O
-    JOIN quotes USING (quote_id)
-    JOIN order_date USING(order_id)
+    FROM 
+        orders O
+    JOIN 
+        quotes USING (quote_id)
+    LEFT JOIN 
+        items USING (quote_id)
     WHERE 
-        order_status NOT IN ('received', 'new_order')
-        AND is_cancelled = 0
-        AND WEEK(placement_date) = WEEK(CURDATE())
-        AND YEAR(placement_date) = YEAR(CURDATE())
+        order_phase NOT IN ('received', 'cancelled')
+        AND WEEK(O.created_at) = WEEK(CURDATE())
+        AND YEAR(O.created_at) = YEAR(CURDATE())
     GROUP BY furniture_type
     ORDER BY furniture_type";
 
@@ -24,7 +26,7 @@ $dataD = [
     'labels' => [], // Initialize labels array
     'datasets' => [
         [
-            'label' => 'Order Count',
+            'label' => 'Item Count',
             'data' => [], // Initialize data array
             'backgroundColor' => [ // Colors for bars (optional)
                 'rgba(255, 99, 132, 0.2)',
@@ -61,7 +63,7 @@ if (empty($dataD['labels'])) {
         'labels' => [], // Empty array for labels
         'datasets' => [
             [
-                'label' => 'Order Count',
+                'label' => 'Item Count',
                 'data' => [], // Empty array for data
                 'backgroundColor' => [], // Empty array for backgroundColor
                 'borderColor' => [], // Empty array for borderColor
