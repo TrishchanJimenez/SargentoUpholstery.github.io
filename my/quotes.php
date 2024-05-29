@@ -25,7 +25,7 @@
                 RIGHT JOIN
             `items` i ON q.quote_id = i.quote_id
                 LEFT JOIN
-            `customs` c ON i.item_id = c.item_id    
+            `customs` c ON i.custom_id = c.custom_id    
         WHERE
             q.quote_id = :quote_id
                 AND
