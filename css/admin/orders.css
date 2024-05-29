@@ -201,7 +201,7 @@
     background: var(--pink-100, #FCE7F3); 
 }
 
-.status span[data-prod-status="ready-for-pickup"],
+.status span[data-prod-status="awaiting-furniture"],
 .status span[data-prod-status="out-for-delivery"] {
     border: 1px solid var(--blue-300, #93C5FD);
     background: var(--blue-100, #DBEAFE); 

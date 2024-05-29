@@ -12,19 +12,21 @@
 
     $search_type = $_GET['search-order'] ?? '';
     $search_input = $_GET['search-input'] ?? '';
-    $order_type = $_GET['order-type'] ?? '';
+    $service_type = $_GET['service-type'] ?? '';
     $order_prod_status = $_GET['order-prod-status'] ?? '';
     $order_payment_status = $_GET['order-payment-status'] ?? '';
     $order_sort = $_GET['order-sort'] ?? '';
     $current_page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
 
     $count_query = "
-        SELECT COUNT(*) AS total_records
-        FROM orders O 
-        JOIN quotes USING(quote_id)
-        JOIN users U ON O.user_id = U.user_id
-        JOIN order_date OD ON OD.order_id = O.order_id
-        JOIN payment P ON P.order_id = O.order_id
+        SELECT 
+            COUNT(*) AS total_records
+        FROM 
+            orders O 
+        JOIN 
+            quotes Q USING(quote_id)
+        JOIN 
+            users U ON Q.customer_id = U.user_id
         WHERE 1
     ";
 
@@ -32,19 +34,20 @@
         SELECT
             O.order_id,
             U.name AS customer_name,
-            Q.furniture_type AS item,
             Q.service_type AS order_type,
-            Q.quantity,
-            Q.quoted_price AS price,
-            OD.placement_date,
-            O.order_status AS prod_status,
-            O.is_cancelled,
-            P.payment_status
-        FROM orders O 
-        JOIN quotes Q USING (quote_id)
-        JOIN users U ON O.user_id = U.user_id
-        JOIN order_date OD ON OD.order_id = O.order_id
-        JOIN payment P ON P.order_id = O.order_id
+            Q.total_price AS price,
+            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
+            O.created_at AS placement_date,
+            O.order_phase AS prod_status,
+            O.payment_phase AS payment_status
+        FROM 
+            orders O 
+        JOIN 
+            quotes Q USING (quote_id)
+        LEFT JOIN
+            items I USING (quote_id)
+        JOIN 
+            users U ON Q.customer_id = U.user_id
         WHERE 1
     ";
 
@@ -68,27 +71,28 @@
                 break;
         }
     }
-    if (!($order_type === 'default' || empty($order_type))) {
-        $count_query .= " AND service_type = '$order_type'";
-        $query .= " AND service_type = '$order_type'";
+    if (!($service_type === 'default' || empty($service_type))) {
+        $count_query .= " AND service_type = '$service_type'";
+        $query .= " AND service_type = '$service_type'";
     }
     if (!($order_prod_status === 'default' || empty($order_prod_status))) {
-        $count_query .= " AND O.order_status = '$order_prod_status'";
-        $query .= " AND O.order_status = '$order_prod_status'";
+        $count_query .= " AND order_phase = '$order_prod_status'";
+        $query .= " AND order_phase = '$order_prod_status'";
     }
     if (!($order_payment_status === 'default' || empty($order_payment_status))) {
-        $count_query .= " AND payment_status = '$order_payment_status'";
-        $query .= " AND payment_status = '$order_payment_status'";
+        $count_query .= " AND payment_phase = '$order_payment_status'";
+        $query .= " AND payment_phase = '$order_payment_status'";
     }
 
     $count_result = $conn->query($count_query);
     $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
 
+    $query .= " GROUP BY O.order_id";
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
         $query .= " ORDER BY $order_sort DESC";
     } else {
-        $query .= " ORDER BY O.last_updated DESC";
+        $query .= " ORDER BY O.updated_at DESC";
     }
 
     $query .= " LIMIT 10";
@@ -133,7 +137,7 @@
                     </div>
                 </div>
                 <div class="filter-type selector-container">
-                    <select name="order-type" id="" class="selector">
+                    <select name="service-type" id="" class="selector">
                         <option value="default">Type</option>
                         <option value="mto">MTO</option>
                         <option value="repair">Repair</option>
@@ -179,7 +183,7 @@
                         <th></th>
                         <th>Order Id</th>
                         <th>Customer Name</th>
-                        <th>Item</th>
+                        <th>ITEM/S</th>
                         <th>Type</th>
                         <th>Price</th>
                         <th>Placement Date</th>
@@ -199,38 +203,40 @@
 
                             $payment_status = str_replace("_", "-", $order['payment_status']);
                             $payment_status_text = ucwords(str_replace("_", " ", $order['payment_status'])); 
-                            $newOrderOption = $order['prod_status'] === "new_order" ? "<option value='new-order'>New Order</option>" : "";
-                            $type = ($order['order_type'] === "mto") ? "MTO" : "Repair";
+                            $type = ($order['order_type'] === "mto") ? "Made-To-Order" : "Repair";
                             $order_status = str_replace("_", "-", $order['prod_status']);
                             $statuses = [
                                 "pending-downpayment" => "Pending Downpayment",
-                                "ready-for-pickup" => "Ready for Pickup",
+                                "awating-furniture" => "Awaiting Furniture",
                                 "in-production" => "In Production",
                                 "pending-fullpayment" => "Pending Fullpayment",
                                 "out-for-delivery" => "Out for Delivery",
-                                "received" => "Received"
+                                "received" => "Received",
                             ];
                             $prod_status_options = "";
-                            $include = false;
-                            $is_cancelled = $order['is_cancelled'] === 1 ? true : false;
-                            if($is_cancelled) {
-                                $prod_status = "cancelled";
-                                $prod_status_text = "Cancelled";
-                                // $prod_status_options .= "<option value='cancelled'>Cancelled</option>";
-                            } 
-                            foreach ($statuses as $status => $status_text) {
-                                if ($include) {
-                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                }
-                                if ($status === $order_status) {
-                                    if($status === "ready-for-pickup" && $type === "MTO") {
-                                        continue;
+
+                            if($order_status === "cancelled") {
+                                
+                            } else {
+                                $include = false;
+                                foreach ($statuses as $status => $status_text) {
+                                    if ($include) {
+                                        $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
                                     }
-                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                    $include = true;
+                                    if ($status === $order_status) {
+                                        if($status === "ready-for-pickup" && $type === "MTO") {
+                                            continue;
+                                        }
+                                        $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                        $include = true;
+                                    }
                                 }
                             }
-                            $item = ucfirst($order['item']);
+
+                            $item = ucwords($order['item']);
+                            if (strlen($item) > 12) {
+                                $item = substr($item, 0, 12) . '...';
+                            }
                             echo "
                             <tr data-id='{$order['order_id']}'>
                                 <td><input type='checkbox' name='' id=''></td>

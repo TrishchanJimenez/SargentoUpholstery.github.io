@@ -61,12 +61,6 @@
             $selectStmt->execute();
             $order = $selectStmt->fetch(PDO::FETCH_ASSOC);
 
-            if($order['order_status'] === "new_order") { 
-                createNotif($order['user_id'], "Your order has been accepted", "/my/user_order_details.php?order_id=" . $order['order_id']);
-            } else if($order['order_status'] === "pending_downpayment") {
-                
-            }
-
             $new_status = str_replace("-", "_", $_POST['new_status']);
             $order_id = $_POST['order_id'];
             $updateStmt->bindParam(':status', $new_status);
