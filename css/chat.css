@@ -79,7 +79,7 @@
 
 .chat-window__messages {
     flex: 1;
-    padding: 3px;
+    padding: 10px;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -130,8 +130,6 @@
     }
 }
 
-
-
 /* CSS for message alignment */
 .chat-messages {
     overflow-y: auto; /* Enable vertical scrolling */
@@ -143,7 +141,6 @@
     border-radius: 10px;
     max-width: 70%;
     word-wrap: break-word; /* Enable word wrapping */
-    white-space: pre-wrap; /* Preserve line breaks */
     overflow-wrap: break-word; /* Ensure long words are wrapped */
 }
 
@@ -153,6 +150,10 @@
     color: #000;
     align-self: flex-end;
     text-align: right;
+}
+
+.message.right p {
+    padding: 0;
 }
 
 /* Message alignment for other sender */
@@ -168,9 +169,7 @@
     color: #666;
 }
 
-
 /* Red Bubble to Indicate New Message */
-
 .chat-button__new-message-indicator {
     position: absolute;
     top: 0;

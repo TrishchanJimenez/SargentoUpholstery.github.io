@@ -16,6 +16,31 @@ function openTab(event, tabName) {
     event.currentTarget.classList.add("active");
 }
 
+function openTabb(evt, tabId) {
+    var i, tabcontent, tablinks;
+
+    // Hide all tab contents
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Remove the class "active" from all tab buttons
+    tablinks = document.getElementsByClassName("header-tab");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+
+    // Show the current tab content
+    document.getElementById(tabId).style.display = "block";
+    
+    // Add the class "active" to the clicked tab button
+    evt.currentTarget.classList.add("active");
+}
+
+
+
+
 // Open the first tab by default
 
 //proof-payment-form

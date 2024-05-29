@@ -25,6 +25,30 @@
     <?php 
         require_once('../database_connection.php');
         require_once('../header.php'); 
+
+        // Pagination logic
+        $results_per_page = 5;  // Number of results per page
+
+        // Get the current page number from the URL, if none exists set to 1
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $offset = ($page - 1) * $results_per_page;
+
+        // Fetch the quotes for the current page
+        $quote_query = "SELECT * FROM `quotes` WHERE `customer_id` = :customer_id LIMIT :limit OFFSET :offset";
+        $quote_stmt = $conn->prepare($quote_query);
+        $quote_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
+        $quote_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
+        $quote_stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $quote_stmt->execute();
+        $quotes = $quote_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Get the total number of quotes
+        $total_quotes_query = "SELECT COUNT(*) FROM `quotes` WHERE `customer_id` = :customer_id";
+        $total_quotes_stmt = $conn->prepare($total_quotes_query);
+        $total_quotes_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
+        $total_quotes_stmt->execute();
+        $total_quotes = $total_quotes_stmt->fetchColumn();
+        $total_pages = ceil($total_quotes / $results_per_page);
     ?>
     <div class="onq">
         <h1 class="onq__title">My Orders and Quotes</h1>
@@ -32,14 +56,40 @@
             <button class="onq__tab-button onq__tab-button--quotes">All Quotes</button>
             <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
+        <div class="quote-buttons">
+            <form class="order-filters" method="get" action="">
+                <table class="filter-table">
+                    <tr>
+                        <td>
+                            <div class="input-search">
+                                <input type="text" name="search-input" size="12" placeholder="Search">
+                                <img src="../websiteimages/icons/Search.svg" alt="">
+                            </div>
+                        </td>
+                        <td>
+                            <select name="service-type" class="selector">
+                                <option value="default">Type</option>
+                                <option value="mto">MTO</option>
+                                <option value="repair">Repair</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="quote-status" class="selector">
+                                <option value="default">Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="cancelled-rejected">Cancelled/Rejected</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Filter">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
         <div class="onq__tab onq__tab--quotes">
-            <?php
-                $query = "SELECT * FROM `quotes` WHERE `customer_id` = :customer_id";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                $stmt->execute();
-                $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            ?>
             <table class="onq__table">
                 <thead>
                     <tr>
@@ -59,9 +109,7 @@
                 <tbody>
                     <?php
                         if($quotes) {
-                            $i = 0;
                             foreach ($quotes as $row) {
-                                $i++;
                                 echo '
                                     <tr>
                                         <td class="onq__td onq__td--quote">' . htmlspecialchars($row["quote_id"]) . '</td>
@@ -78,18 +126,24 @@
                                 ';
                             }
                         }
-                        echo '
-                            <tr class="onq__tr">
-                                <td class="onq__td--end" colspan="6">End of records</td>
-                            </tr>
-                        ';
                     ?>
                 </tbody>
             </table>
+            <!-- Pagination for Quotes -->
+            <div class="pagination">
+                <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>'" class="pagination__button"><?php echo $page; ?></button>
+                <?php endfor; ?>
+            </div>
         </div>
         <div class="onq__tab onq__tab--orders">
             <?php
-                $query = "
+                // Pagination logic for orders
+                $page_orders = isset($_GET['page_orders']) ? intval($_GET['page_orders']) : 1;
+                $offset_orders = ($page_orders - 1) * $results_per_page;
+
+                // Fetch the orders for the current page
+                $order_query = "
                     SELECT 
                         *
                     FROM 
@@ -101,11 +155,22 @@
                         `user_id` = :user_id
                     ORDER BY
                         `last_updated` DESC
+                    LIMIT :limit OFFSET :offset
                 ";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-                $stmt->execute();
-                $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $order_stmt = $conn->prepare($order_query);
+                $order_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $order_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
+                $order_stmt->bindParam(':offset', $offset_orders, PDO::PARAM_INT);
+                $order_stmt->execute();
+                $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Get the total number of orders
+                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `user_id` = :user_id";
+                $total_orders_stmt = $conn->prepare($total_orders_query);
+                $total_orders_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $total_orders_stmt->execute();
+                $total_orders = $total_orders_stmt->fetchColumn();
+                $total_pages_orders = ceil($total_orders / $results_per_page);
             ?>
             <table class="onq__table">
                 <thead>
@@ -128,9 +193,7 @@
                 <tbody>
                     <?php
                         if($orders) {
-                            $i = 0;
                             foreach ($orders as $row) {
-                                $i++;
                                 echo '
                                     <tr>
                                         <td class="onq__td">' . htmlspecialchars($row["order_id"]) . '</td>
@@ -149,14 +212,15 @@
                                 ';
                             }
                         }
-                        echo '
-                            <tr class="onq__tr">
-                                <td class="onq__td--end" colspan="8">End of records</td>
-                            </tr>
-                        ';
                     ?>
                 </tbody>
             </table>
+            <!-- Pagination for Orders -->
+            <div class="pagination">
+                <?php for ($page_orders = 1; $page_orders <= $total_pages_orders; $page_orders++): ?>
+                    <button onclick="window.location.href='orders_and_quotes.php?page_orders=<?php echo $page_orders; ?>'" class="pagination__button"><?php echo $page_orders; ?></button>
+                <?php endfor; ?>
+            </div>
         </div>
     </div>
     <script src="/js/globals.js"></script>

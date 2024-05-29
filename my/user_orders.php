@@ -1,4 +1,4 @@
-<?php
+<button?php
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -24,10 +24,15 @@
 
 <body>
     <?php include_once("../header.php") ?>
-    <div class="order-header">
-        <p>My Orders</p>
+
+
+    <div class="header-tabs">
+        <button class="header-tab active" onclick="openTabb(event, 'tab0')">Orders</button>
+        <button class="header-tab" onclick="openTabb(event, 'tab00')">Quotes</button>
     </div>
-    <!-- Tab buttons -->
+
+    <div id="tab0" class="tab-content" style="display:block;">
+        <!-- Tab buttons -->
     <div class="tab-container">
         <ion-icon class="left-btn" name="chevron-back-outline"></ion-icon>
         <ion-icon class="right-btn" name="chevron-forward-outline"></ion-icon>
@@ -801,6 +806,11 @@
             ?>
         </div>
     </div>
+
+    </div>
+
+    <div id="" class="tab"></div>
+    <script src="/js/my/orders_and_quotes.js"></script>
     <script src="/js/user_orders.js"></script>
     <script src="/js/globals.js"></script>
 	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
