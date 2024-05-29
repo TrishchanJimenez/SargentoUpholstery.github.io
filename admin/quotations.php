@@ -6,6 +6,8 @@
         exit();
     }
 
+    $status_filter = isset($_GET['quote-status']) ? $_GET['quote-status'] : 'default';
+    // echo $status_filter;
     $quotationSql = "
         SELECT 
             Q.quote_id, 
@@ -21,16 +23,29 @@
             users U ON U.user_id = Q.customer_id
         LEFT JOIN
             items I USING(quote_id)
-        WHERE
-            Q.quote_status = 'pending'
-            OR Q.quote_status = 'approved'
         GROUP BY 
             Q.quote_id
-        ORDER BY
-            Q.quote_id DESC
     ";
 
+    if($status_filter !== 'default') {
+        // echo "test1";
+        $quotationSql .= " HAVING status = :status_filter ";
+    } else {
+        $quotationSql .= "
+            HAVING status = 'pending'
+            OR status = 'approved'
+        ";
+    }
+
+    $quotationSql .= " ORDER BY Q.quote_id DESC";
+
+    // echo $quotationSql;
     $stmt = $conn->prepare($quotationSql);
+    if($status_filter !== 'default') {
+        echo "test2";
+        $stmt->bindParam(':status_filter', $status_filter);
+    }
+
     $stmt->execute();
     $quotations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -51,7 +66,7 @@
             <hr class="divider">
             <form class="order-filters" method="get" action="">
                 <div class="filter-type selector-container">
-                    <select name="order-type" id="" class="selector">
+                    <select name="quote-status" id="" class="selector">
                         <option value="default">Status</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
@@ -103,5 +118,15 @@
             </table>
         </div>
     </div>
+    <script>
+        const statusSelector = document.querySelector('[name="quote-status"]');
+        statusSelector.addEventListener('change', (e) => {
+            if(e.target.value !== 'default') {
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('quote-status', e.target.value);
+                window.location.href = currentUrl.href;
+            }
+        });
+    </script>
 </body>
 </html>
