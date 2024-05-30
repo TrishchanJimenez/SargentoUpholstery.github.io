@@ -548,13 +548,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($daily_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($daily_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($daily_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -567,13 +573,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($daily_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($daily_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($daily_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -657,13 +669,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($weekly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($weekly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($weekly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -676,13 +694,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($weekly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($weekly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($weekly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -761,13 +785,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($monthly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                            <tbody>
+                                <?php if (empty($monthly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($monthly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -780,13 +811,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($monthly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($monthly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($monthly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -865,13 +902,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($yearly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($yearly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($yearly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
 
@@ -884,13 +927,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($yearly_results as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['furniture_type']; ?></td>
-                                    <td><?php echo $row['number_ordered']; ?></td>
-                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                <?php if (empty($yearly_results)): ?>
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($yearly_results as $row): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
