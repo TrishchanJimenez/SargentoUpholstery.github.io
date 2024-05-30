@@ -159,73 +159,25 @@
     .form__submit:hover {
         background-color: #0056b3;
     }
-
-    /* Specific styles for different form wrappers */
-    .form__wrapper--pickup {
-        border-color: #777;
-    }
 </style>
 
-<?php
-    require_once('../database_connection.php');
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--upod"])) {
-        // Define the target directory for uploads
-        $targetDir = "../uploadedImages/paymentImages";
-        
-        // Create the uploads directory if it doesn't exist
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
+<script>
+    document.getElementById("upodForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-        // Get the uploaded file information
-        $fileName = basename($_FILES["proof_upload"]["name"]);
-        $targetFilePath = $targetDir . '/' . $fileName;
-        $dbpath = "uploadedImages/paymentImages/" . $fileName;
-        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-
-        // Set the allowed file types and maximum file size (5MB)
-        $allowedTypes = array('jpg', 'jpeg', 'png');
-        $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
-
-        $payment_method = $_POST['payment_method'];
-
-        // Check if the file type is allowed
-        if (in_array(strtolower($fileType), $allowedTypes)) {
-            // Check the file size
-            if ($_FILES["proof_upload"]["size"] <= $maxFileSize) {
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["proof_upload"]["tmp_name"], $targetFilePath)) {
-                    try {
-                        // Write the query
-                        $query = "
-                            UPDATE 
-                                `downpayment` 
-                            SET 
-                                `downpayment_method` = :payment_method, 
-                                `downpayment_img` = :targetFilePath,
-                                `downpayment_verification_status` = 'waiting_for_verification'
-                            WHERE 
-                                `order_id` = :order_id";
-                        // Prepare the query
-                        $stmt = $conn->prepare($query);
-                        $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
-                        $stmt->bindParam(':targetFilePath', $dbpath, PDO::PARAM_STR);
-                        $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
-                        // Execute the query
-                        $stmt->execute();
-                        echo '<script type="text/javascript"> alert("You have successfully uploaded a proof of downpayment.") </script>'; 
-                    } catch (PDOException $e) {
-                        // Handle database error
-                        echo "<script>console.log(" . $e->getMessage() . ")</script>";
-                    }
-                } else {
-                    echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
-                }
+        const formData = new FormData(this);
+        fetch("../api/submit_proof_of_downpayment.php", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
             } else {
-                echo "<script>alert('Sorry, your file is too large. Maximum file size is 5MB.')</script>";
+                console.error("Error:", data.error);
             }
-        } else {
-            echo "<script>alert('Sorry, only JPG, JPEG, PNG, and PDF files are allowed.')</script>";
-        }
-    }
-?>
+        })
+        .catch(error => console.error("Fetch error:", error));
+    });
+</script>

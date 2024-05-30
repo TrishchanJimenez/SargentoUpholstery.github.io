@@ -89,14 +89,16 @@
                 }
             .order-identif,
             .order-info,
-            .order-requisite {
+            .order-requisite,
+            .order-downpayment-standing,
+            .order-downpayment-submission,
+            .order-fullpayment-standing,
+            .order-fullpayment-submission {
                 width: calc(100%-2.5vmin);
                 display: flex;
                 margin: 1.25vmin;
             }
-                .order-identif__section,
-                .order-info__section,
-                .order-requisite__section {
+                .order-section {
                     background-color: #f9f9f9;
                     padding: 2.5vmin;
                     border-radius: 15px;
@@ -118,13 +120,17 @@
                         margin: 0 15px;
                     }
                     .order-number,
-                    .order-status {
+                    .order-status{
                         text-align: right;
                         font-size: 1.75em;
                     }
                 .order-type__wrapper,
                 .order-price__wrapper,
                 .order-payment__wrapper,
+                .payment-status__wrapper,
+                .payment-due__wrapper,
+                .payment-proof__wrapper,
+                .payment-actions__wrapper,
                 .order-actions__wrapper {
                     display: flex;
                     flex-direction: column;
@@ -135,6 +141,12 @@
                     .order-price,
                     .order-payment__title,
                     .order-payment,
+                    .payment-status__title,
+                    .payment-due__title,
+                    .payment-proof__title,
+                    .payment-proof,
+                    .payment-actions__title,
+                    .payment-actions
                     .order-actions__title,
                     .order-actions {
                         margin: 1.25vmin;
@@ -142,10 +154,15 @@
                     .order-type,
                     .order-price,
                     .order-payment,
+                    .payment-status,
+                    .payment-due,
+                    .payment-proof,
+                    .payment-actions,
                     .order-actions {
                         font-size: 1.75em;
                     }
-                    .order-actions {
+                    .order-actions,
+                    .payment-proof {
                         display: flex;
                         flex-direction: column;
                         align-items: center;

@@ -559,3 +559,13 @@ input[type="number"] {
 #quote-reject-form {
     display: none;
 }
+
+.quote-detail-main {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+} 
+
+.quote-detail-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}

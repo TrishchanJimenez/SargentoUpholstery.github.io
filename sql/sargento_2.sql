@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 30, 2024 at 04:32 AM
+-- Generation Time: May 30, 2024 at 07:53 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -259,7 +259,7 @@ INSERT INTO `delivery` (`delivery_id`, `order_id`, `delivery_method`, `delivery_
 --
 
 CREATE TABLE `downpayment` (
-  `downpayment_id` int NOT NULL,
+  `downpay_id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `downpay_method` enum('gcash','paymaya','cash') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpay_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
@@ -531,7 +531,7 @@ INSERT INTO `quotes` (`quote_id`, `customer_id`, `service_type`, `total_price`, 
 (19, 26, 'mto', 17478, 'accepted', '2024-05-29 03:28:51', '2024-05-29 12:50:50'),
 (20, 22, 'repair', NULL, 'cancelled', '2024-05-29 21:40:17', '2024-05-30 01:38:09'),
 (21, 22, 'mto', NULL, 'approved', '2024-05-29 21:41:26', '2024-05-29 23:23:55'),
-(22, 22, 'repair', NULL, 'approved', '2024-05-29 23:13:53', '2024-05-30 03:38:35');
+(22, 22, 'repair', 25000, 'approved', '2024-05-29 23:13:53', '2024-05-30 05:36:25');
 
 --
 -- Triggers `quotes`
@@ -762,7 +762,7 @@ ALTER TABLE `delivery`
 -- Indexes for table `downpayment`
 --
 ALTER TABLE `downpayment`
-  ADD PRIMARY KEY (`downpayment_id`),
+  ADD PRIMARY KEY (`downpay_id`),
   ADD KEY `downpayment_order_id_fk` (`order_id`);
 
 --
@@ -872,7 +872,7 @@ ALTER TABLE `delivery`
 -- AUTO_INCREMENT for table `downpayment`
 --
 ALTER TABLE `downpayment`
-  MODIFY `downpayment_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `downpay_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `faqs`

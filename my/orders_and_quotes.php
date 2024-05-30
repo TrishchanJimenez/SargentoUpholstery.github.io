@@ -187,24 +187,22 @@ $user_id = $_SESSION['user_id'];
                 $page_orders = isset($_GET['page_orders']) ? intval($_GET['page_orders']) : 1;
                 $offset_orders = ($page_orders - 1) * $results_per_page;
 
-                // Get filter parameters for orders
-                $order_item_type = isset($_GET['order_item_type']) ? $_GET['order_item_type'] : 'default';
-                $order_service_type = isset($_GET['order_service_type']) ? $_GET['order_service_type'] : 'default';
-                $order_status = isset($_GET['order_status']) ? $_GET['order_status'] : 'default';
-
-                // Build the filter query for orders
-                $order_query = "SELECT * FROM quotes q INNER JOIN orders o USING (quote_id) WHERE quote_id = :quote_id";
-                if ($order_item_type != 'default') {
-                    $order_query .= " AND i.item_type = :order_item_type";
-                }
-                if ($order_service_type != 'default') {
-                    $order_query .= " AND q.service_type = :order_service_type";
-                }
-                if ($order_status != 'default') {
-                    $order_query .= " AND o.order_status = :order_status";
-                }
-                $order_query .= " ORDER BY o.updated_at DESC LIMIT :limit OFFSET :offset";
-
+                // Fetch the orders for the current page
+                $order_query = "
+                    SELECT 
+                        *
+                    FROM 
+                        `orders` o
+                            INNER JOIN
+                        `quotes` q ON o.quote_id = q.quote_id
+                            INNER JOIN
+                        `items` i ON q.quote_id = i.quote_id
+                    WHERE 
+                        q.customer_id = :user_id
+                    ORDER BY
+                        q.updated_at DESC
+                    LIMIT :limit OFFSET :offset
+                ";
                 $order_stmt = $conn->prepare($order_query);
                 $order_stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
                 if ($order_item_type != 'default') {
@@ -222,28 +220,9 @@ $user_id = $_SESSION['user_id'];
                 $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Get the total number of orders
-                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `order_id` = :order_id";
-                if ($order_item_type != 'default') {
-                    $total_orders_query .= " AND i.item_type = :order_item_type";
-                }
-                if ($order_service_type != 'default') {
-                    $total_orders_query .= " AND q.service_type = :order_service_type";
-                }
-                if ($order_status != 'default') {
-                    $total_orders_query .= " AND o.order_status = :order_status";
-                }
-
+                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `quote_id` = :quote_id";
                 $total_orders_stmt = $conn->prepare($total_orders_query);
-                $total_orders_stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
-                if ($order_item_type != 'default') {
-                    $total_orders_stmt->bindParam(':order_item_type', $order_item_type, PDO::PARAM_STR);
-                }
-                if ($order_service_type != 'default') {
-                    $total_orders_stmt->bindParam(':order_service_type', $order_service_type, PDO::PARAM_STR);
-                }
-                if ($order_status != 'default') {
-                    $total_orders_stmt->bindParam(':order_status', $order_status, PDO::PARAM_STR);
-                }
+                $total_orders_stmt->bindParam(':quote_id', $orders['quote_id'], PDO::PARAM_INT);
                 $total_orders_stmt->execute();
                 $total_orders = $total_orders_stmt->fetchColumn();
                 $total_pages_orders = ceil($total_orders / $results_per_page);
@@ -293,9 +272,6 @@ $user_id = $_SESSION['user_id'];
                         <th class="onq__th--corner">Order ID</th>
                         <th class="onq__th onq__th--order">Furniture Type</th>
                         <th class="onq__th onq__th--order">Service Type</th>
-                        <th class="onq__th onq__th--order">Quantity</th>
-                        <th class="onq__th onq__th--order">Delivery Method</th>
-                        <th class="onq__th onq__th--order">Price</th>
                         <th class="onq__th onq__th--order">Status</th>
                         <th class="onq__th--corner"></th>
                     </tr>
@@ -306,8 +282,8 @@ $user_id = $_SESSION['user_id'];
                             foreach ($orders as $row) {
                                 echo '
                                     <tr>
-                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) . '</td>
-                                        <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) . '</td>
+                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) ?? 'N/A' . '</td>
+                                        <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
                                         <td class="onq__td onq__td--alt onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["del_method"] ?? 'N/A'))) . '</td>
