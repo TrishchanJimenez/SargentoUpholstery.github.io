@@ -24,19 +24,6 @@ accountBtn.addEventListener('click', () => {
     }
 })
 
-// ---------- Alert ---------- //
-
-document.addEventListener('DOMContentLoaded', function () {
-    const closeButtons = document.querySelectorAll('.alert__close-button');
-
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const alert = this.parentElement;
-            alert.style.display = 'none';
-        });
-    });
-});
-
 // ---------- Notifs ---------- //
 
 document.addEventListener("DOMContentLoaded", function () {

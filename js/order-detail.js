@@ -176,6 +176,13 @@ if(toggleDisplayFurnitureBtn !== null) {
 }
 
 function toggleFurnitureDisplay() {
-    const furnitureDisplay = document.querySelector( " .multi-order-information");
-    furnitureDisplay.classList.toggle("hidden");
+    if(toggleDisplayFurnitureBtn.innerText === "SHOW FURNITURE DETAILS") {
+        toggleDisplayFurnitureBtn.textContent = "HIDE FURNITURE DETAILS";
+    } else {
+        toggleDisplayFurnitureBtn.textContent = "SHOW FURNITURE DETAILS";
+    }
+
+    document.querySelectorAll(' .item-detail').forEach(item => {
+        item.classList.toggle("hidden");
+    });
 }
