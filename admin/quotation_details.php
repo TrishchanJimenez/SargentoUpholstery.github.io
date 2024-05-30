@@ -54,7 +54,6 @@
     }    
 ?>
 <?php
-
     $quote_id = $_GET['quote-id'];
     $sql = "
         SELECT 
@@ -322,7 +321,7 @@
                 </div>
                 <div class="action-buttons">
                     <input type="submit" value="Save" class="save-button action-button" name="submit-price">
-                    <input type="button" value="Cancel" class="cancel-button action-button">
+                    <input type="button" value="Cancel" class="cancel-button action-button" onclick="cancelPriceSet()">
                 </div>
             </form>
         </div>

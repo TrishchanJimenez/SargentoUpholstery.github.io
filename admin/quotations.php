@@ -34,6 +34,8 @@
         $quotationSql .= "
             HAVING status = 'pending'
             OR status = 'approved'
+            OR status = 'rejected'
+            OR status = 'cancelled'
         ";
     }
 
@@ -70,6 +72,7 @@
                         <option value="default">Status</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
+                        <option value="cancelled">Cancelled</option>
                     </select>
                 </div>
             </form>
