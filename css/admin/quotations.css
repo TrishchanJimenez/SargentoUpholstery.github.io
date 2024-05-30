@@ -574,12 +574,12 @@ input[type="number"] {
     position: relative;
 
     &:hover .item-display {
-        display: block;
+        opacity: 100;
     }
 }
 
 .item-display {
-    display: none;
+    opacity: 0;
     position: absolute;
     padding: 0.25rem;
     background-color: white;
@@ -589,4 +589,6 @@ input[type="number"] {
     border-radius: 0.25rem;
     bottom: -30%;
     left: 20%;
+
+    transition: all 0.2s ease-in-out;
 }

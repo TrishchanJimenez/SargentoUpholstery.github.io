@@ -568,7 +568,8 @@ input[type="number"] {
     grid-template-columns: repeat(4, 1fr);
 }
 
-.downpayment-info {
+.downpayment-info,
+.fullpayment-info {
     width: 49%;
     margin-right: 1%;
 }
@@ -577,12 +578,12 @@ input[type="number"] {
     position: relative;
 
     &:hover .item-display {
-        display: block;
+        opacity: 100;
     }
 }
 
 .item-display {
-    display: none;
+    opacity: 0;
     position: absolute;
     padding: 0.25rem;
     background-color: white;
@@ -592,4 +593,6 @@ input[type="number"] {
     border-radius: 0.25rem;
     bottom: -30%;
     left: 20%;
+
+    transition: all 0.2s ease-in-out;
 }

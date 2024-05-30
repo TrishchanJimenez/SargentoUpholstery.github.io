@@ -191,15 +191,15 @@ $user_id = $_SESSION['user_id'];
                 $order_query = " SELECT * FROM `quotes` q LEFT JOIN `orders` o USING (quote_id) WHERE `quote_id` = :quote_id ORDER BY `q.updated_at` DESC LIMIT :limit OFFSET :offset";
                 $order_stmt = $conn->prepare($order_query);
                 $order_stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
-                if ($order_item_type != 'default') {
-                    $order_stmt->bindParam(':order_item_type', $order_item_type, PDO::PARAM_STR);
-                }
-                if ($order_service_type != 'default') {
-                    $order_stmt->bindParam(':order_service_type', $order_service_type, PDO::PARAM_STR);
-                }
-                if ($order_status != 'default') {
-                    $order_stmt->bindParam(':order_status', $order_status, PDO::PARAM_STR);
-                }
+                // if ($order_item_type != 'default') {
+                //     $order_stmt->bindParam(':order_item_type', $order_item_type, PDO::PARAM_STR);
+                // }
+                // if ($order_service_type != 'default') {
+                //     $order_stmt->bindParam(':order_service_type', $order_service_type, PDO::PARAM_STR);
+                // }
+                // if ($order_status != 'default') {
+                //     $order_stmt->bindParam(':order_status', $order_status, PDO::PARAM_STR);
+                // }
                 $order_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
                 $order_stmt->bindParam(':offset', $offset_orders, PDO::PARAM_INT);
                 $order_stmt->execute();
