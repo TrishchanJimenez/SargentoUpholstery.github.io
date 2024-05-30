@@ -187,7 +187,10 @@
         $allowedTypes = array('jpg', 'jpeg', 'png');
         $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
-        $payment_method = $_POST['payment_method'];
+        $dowpay_method = $_POST['payment_method'];
+        $downpay_account_name = htmlspecialchars(trim($_POST['account_holder']));
+        $downpay_amount = $_POST['amount'];
+        $downpay_ref_no = htmlspecialchars(trim($_POST['reference_no']));
 
         // Check if the file type is allowed
         if (in_array(strtolower($fileType), $allowedTypes)) {
@@ -198,22 +201,36 @@
                     try {
                         // Write the query
                         $query = "
-                            UPDATE 
-                                `downpayment` 
-                            SET 
-                                `downpayment_method` = :payment_method, 
-                                `downpayment_img` = :targetFilePath,
-                                `downpayment_verification_status` = 'waiting_for_verification'
-                            WHERE 
-                                `order_id` = :order_id";
+                            INSERT INTO
+                                `downpayment` (
+                                    order_id,
+                                    downpay_method,
+                                    downpay_img_path,
+                                    downpay_account_name,
+                                    downpay_amount,
+                                    downpay_ref_no,
+                                    downpay_verification_status
+                                )
+                            VALUES (
+                                :order_id,
+                                :downpay_method,
+                                :downpay_img_path,
+                                :downpay_account_name,
+                                :downpay_amount,
+                                :downpay_ref_no,
+                                'waiting_for_verification'
+                            )
+                        ";
                         // Prepare the query
                         $stmt = $conn->prepare($query);
-                        $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
-                        $stmt->bindParam(':targetFilePath', $dbpath, PDO::PARAM_STR);
                         $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':downpay_method', $dowpay_method, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_img_path', $dbpath, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_account_name', $downpay_account_name, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_amount', $downpay_amount);
+                        $stmt->bindParam(':downpay_ref_no', $downpay_ref_no, PDO::PARAM_STR);
                         // Execute the query
-                        $stmt->execute();
-                        echo '<script type="text/javascript"> alert("You have successfully uploaded a proof of downpayment.") </script>'; 
+                        if($stmt->execute()) echo '<script type="text/javascript"> alert("You have successfully uploaded a proof of downpayment.") </script>';     
                     } catch (PDOException $e) {
                         // Handle database error
                         echo "<script>console.log(" . $e->getMessage() . ")</script>";

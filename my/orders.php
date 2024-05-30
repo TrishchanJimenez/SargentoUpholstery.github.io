@@ -79,6 +79,9 @@
                                 <a href="#actions" class="sidebar__link">Actions</a>
                             </li>
                             <li class="sidebar__item">
+                                <a href="#payment" class="sidebar__link">Payment</a>
+                            </li>
+                            <li class="sidebar__item">
                                 <a href="#items" class="sidebar__link">Items</a>
                             </li>
                         </ul>
@@ -97,7 +100,7 @@
                             </p>
                         </div>
                         <div class="order-identif">
-                            <div class="order-number__wrapper   order-identif__section">
+                            <div class="order-number__wrapper   order-section">
                                 <div class="order-number__title   order-section__title">
                                     <h1>Order Number: </h1>
                                 </div>
@@ -133,7 +136,7 @@
                                         break;
                                 }
                             ?>
-                            <div class="order-status__wrapper   order-identif__section   <?= $phase_class ?>">
+                            <div class="order-status__wrapper   order-section   <?= $phase_class ?>">
                                 <div class="order-status__title order-section__title">
                                     <h1>Current Phase: </h1>
                                 </div>
@@ -145,7 +148,7 @@
                             </div>
                         </div>
                         <div class="order-info">
-                            <div class="order-type__wrapper   order-info__section">
+                            <div class="order-type__wrapper   order-section">
                                 <div class="order-type__title   order-section__title">
                                     <h1>Service Type</h1>
                                 </div>
@@ -155,7 +158,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="order-price__wrapper   order-info__section">
+                            <div class="order-price__wrapper   order-section">
                                 <div class="order-price__title   order-section__title">
                                     <h1>Total Due</h1>
                                 </div>
@@ -167,7 +170,7 @@
                             </div>
                         </div>
                         <div class="order-requisite">
-                            <div class="order-payment__wrapper   order-requisite__section">
+                            <div class="order-payment__wrapper   order-section">
                                 <div class="order-payment__title   order-section__title">
                                     <h1>Payment Status</h1>
                                 </div>
@@ -197,7 +200,7 @@
                                         </td>
                                     </tr>
                                 <?php endif; ?>
-                                <?php if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])): ?>
+                                <?php if(!isset($order['downpay_method']) && !isset($order['downpay_img_path'])): ?>
                                     <tr>
                                         <td>
                                             <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
@@ -205,7 +208,7 @@
                                     </tr>
                                 <?php endif; ?>
                             <?php elseif ($order['order_phase'] == "pending_fullpayment"): ?>
-                                <?php if(!isset($order['fullpayment_method']) && !isset($order['fullpayment_img'])): ?>
+                                <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
                                     <tr>
                                         <td>
 
@@ -228,12 +231,80 @@
                                 <?php endif; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td>
+                                    <td class="td--no-action">
                                         No actions currently available.
                                     </td>
                                 </tr>
                             <?php endif; ?>
                         </table>
+                    </div>
+                    <div class="orders-middle   orders-segment" id="payment">
+                        <div class="orders-middle__intro   orders-segment__intro">
+                            <h1 class="orders-middle__title   orders-segment__title">Order Payment</h1>
+                            <p class="orders-middle__desc   orders-segment__desc">
+                                This is the list of items you have placed an order on.
+                            </p>
+                        </div>
+                        <div class="order-downpayment-standing">
+                            <div class="payment-status__wrapper   order-section">
+                                <div class="payment-status__title   order-section__title">
+                                    <h1>Downpayment Status</h1>
+                                </div>
+                                <table class="payment-status">
+                                    <tr>
+                                        <td class="td--top">
+                                            <?= ucwords(str_replace('_', ' ', htmlspecialchars($order["downpay_verification_status"] ?? 'N/A'))) ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="payment-due__wrapper   order-section">
+                                <div class="payment-due__title   order-section__title">
+                                    <h1>Downpayment Due</h1>
+                                </div>
+                                <table class="payment-due">
+                                    <tr>
+                                        <td class="td--top">₱ <?= number_format(($order["total_price"]/2) ?? 0, 2, '.', ',') ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="order-downpayment-submission">
+                            <div class="payment-proof__wrapper   order-section">
+                                <div class="payment-proof__title   order-section__title">
+                                    <h1>Proof of Downpayment</h1>
+                                </div>
+                                <table class="payment-proof">
+                                    <tr>
+                                        <td class="td--top">
+                                            <?php if (!empty($order["downpay_img_path"])): ?>
+                                                <img src="/<?= htmlspecialchars($order["downpay_img_path"]) ?>" alt="Proof of downpayment" width="200px">
+                                            <?php else: ?>
+                                                No image uploaded.
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="payment-actions__wrapper   order-section">
+                                <div class="payment-actions__title   order-section__title">
+                                    <h1>Downpayment Actions</h1>
+                                </div>
+                                <table class="payment-actions">
+                                    <tr>
+                                        <?php if ($order['order_phase'] == "pending_downpayment"): ?>
+                                            <?php if(!isset($order['downpay_method']) && !isset($order['downpay_img_path'])): ?>
+                                                <tr>
+                                                    <td>
+                                                        <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="orders-bottom   orders-segment" id="items">
                         <div class="orders-bottom__intro   orders-segment__intro">
