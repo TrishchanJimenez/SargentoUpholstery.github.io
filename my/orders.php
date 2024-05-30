@@ -274,7 +274,7 @@
                                     <tbody class="order-items__tbody">
                                         <?php if ($stmt->rowCount() > 0): ?>
                                             <?php foreach ($items as $i => $item): ?>
-                                                <tr class="order-items__tr--td">
+                                                <tr class="order-items__tr   order-items__tr--td   items__tr">
                                                     <td class="order-items__td"> <?= $i + 1 ?></td>
                                                     <td class="order-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
                                                     <td class="order-items__td" hidden> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
@@ -318,54 +318,7 @@
             </div>
         </div>
 
-        <!-- Modal for Item Details -->
-        <div class="modal   modal--item-details" id="itemDetailsModal">
-            <div class="modal__content">
-                <span class="modal__close" id="closeItemDetails">&times;</span>
-                <h2 class="modal__title">Item Details</h2>
-                <table class="modal__table">
-                    <tr>
-                        <th>Furniture:</th>
-                        <td id="modalFurniture"></td>
-                    </tr>
-                    <tr>
-                        <th>Description:</th>
-                        <td id="modalDescription"></td>
-                    </tr>
-                    <tr>
-                        <th>Quantity:</th>
-                        <td id="modalQuantity"></td>
-                    </tr>
-                    <tr>
-                        <th>Price:</th>
-                        <td id="modalPrice"></td>
-                    </tr>
-                    <tr>
-                        <th>Reference Image:</th>
-                        <td id="modalRefImage"></td>
-                    </tr>
-                </table>
-                <h2 class="modal__title">Item Customization</h2>
-                <table class="modal__table">
-                    <tr>
-                        <th>Dimensions:</th>
-                        <td id="modalDimensions"></td>
-                    </tr>
-                    <tr>
-                        <th>Materials:</th>
-                        <td id="modalMaterials"></td>
-                    </tr>
-                    <tr>
-                        <th>Fabric:</th>
-                        <td id="modalFabric"></td>
-                    </tr>
-                    <tr>
-                        <th>Color:</th>
-                        <td id="modalColor"></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <?php include_once('item_details.php') ?>
 
         <script src="/js/my/orders.js"></script>
         <script>

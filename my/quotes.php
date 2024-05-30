@@ -201,9 +201,7 @@
                                         LEFT JOIN
                                     `customs` c ON i.custom_id = c.custom_id
                                 WHERE 
-                                    i.quote_id = :quote_id 
-                                    AND
-                                    i.custom_id IS NOT NULL
+                                    i.quote_id = :quote_id
                                 LIMIT :limit 
                                 OFFSET :offset
                             ";
@@ -236,7 +234,7 @@
                                 <tbody class="quote-items__tbody">
                                     <?php if ($stmt->rowCount() > 0): ?>
                                         <?php foreach ($items as $i => $item): ?>
-                                            <tr class="quote-items__tr   quote-items__tr--td">
+                                            <tr class="quote-items__tr   quote-items__tr--td   items__tr">
                                                 <td class="quote-items__td"> <?= $i + 1 ?></td>
                                                 <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
                                                 <td class="quote-items__td" hidden> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
@@ -286,56 +284,24 @@
         </div>
     </div>
 
-    <!-- Modal for Item Details -->
-    <div class="modal modal--item-details" id="itemDetailsModal">
+    <?php include_once('item_details.php') ?>
+
+    <!-- Modal for Accept Order -->
+    <div class="modal   modal--accept" id="acceptModal">
+        <div class="modal__content   modal__content--accept">
+            <p class="modal__message">Please read our <a href="/legal-agreements.php#cancellation" target="_blank">terms and conditions</a> before accepting the order. <br> Do you want to proceed?</p>
+            <input type="checkbox" name="legallyConsented" id="legallyConsented"> I have read and agree to the terms and conditions. <br>
+            <button class="modal__action" id="confirmAcceptAction">Accept Order</button>
+            <button class="modal__action" id="cancelAcceptAction">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Modal for Cancel Order -->
+    <div class="modal   modal--cancel" id="cancelModal">
         <div class="modal__content">
-            <span class="modal__close" id="closeItemDetails">&times;</span>
-            <div class="modal__content--general">
-                <h2 class="modal__title">Item Details</h2>
-                <table class="modal__table">
-                    <tr>
-                        <th>Furniture:</th>
-                        <td id="modalFurniture"></td>
-                    </tr>
-                    <tr>
-                        <th>Description:</th>
-                        <td id="modalDescription"></td>
-                    </tr>
-                    <tr>
-                        <th>Quantity:</th>
-                        <td id="modalQuantity"></td>
-                    </tr>
-                    <tr>
-                        <th>Price:</th>
-                        <td id="modalPrice"></td>
-                    </tr>
-                    <tr>
-                        <th>Reference Image:</th>
-                        <td id="modalRefImage"></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal__content--customs" id="customsDetails">
-                <h2 class="modal__title">Item Customization</h2>
-                <table class="modal__table">
-                    <tr>
-                        <th>Dimensions:</th>
-                        <td id="modalDimensions"></td>
-                    </tr>
-                    <tr>
-                        <th>Materials:</th>
-                        <td id="modalMaterials"></td>
-                    </tr>
-                    <tr>
-                        <th>Fabric:</th>
-                        <td id="modalFabric"></td>
-                    </tr>
-                    <tr>
-                        <th>Color:</th>
-                        <td id="modalColor"></td>
-                    </tr>
-                </table>
-            </div>
+            <p class="modal__message">Are you sure you want to cancel the order?</p>
+            <button class="modal__action" id="confirmCancelAction">Yes, Cancel Order</button>
+            <button class="modal__action" id="cancelCancelAction">No</button>
         </div>
     </div>
 
