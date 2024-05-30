@@ -14,7 +14,7 @@
     // PROCESS THE SET PRICE FORM
     include_once("../notif.php");
     include_once("../alert.php");
-    if($_SERVER['REQUEST_METHOD'] === "POST") {
+    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['submit-price'])) {
         // echo "helloj";
         $total_price = 0;
         // var_dump($_POST);
@@ -39,6 +39,19 @@
         // sendAlert('success', 'Quote price has been set successfully');
         // header("Refresh: 0");
     }
+?>
+<?php
+    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['reject-quote'])) {
+        $quote_id = $_POST['quote_id'];
+        $rejection_reason = $_POST['rejection-reason'];
+        $sql = "UPDATE quotes SET quote_status = 'rejected', rejection_reason = :rejection_reason WHERE quote_id = :quote_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':rejection_reason', $rejection_reason);
+        $stmt->bindParam(':quote_id', $quote_id);
+        $stmt->execute();
+        // sendAlert('success', 'Quote has been rejected successfully');
+        header("Refresh: 0");
+    }    
 ?>
 <?php
 
@@ -139,7 +152,7 @@
                         </div>
                         <?php if(!is_null($quote_details['total_price']) && $quote_details['total_price'] !== ''): ?>
                             <div class="info">
-                                <span class="info-name">QUOTED PRICE</span>
+                                <span class="info-name">TOTAL PRICE</span>
                                 <span class="info-detail">
                                     <?= '₱' . number_format($quote_details['total_price'], 2, '.', ',') ?>
                                 </span>
@@ -246,10 +259,30 @@
                         <p class="info-title">
                             ACTIONS
                         </p>
+                        <!-- <div class="info-order-detail">
+                            <div class="action-buttons">
+                                <input type="button" value="quote" class="green-button accept-order action-button" onclick="openModal()">
+                                <form action="post" id="rejection-form">
+                                    <input type="submit" name="reject-quote" value="Reject" class="red-button reject-order action-button">
+                                </form>
+                            </div>
+                        </div> -->
                         <div class="info-order-detail">
                             <div class="action-buttons">
                                 <input type="button" value="quote" class="green-button accept-order action-button" onclick="openModal()">
+                                <input type="button" value="reject order" class="red-button reject-order reject-quote action-button">
                             </div>
+                            <form action="" method="post" id="quote-reject-form">
+                                <input type="hidden" name="quote_id" <?= "value={$quote_id}" ?>>
+                                <div class="on-reject action-input">
+                                    <label for="rejection-reason">Reason for rejection</label>
+                                    <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
+                                </div>
+                                <div class="on-click">
+                                    <input type="submit" value="save" name="reject-quote" class="green-button action-button" name="reject-order">
+                                    <input type="button" value="cancel" class="red-button action-button">
+                                </div>
+                            </form>
                         </div>
                     </div>
                 <?php endif; ?>

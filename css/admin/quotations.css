@@ -110,6 +110,12 @@
     background: var(--green-100, #D1FAE5);
 }
 
+.status span[data-prod-status="rejected"] {
+    color: var(--pink-800, #9D174D); 
+    border: 1px solid var(--pink-300, #F9A8D4);
+    background: var(--pink-100, #FCE7F3); 
+}
+
 .query-records {
     padding: 0.75rem 1.5rem;
     display: flex;
@@ -333,12 +339,8 @@
     display: none;
 }
 
-.on-accept {
-    display: none;
-}
-
 .on-reject {
-    display: none;
+    /* display: none; */
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -552,4 +554,8 @@ input[type="number"] {
     outline: transparent;
     border: transparent;
     background-color: #fff;
+}
+
+#quote-reject-form {
+    display: none;
 }
