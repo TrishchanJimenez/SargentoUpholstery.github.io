@@ -116,6 +116,12 @@
     background: var(--pink-100, #FCE7F3); 
 }
 
+.status span[data-prod-status="rejected"] {
+    color: var(--yellow-800, #92400E); 
+    border: 1px solid var(--yellow-300, #FCD34D);
+    background: var(--yellow-100, #FEF3C7);
+}
+
 .query-records {
     padding: 0.75rem 1.5rem;
     display: flex;

@@ -72,7 +72,7 @@
                         <option value="default">Status</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="rejected">Rejected</option>
                     </select>
                 </div>
             </form>
@@ -95,7 +95,7 @@
                             $date = date('M d, Y', strtotime($quote['placement_date']));
                             $type = ($quote['type'] === "mto") ? "MTO" : "Repair";
                             $status = $quote['status'];
-                            $status_text = ($status === "pending") ? "Pending" : "Approved";
+                            $status_text = ucfirst($status);
 
                             $item = ucwords($quote['item']);
                             if (strlen($item) > 12) {
