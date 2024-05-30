@@ -29,6 +29,13 @@
     border: 1px solid #ccc;
 }
 
+.order-filters {
+    display: flex;
+    margin: 0.75rem 0;
+    gap: 1rem;
+}
+
+
 .onq__tab {
     width: 100%;
     height: auto;
@@ -180,7 +187,6 @@
 }
 
 .pagination {
-    margin-top: 20px; /* Adjust as needed */
 }
 
 .pagination__button {
