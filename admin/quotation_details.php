@@ -14,8 +14,7 @@
     // PROCESS THE SET PRICE FORM
     include_once("../notif.php");
     include_once("../alert.php");
-    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['submit-price'])) {
-        // echo "helloj";
+    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['price'])) {
         $total_price = 0;
         // var_dump($_POST);
         $quote_id = $_POST['quote_id'];
@@ -36,7 +35,7 @@
         $stmt->bindParam(':total_price', $total_price);
         $stmt->bindParam(':quote_id', $quote_id);
         $stmt->execute();
-        // sendAlert('success', 'Quote price has been set successfully');
+        sendAlert('success', 'Quote price has been set successfully');
         // header("Refresh: 0");
     }
 ?>
