@@ -215,21 +215,17 @@
                             ];
                             $prod_status_options = "";
 
-                            if($order_status === "cancelled") {
-                                
-                            } else {
-                                $include = false;
-                                foreach ($statuses as $status => $status_text) {
-                                    if ($include) {
-                                        $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                    }
-                                    if ($status === $order_status) {
-                                        if($status === "awaiting-furniture" && $type === "MTO") {
-                                            continue;
-                                        }
-                                        $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
-                                        $include = true;
-                                    }
+                            $include = false;
+                            foreach ($statuses as $status => $status_text) {
+                                if($status === "awaiting-furniture" && $type === "Made-To-Order") {
+                                    continue;
+                                }
+                                if ($include) {
+                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                }
+                                if ($status === $order_status) {
+                                    $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                    $include = true;
                                 }
                             }
 
