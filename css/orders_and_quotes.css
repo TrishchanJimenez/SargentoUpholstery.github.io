@@ -8,15 +8,6 @@ body{
     margin-left: 93px;
     margin-top: 80px;
 }
-.tab {
-    background-color: #555;
-    border: none;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 1.2%;
-    cursor: pointer;
-    border-top-left-radius: 35px ;
-}
 .tab.active {
     background-color: #333; /* Active tab background color */
     filter: drop-shadow(0px 4px 2px #000000);
@@ -30,16 +21,199 @@ body{
     margin-right: auto;
     filter: drop-shadow(0px 4px 2px #000000);
 }
-.table-head {
-}
-.table-header {
-    text-align: center;
-    background-color: #333;
-    color: white;
-    height: 50px;
-}
 .table-data {
     text-align: center;
     height: 100px;
     border-bottom: 2px solid #DDD;
+}
+
+/* ---------- Orders and Quotes ---------- */
+
+.onq {
+    width: 100%;
+    max-width: 90vw;
+    margin: 2.5vmin;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tab__container {
+    width: 90%;
+    height: auto;
+    display: flex;
+}
+
+.tab {
+    background-color: #555;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 1.2%;
+    cursor: pointer;
+    border-top-left-radius: 15px;
+    margin-left: 25px;
+}
+
+.tab-content__wrapper {
+    width: 90%;
+    height: auto;
+}
+
+.tab-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.onq__tab-button {
+    width: 50%;
+    height: auto;
+    padding: 2.5vmin;
+    font-size: larger;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.onq__tab {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    display:flex; 
+    flex-direction:column; 
+    align-items:center;
+}
+
+.onq__table {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    margin: 2.5vmin;
+    margin-top: 0;
+    border: none;
+}
+
+.onq__tr {
+    text-align: center;
+    height: 50px;
+    border: none;
+}
+
+.onq__tr--th {
+    background-color: #333;
+    color: white;
+}
+
+.onq__th--corner {
+    width: calc(15%/2);
+    height: auto;
+    border: 1px solid #bbb;
+}
+
+.onq__th {
+    height: auto;
+    border: 1px solid #333;
+    padding: 2.5vmin;
+    font-size: 100%;
+    border: none;
+}
+
+.onq__th--quote {
+    width: calc(85%/4);
+}
+
+.onq__th--order {
+    width: calc(85%/7);
+}
+
+.onq__th--title {
+    padding: 2.5vmin;
+    font-size: xx-large;
+    background-color: #333;
+    color: white;
+}
+
+.onq__td {
+    height: 15vh;
+    text-align: center;
+}
+
+.onq__td--alt,
+.onq__td--edge {
+    background-color: #eee;
+}
+
+.onq__td--edge {
+    min-width: calc((17.5%/2)-5px);
+    height: 15vh;
+    text-align: center;
+}
+
+.onq__td--end {
+    width: 100%;
+    height: auto;
+    border: 1px solid #bbb;
+    text-align: center;
+}   
+
+.pagination__button {
+    background-color: #ccc;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination__button:hover {
+    background-color: #ccc; /* Darker green */
+}
+
+.pagination__button.active {
+    background-color: #FCD34D; /* Blue, or any other color you prefer */
+}
+
+.order-filters {
+    display: flex;
+    margin-left: 25px;
+    margin-right: 25px;    
+    gap: 1100px;
+}
+
+.order-filters input[type=submit] {
+    padding: 20px 20px; 
+    border-radius: 0.375rem;
+    border: 1px solid var(--gray-300, #D1D5DB);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    color: #6B7280;
+    font-size: 0.875rem;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #D1D5DB;
+    }
+}
+
+.selector {
+    padding: 20px 20px; 
+    border-radius: 0.375rem;
+    border: 1px solid var(--gray-300, #D1D5DB);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    color: #6B7280;
+    font-size: 0.875rem;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #D1D5DB;
+    }
 }
