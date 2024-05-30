@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 30, 2024 at 07:53 AM
+-- Generation Time: May 30, 2024 at 12:16 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -95,7 +95,25 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 (26, 25, 25, 'fsda', '2024-05-28 01:03:34', 0),
 (27, 25, 25, 'd', '2024-05-28 01:03:36', 0),
 (28, 25, 25, 'DSD', '2024-05-28 01:04:05', 0),
-(29, 25, 25, 'asd', '2024-05-28 03:08:19', 0);
+(29, 25, 25, 'asd', '2024-05-28 03:08:19', 0),
+(30, 26, 26, 'asfsd', '2024-05-30 07:29:51', 0),
+(31, 26, 26, 'fasdfa', '2024-05-30 07:29:53', 0),
+(32, 26, 26, 'fasdf', '2024-05-30 07:29:54', 0),
+(33, 26, 26, 'fasdfa', '2024-05-30 07:29:55', 0),
+(34, 26, 26, 'sdaf', '2024-05-30 07:29:56', 0),
+(35, 26, 26, 'asdf', '2024-05-30 07:29:57', 0),
+(36, 26, 26, 'fasdfa', '2024-05-30 07:29:58', 0),
+(37, 26, 26, 'asfdasdf', '2024-05-30 07:29:59', 0),
+(38, 26, 26, 'dsfasdf', '2024-05-30 07:30:00', 0),
+(39, 26, 26, 'asdfa', '2024-05-30 07:30:00', 0),
+(40, 26, 26, 'asdfa', '2024-05-30 07:30:01', 0),
+(41, 26, 26, 'asdfsadfsa', '2024-05-30 07:30:02', 0),
+(42, 26, 26, 'asdfadf', '2024-05-30 07:30:03', 0),
+(43, 26, 26, 'asdfadaf', '2024-05-30 07:30:05', 0),
+(44, 26, 26, 'asdfasdf', '2024-05-30 07:30:06', 0),
+(45, 26, 26, 'asdfasdf', '2024-05-30 07:30:06', 0),
+(46, 26, 26, 'asdfasd', '2024-05-30 07:30:07', 0),
+(47, 26, 26, 'asdfas', '2024-05-30 07:30:08', 0);
 
 -- --------------------------------------------------------
 
@@ -159,7 +177,7 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 ('HOMETESTIMONIALAUTHOR2', 'home', NULL, '-Albert Mendoza', NULL),
 ('HOMETESTIMONIALCOMMENT1', 'home', NULL, 'Very responsive, Good and trustworthy. Plus the quality of their work is pretty good! Two-thumbs up for Sargento Upholstery.', NULL),
 ('HOMETESTIMONIALCOMMENT2', 'home', NULL, 'Quality at pangmatagalan talaga ang gawa ng Sargento Upholstery. Kudos!!', NULL),
-('HOMETESTIMONIALTITLE', 'home', NULL, 'Our Clients\' Testimonials', NULL),
+('HOMETESTIMONIALTITLE', 'home', NULL, 'Our Clients\\\' Testimonials', NULL),
 ('MAILADD', 'contact_us', NULL, 'sargentoupholstery@gmail.com', NULL),
 ('QUOTE_INTRO_DESC', 'quote', 'INTRO_DESC', ' ', NULL),
 ('QUOTE_INTRO_IMG', 'quote', 'INTRO_IMG', NULL, '/websiteimages/banner-images/order.png'),
@@ -227,10 +245,7 @@ INSERT INTO `customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`
 (23, '', '', '', 'black'),
 (24, 'sadfasdf', 'asfdasdf', 'asdfasd', 'asdfadsf'),
 (25, 'asdfasdf', 'asdfasdf', '', ''),
-(26, '', '', '', ''),
-(27, '1x2x3', 'wood', '', 'blue'),
-(28, '1x2x3', 'metal', 'leather', 'blue'),
-(29, '2x4x5', 'wood', 'linen', 'orange');
+(26, '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -244,13 +259,6 @@ CREATE TABLE `delivery` (
   `delivery_method` enum('third_party','self') DEFAULT NULL,
   `delivery_address` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `delivery`
---
-
-INSERT INTO `delivery` (`delivery_id`, `order_id`, `delivery_method`, `delivery_address`) VALUES
-(1, 4, 'third_party', '1123 Rizal Taguig City');
 
 -- --------------------------------------------------------
 
@@ -268,6 +276,13 @@ CREATE TABLE `downpayment` (
   `downpay_ref_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpay_verification_status` enum('waiting_for_verification','needs_reverification','verified') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `downpayment`
+--
+
+INSERT INTO `downpayment` (`downpay_id`, `order_id`, `downpay_method`, `downpay_img_path`, `downpay_account_name`, `downpay_amount`, `downpay_ref_no`, `downpay_verification_status`) VALUES
+(1, 2, 'gcash', NULL, 'Trishchan Jimenez', 2133, '123123123', 'verified');
 
 -- --------------------------------------------------------
 
@@ -355,11 +370,7 @@ INSERT INTO `items` (`item_id`, `quote_id`, `custom_id`, `furniture`, `descripti
 (16, 18, NULL, 'adsfasdf', 'asdfasdf', 'uploadedImages/referenceImages/prog2.png', 1, 1590, 'pending'),
 (17, 19, NULL, 'asdfasf', 'asfas', 'uploadedImages/referenceImages/cor.png', 1, 1231, 'pending'),
 (18, 19, NULL, 'asdfasdf', 'asdfasdf', NULL, 1, 13123, 'pending'),
-(19, 19, NULL, 'asdfa', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending'),
-(20, 20, NULL, 'Test furniture', 'Test description', NULL, 2, NULL, 'pending'),
-(21, 21, NULL, 'Experiment furniture', 'Experiment desc', 'uploadedImages/referenceImages/61F8CTCqVVL._AC_SL1001_.jpg', 3, NULL, 'pending'),
-(22, 22, 28, 'Pilot furniture', 'pilot desc', 'uploadedImages/referenceImages/Stool.jpg', 6, NULL, 'pending'),
-(23, 22, 29, 'Example furniture', 'example desc', 'uploadedImages/referenceImages/images.jpg', 2, NULL, 'pending');
+(19, 19, NULL, 'asdfa', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending');
 
 -- --------------------------------------------------------
 
@@ -395,50 +406,9 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (12, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:49:31', 0, '/my/user_orders.php'),
 (13, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:02:48', 0, '/my/user_orders.php'),
 (14, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:04:20', 0, '/my/user_orders.php'),
-(15, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:05:11', 0, '/my/user_orders.php'),
-(16, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:08:11', 0, '/my/user_orders.php'),
-(17, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:10:57', 0, '/my/user_orders.php'),
-(18, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:15:24', 0, '/my/user_orders.php'),
-(19, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:16:04', 0, '/my/user_orders.php'),
-(20, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:18:18', 0, '/my/user_orders.php'),
-(21, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:18:37', 0, '/my/user_orders.php'),
-(22, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:21:57', 0, '/my/user_orders.php'),
-(23, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:22:36', 0, '/my/user_orders.php'),
-(24, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 13:49:20', 1, '/my/user_orders.php'),
-(25, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 14:25:09', 0, '/my/user_orders.php'),
-(26, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:39:06', 0, '/my/user_orders.php'),
-(27, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 23:40:43', 0, '/my/user_orders.php'),
-(28, 22, 'Your request for quotation has been evaluated', '2024-05-27 09:56:17', 0, '/my/user_order_details.php?quote-id=2'),
-(29, 22, 'Your request for quotation has been evaluated', '2024-05-27 09:57:55', 0, '/my/user_order_details.php?quote-id=3'),
-(30, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-27 12:19:32', 0, '/my/user_orders.php'),
-(31, 25, 'Your request for quotation has been evaluated', '2024-05-27 12:23:02', 0, '/my/user_order_details.php?quote-id=4'),
-(32, 25, 'Your request for quotation has been evaluated', '2024-05-27 23:07:23', 0, '/my/user_order_details.php?quote-id=9'),
-(33, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 00:15:21', 0, '/my/user_orders.php'),
-(34, 24, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 01:08:00', 0, '/my/user_orders.php'),
-(35, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 01:35:39', 0, '/my/user_orders.php'),
-(36, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 01:36:30', 0, '/my/user_orders.php'),
-(37, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 01:39:12', 0, '/my/user_orders.php'),
-(38, 25, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 01:41:29', 0, '/my/user_orders.php'),
-(39, 25, 'Your request for quotation has been evaluated', '2024-05-28 02:50:41', 0, '/my/user_order_details.php?quote-id=17'),
-(40, 25, 'Your request for quotation has been evaluated', '2024-05-28 03:56:56', 0, '/my/user_order_details.php?quote-id=16'),
-(41, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-28 07:45:54', 0, '/my/user_orders.php'),
-(42, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:06:03', 0, '/my/user_orders.php'),
-(43, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:09:58', 0, '/my/user_orders.php'),
-(44, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:11:35', 0, '/my/user_orders.php'),
-(45, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:15:02', 0, '/my/user_orders.php'),
-(46, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:16:50', 0, '/my/user_orders.php'),
-(47, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:18:55', 0, '/my/user_orders.php'),
-(48, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:19:24', 0, '/my/user_orders.php'),
-(49, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:20:06', 0, '/my/user_orders.php'),
-(50, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:20:26', 0, '/my/user_orders.php'),
-(51, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:21:39', 0, '/my/user_orders.php'),
-(52, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:25:02', 0, '/my/user_orders.php'),
-(53, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:26:29', 0, '/my/user_orders.php'),
-(54, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:28:02', 0, '/my/user_orders.php'),
-(55, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:28:52', 0, '/my/user_orders.php'),
-(56, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 21:40:17', 0, '/my/user_orders.php'),
-(57, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 21:41:26', 0, '/my/user_orders.php'),
-(58, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 23:13:54', 0, '/my/user_orders.php');
+(63, 26, 'Your order is now in production', '2024-05-30 09:14:08', 0, '/order.php?id=2'),
+(64, 26, 'Your downpayment needs reverification', '2024-05-30 09:24:41', 0, '/order.php?id=2'),
+(65, 26, 'Your order is now in production', '2024-05-30 09:30:50', 0, '/order.php?id=2');
 
 -- --------------------------------------------------------
 
@@ -451,6 +421,7 @@ CREATE TABLE `orders` (
   `quote_id` int DEFAULT NULL,
   `order_phase` enum('pending_downpayment','awaiting_furniture','in_production','pending_fullpayment','out_for_delivery','received','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pending_downpayment',
   `payment_phase` enum('unpaid','partially_paid','fully_paid') NOT NULL DEFAULT 'unpaid',
+  `cancellation_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `est_completion_date` date DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -460,10 +431,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `quote_id`, `order_phase`, `payment_phase`, `created_at`, `est_completion_date`, `updated_at`) VALUES
-(2, 18, 'pending_downpayment', 'unpaid', '2024-05-29 20:49:23', '2024-06-12', '2024-05-29 12:49:23'),
-(3, 19, 'pending_downpayment', 'unpaid', '2024-05-29 20:50:50', '2024-06-12', '2024-05-29 12:50:50'),
-(4, 22, 'pending_downpayment', 'unpaid', '2024-05-30 07:27:58', '2024-06-13', '2024-05-29 23:27:58');
+INSERT INTO `orders` (`order_id`, `quote_id`, `order_phase`, `payment_phase`, `cancellation_reason`, `created_at`, `est_completion_date`, `updated_at`) VALUES
+(2, 18, 'pending_downpayment', 'partially_paid', NULL, '2024-05-29 20:49:23', '2024-06-12', '2024-05-29 12:49:23'),
+(3, 19, 'pending_downpayment', 'unpaid', NULL, '2024-05-29 20:50:50', '2024-06-12', '2024-05-29 12:50:50');
 
 --
 -- Triggers `orders`
@@ -486,14 +456,6 @@ CREATE TABLE `pickup` (
   `pickup_address` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `pickup`
---
-
-INSERT INTO `pickup` (`pickup_id`, `order_id`, `pickup_method`, `pickup_address`) VALUES
-(1, 4, 'third_party', '1123 Rizal Taguig City'),
-(2, 4, 'third_party', '1123 Rizal Taguig City');
-
 -- --------------------------------------------------------
 
 --
@@ -506,6 +468,7 @@ CREATE TABLE `quotes` (
   `service_type` enum('','repair','mto') DEFAULT NULL,
   `total_price` float DEFAULT NULL,
   `quote_status` enum('pending','approved','modified','rejected','accepted','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'pending',
+  `rejection_reason` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -514,24 +477,21 @@ CREATE TABLE `quotes` (
 -- Dumping data for table `quotes`
 --
 
-INSERT INTO `quotes` (`quote_id`, `customer_id`, `service_type`, `total_price`, `quote_status`, `created_at`, `updated_at`) VALUES
-(3, 26, 'repair', NULL, 'pending', '2024-05-29 03:06:03', '2024-05-29 05:52:35'),
-(7, 26, 'mto', NULL, 'pending', '2024-05-29 03:09:58', '2024-05-29 05:52:35'),
-(8, 26, 'mto', NULL, 'pending', '2024-05-29 03:11:35', '2024-05-29 05:52:35'),
-(9, 26, 'repair', NULL, 'pending', '2024-05-29 03:15:02', '2024-05-29 05:52:35'),
-(10, 26, 'repair', NULL, 'pending', '2024-05-29 03:16:50', '2024-05-29 05:52:35'),
-(11, 26, 'repair', NULL, 'pending', '2024-05-29 03:18:55', '2024-05-29 05:52:35'),
-(12, 26, 'repair', NULL, 'pending', '2024-05-29 03:19:23', '2024-05-29 05:52:35'),
-(13, 26, 'repair', 1233, 'approved', '2024-05-29 03:20:06', '2024-05-29 10:41:35'),
-(14, 26, 'repair', 12334, 'approved', '2024-05-29 03:20:26', '2024-05-29 10:41:27'),
-(15, 26, 'repair', NULL, 'pending', '2024-05-29 03:21:38', '2024-05-29 05:52:35'),
-(16, 26, 'repair', 1231, 'approved', '2024-05-29 03:25:02', '2024-05-29 10:32:44'),
-(17, 26, 'mto', 2364, 'approved', '2024-05-29 03:26:28', '2024-05-29 10:32:24'),
-(18, 26, 'repair', 3032, 'accepted', '2024-05-29 03:28:01', '2024-05-29 12:49:23'),
-(19, 26, 'mto', 17478, 'accepted', '2024-05-29 03:28:51', '2024-05-29 12:50:50'),
-(20, 22, 'repair', NULL, 'cancelled', '2024-05-29 21:40:17', '2024-05-30 01:38:09'),
-(21, 22, 'mto', NULL, 'approved', '2024-05-29 21:41:26', '2024-05-29 23:23:55'),
-(22, 22, 'repair', 25000, 'approved', '2024-05-29 23:13:53', '2024-05-30 05:36:25');
+INSERT INTO `quotes` (`quote_id`, `customer_id`, `service_type`, `total_price`, `quote_status`, `rejection_reason`, `created_at`, `updated_at`) VALUES
+(3, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:06:03', '2024-05-29 05:52:35'),
+(7, 26, 'mto', NULL, 'pending', NULL, '2024-05-29 03:09:58', '2024-05-29 05:52:35'),
+(8, 26, 'mto', NULL, 'pending', NULL, '2024-05-29 03:11:35', '2024-05-29 05:52:35'),
+(9, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:15:02', '2024-05-29 05:52:35'),
+(10, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:16:50', '2024-05-29 05:52:35'),
+(11, 26, 'repair', NULL, 'rejected', 'Di ko na kaya', '2024-05-29 03:18:55', '2024-05-30 02:31:24'),
+(12, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:19:23', '2024-05-29 05:52:35'),
+(13, 26, 'repair', 1233, 'approved', NULL, '2024-05-29 03:20:06', '2024-05-29 10:41:35'),
+(14, 26, 'repair', 12334, 'approved', NULL, '2024-05-29 03:20:26', '2024-05-29 10:41:27'),
+(15, 26, 'repair', 2000, 'approved', NULL, '2024-05-29 03:21:38', '2024-05-30 00:54:30'),
+(16, 26, 'repair', 1231, 'approved', NULL, '2024-05-29 03:25:02', '2024-05-29 10:32:44'),
+(17, 26, 'mto', 2364, 'approved', NULL, '2024-05-29 03:26:28', '2024-05-29 10:32:24'),
+(18, 26, 'repair', 3032, 'accepted', NULL, '2024-05-29 03:28:01', '2024-05-29 12:49:23'),
+(19, 26, 'mto', 17478, 'accepted', NULL, '2024-05-29 03:28:51', '2024-05-29 12:50:50');
 
 --
 -- Triggers `quotes`
@@ -719,8 +679,7 @@ INSERT INTO `works` (`works_id`, `category`, `color`, `img_path`) VALUES
 (56, 'sofa', 'white', '/websiteimages/galleryimages/sofa16.png'),
 (57, 'sofa', 'cyan', '/websiteimages/galleryimages/sofa17.png'),
 (58, 'sofa', 'brown', '/websiteimages/galleryimages/sofa18.jpg'),
-(59, 'sofa', 'red', '/websiteimages/galleryimages/sofa19.jpg'),
-(60, 'sofa', 'black', '/websiteimages/galleryimages/sofa20.jpg');
+(59, 'sofa', 'red', '/websiteimages/galleryimages/sofa19.jpg');
 
 --
 -- Indexes for dumped tables
@@ -854,25 +813,25 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `customs`
 --
 ALTER TABLE `customs`
-  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `delivery`
 --
 ALTER TABLE `delivery`
-  MODIFY `delivery_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `delivery_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `downpayment`
 --
 ALTER TABLE `downpayment`
-  MODIFY `downpay_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `downpay_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -890,31 +849,31 @@ ALTER TABLE `fullpayment`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `notifs`
 --
 ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pickup`
 --
 ALTER TABLE `pickup`
-  MODIFY `pickup_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pickup_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
-  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `reviews`

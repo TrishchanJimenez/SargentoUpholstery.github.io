@@ -29,7 +29,7 @@
                 <input type="email" name="email" placeholder="Enter your email address" required><br><br>
     
                 <label for="contactno">Phone</label><br>
-                <input type="tel" name="contactno" placeholder="Enter your contact no." required><br><br>
+                <input type="tel" name="contactno" placeholder="Enter your contact no." required maxlength="11" pattern="\d{11}"><br><br>
     
                 <label for="password">Password</label>
                 <input type="password" name="password" id="pw" placeholder="Enter your password" required><br><br>
@@ -50,6 +50,7 @@
     </div>
     <script src="js/register.js"></script>
     <?php
+        include("alert.php");
         function sanitizeInput($input) {
             $input = trim($input);
             $input = stripslashes($input);
@@ -60,14 +61,22 @@
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $name = sanitizeInput($_POST['name']);
             $email = sanitizeInput($_POST['email']);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                sendAlert("error", "Invalid email format");
+            }
             $contactno = sanitizeInput($_POST['contactno']);
+            if (!preg_match("/^\d{11}$/", $contactno)) {
+                // Handle error: phone number is not valid
+                sendAlert("error", "Invalid phone number format");
+            }
             $password = sanitizeInput($_POST['password']);
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
             $stmt->execute([$email]);
             if($stmt->rowCount() > 0) {
-                echo "<script> alert('There is already an account associated with that email') </script>";
+                // echo "<script> alert('There is already an account associated with that email') </script>";
+                sendAlert("error", "There is already an account associated with that email");
             } else {
                 $stmt = $conn->prepare("INSERT INTO users(name, email, password, contact_number, user_type) VALUES(?,?,?,?,?)");
                 $stmt->execute([$name, $email, $hashedPassword, $contactno, "customer"]);

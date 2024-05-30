@@ -243,6 +243,8 @@
                                         {$order['item']}
                                     </span>
                                 ";
+                            } else {
+                                $item_display = "";
                             }
 
                             echo "

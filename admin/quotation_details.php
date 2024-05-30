@@ -44,9 +44,9 @@
     if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['reject-quote'])) {
         $quote_id = $_POST['quote_id'];
         $rejection_reason = $_POST['rejection-reason'];
-        $sql = "UPDATE quotes SET quote_status = 'rejected', rejection_reason = :rejection_reason WHERE quote_id = :quote_id";
+        $sql = "UPDATE quotes SET quote_status = 'rejected', cancellation_reason = :cancellation_reason WHERE quote_id = :quote_id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':rejection_reason', $rejection_reason);
+        $stmt->bindParam(':cancellation_reason', $rejection_reason);
         $stmt->bindParam(':quote_id', $quote_id);
         $stmt->execute();
         // sendAlert('success', 'Quote has been rejected successfully');
@@ -54,7 +54,6 @@
     }    
 ?>
 <?php
-
     $quote_id = $_GET['quote-id'];
     $sql = "
         SELECT 
@@ -322,7 +321,7 @@
                 </div>
                 <div class="action-buttons">
                     <input type="submit" value="Save" class="save-button action-button" name="submit-price">
-                    <input type="button" value="Cancel" class="cancel-button action-button">
+                    <input type="button" value="Cancel" class="cancel-button action-button" onclick="cancelPriceSet()">
                 </div>
             </form>
         </div>
