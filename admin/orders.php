@@ -145,9 +145,9 @@
                 </div>
                 <div class="filter-prod-status selector-container">
                     <select name="order-prod-status" id="" class="selector">
-                        <option value="default">Prod. Status</option>
+                        <option value="default">Production Phase</option>
                         <option value="pending_downpayment">Pending Downpayment</option>
-                        <option value="ready_for_pickup">Ready for Pickup</option>
+                        <option value="awaiting_furniture">Awaiting Furniture</option>
                         <option value="in_production">In Production</option>
                         <option value="pending_fullpayment">Pending Fullpayment</option>
                         <option value="out_for_delivery">Delivering</option>

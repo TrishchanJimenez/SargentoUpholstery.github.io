@@ -112,11 +112,11 @@
         </div>
         <div class="detail">
             <div class="left">
-                <div class="order-information">
+                <div class="order-information ">
                     <p class="info-title">
                         QUOTE INFORMATION   
                     </p>
-                    <div class="info-order-detail">
+                    <div class="info-order-detail quote-detail-main">
                         <div class="info">
                             <span class="info-name"> QUOTE ID </span>
                             <span class="info-detail">
@@ -163,7 +163,7 @@
                 <?php $counter = 0; foreach($items as $item): $counter++; ?> 
                     <div class="order-information">
                         <p class="info-title">FURNITURE <?= $counter ?></p>   
-                        <div class="info-order-detail"> 
+                        <div class="info-order-detail  quote-detail-item"> 
                             <div class="info">
                                 <span class="info-name"> TYPE </span>
                                 <span class="info-detail">
