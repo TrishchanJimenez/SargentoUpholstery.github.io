@@ -88,7 +88,8 @@
                     font-size: 1.15em;
                 }
             .quote-identif,
-            .quote-info {
+            .quote-info,
+            .quote-rejection {
                 width: calc(100%-2.5vmin);
                 display: flex;
                 margin: 1.25vmin;
@@ -99,7 +100,7 @@
                     padding: 2.5vmin;
                     border-radius: 15px;
                     border: 1px solid #eee;
-                    width: 50%;
+                    width: 100%;
                     flex: 1 1 (50%-2.5vmin);
                     margin: 1.25vmin;
                 }
@@ -149,12 +150,15 @@
                     .quote-type,
                     .quote-price__title,
                     .quote-price,
+                    .quote-reason__title,
+                    .quote-reason,
                     .quote-actions__title,
                     .quote-actions {
                         margin: 1.25vmin;
                     }
                     .quote-type,
                     .quote-price,
+                    .quote-reason,
                     .quote-actions {
                         font-size: 1.75em;
                     }
