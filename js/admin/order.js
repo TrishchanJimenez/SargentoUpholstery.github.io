@@ -31,9 +31,8 @@ tableBody.addEventListener('mousedown', (e) => {
 
                 const newStatus = status.dataset.prodStatus;
                 const statuses = {
-                    "new-order": "New Order",
                     "pending-downpayment": "Pending Downpayment",
-                    "ready-for-pickup": "Ready for Pickup",
+                    "awaiting-furniture": "Awaiting Furniture",
                     "in-production": "In Production",
                     "pending-fullpayment": "Pending Fullpayment",
                     "out-for-delivery": "Out for Delivery",
@@ -45,6 +44,8 @@ tableBody.addEventListener('mousedown', (e) => {
                 const pastIndex = statusKeys.indexOf(pastStatus);
                 const previousStatuses = statusKeys.slice(pastIndex, currentIndex);
 
+                console.log(currentIndex);
+                console.log(pastIndex);
                 console.log(previousStatuses);
                 if (previousStatuses.length >= 2) {
                     const confirmation = confirm("Are you sure you want to skip multiple stages?");

@@ -372,13 +372,13 @@
         $order_id = $_POST['order_id'];
 
         $rejection_reason = $_POST['rejection-reason'];
-        $stmt = $conn->prepare("UPDATE orders SET is_cancelled = 1, refusal_reason = :reason WHERE order_id = :order_id");
+        $stmt = $conn->prepare("UPDATE orders SET order_phase = 'cancelled', rejection_reason = :reason WHERE order_id = :order_id");
         $stmt->bindParam(':reason', $rejection_reason);
         $stmt->bindParam(':order_id', $order_id);
         $stmt->execute();
         // createNotif($order['user_id'], "Your order has unfortunately been rejected. Click to see Reason", "/my/user_order_details.php?order-id={$order_id}");
         // header("Location: ".$_SERVER['PHP_SELF']);
-        echo "<script>window.location.href = window.location.href</script>";
+        // echo "<script>window.location.href = window.location.href</script>";
         // exit();
     }
 ?>

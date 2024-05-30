@@ -8,15 +8,14 @@
         $updateStmt = null;
         if($status_type === "prod") {
             // echo "prod";
-            $updateStmt = $conn->prepare("UPDATE orders SET order_status = :status WHERE order_id = :id");
+            $updateStmt = $conn->prepare("UPDATE orders SET order_phase = :status WHERE order_id = :id");
         } else if($status_type === "payment") {
-            $updateStmt = $conn->prepare("UPDATE payment SET payment_status = :status WHERE order_id = :id");
+            $updateStmt = $conn->prepare("UPDATE payment SET payment_phase = :status WHERE order_id = :id");
         }
 
         $statuses = [
-            "new_order",
             "pending_downpayment",
-            "ready_for_pickup",
+            "awaiting_furniture",
             "in_production",
             "pending_fullpayment",
             "out_for_delivery",
@@ -36,12 +35,10 @@
             $orders = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
             $response = [];
             foreach($orders as $order) {
-                if($order['order_status'] === "received") {
-                    continue;
-                } else if($order['is_cancelled'] === 1) {
+                if($order['order_phase'] === "received") {
                     continue;
                 }
-                $new_status = $statuses[array_search($order['order_status'], $statuses) + 1];
+                $new_status = $statuses[array_search($order['order_phase'], $statuses) + 1];
                 if($order['order_type'] === "mto" && $new_status === "ready_for_pickup") {
                     $new_status = "in_production";
                 }

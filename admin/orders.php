@@ -207,7 +207,7 @@
                             $order_status = str_replace("_", "-", $order['prod_status']);
                             $statuses = [
                                 "pending-downpayment" => "Pending Downpayment",
-                                "awating-furniture" => "Awaiting Furniture",
+                                "awaiting-furniture" => "Awaiting Furniture",
                                 "in-production" => "In Production",
                                 "pending-fullpayment" => "Pending Fullpayment",
                                 "out-for-delivery" => "Out for Delivery",
@@ -224,7 +224,7 @@
                                         $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
                                     }
                                     if ($status === $order_status) {
-                                        if($status === "ready-for-pickup" && $type === "MTO") {
+                                        if($status === "awaiting-furniture" && $type === "MTO") {
                                             continue;
                                         }
                                         $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
