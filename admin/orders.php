@@ -20,11 +20,14 @@
 
     $count_query = "
         SELECT 
+            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
             COUNT(*) AS total_records
         FROM 
             orders O 
         JOIN 
             quotes Q USING(quote_id)
+        LEFT JOIN
+            items I USING(quote_id)
         JOIN 
             users U ON Q.customer_id = U.user_id
         WHERE 1
@@ -51,7 +54,7 @@
         WHERE 1
     ";
 
-    if (!empty($search_input)) {
+    if (!empty($search_input) && $search_type !== 'item') {
         switch($search_type) {
             case "order_id":
                 if (is_numeric($search_input)) {
@@ -61,10 +64,6 @@
                 } else {
                     break;
                 }
-            case "item":
-                $count_query .= " AND Q.furniture_type LIKE '%$search_input%'";
-                $query .= " AND Q.furniture_type LIKE '%$search_input%'";
-                break;
             case "customer_name":
                 $count_query .= " AND U.name LIKE '%$search_input%'";
                 $query .= " AND U.name LIKE '%$search_input%'";
@@ -84,10 +83,17 @@
         $query .= " AND payment_phase = '$order_payment_status'";
     }
 
+    $count_query .= " GROUP BY O.order_id";
+    $query .= " GROUP BY O.order_id";
+
+    if(!empty($search_input) && $search_type === 'item') {
+        $count_query .= " HAVING item LIKE '%$search_input%'";
+        $query .= " HAVING item LIKE '%$search_input%'";
+    }
+
     $count_result = $conn->query($count_query);
     $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
 
-    $query .= " GROUP BY O.order_id";
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
         $query .= " ORDER BY $order_sort DESC";
@@ -232,13 +238,23 @@
                             $item = ucwords($order['item']);
                             if (strlen($item) > 12) {
                                 $item = substr($item, 0, 12) . '...';
+
+                                $item_display = "
+                                    <span class='item-display'>
+                                        {$order['item']}
+                                    </span>
+                                ";
                             }
+
                             echo "
                             <tr data-id='{$order['order_id']}'>
                                 <td><input type='checkbox' name='' id=''></td>
                                 <td>{$order['order_id']}</td>
                                 <td>{$order['customer_name']}</td>
-                                <td>{$item}</td>
+                                <td class='item'>
+                                    {$item}
+                                    {$item_display}
+                                </td>
                                 <td>{$type}</td>
                                 <td>{$price}</td>
                                 <td>{$date}</td>
