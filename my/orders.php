@@ -79,7 +79,10 @@
                                 <a href="#actions" class="sidebar__link">Actions</a>
                             </li>
                             <li class="sidebar__item">
-                                <a href="#payment" class="sidebar__link">Payment</a>
+                                <a href="#downpayment" class="sidebar__link">Downpayment</a>
+                            </li>
+                            <li class="sidebar__item">
+                                <a href="#fullpayment" class="sidebar__link">Fullpayment</a>
                             </li>
                             <li class="sidebar__item">
                                 <a href="#items" class="sidebar__link">Items</a>
@@ -238,11 +241,11 @@
                             <?php endif; ?>
                         </table>
                     </div>
-                    <div class="orders-middle   orders-segment" id="payment">
+                    <div class="orders-middle   orders-segment" id="downpayment">
                         <div class="orders-middle__intro   orders-segment__intro">
-                            <h1 class="orders-middle__title   orders-segment__title">Order Payment</h1>
+                            <h1 class="orders-middle__title   orders-segment__title">Order Downpayment</h1>
                             <p class="orders-middle__desc   orders-segment__desc">
-                                This is the list of items you have placed an order on.
+                                These are the details about your downpayment.
                             </p>
                         </div>
                         <div class="order-downpayment-standing">
@@ -297,6 +300,74 @@
                                                 <tr>
                                                     <td>
                                                         <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="orders-middle   orders-segment" id="fullpayment">
+                        <div class="orders-middle__intro   orders-segment__intro">
+                            <h1 class="orders-middle__title   orders-segment__title">Order Fullpayment</h1>
+                            <p class="orders-middle__desc   orders-segment__desc">
+                                These are the details about your fullpayment
+                            </p>
+                        </div>
+                        <div class="order-fullpayment-standing">
+                            <div class="payment-status__wrapper   order-section">
+                                <div class="payment-status__title   order-section__title">
+                                    <h1>Fullpayment Status</h1>
+                                </div>
+                                <table class="payment-status">
+                                    <tr>
+                                        <td class="td--top">
+                                            <?= ucwords(str_replace('_', ' ', htmlspecialchars($order["fullpay_verification_status"] ?? 'N/A'))) ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="payment-due__wrapper   order-section">
+                                <div class="payment-due__title   order-section__title">
+                                    <h1>Fullpayment Due</h1>
+                                </div>
+                                <table class="payment-due">
+                                    <tr>
+                                        <td class="td--top">₱ <?= number_format(($order["total_price"]) ?? 0, 2, '.', ',') ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="order-fullpayment-submission">
+                            <div class="payment-proof__wrapper   order-section">
+                                <div class="payment-proof__title   order-section__title">
+                                    <h1>Proof of Fullpayment</h1>
+                                </div>
+                                <table class="payment-proof">
+                                    <tr>
+                                        <td class="td--top">
+                                            <?php if (!empty($order["fullpay_img_path"])): ?>
+                                                <img src="/<?= htmlspecialchars($order["fullpay_img_path"]) ?>" alt="Proof of fullpayment" width="200px">
+                                            <?php else: ?>
+                                                No image uploaded.
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="payment-actions__wrapper   order-section">
+                                <div class="payment-actions__title   order-section__title">
+                                    <h1>Fullpayment Actions</h1>
+                                </div>
+                                <table class="payment-actions">
+                                    <tr>
+                                        <?php if ($order['order_phase'] == "pending_fullpayment"): ?>
+                                            <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
+                                                <tr>
+                                                    <td>
+                                                        <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
                                                     </td>
                                                 </tr>
                                             <?php endif; ?>

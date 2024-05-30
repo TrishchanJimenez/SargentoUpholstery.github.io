@@ -167,7 +167,6 @@
                         flex-direction: column;
                         align-items: center;
                         width: 100%;
-                        padding: 5vmin;
                     }
                         .order-actions__btn {
                             padding: 1.25vmin 2.5vmin;
