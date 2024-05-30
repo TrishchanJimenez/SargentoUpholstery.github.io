@@ -163,20 +163,23 @@
                         </p>
                     </div>
                     <table class="quote-actions">
-                        <?php if($quote['quote_status'] == "approved"): ?>
-                            <tr>
+                        <tr>
+                            <?php if($quote['quote_status'] == "approved"): ?>
                                 <td class="td--top   td--actions">
                                     <button class="quote-actions__accept   quote-actions__btn" onclick="openModal('accept')">Accept Order</button>
                                 </td>
-                            </tr>
-                        <?php endif; ?>
-                        <?php if($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "rejected" && $quote['quote_status'] != "accepted"): ?>
-                            <tr>
+                            <?php endif; ?>
+                            <?php if($quote['quote_status'] != "cancelled" && $quote['quote_status'] != "rejected" && $quote['quote_status'] != "accepted"): ?>
                                 <td class="td--top   td--actions">
                                     <button class="quote-actions__cancel   quote-actions__btn" onclick="openModal('cancel')">Cancel Order</button>
                                 </td>
-                            </tr>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                            <?php if($quote['quote_status'] != "approved" && ($quote['quote_status'] == "cancelled" || $quote['quote_status'] == "rejected" || $quote['quote_status'] == "accepted")): ?>
+                                <td class="td--top   td--actions   td--no-action">
+                                    No actions available.
+                                </td>
+                            <?php endif; ?>
+                        </tr>
                     </table>
                 </div>
                 <div class="quotes-bottom   quotes-segment" id="items">
@@ -190,7 +193,20 @@
                             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                             $offset = ($page - 1) * $items_per_page;
                         
-                            $query = "SELECT * FROM `items` WHERE `quote_id` = :quote_id LIMIT :limit OFFSET :offset";
+                            $query = "
+                                SELECT 
+                                    * 
+                                FROM 
+                                    `items` i
+                                        LEFT JOIN
+                                    `customs` c ON i.custom_id = c.custom_id
+                                WHERE 
+                                    i.quote_id = :quote_id 
+                                    AND
+                                    i.custom_id IS NOT NULL
+                                LIMIT :limit 
+                                OFFSET :offset
+                            ";
                             $stmt = $conn->prepare($query);
                             $stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
                             $stmt->bindParam(':limit', $items_per_page, PDO::PARAM_INT);
@@ -220,7 +236,7 @@
                                 <tbody class="quote-items__tbody">
                                     <?php if ($stmt->rowCount() > 0): ?>
                                         <?php foreach ($items as $i => $item): ?>
-                                            <tr class="quote-items__tr">
+                                            <tr class="quote-items__tr   quote-items__tr--td">
                                                 <td class="quote-items__td"> <?= $i + 1 ?></td>
                                                 <td class="quote-items__td"> <?= ucwords(htmlspecialchars($item["furniture"] ?? 'N/A')) ?> </td>
                                                 <td class="quote-items__td" hidden> <?= ucfirst(htmlspecialchars($item["description"] ?? 'N/A')) ?> </td>
@@ -233,6 +249,12 @@
                                                     No image uploaded.
                                                 <?php endif; ?>
                                                 </td>
+
+                                                <td class="quote-items__td" hidden><?= htmlspecialchars($item["custom_id"] ?? '') ?></td>
+                                                <td class="quote-items__td" hidden><?= htmlspecialchars($item["dimensions"] ?? 'None.') ?></td>
+                                                <td class="quote-items__td" hidden><?= htmlspecialchars($item["materials"] ?? 'None.') ?></td>
+                                                <td class="quote-items__td" hidden><?= htmlspecialchars($item["fabric"] ?? 'None.') ?></td>
+                                                <td class="quote-items__td" hidden><?= htmlspecialchars($item["color"] ?? 'None.') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
@@ -265,51 +287,55 @@
     </div>
 
     <!-- Modal for Item Details -->
-    <div class="modal   modal--item-details" id="itemDetailsModal">
-        <div class="modal__content   modal__content--item-details">
-            <span class="modal__close" id="closeItemDetails">&times;</span>
-            <h2 class="modal__title">Item Details</h2>
-            <table class="modal__table">
-                <tr>
-                    <th>Furniture:</th>
-                    <td id="modalFurniture"></td>
-                </tr>
-                <tr>
-                    <th>Description:</th>
-                    <td id="modalDescription"></td>
-                </tr>
-                <tr>
-                    <th>Quantity:</th>
-                    <td id="modalQuantity"></td>
-                </tr>
-                <tr>
-                    <th>Price:</th>
-                    <td id="modalPrice"></td>
-                </tr>
-                <tr>
-                    <th>Reference Image:</th>
-                    <td id="modalRefImage"></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- Modal for Accept Order -->
-    <div class="modal   modal--accept" id="acceptModal">
-        <div class="modal__content   modal__content--accept">
-            <p class="modal__message">Please read our <a href="/legal-agreements.php#cancellation" target="_blank">terms and conditions</a> before accepting the order. Do you want to proceed?</p>
-            <input type="checkbox" name="legallyConsented" id="legallyConsented"> I have read and agree to the terms and conditions.
-            <button class="modal__action" id="confirmAcceptAction">Accept Order</button>
-            <button class="modal__action" id="cancelAcceptAction">Cancel</button>
-        </div>
-    </div>
-
-    <!-- Modal for Cancel Order -->
-    <div class="modal   modal--cancel" id="cancelModal">
+    <div class="modal modal--item-details" id="itemDetailsModal">
         <div class="modal__content">
-            <p class="modal__message">Are you sure you want to cancel the order?</p>
-            <button class="modal__action" id="confirmCancelAction">Yes, Cancel Order</button>
-            <button class="modal__action" id="cancelCancelAction">No</button>
+            <span class="modal__close" id="closeItemDetails">&times;</span>
+            <div class="modal__content--general">
+                <h2 class="modal__title">Item Details</h2>
+                <table class="modal__table">
+                    <tr>
+                        <th>Furniture:</th>
+                        <td id="modalFurniture"></td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td id="modalDescription"></td>
+                    </tr>
+                    <tr>
+                        <th>Quantity:</th>
+                        <td id="modalQuantity"></td>
+                    </tr>
+                    <tr>
+                        <th>Price:</th>
+                        <td id="modalPrice"></td>
+                    </tr>
+                    <tr>
+                        <th>Reference Image:</th>
+                        <td id="modalRefImage"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal__content--customs" id="customsDetails">
+                <h2 class="modal__title">Item Customization</h2>
+                <table class="modal__table">
+                    <tr>
+                        <th>Dimensions:</th>
+                        <td id="modalDimensions"></td>
+                    </tr>
+                    <tr>
+                        <th>Materials:</th>
+                        <td id="modalMaterials"></td>
+                    </tr>
+                    <tr>
+                        <th>Fabric:</th>
+                        <td id="modalFabric"></td>
+                    </tr>
+                    <tr>
+                        <th>Color:</th>
+                        <td id="modalColor"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 

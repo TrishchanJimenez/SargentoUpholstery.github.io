@@ -166,12 +166,24 @@
                     .quote-actions {
                         font-size: 1.75em;
                     }
+                    .quote-actions {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                    }
                         .quote-actions__btn {
                             padding: 1.25vmin 2.5vmin;
                             margin: 1.25vmin;
                             width: 95%;
                             font-size: 0.75em;
+                            border: 1px solid #ccc;
+                            border-radius: 25px;
+                            cursor: pointer;
                         }
+                            .td--no-action {
+                                padding: 2.5vmin;
+                            }
             .quote-items__wrapper {
                 width: calc(100%-2.5vmin);
                 margin: 2.5vmin;
@@ -185,29 +197,33 @@
                     background-color: #333;
                     color: white;
                 }
-                    .quote-items__th,
-                    .quote-items__td {
-                        padding: 2.5vmin;
-                        text-align: center;
+                    .quote-items__tr--td:hover {
+                        background-color: rgba(0, 0, 0, 0.1);
                     }
-                    .quote-items__td {
-                        cursor: pointer;
-                    }
+                        .quote-items__th,
+                        .quote-items__td {
+                            padding: 2.5vmin;
+                            text-align: center;
+                        }
+                        .quote-items__td {
+                            cursor: pointer;
+                        }
 
 /* ---------- Modal ---------- */
 
+/* General modal styles */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center; /* Center the modal content horizontally */
+    align-items: center; /* Center the modal content vertically */
     font-family: "Inter", sans-serif;
 }
 
@@ -217,81 +233,112 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
+    max-width: 600px; /* Optional: Limit modal width */
+    height: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; /* Required for close button positioning */
+    overflow: auto;
 }
 
+/* Close button styles */
 .modal__close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
     position: absolute;
-    right: 10px;
     top: 10px;
+    right: 15px;
     cursor: pointer;
 }
 
 .modal__close:hover,
 .modal__close:focus {
-    color: black;
+    color: #000;
     text-decoration: none;
+    cursor: pointer;
+}
+
+/* Item Details Modal Specific Styles */
+.modal--item-details .modal__title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.modal__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.modal__table th, .modal__table td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal__table th {
+    background-color: #f2f2f2;
+}
+
+.modal__content--general,
+.modal__content--customs {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal__content--customs {
+    margin-top: 20px;
+}
+
+/* Action Modals Specific Styles */
+.modal--accept .modal__content--accept,
+.modal--cancel .modal__content {
+    text-align: center;
 }
 
 .modal__message {
-    margin-bottom: 20px;
     font-size: 18px;
+    margin-bottom: 20px;
 }
 
 .modal__action {
+    background-color: #4CAF50;
+    color: white;
     padding: 10px 20px;
-    margin: 10px 5px;
+    margin: 5px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
 }
 
-#confirmAction {
-    background-color: #28a745;
-    color: white;
+.modal__action:hover {
+    background-color: #45a049;
 }
 
-#confirmAction:hover {
-    background-color: #218838;
+.modal--accept #legallyConsented {
+    margin-top: 10px;
 }
 
-#cancelAction {
-    background-color: #dc3545;
-    color: white;
+.modal--accept .modal__action,
+.modal--cancel .modal__action {
+    background-color: #333;
 }
 
-#cancelAction:hover {
-    background-color: #c82333;
+.modal--accept .modal__action:hover,
+.modal--cancel .modal__action:hover {
+    background-color: #555;
 }
 
-/* ---------- Modal for item details ---------- */
-
-.modal--item-details {
-    width: 100%;
+.modal--cancel .modal__action {
+    background-color: #f44336;
 }
 
-.modal__content--item-details {
-    max-width: 60%;
-    overflow-y: scroll;
-}
-
-.modal__table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.modal__table th, .modal__table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.modal--cancel .modal__action:hover {
+    background-color: #da190b;
 }
 
 /* ---------- Pagination ---------- */
