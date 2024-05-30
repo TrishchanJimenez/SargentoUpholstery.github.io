@@ -188,7 +188,7 @@ $user_id = $_SESSION['user_id'];
                 $offset_orders = ($page_orders - 1) * $results_per_page;
 
                 // Fetch the orders for the current page
-                $order_query = " SELECT * FROM `quotes` q LEFT JOIN `orders` o USING (quote_id) WHERE `quote_id` = :quote_id ORDER BY `q.updated_at` DESC LIMIT :limit OFFSET :offset";
+                $order_query = " SELECT * FROM `quotes` q LEFT JOIN `orders` o USING (quote_id) WHERE `customer_id` = :customer_id ORDER BY `q.updated_at` DESC LIMIT :limit OFFSET :offset";
                 $order_stmt = $conn->prepare($order_query);
                 $order_stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
                 if ($order_item_type != 'default') {
