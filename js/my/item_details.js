@@ -1,42 +1,10 @@
-/* // Select the confirmation button
-const confirmBtn = document.querySelector('.form__submit--confirm');
-
-// Add click event listener to the confirmation button
-confirmBtn.addEventListener('click', () => {
-    // Make an AJAX request to the PHP script
-    fetch('../my/confirm_arrival.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ order_id: orderId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Check if the request was successful
-        if (data.success) {
-            // Display a success message to the user
-            alert('Order delivery confirmed successfully!');
-            // You can also redirect the user to another page or perform any other action
-            location.reload();
-        } else {
-            // Display an error message to the user
-            alert('Failed to confirm order delivery. Please try again later.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Display an error message to the user
-        alert('An unexpected error occurred. Please try again later.');
-    });
-}); */
-
 // ---------- Modal for item details ---------- //
 
 document.addEventListener('DOMContentLoaded', function() {
     const itemRows = document.querySelectorAll('.items__tr');
     const itemDetailsModal = document.getElementById('itemDetailsModal');
     const closeItemDetails = document.getElementById('closeItemDetails');
+    const customsContent = document.getElementById('customsDetails');
 
     itemRows.forEach(row => {
         row.addEventListener('click', function() {
@@ -58,6 +26,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     refImageContainer.appendChild(refImage);
                 } else {
                     refImageContainer.innerText = 'No image uploaded.';
+                }
+
+                // Check for custom_id before displaying customization fields
+                const customId = cells[6].innerText;
+                if (customId) {
+                    document.getElementById('modalDimensions').innerText = cells[7].innerText;
+                    document.getElementById('modalMaterials').innerText = cells[8].innerText;
+                    document.getElementById('modalFabric').innerText = cells[9].innerText;
+                    document.getElementById('modalColor').innerText = cells[10].innerText;
+                    
+                    // Show the customization content
+                    customsContent.style.display = 'flex';
+                } else {
+                    // Hide the customization content
+                    customsContent.style.display = 'none';
                 }
 
                 itemDetailsModal.style.display = 'flex';

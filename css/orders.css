@@ -147,12 +147,24 @@
                     .order-actions {
                         font-size: 1.75em;
                     }
+                    .order-actions {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                    }
                         .order-actions__btn {
                             padding: 1.25vmin 2.5vmin;
                             margin: 1.25vmin;
                             width: 95%;
                             font-size: 0.75em;
+                            border: 1px solid #ccc;
+                            border-radius: 25px;
+                            cursor: pointer;
                         }
+                            .td--no-action {
+                                padding: 2.5vmin;
+                            }
             .order-items__wrapper {
                 width: calc(100%-2.5vmin);
                 margin: 2.5vmin;
@@ -166,14 +178,18 @@
                     background-color: #333;
                     color: white;
                 }
-                    .order-items__th,
-                    .order-items__td {
-                        padding: 2.5vmin;
-                        text-align: center;
+                    .order-items__tr--td:hover {
+                        background-color: rgba(0, 0, 0, 0.1)
+
                     }
-                    .quote-items__td {
-                        cursor: pointer;
-                    }
+                        .order-items__th,
+                        .order-items__td {
+                            padding: 2.5vmin;
+                            text-align: center;
+                        }
+                        .order-items__td {
+                            cursor: pointer;
+                        }
 
 /* ---------- Modal ---------- */
 
@@ -197,8 +213,11 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
+    width: fit-content;
+    max-width: 80%;
+    height: fit-content;
+    max-height: 80%;
+    overflow: auto;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;

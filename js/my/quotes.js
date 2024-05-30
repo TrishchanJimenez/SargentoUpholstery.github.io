@@ -7,12 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelAcceptAction = document.getElementById('cancelAcceptAction');
     const confirmCancelAction = document.getElementById('confirmCancelAction');
     const cancelCancelAction = document.getElementById('cancelCancelAction');
+    const legallyConsentedAction = document.getElementById('legallyConsented');
 
     function openModal(action) {
         if (action === 'accept') {
-            acceptModal.style.display = 'block';
+            acceptModal.style.display = 'flex';
         } else if (action === 'cancel') {
-            cancelModal.style.display = 'block';
+            cancelModal.style.display = 'flex';
         }
     }
 
@@ -25,8 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
     cancelCancelAction.addEventListener('click', closeModal);
 
     confirmAcceptAction.addEventListener('click', function () {
-        updateQuoteStatus('accepted');
-        closeModal();
+        if (legallyConsentedAction.checked) {
+            updateQuoteStatus('accepted');
+            closeModal();
+        }
     });
 
     confirmCancelAction.addEventListener('click', function () {
@@ -60,47 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// ---------- Modal for item details ---------- //
 
-document.addEventListener('DOMContentLoaded', function() {
-    const itemRows = document.querySelectorAll('.quote-items__tr');
-    const itemDetailsModal = document.getElementById('itemDetailsModal');
-    const closeItemDetails = document.getElementById('closeItemDetails');
 
-    itemRows.forEach(row => {
-        row.addEventListener('click', function() {
-            const cells = row.querySelectorAll('td');
-            if (cells.length > 0) {
-                document.getElementById('modalFurniture').innerText = cells[1].innerText;
-                document.getElementById('modalDescription').innerText = cells[2].innerText;
-                document.getElementById('modalQuantity').innerText = cells[3].innerText;
-                document.getElementById('modalPrice').innerText = cells[4].innerText;
 
-                const refImageCell = cells[5].querySelector('img');
-                const refImageContainer = document.getElementById('modalRefImage');
-                refImageContainer.innerHTML = ''; // Clear previous content
-                if (refImageCell) {
-                    const refImage = document.createElement('img');
-                    refImage.src = refImageCell.src;
-                    refImage.alt = 'Item image';
-                    refImage.width = 200;
-                    refImageContainer.appendChild(refImage);
-                } else {
-                    refImageContainer.innerText = 'No image uploaded.';
-                }
-
-                itemDetailsModal.style.display = 'flex';
-            }
-        });
-    });
-
-    closeItemDetails.addEventListener('click', function() {
-        itemDetailsModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target == itemDetailsModal) {
-            itemDetailsModal.style.display = 'none';
-        }
-    });
-});

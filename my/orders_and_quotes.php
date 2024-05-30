@@ -57,7 +57,7 @@
             <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
         <div class="onq__tab onq__tab--quotes" style="display:flex; flex-direction:column; align-items:center;">
-        <form class="order-filters" method="get" action="">
+            <form class="order-filters" method="get" action="">
                 <table class="filter-table">
                     <tr>
                         <td>
@@ -144,25 +144,40 @@
                     FROM 
                         `orders` o
                             INNER JOIN
-                        `quotes` q
-                            USING (quote_id)
+                        `quotes` q ON o.quote_id = q.quote_id
+                            INNER JOIN
+                        `items` i ON q.quote_id = i.quote_id
                     WHERE 
-                        `user_id` = :user_id
+                        q.customer_id = :customer_id
                     ORDER BY
-                        `last_updated` DESC
+                        q.updated_at DESC
                     LIMIT :limit OFFSET :offset
                 ";
                 $order_stmt = $conn->prepare($order_query);
-                $order_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $order_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
                 $order_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
                 $order_stmt->bindParam(':offset', $offset_orders, PDO::PARAM_INT);
                 $order_stmt->execute();
                 $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Get the total number of orders
-                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `user_id` = :user_id";
+                $total_orders_query = "
+                    SELECT 
+                        COUNT(*) 
+                    FROM 
+                        `orders` 
+                    WHERE 
+                        `quote_id` IN (
+                            SELECT
+                                `quote_id`
+                            FROM
+                                `quotes`
+                            WHERE
+                                `customer_id` = :customer_id
+                        )
+                ";
                 $total_orders_stmt = $conn->prepare($total_orders_query);
-                $total_orders_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $total_orders_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
                 $total_orders_stmt->execute();
                 $total_orders = $total_orders_stmt->fetchColumn();
                 $total_pages_orders = ceil($total_orders / $results_per_page);

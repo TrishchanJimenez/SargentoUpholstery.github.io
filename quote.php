@@ -201,7 +201,7 @@
         }
     }
 
-    function insertCustom($dimensions, $materials, $fabric, $color) {
+    function insertCustom($dimensions, $materials, $fabric, $color) : int {
         global $conn;
         $query = "
             INSERT INTO
@@ -223,6 +223,8 @@
         $stmt->bindParam(':fabric', $fabric);
         $stmt->bindParam(':color', $color);
         $stmt->execute();
+
+        return $conn->lastInsertId();
     }
 
     // If form is completed
@@ -311,7 +313,7 @@
                 $fab = !empty($fabric[$i]) ? $fabric[$i] : '';
                 $color = !empty($colors[$i]) ? $colors[$i] : '';
 
-                insertCustom($dimensions, $materials, $fabric, $color);
+                $custom_id = insertCustom($dimensions, $materials, $fabric, $color);
             }
 
             $stmt->bindParam(':custom_id', $custom_id);
