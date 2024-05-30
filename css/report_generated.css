@@ -39,3 +39,83 @@ width: 100%;
     width: 150px; /* Adjust width as needed */
     margin-right: 10px;
 }
+
+
+.Download_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: "Playfair Display";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    padding: 1% 2%;
+    width: 10%;
+    height: 5%;
+
+
+}
+
+.Print_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FFDC5C;
+    color: #000000;
+    font-family: "Playfair Display";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    padding: 1% 2%;
+    width: 10%;
+    height: 5%;
+    border: 1px solid #FFDC5C ;
+}
+
+.Print_button:hover{
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.Download_button:hover{
+    opacity: 0.7;
+    cursor: pointer;
+}
+.print{
+    width: 20%;
+    height: 20%;
+}
+
+.Download{
+    width: 20%;
+    height: 20%;
+}
+
+.button_containers{
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    margin-top: 1%;
+}
+
+.daily_container{
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+}
+
+.daily{
+    display: flex;
+    flex-direction: column;
+}
+
+.breakdown_of_furnitures_container{
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    
+}

@@ -160,8 +160,25 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 100%;
+                width: ;
                 height: 100%;
+            }
+
+            .selector-container {
+                padding:0.4rem 0.3rem
+            }
+
+            .filter{
+                display: none;
+            
+            }
+
+            .Print_button{
+                display: none;
+            }
+
+            .Download_button{
+                display: none;
             }
         }
     </style>
@@ -262,10 +279,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // SQL queries for daily, weekly, monthly, and yearly statistics
         $sql = "
             SELECT
-                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND DATE(O.created_at) = CURDATE()) AS total_revenue_today,
-                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND WEEK(O.created_at) = WEEK(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_week,
-                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND MONTH(O.created_at) = MONTH(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_month,
-                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase <> 'received' AND order_phase <> 'cancelled' AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_year,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase = 'received' AND order_phase <> 'cancelled' AND DATE(O.created_at) = CURDATE()) AS total_revenue_today,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase = 'received' AND order_phase <> 'cancelled' AND WEEK(O.created_at) = WEEK(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_week,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase = 'received' AND order_phase <> 'cancelled' AND MONTH(O.created_at) = MONTH(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_month,
+                (SELECT SUM(total_price) FROM orders O JOIN quotes Q USING(quote_id) WHERE order_phase = 'received' AND order_phase <> 'cancelled' AND YEAR(O.created_at) = YEAR(CURDATE())) AS total_revenue_current_year,
 
                 (SELECT COUNT(*) FROM orders O WHERE DATE(O.created_at) = CURDATE()) AS new_orders_today,
                 (SELECT COUNT(*) FROM orders O WHERE WEEK(O.created_at) = WEEK(CURDATE()) AND YEAR(O.created_at) = YEAR(CURDATE())) AS new_orders_current_week,
@@ -291,10 +308,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->execute();
         $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $total_revenue_today = $stats['total_revenue_today'];
-        $total_revenue_current_week = $stats['total_revenue_current_week'];
-        $total_revenue_current_month = $stats['total_revenue_current_month'];
-        $total_revenue_current_year = $stats['total_revenue_current_year'];
+        $total_revenue_today = number_format($stats['total_revenue_today']);
+        $total_revenue_current_week = number_format($stats['total_revenue_current_week']);
+        $total_revenue_current_month = number_format($stats['total_revenue_current_month']);
+        $total_revenue_current_year = number_format($stats['total_revenue_current_year']);
 
         $new_orders_today = $stats['new_orders_today'];
         $new_orders_current_week = $stats['new_orders_current_week'];
@@ -333,155 +350,209 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $ratings_by_type_sql = "
             SELECT
-                (SELECT AVG(rating) FROM reviews JOIN orders USING (order_id) JOIN quotes USING (quote_id) WHERE service_type = 'mto') AS mto_average_rating,
-                (SELECT AVG(rating) FROM reviews JOIN orders USING (order_id) JOIN quotes USING (quote_id) WHERE service_type = 'repair') AS repair_average_rating
+            DATE(quotes.created_at) AS day,
+            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_daily_average_rating,
+            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_daily_average_rating,
+            DATE_FORMAT(quotes.created_at, '%x-%v') AS week,
+            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_weekly_average_rating,
+            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_weekly_average_rating,
+            DATE_FORMAT(quotes.created_at, '%Y-%m') AS month,
+            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_monthly_average_rating,
+            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_monthly_average_rating,
+            YEAR(quotes.created_at) AS year,
+            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_yearly_average_rating,
+            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_yearly_average_rating
+        FROM reviews
+        JOIN orders USING (order_id)
+        JOIN quotes ON orders.quote_id = quotes.quote_id
+        GROUP BY day, week, month, year
+        ORDER BY day, week, month, year;    
         ";
 
         $stmt = $conn->prepare($ratings_by_type_sql);
         $stmt->execute();
         $ratings_by_type = $stmt->fetch(PDO::FETCH_ASSOC);
-        ?>
-
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Daily Statistics</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Total Sales</td>
-                            <td><?= '₱ ' . $total_revenue_today ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Orders</td>
-                            <td><?= $new_orders_today ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Finished Orders</td>
-                            <td><?= $completed_orders_today ?></td>
-                        </tr>
-                        <tr>
-                            <td>Average Ratings</td>
-                            <td>
-                                <?= $avg_rating ?>
-                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>New Customers</td>
-                            <td><?= $new_customers_today ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Weekly Statistics</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Total Sales</td>
-                            <td><?= '₱ ' . $total_revenue_current_week ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Orders</td>
-                            <td><?= $new_orders_current_week ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Finished Orders</td>
-                            <td><?= $completed_orders_current_week ?></td>
-                        </tr>
-                        <tr>
-                            <td>Average Ratings</td>
-                            <td>
-                                <?= $avg_rating ?>
-                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>New Customers</td>
-                            <td><?= $new_customers_current_week ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Monthly Statistics</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Total Sales</td>
-                            <td><?= '₱ ' . $total_revenue_current_month ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Orders</td>
-                            <td><?= $new_orders_current_month ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Finished Orders</td>
-                            <td><?= $completed_orders_current_month ?></td>
-                        </tr>
-                        <tr>
-                            <td>Average Ratings</td>
-                            <td>
-                                <?= $avg_rating ?>
-                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>New Customers</td>
-                            <td><?= $new_customers_current_month ?></td>
-                        </tr>
-                    </tbody>
-                </table>
 
 
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Yearly Statistics</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Total Sales</td>
-                            <td><?= '₱ ' . $total_revenue_current_year ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Orders</td>
-                            <td><?= $new_orders_current_year ?></td>
-                        </tr>
-                        <tr>
-                            <td>Total Finished Orders</td>
-                            <td><?= $completed_orders_current_year ?></td>
-                        </tr>
-                        <tr>
-                            <td>Average Ratings</td>
-                            <td>
-                                <?= $avg_rating ?>
-                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                            </td>
-                        </tr>
-                        </tr>
-                        <tr>
-                            <td>New Customers</td>
-                            <td><?= $new_customers_current_year ?></td>
-                        </tr>
-                    </tbody>
-                </table>
+        $mto_daily_average_rating = $ratings_by_type['mto_daily_average_rating'];
+        $repair_daily_average_rating = $ratings_by_type['repair_daily_average_rating'];
+        $mto_weekly_average_rating = $ratings_by_type['mto_weekly_average_rating'];
+        $repair_weekly_average_rating = $ratings_by_type['repair_weekly_average_rating'];
+        $mto_monthly_average_rating = $ratings_by_type['mto_monthly_average_rating'];
+        $repair_monthly_average_rating = $ratings_by_type['repair_monthly_average_rating'];
+        $mto_yearly_average_rating = $ratings_by_type['mto_yearly_average_rating'];
+        $repair_yearly_average_rating = $ratings_by_type['repair_yearly_average_rating'];
+
+        //For the breakdown of furnitures and  total sales
+        $daily_sql = "
+        SELECT
+        'Daily' AS period,
+        DATE(q.created_at) AS time_period,
+        i.furniture AS furniture_type,
+        COUNT(*) AS number_ordered,
+        ROUND(SUM(i.item_price), 2) AS total_price_ordered
+        FROM items i
+        JOIN quotes q ON i.quote_id = q.quote_id
+        JOIN orders o ON q.quote_id = o.quote_id
+        WHERE o.order_phase = 'received'
+        AND DATE(q.created_at) = CURDATE()  -- Filter for current day
+        GROUP BY period, time_period, furniture_type;
+    ";
+    
+    $weekly_sql = "
+        SELECT
+            DATE_FORMAT(q.created_at, '%x-%v') AS period,
+            i.furniture AS furniture_type,
+            COUNT(*) AS number_ordered,
+            ROUND(SUM(i.item_price), 2) AS total_price_ordered
+        FROM items i
+        JOIN quotes q ON i.quote_id = q.quote_id
+        JOIN orders o ON q.quote_id = o.quote_id
+        WHERE o.order_phase = 'received'
+        GROUP BY period, furniture_type
+        ORDER BY period, furniture_type;
+    ";
+    
+    $monthly_sql = "
+        SELECT
+            DATE_FORMAT(q.created_at, '%Y-%m') AS period,
+            i.furniture AS furniture_type,
+            COUNT(*) AS number_ordered,
+            ROUND(SUM(i.item_price), 2) AS total_price_ordered
+        FROM items i
+        JOIN quotes q ON i.quote_id = q.quote_id
+        JOIN orders o ON q.quote_id = o.quote_id
+        WHERE o.order_phase = 'received'
+        GROUP BY period, furniture_type
+        ORDER BY period, furniture_type;
+    ";
+    
+    $yearly_sql = "
+        SELECT
+            YEAR(q.created_at) AS period,
+            i.furniture AS furniture_type,
+            COUNT(*) AS number_ordered,
+            ROUND(SUM(i.item_price), 2) AS total_price_ordered
+        FROM items i
+        JOIN quotes q ON i.quote_id = q.quote_id
+        JOIN orders o ON q.quote_id = o.quote_id
+        WHERE o.order_phase = 'received'
+        GROUP BY period, furniture_type
+        ORDER BY period, furniture_type;
+    ";    
+    // Initialize variables to store query results
+    $daily_results = [];
+    $weekly_results = [];
+    $monthly_results = [];
+    $yearly_results = [];
+    
+    try {
+        // Execute daily query
+        $stmt = $conn->query($daily_sql);
+        $daily_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Execute weekly query
+        $stmt = $conn->query($weekly_sql);
+        $weekly_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Execute monthly query
+        $stmt = $conn->query($monthly_sql);
+        $monthly_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Execute yearly query
+        $stmt = $conn->query($yearly_sql);
+        $yearly_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+        ?>      
+                <div class="daily_container">
+                    <div class="daily">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Daily Statistics</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Sales</td>
+                                    <td><?= '₱ ' . $total_revenue_today ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Orders</td>
+                                    <td><?= $new_orders_today ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Finished Orders</td>
+                                    <td><?= $completed_orders_today ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Average Ratings</td>
+                                    <td>
+                                        <?= $avg_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>New Customers</td>
+                                    <td><?= $new_customers_today ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Average Star Rating</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Made To Order</td>
+                                    <td>
+                                        <?= $mto_daily_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Repair</td>
+                                    <td>
+                                        <?= $repair_daily_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="breakdown_of_furnitures_container">
+
+                    <table class="order-table-breakdown">
+                        <thead>
+                            <tr>
+                                <th>Furniture Type</th>
+                                <th>Number Ordered</th>
+                                <th>Total Price Ordered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($daily_results as $row): ?>
+                                <tr>
+                                    <td><?php echo $row['furniture_type']; ?></td>
+                                    <td><?php echo $row['number_ordered']; ?></td>
+                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                    </div>
+                </div>
+
             </div>
-
-
 
 
 
@@ -548,7 +619,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="date" id="end-date" name="end-date">
                         </div>
                     </div>
-                    <input type="submit" value="Filter">
+                    <input type="submit" value="Filter" class="filter">
                 </form>
                 <div class="selected-multiple">
                     <img src="/websiteimages/icons/close-icon-gray.svg" alt="" class="close-icon">
@@ -571,7 +642,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php
                             foreach($orders AS $order) {
-                                $price = is_null($order['price']) ? "N/A" : "₱{$order['price']}";
+                                $price = is_null($order['price']) ? "N/A" : "₱" . number_format($order['price']);
+
                                 $date = date('M d, Y', strtotime($order['placement_date']));
 
                                 $prod_status = str_replace("_", "-", $order['prod_status']);
@@ -640,8 +712,17 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </span> of <span><?= $total_records ?></span> results
                     </div>
                 </div>
-                <button id="print" class="Save_button">Print</button>
-                <button id="download_button">Download</button>
+                <div class="button_containers">
+                    <button id="print" class="Print_button">
+                        <img src="../websiteimages/Print_icon.png" class="print">
+                        Print
+                    </button>
+
+                    <button id="download_button" class="Download_button">
+                        <img src="../websiteimages/Download_icon.png" alt="" class="Download">
+                        Download
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -671,6 +752,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 visibility: hidden;
             }
 
+            .selector-container {
+                padding: 0.2rem 0.2rem; 
+            }
+
             .content-container,
             .content-container * {
                 visibility: visible;
@@ -683,6 +768,23 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 width: 100%;
                 height: 100%;
             }
+
+            .divider{
+                display:none;
+            }
+
+            .filter{
+                display: none;
+            }
+
+            .Print_button{
+                display: none;
+            }
+
+            .Download_button{
+                display: none;
+            }
+
             `;
             // Append the style element to the content element
             content.appendChild(style);
@@ -695,16 +797,17 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     filename: filename,
                     image: {
                         type: 'jpeg',
-                        quality: 0.98
+                        quality: 100
                     },
                     html2canvas: {
-                        scale:1
+                        scale: 2
                     },
                     jsPDF: {
-                        unit: 'in',
+                        unit: 'mm',
                         format: 'letter',
                         orientation: 'landscape'
                     }
+
                 };
                 await html2pdf().set(opt).from(content).save();
             } catch (error) {
