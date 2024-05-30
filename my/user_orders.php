@@ -1,13 +1,15 @@
-<button?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: ../login.php");
-        exit();
-    }
-    include_once("../database_connection.php");
-    $user_id = $_SESSION['user_id'];
+<?php
+session_start(); // Start the session at the beginning
+
+require_once('../database_connection.php');
+require_once('../header.php');
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../login.php');
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
