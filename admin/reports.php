@@ -537,7 +537,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="filter-date selector-container">
                         <select id="date-range" name="date-range" class="selector">
-                            <option value="default">Today</option>
+                            <option value="default">Pick Date</option>
+                            <option value="today">Today</option>
                             <option value="this-week">This Week</option>
                             <option value="this-month">This Month</option>
                             <option value="custom">Custom</option>
