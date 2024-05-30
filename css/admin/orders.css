@@ -572,3 +572,24 @@ input[type="number"] {
     width: 49%;
     margin-right: 1%;
 }
+
+.item {
+    position: relative;
+
+    &:hover .item-display {
+        display: block;
+    }
+}
+
+.item-display {
+    display: none;
+    position: absolute;
+    padding: 0.25rem;
+    background-color: white;
+    color: black;
+    white-space: nowrap;
+    border: 0.25px solid black;
+    border-radius: 0.25rem;
+    bottom: -30%;
+    left: 20%;
+}
