@@ -27,7 +27,15 @@
                 INNER JOIN
             `items` i ON q.quote_id = i.quote_id
                 LEFT JOIN
-            `customs` c ON i.custom_id = c.custom_id    
+            `customs` c ON i.custom_id = c.custom_id
+                LEFT JOIN
+            `delivery` d ON o.order_id = d.order_id
+                LEFT JOIN
+            `downpayment` dp ON o.order_id = dp.order_id
+                LEFT JOIN
+            `fullpayment` fp ON o.order_id = fp.order_id
+                LEFT JOIN
+            `pickup` p ON o.order_id = p.order_id
         WHERE
             o.order_id = :order_id
                 AND
@@ -81,7 +89,7 @@
                 <div class="orders"> 
                     <div class="orders-top   orders-segment" id="overview">
                         <div class="orders-top__intro   orders-segment__intro">
-                            <h1 class="orders-top__title   orders-segment__title">Order Information</h1>
+                            <h1 class="orders-top__title   orders-segment__title">Order Overview</h1>
                             <p class="orders-top__desc   orders-segment__desc">
                                 This is the detailed information about the order you placed. 
                                 It includes all the necessary details, actions, and a comprehensive 
@@ -149,7 +157,7 @@
                             </div>
                             <div class="order-price__wrapper   order-info__section">
                                 <div class="order-price__title   order-section__title">
-                                    <h1>Total Price</h1>
+                                    <h1>Total Due</h1>
                                 </div>
                                 <table class="order-price">
                                     <tr>
@@ -158,11 +166,23 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="order-requisite">
+                            <div class="order-payment__wrapper   order-requisite__section">
+                                <div class="order-payment__title   order-section__title">
+                                    <h1>Payment Status</h1>
+                                </div>
+                                <table class="order-payment">
+                                    <tr>
+                                        <td class="td--top"><?= ucwords(str_replace('_', ' ', htmlspecialchars($order["payment_phase"] ?? 'N/A'))) ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="order-middle   orders-segment" id="actions">
-                        <div class="orders-top__intro   orders-segment__intro">
-                            <h1 class="orders-top__title   orders-segment__title">Quote Actions</h1>
-                            <p class="orders-top__desc   orders-segment__desc">
+                        <div class="orders-middle__intro   orders-segment__intro">
+                            <h1 class="orders-middle__title   orders-segment__title">Quote Actions</h1>
+                            <p class="orders-middle__desc   orders-segment__desc">
                                 These are the actions that you can perform to your quote.
                             </p>
                         </div>
@@ -170,10 +190,11 @@
                             <?php if ($order['order_phase'] == "pending_downpayment"): ?>
                                 <?php
                                 $_SESSION['enablePickup'] = ($order['service_type'] == "repair") ? true : false;
-                                if(!isset($order['del_method']) && !isset($order['del_address_id'])): ?>
+                                if(!isset($order['delivery_method']) && !isset($order['delivery_address'])): ?>
                                     <tr>
                                         <td>
                                             <?php include_once('set_order_address.php'); ?>
+                                            <button class="order-actions__soa   order-actions__btn" onclick="openModal('soa')">Set Order Address</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -181,6 +202,7 @@
                                     <tr>
                                         <td>
                                             <?php include_once('upload_proof_of_downpayment.php'); ?>
+                                            <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -287,6 +309,12 @@
                                                         No image uploaded.
                                                     <?php endif; ?>
                                                     </td>
+
+                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["custom_id"] ?? '') ?></td>
+                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["dimensions"] ?? 'None.') ?></td>
+                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["materials"] ?? 'None.') ?></td>
+                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["fabric"] ?? 'None.') ?></td>
+                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["color"] ?? 'None.') ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>

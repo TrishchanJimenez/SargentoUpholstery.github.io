@@ -31,6 +31,32 @@ confirmBtn.addEventListener('click', () => {
     });
 }); */
 
+// ---------- Modal for order actions ---------- //
+
+document.addEventListener('DOMContentLoaded', function () {
+    const soaModal = document.getElementById('soaModal');
+    const closeSOA = document.getElementById('closeSOA');
+
+    function openModal(action) {
+        switch(action) {
+            case 'soa':
+                soaModal.style.display = 'flex';
+                break;
+            default:
+                break;
+        }
+    }
+
+    closeSOA.addEventListener('click', function() {
+        soaModal.style.display = 'none';
+    });
+
+    // Expose openModal to global scope
+    window.openModal = openModal;
+});
+
+
+
 // ---------- Modal for item details ---------- //
 
 document.addEventListener('DOMContentLoaded', function() {

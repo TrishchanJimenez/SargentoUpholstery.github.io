@@ -1,115 +1,137 @@
 <?php
-    require '../database_connection.php';
-    session_start();
-    // var_dump($_SESSION);
-    // if(!isset($_SESSION['user_type']) || $_SESSION['access_type'] === "customer"){
-    //     // echo "test";
-    //     header("Location: ../index.php");
-    //     exit();
-    // }
+require '../database_connection.php';
+session_start();
 
-    if(isset($_POST))
+// Fetch form inputs
+$search_type = $_GET['search-order'] ?? '';
+$search_input = $_GET['search-input'] ?? '';
+$service_type = $_GET['service-type'] ?? '';
+$order_prod_status = $_GET['order-prod-status'] ?? '';
+$order_payment_status = $_GET['order-payment-status'] ?? '';
+$order_sort = $_GET['order-sort'] ?? '';
+$start_date = $_GET['start-date'] ?? '';
+$end_date = $_GET['end-date'] ?? '';
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$date_range = $_GET['date-range'] ?? '';
 
-    $search_type = $_GET['search-order'] ?? '';
-    $search_input = $_GET['search-input'] ?? '';
-    $service_type = $_GET['service-type'] ?? '';
-    $order_prod_status = $_GET['order-prod-status'] ?? '';
-    $order_payment_status = $_GET['order-payment-status'] ?? '';
-    $order_sort = $_GET['order-sort'] ?? '';
-    $current_page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
+// Base SQL queries
+$count_query = "
+    SELECT 
+        COUNT(*) AS total_records
+    FROM 
+        orders O 
+    JOIN 
+        quotes Q USING(quote_id)
+    JOIN 
+        users U ON Q.customer_id = U.user_id
+    WHERE 1
+";
 
-    $count_query = "
-        SELECT 
-            COUNT(*) AS total_records
-        FROM 
-            orders O 
-        JOIN 
-            quotes Q USING(quote_id)
-        JOIN 
-            users U ON Q.customer_id = U.user_id
-        WHERE 1
-    ";
+$query = "
+    SELECT
+        O.order_id,
+        U.name AS customer_name,
+        Q.service_type AS order_type,
+        Q.total_price AS price,
+        GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
+        O.created_at AS placement_date,
+        O.order_phase AS prod_status,
+        O.payment_phase AS payment_status
+    FROM 
+        orders O 
+    JOIN 
+        quotes Q USING (quote_id)
+    LEFT JOIN
+        items I USING (quote_id)
+    JOIN 
+        users U ON Q.customer_id = U.user_id
+    WHERE 1
+";
 
-    $query = "
-        SELECT
-            O.order_id,
-            U.name AS customer_name,
-            Q.service_type AS order_type,
-            Q.total_price AS price,
-            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
-            O.created_at AS placement_date,
-            O.order_phase AS prod_status,
-            O.payment_phase AS payment_status
-        FROM 
-            orders O 
-        JOIN 
-            quotes Q USING (quote_id)
-        LEFT JOIN
-            items I USING (quote_id)
-        JOIN 
-            users U ON Q.customer_id = U.user_id
-        WHERE 1
-    ";
-
-    if (!empty($search_input)) {
-        switch($search_type) {
-            case "order_id":
-                if (is_numeric($search_input)) {
-                    $count_query .= " AND O.order_id = $search_input";
-                    $query .= " AND O.order_id = $search_input";
-                    break;
-                } else {
-                    break;
-                }
-            case "item":
-                $count_query .= " AND Q.furniture_type LIKE '%$search_input%'";
-                $query .= " AND Q.furniture_type LIKE '%$search_input%'";
-                break;
-            case "customer_name":
-                $count_query .= " AND U.name LIKE '%$search_input%'";
-                $query .= " AND U.name LIKE '%$search_input%'";
-                break;
-        }
+// Apply search filters
+if (!empty($search_input)) {
+    switch($search_type) {
+        case "order_id":
+            if (is_numeric($search_input)) {
+                $count_query .= " AND O.order_id = $search_input";
+                $query .= " AND O.order_id = $search_input";
+            }
+            break;
+        case "item":
+            $count_query .= " AND Q.furniture_type LIKE '%$search_input%'";
+            $query .= " AND Q.furniture_type LIKE '%$search_input%'";
+            break;
+        case "customer_name":
+            $count_query .= " AND U.name LIKE '%$search_input%'";
+            $query .= " AND U.name LIKE '%$search_input%'";
+            break;
     }
-    if (!($service_type === 'default' || empty($service_type))) {
-        $count_query .= " AND service_type = '$service_type'";
-        $query .= " AND service_type = '$service_type'";
-    }
-    if (!($order_prod_status === 'default' || empty($order_prod_status))) {
-        $count_query .= " AND order_phase = '$order_prod_status'";
-        $query .= " AND order_phase = '$order_prod_status'";
-    }
-    if (!($order_payment_status === 'default' || empty($order_payment_status))) {
-        $count_query .= " AND payment_phase = '$order_payment_status'";
-        $query .= " AND payment_phase = '$order_payment_status'";
-    }
+}
 
-    $count_result = $conn->query($count_query);
-    $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
+// Apply service type filter
+if (!($service_type === 'default' || empty($service_type))) {
+    $count_query .= " AND Q.service_type = '$service_type'";
+    $query .= " AND Q.service_type = '$service_type'";
+}
 
-    $query .= " GROUP BY O.order_id";
-    // Append the ORDER BY and LIMIT clauses for fetching the actual records
-    if (!($order_sort === 'default' || empty($order_sort))) {
-        $query .= " ORDER BY $order_sort DESC";
-    } else {
-        $query .= " ORDER BY O.updated_at DESC";
-    }
+// Apply production status filter
+if (!($order_prod_status === 'default' || empty($order_prod_status))) {
+    $count_query .= " AND O.order_phase = '$order_prod_status'";
+    $query .= " AND O.order_phase = '$order_prod_status'";
+}
 
-    $query .= " LIMIT 10";
-    if($current_page !== 1) {
-        $query .= " OFFSET " . (($current_page - 1) * 10);
-    }
+// Apply payment status filter
+if (!($order_payment_status === 'default' || empty($order_payment_status))) {
+    $count_query .= " AND O.payment_phase = '$order_payment_status'";
+    $query .= " AND O.payment_phase = '$order_payment_status'";
+}
 
-    $stmt = $conn->query($query);
-    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $page_count = $total_records < 10 ? 1 : ceil($total_records / 10);
+// Apply date range filter based on selected option
+if ($date_range === 'today') {
+    $today = date('Y-m-d');
+    $count_query .= " AND DATE(O.created_at) = '$today'";
+    $query .= " AND DATE(O.created_at) = '$today'";
+} elseif ($date_range === 'this-week') {
+    $start_week = date('Y-m-d', strtotime('monday this week'));
+    $end_week = date('Y-m-d', strtotime('sunday this week'));
+    $count_query .= " AND DATE(O.created_at) BETWEEN '$start_week' AND '$end_week'";
+    $query .= " AND DATE(O.created_at) BETWEEN '$start_week' AND '$end_week'";
+} elseif ($date_range === 'this-month') {
+    $start_month = date('Y-m-01');
+    $end_month = date('Y-m-t');
+    $count_query .= " AND DATE(O.created_at) BETWEEN '$start_month' AND '$end_month'";
+    $query .= " AND DATE(O.created_at) BETWEEN '$start_month' AND '$end_month'";
+}
 
-    if($current_page > $page_count) {
-        $current_page = $page_count;
-    }
+// Apply custom date range if provided
+if (!empty($start_date) && !empty($end_date)) {
+    $count_query .= " AND O.created_at BETWEEN '$start_date' AND '$end_date'";
+    $query .= " AND O.created_at BETWEEN '$start_date' AND '$end_date'";
+}
 
-    //sql for tables
-?>
+// Execute count query to get total records
+$count_result = $conn->query($count_query);
+$total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
+
+// Group by order ID for consolidated results
+$query .= " GROUP BY O.order_id";
+
+// Apply sorting and pagination
+if (!($order_sort === 'default' || empty($order_sort))) {
+    $query .= " ORDER BY $order_sort DESC";
+} else {
+    $query .= " ORDER BY O.updated_at DESC";
+}
+
+$query .= " LIMIT 10";
+if ($current_page !== 1) {
+    $query .= " OFFSET " . (($current_page - 1) * 10);
+}
+
+// Execute main query to fetch filtered orders
+$stmt = $conn->query($query);
+$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -342,7 +364,10 @@
                         </tr>
                         <tr>
                             <td>Average Ratings</td>
-                            <td><?= $avg_rating ?></td>
+                            <td>
+                                <?= $avg_rating ?>
+                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                            </td>
                         </tr>
                         <tr>
                             <td>New Customers</td>
@@ -373,7 +398,10 @@
                         </tr>
                         <tr>
                             <td>Average Ratings</td>
-                            <td><?= $avg_rating ?></td>
+                            <td>
+                                <?= $avg_rating ?>
+                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                            </td>
                         </tr>
                         <tr>
                             <td>New Customers</td>
@@ -404,7 +432,10 @@
                         </tr>
                         <tr>
                             <td>Average Ratings</td>
-                            <td><?= $avg_rating ?></td>
+                            <td>
+                                <?= $avg_rating ?>
+                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                            </td>
                         </tr>
                         <tr>
                             <td>New Customers</td>
@@ -436,7 +467,11 @@
                         </tr>
                         <tr>
                             <td>Average Ratings</td>
-                            <td><?= $avg_rating ?></td>
+                            <td>
+                                <?= $avg_rating ?>
+                                <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                            </td>
+                        </tr>
                         </tr>
                         <tr>
                             <td>New Customers</td>
@@ -499,6 +534,19 @@
                             <option value="est_completion_date">Est. Delivery Date</option>
                             <option value="item">Item</option>
                         </select>
+                    </div>
+                    <div class="filter-date selector-container">
+                        <select id="date-range" name="date-range" class="selector">
+                            <option value="default">Pick Date</option>
+                            <option value="today">Today</option>
+                            <option value="this-week">This Week</option>
+                            <option value="this-month">This Month</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <div id="custom-date" class="custom-date" style="display: none;">
+                            <input type="date" id="start-date" name="start-date">
+                            <input type="date" id="end-date" name="end-date">
+                        </div>
                     </div>
                     <input type="submit" value="Filter">
                 </form>
@@ -650,7 +698,7 @@
                         quality: 0.98
                     },
                     html2canvas: {
-                        scale: 5
+                        scale:1
                     },
                     jsPDF: {
                         unit: 'in',
@@ -666,7 +714,31 @@
             // Remove the style element after converting to PDF
             content.removeChild(style);
         });
-        </script>
+
+        
+            document.addEventListener('DOMContentLoaded', function() {
+            // Get references to elements
+            const dateRangeSelect = document.getElementById('date-range');
+            const customDateDiv = document.getElementById('custom-date');
+
+            // Function to toggle display of custom date inputs
+            function toggleCustomDateInputs() {
+                const selectedValue = dateRangeSelect.value;
+                if (selectedValue === 'custom') {
+                    customDateDiv.style.display = 'block';
+                } else {
+                    customDateDiv.style.display = 'none';
+                }
+            }
+
+            // Initial call to set initial state based on default selection
+            toggleCustomDateInputs();
+
+            // Event listener for when dropdown value changes
+            dateRangeSelect.addEventListener('change', toggleCustomDateInputs);
+        });
+</script>
+
 </body>
 
 </html>

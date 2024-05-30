@@ -4,25 +4,28 @@
     }
 ?>
 
-<div class="upod">
-    <form class="form" method="post" enctype="multipart/form-data">
+<!-- Modal for Upload Proof of Downpayment -->
+<div class="modal" id="uploadProofModal">
+    <div class="modal__content">
+        <span class="modal__close" id="closeUploadProof">&times;</span>
         <div class="form__wrapper form__wrapper--upload">
             <h1 class="form__title">Upload Proof of Downpayment</h1>
+            <form class="form" method="post" enctype="multipart/form-data">
+                <label class="form__label" for="payment_method">Payment Method</label>
+                <select class="form__select" name="payment_method" id="payment_method">
+                    <option class="form__option" value="gcash">GCash</option>
+                    <option class="form__option" value="paymaya">Paymaya</option>
+                    <option class="form__option" value="cash">Cash</option>
+                </select>
 
-            <label class="form__label" for="payment_method">Payment Method</label>
-            <select class="form__select" name="payment_method" id="payment_method">
-                <option class="form__option" value="gcash">GCash</option>
-                <option class="form__option" value="paymaya">Paymaya</option>
-                <option class="form__option" value="cash">Cash</option>
-            </select>
+                <label class="form__label" for="proof_upload">Upload File</label>
+                <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
 
-            <label class="form__label" for="proof_upload">Upload File</label>
-            <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
-
-            <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
+                <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
+                <input class="form__submit" type="submit" name="submit--upod" value="Submit Proof">
+            </form>
         </div>
-        <input class="form__submit" type="submit" name="submit--upod" value="Submit Proof">
-    </form>
+    </div>
 </div>
 
 <?php
