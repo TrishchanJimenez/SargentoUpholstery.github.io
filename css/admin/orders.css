@@ -140,6 +140,39 @@
     }
 }
 
+.order-table-breakdown {
+    width: auto;
+    table-layout: auto;
+    border: 1px solid var(--gray-300, #D1D5DB);
+    border-radius: 0.375rem;
+    border-spacing: 0;
+    margin-bottom: 0.75rem;
+    margin-top: 0.75rem;
+
+    tr {
+        border: 1px solid var(--gray-300, #D1D5DB);
+    }
+
+    th, td {
+        padding: 0.5rem 1rem;
+        color: #6B7280;
+        border-bottom: 1px solid var(--gray-300, #D1D5DB);
+        text-align: center;
+    }
+
+    th {
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.0375rem;
+        text-transform: uppercase;
+        background: #F9FAFB;
+    }
+
+    td {
+        font-size: 0.875rem;
+    }
+}
+
 .chevron-right {
     cursor: pointer;
 }
