@@ -181,7 +181,6 @@
 </style>
 
 <?php
-    session_start();
     require_once('../database_connection.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--soa"])) {

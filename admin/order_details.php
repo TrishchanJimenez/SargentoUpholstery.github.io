@@ -19,7 +19,7 @@
         $user_id = $_POST['user_id'];
 
         $rejection_reason = $_POST['rejection-reason'];
-        $stmt = $conn->prepare("UPDATE orders SET order_phase = 'cancelled', rejection_reason = :reason WHERE order_id = :order_id");
+        $stmt = $conn->prepare("UPDATE orders SET order_phase = 'cancelled', cancellation_reason = :reason WHERE order_id = :order_id");
         $stmt->bindParam(':reason', $rejection_reason);
         $stmt->bindParam(':order_id', $order_id);
         $stmt->execute();
@@ -42,33 +42,31 @@
             $stmt->bindParam(':order_id', $order_id);
             $stmt->execute();
             
+            $query = "UPDATE orders SET order_phase = :order_phase, payment_phase = 'partially_paid' WHERE order_id = :order_id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':order_id', $order_id);
+            // CHECK THE TYPE OF THE ORDER
+
+            $order_phase = '';
+            if($order_type === "mto") {
+                $order_phase = 'in_production';
+            } else {
+                $order_phase = 'awaiting_furniture';
+            }
+            $stmt->bindParam(':order_phase', $order_phase);
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->execute();
+
             if($stmt->rowCount() > 0) {
-                $query = "UPDATE orders SET order_phase = :order_phase, payment_phase = 'partially_paid' WHERE order_id = :order_id";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':order_id', $order_id);
-                // CHECK THE TYPE OF THE ORDER
-
+                // Update successful
+                createNotif($user_id, "Your order is now in production", "/order.php?id=$order_id");
                 if($order_type === "mto") {
-                    // Update order status to in_production
-                    $stmt->bindParam(':order_phase', 'in_production');    
-                } else {
-                    // Update order status to ready_for_pickup
-                    $stmt->bindParam(':order_phase', 'awaiting_furniture');
-                }
-
-                $stmt->bindParam(':order_id', $order_id);
-                $stmt->execute();
-                if($stmt->rowCount() > 0) {
-                    // Update successful
-                    createNotif($user_id, "Your order is now in production", "/order.php?id=$order_id");
                     sendAlert("success", "Downpayment has been successfully verified. Order is now in production.");
                 } else {
-
+                    sendAlert("success", "Downpayment has been successfully verified. Now waiting for the furnitures to repair");
                 }
-            } else {
-
-            }
-        } 
+            }  
+        }
         else if(isset($_POST['reverify-downpayment'])) {
             // Update downpayment verification status to needs_reverification
             $query = "UPDATE downpayment SET downpay_verification_status = 'needs_reverification', downpay_img_path = NULL WHERE order_id = :order_id";
@@ -236,17 +234,53 @@
                             </span>
                         </div>
                         <div class="info">
+                            <span class="info-name"> REMAINING BALANCE </span>
+                            <span class="info-detail">
+                                <?php
+                                    if($order['payment_phase'] === "unpaid") {
+                                        echo "₱" . $order['total_price'];
+                                    } else if($order['payment_phase'] === "partially_paid") {
+                                        echo "₱" . $order['total_price'] - $order['downpay_amount'];
+                                    } else {
+                                        echo "N/A";
+                                    }
+                                ?>
+                            </span>
+                        </div>
+                        <div class="info">
                             <span class="info-name"> ORDER STATUS </span>
-                            <span class="info-detail status">
+                            <span class="info-detail status prod-status">
+                                <?php
+                                    $order_status = str_replace("_", "-", $order['order_phase']);
+                                    $statuses = [
+                                        "pending-downpayment" => "Pending Downpayment",
+                                        "awaiting-furniture" => "Awaiting Furniture",
+                                        "in-production" => "In Production",
+                                        "pending-fullpayment" => "Pending Fullpayment",
+                                        "out-for-delivery" => "Out for Delivery",
+                                        "received" => "Received",
+                                    ];
+                                    $prod_status_options = "";
+
+                                    $include = false;
+                                    foreach ($statuses as $status => $status_text) {
+                                        if ($status === "awaiting-furniture" && $order['service_type'] === "mto") {
+                                            continue;
+                                        }
+                                        if ($include) {
+                                            $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                        }
+                                        if ($status === $order_status) {
+                                            $prod_status_options .= "<option value='{$status}'>{$status_text}</option>";
+                                            $include = true;
+                                        }
+                                    }
+                                ?>
                                 <span <?= "data-prod-status='{$prod_status}'" ?> >
                                     <?= $prod_status_text ?>
                                 </span>
                                 <select name='select-prod-status' id=''>
-                                    <option value='pending-downpayment'>Pending Downpayment</option>
-                                    <option value='ready-for-pickup'>Ready For Pickup</option>
-                                    <option value='pending-fullpayment'>Pending Fullpayment</option>
-                                    <option value='out-for-delivery'>Out For Delivery</option>
-                                    <option value='received'>Received</option>
+                                    <?= $prod_status_options ?>
                                 </select>
                             </span>
                         </div>
@@ -371,25 +405,27 @@
                             <div class='info'>
                                 <span class='info-name'>AMOUNT</span>
                                 <span class='info-detail'>
-                                    <?= '₱' . number_format($order['downpay_amount']) ?>
+                                    <?= '₱ ' . number_format($order['downpay_amount']) ?>
                                 </span>
                             </div>
                             <div class='info'>
                                 <span class='info-name'>REFERENCE NO.</span>
                                 <span class='info-detail'>
-                                    <?= '₱' . number_format($order['downpay_ref_no']) ?>
+                                    <?= $order['downpay_ref_no'] ?>
                                 </span>
                             </div>
+                            <?php if(!is_null($order['downpay_img_path'])) : ?>
+                                <div class='info'>
+                                    <span class='info-name'>PROOF OF PAYMENT</span>
+                                    <span class='info-detail'>
+                                        <img src="<?= '/' . $order['downpay_img_path'] ?>" alt="">
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                             <div class='info'>
                                 <span class='info-name'>VERIFICATION STATUS</span>
                                 <span class='info-detail downpayment-status'>
                                     <?= ucfirst(str_replace("_", " ", $order['downpay_verification_status'] ?? '')) ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>PROOF OF PAYMENT</span>
-                                <span class='info-detail'>
-                                    <img src="<?= '/' . $order['downpay_img_path'] ?>" alt="">
                                 </span>
                             </div>
                             <?php if($order['downpay_verification_status'] === "waiting_for_verification") : ?>
@@ -403,7 +439,6 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    ";
                 <?php endif; ?>
                 <?php if(!is_null($order['fullpay_method'])) : ?>
                     <div class="payment-information fullpayment-info">
@@ -478,10 +513,22 @@
                             <span class="info-name">CONTACT NO.</span>
                             <span class="info-detail"><?= $order['contact_number'] ?></span>
                         </div>
+                        <?php if(!is_null($order['delivery_method'])): ?>
+                            <div class="info">
+                                <span class="info-name">DELIVERY METHOD</span>
+                                <span class="info-detail"><?= $order['delivery_method'] ?></span>
+                            </div>
+                        <?php endif; ?>                             
                         <?php if(!is_null($order['delivery_address'])): ?>
                             <div class="info">
-                                <span class="info-name">PICKUP ADDRESS</span>
+                                <span class="info-name">DELIVERY ADDRESS</span>
                                 <span class="info-detail"><?= $order['delivery_address'] ?></span>
+                            </div>
+                        <?php endif; ?>                             
+                        <?php if(!is_null($order['pickup_method'])): ?>
+                            <div class="info">
+                                <span class="info-name">PICKUP METHOD</span>
+                                <span class="info-detail"><?= $order['pickup_method'] ?></span>
                             </div>
                         <?php endif; ?>                             
                         <?php if(!is_null($order['pickup_address'])): ?>
@@ -499,13 +546,13 @@
                         </p>
                         <div class="info-order-detail">
                             <div class="action-buttons">
-                                <input type="button" value="reject order" class="red-button reject-order action-button">
+                                <input type="button" value="Cancel Order" class="red-button reject-order action-button">
                             </div>
                             <form action="" method="post" id="order-accept-form">
                                 <input type="hidden" name="order_id" <?= "value={$order_id}" ?>>
                                 <input type="hidden" name="user_id" <?= "value={$order['customer_id']}" ?>>
                                 <div class="on-reject action-input">
-                                    <label for="rejection-reason">Reason for rejection</label>
+                                    <label for="rejection-reason">Reason for cancellation</label>
                                     <textarea name="rejection-reason" rows="3" placeholder="write reason here..." class="rejection-input" required></textarea>
                                 </div>
                                 <div class="on-click">
