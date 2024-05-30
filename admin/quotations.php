@@ -103,6 +103,8 @@
                                         {$quote['item']}
                                     </span>
                                 ";
+                            } else {
+                                $item_display = "";
                             }
                             // $item = ucfirst($quote['item']);
                             echo "
