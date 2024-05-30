@@ -10,15 +10,9 @@
     }
 ?>
 
-<div class="modal__open">
-    <button type="button" class="button button--review" onclick="openReviewModal()">Review</button>
-</div>
-<div class="modal modal--review">
+<div class="modal" id="reviewModal">
     <div class="modal__content">
-        <div class="modal__header">
-            <h1 class="modal__title">Rate Service</h1>
-            <span class="modal__close" onclick="closeReviewModal()">&times;</span>
-        </div>
+        <span class="modal__close" id="closeReview">&times;</span>
         <form id="reviewForm" class="form form--review" method="post" enctype="multipart/form-data">
             <input type="hidden" name="order_id" value="<?= $order_id; ?>">
             <div class="form__group form__group--rating">
@@ -50,6 +44,120 @@
         </form>
     </div>
 </div>
+
+<style>
+    /* Modal Styles */
+    .modal--review {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal__content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 50%;
+        max-width: 600px;
+    }
+
+    .modal__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal__title {
+        margin: 0;
+    }
+
+    .modal__open {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button--review {
+        background-color: #f39c12;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 60%;
+        height: auto;
+        padding: 2.5vmin;
+        margin: 1.25vmin;
+    }
+
+    .modal__close {
+        cursor: pointer;
+    }
+
+    /* Form Styles */
+    .form--review {
+        margin-top: 20px;
+    }
+
+    .form__group {
+        margin-bottom: 20px;
+    }
+
+    .form__label {
+        font-weight: bold;
+        display: block;
+    }
+
+    .rating__star {
+        width: 50px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .form__textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+    }
+
+    .form__file-drop {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .form__images-preview {
+        margin-top: 10px;
+    }
+
+    .form__image-preview {
+        max-width: 100px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .form__submit {
+        padding: 10px 20px;
+        background-color: #f39c12;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .form__submit:hover {
+        background-color: #e68a06;
+    }
+</style>
 
 <?php
     // Include database connection
@@ -114,3 +222,90 @@
         }
     }
 ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reviewBtn = document.querySelector('.button--review');
+        const reviewForm = document.getElementById('reviewForm');
+        const ratingStars = document.getElementById('ratingStars');
+        const stars = document.querySelectorAll('.rating__star');
+        const ratingInput = document.getElementById('rating');
+        const imagePreview = document.getElementById('imagesPreview');
+        const reviewImageInput = document.getElementById('images');
+        let currentStarValue = 0;
+
+        // Open review modal
+        reviewBtn.addEventListener('click', () => {
+            openReviewModal();
+            resetStars();
+        });
+
+        // Star rating hover effect
+        ratingStars.addEventListener('mouseover', (event) => {
+            if (event.target.classList.contains('rating__star')) {
+                const tempStarValue = event.target.getAttribute('data-value');
+                highlightStars(tempStarValue);
+            }
+        });
+
+        // Reset stars on mouse out
+        ratingStars.addEventListener('mouseout', () => {
+            highlightStars(currentStarValue);
+        });
+
+        // Set rating on click
+        ratingStars.addEventListener('click', (event) => {
+            if (event.target.classList.contains('rating__star')) {
+                currentStarValue = event.target.getAttribute('data-value');
+                ratingInput.value = currentStarValue;
+                highlightStars(currentStarValue);
+            }
+        });
+
+        // Highlight stars based on rating
+        function highlightStars(value) {
+            stars.forEach(star => {
+                const starValue = parseInt(star.getAttribute('data-value'));
+                star.style.color = starValue <= value ? '#f39c12' : '#ddd';
+            });
+        }
+
+        // Reset stars to initial state
+        function resetStars() {
+            currentStarValue = 0;
+            ratingInput.value = 0;
+            highlightStars(0);
+        }
+
+        // Preview selected images
+        window.previewImages = function(event) {
+            imagePreview.innerHTML = '';
+            const files = event.target.files;
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const image = document.createElement('img');
+                    image.src = e.target.result;
+                    image.classList.add('form__image-preview');
+                    imagePreview.appendChild(image);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // Open the review modal
+        window.openReviewModal = function() {
+            document.querySelector('.modal--review').style.display = 'flex';
+        };
+
+        // Close the review modal
+        window.closeReviewModal = function() {
+            document.querySelector('.modal--review').style.display = 'none';
+        };
+
+        // Simulate click to upload image
+        window.clickUploadImage = function() {
+            reviewImageInput.click();
+        };
+    });
+</script>

@@ -5,14 +5,13 @@
 ?>
 
 <!-- Modal for Upload Proof of Downpayment -->
+
 <div class="modal" id="upodModal">
     <div class="modal__content">
         <span class="modal__close" id="closeUPOD">&times;</span>
         <div class="form__wrapper form__wrapper--upload">
             <h1 class="form__title">Upload Proof of Downpayment</h1>
             <form id="upodForm" class="form" method="post" enctype="multipart/form-data">
-                
-                <input type="hidden" id="order_id" name="order_id" value="<?= $order_id; ?>">
 
                 <label class="form__label" for="downpay_method">Payment Method</label>
                 <select class="form__select" name="downpay_method" id="downpay_method">
@@ -166,6 +165,8 @@
 
 <?php
     require_once('../database_connection.php');
+    include_once('../notif.php');
+    include_once('../alert.php');
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit"])) {
         // Define the target directory for uploads
@@ -229,22 +230,23 @@
                         $stmt->bindParam(':downpay_ref_no', $downpay_ref_no, PDO::PARAM_STR);
                         
                         // Execute the query
-                        if ($stmt->execute()) {
-                            echo "Proof of downpayment successfully uploaded.";
+                        if($stmt->execute()) {
+                            sendAlert("success", "You have successfully uploaded a proof of fullpayment for this order.");
+                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of fullpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
                         } else {
-                            echo "Failed to execute query.";
+                            echo "<script> console.log('Failed to execute query in upload_proof_of_downpayment.php') </script>";
                         }
                     } catch (PDOException $e) {
-                        echo $e->getMessage();
+                        echo "<script> console.log(" . $e->getMessage() . ") </script>";
                     }
                 } else {
-                    echo "Error uploading file.";
+                    sendAlert("error", "Sorry, there was an error uploading the file.");
                 }
             } else {
-                echo "File is too large. Maximum size is 5MB.";
+                sendAlert("warming", "File is too large. Maximum size is 5MB.");
             }
         } else {
-            echo "Invalid file type. Only JPG, JPEG, and PNG files are allowed.";
+            sendAlert("warming", "Invalid file type. Only JPG, JPEG, and PNG files are allowed.");
         }
     }
 ?>
