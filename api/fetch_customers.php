@@ -9,15 +9,16 @@
             u.name AS customer_name
         FROM 
             users u
+        JOIN 
+            chats c ON c.customer_id = u.user_id OR c.sender_id = u.user_id
         WHERE 
-            u.user_type = 'customer' AND 
-            EXISTS (
-                SELECT 1
-                FROM chats c
-                WHERE c.customer_id = u.user_id OR c.sender_id = u.user_id
-            )
+            u.user_type = 'customer'
+        GROUP BY 
+            u.user_id
+        HAVING 
+            COUNT(c.chat_id) >= 1
         ORDER BY 
-            u.name ASC
+            MAX(c.timestamp) DESC
     ";
     $stmt = $conn->prepare($query);
     $stmt->execute();
