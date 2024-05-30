@@ -26,148 +26,6 @@ if(actionButtons !== null) {
         formButtons.style.display = "none";
         actionButtons.style.display = "flex";
     })
-
-    // orderAcceptForm.addEventListener("submit", (e) => {
-    //   e.preventDefault();
-    //   isAcceptedInput.value = isAcceptedInput.value === "true" ? true : false;
-
-    //   orderAcceptForm.submit();
-    // });
-}
-
-function verifyFullpayment() {
-}
-
-function reverifyFullpayment() {
-    let verificationData = new FormData();
-    verificationData.append('order_id', orderId);
-    verificationData.append('payment_phase', 'downpayment');
-    console.log(verificationData);
-    fetch('../api/payment_update_admin.php', {
-        method: 'POST',
-        body: verificationData })
-        .then(response => response.json())
-        .then(data => {
-            downpaymentVerificationStatus.textContent = data.status;
-        })
-}
-
-const downpaymentInfo = document.querySelector('.downpayment-info');
-const fullpaymentInfo = document.querySelector('.fullpayment-info');
-
-if (downpaymentInfo !== null) {
-    const verifyDownpaymentBtn = document.querySelector('.downpayment .accept-verification');
-    const reverifyDownpaymentBtn = document.querySelector('.downpayment .reject-verification');
-    const downpaymentVerificationStatus = document.querySelector('.downpayment-status');
-    
-    if(verifyDownpaymentBtn !== null) {
-        verifyDownpaymentBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            console.log("verify downpayment");
-            let verificationData = new FormData();
-            verificationData.append("order_id", orderId);
-            verificationData.append("payment_phase", "downpayment");
-            verificationData.append("is_verified", true);
-            console.log(verificationData);
-            fetch("/api/payment_update_admin.php", {
-                method: "POST",
-                body: verificationData,
-            })
-            .then((response) => {
-                console.log(response.text());
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                downpaymentVerificationStatus.textContent = data.payment_status;
-                document.querySelector(".verification-buttons.downpayment").display = "none";
-                document.querySelector(".payment-status").dataset.payment = "partially-paid";
-                document.querySelector(".payment-status").innerText = "Partially Paid";
-            });
-        });
-
-        reverifyDownpaymentBtn.addEventListener('click', (e) => {
-            let verificationData = new FormData();
-            verificationData.append('order_id', orderId);
-            verificationData.append('payment_phase', 'fullpayment');
-            console.log(verificationData);
-            fetch('../api/payment_update_admin.php', {
-                method: 'POST',
-                body: verificationData })
-                .then(response => response.json())
-                .then(data => {
-                    downpaymentVerificationStatus.textContent = data.status;
-                })
-        });
-    }
-}
-
-if (fullpaymentInfo !== null) {
-    const verifyFullpaymentBtn = document.querySelector('.fullpayment .accept-verification');
-    const reverifyFullpaymentBtn = document.querySelector('.fullpayment .reject-verification');
-    const fullpaymentVerificationStatus = document.querySelector('.fullpayment-status');
-
-    if (verifyFullpaymentBtn !== null) {
-        verifyFullpaymentBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            console.log("verify downpayment");
-            let verificationData = new FormData();
-            verificationData.append("order_id", orderId);
-            verificationData.append("payment_phase", "fullpayment");
-            verificationData.append("is_verified", true);
-            console.log(verificationData);
-            fetch("/api/payment_update_admin.php", {
-                method: "POST",
-                body: verificationData,
-            })
-                .then((response) => {
-                    console.log(response.text());
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    downpaymentVerificationStatus.textContent =
-                        data.payment_status;
-                    document.querySelector(
-                        ".verification-buttons.downpayment"
-                    ).display = "none";
-                    document.querySelector(".payment-status").dataset.payment =
-                        "partially-paid";
-                    document.querySelector(".payment-status").innerText =
-                        "Partially Paid";
-                });
-        });
-
-        reverifyDownpaymentBtn.addEventListener("click", (e) => {
-            let verificationData = new FormData();
-            verificationData.append("order_id", orderId);
-            verificationData.append("payment_phase", "downpayment");
-            console.log(verificationData);
-            fetch("../api/payment_update_admin.php", {
-                method: "POST",
-                body: verificationData,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    downpaymentVerificationStatus.textContent = data.status;
-                });
-        });
-    }
-    fullpaymentInfo.querySelector('.accept-verification').addEventListener('click', () => {
-        let verificationData = new FormData();
-        verificationData.append("order_id", orderId);
-        verificationData.append("payment_phase", "fullpayment");
-        console.log(verificationData);
-        fetch("../api/payment_update_admin.php", {
-            method: "POST",
-            body: verificationData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                downpaymentVerificationStatus.textContent = data.status;
-            });
-    });
-    fullpaymentInfo.querySelector('.reject-verification').addEventListener('click', reverifyFullpayment);
 }
 
 const toggleDisplayFurnitureBtn = document.querySelector( ".toggle-furniture-display");
@@ -186,3 +44,113 @@ function toggleFurnitureDisplay() {
         item.classList.toggle("hidden");
     });
 }
+
+const orderDetail = document.querySelector(' .order-detail-main');
+
+orderDetail.addEventListener('click', (e) => {
+    target = e.target.closest(".prod-status");
+    console.log(target);
+    if (target !== null && target.classList.contains("status")) {
+        target.classList.remove("status");
+        target.classList.add("active");
+        if (target.classList.contains("prod-status")) {
+            console.log(orderId);
+            const selector = target.querySelector(
+                "select[name=select-prod-status]"
+            );
+            const status = target.querySelector("span[data-prod-status]");
+            console.log(status.dataset.prodStatus);
+
+            selector.value = status.dataset.prodStatus;
+            const pastStatus = status.dataset.prodStatus;
+
+            selector.addEventListener("change", (e) => {
+                // console.log('change')
+                status.dataset.prodStatus = selector.value;
+                status.innerText = selector.value.split("-").join(" ");
+                target.classList.remove("active");
+                target.classList.add("status");
+
+                const newStatus = status.dataset.prodStatus;
+                const statuses = {
+                    "pending-downpayment": "Pending Downpayment",
+                    "awaiting-furniture": "Awaiting Furniture",
+                    "in-production": "In Production",
+                    "pending-fullpayment": "Pending Fullpayment",
+                    "out-for-delivery": "Out for Delivery",
+                    received: "Received",
+                };
+
+                const statusKeys = Object.keys(statuses);
+                const currentIndex = statusKeys.indexOf(newStatus);
+                const pastIndex = statusKeys.indexOf(pastStatus);
+                const previousStatuses = statusKeys.slice(
+                    pastIndex,
+                    currentIndex
+                );
+
+                console.log(currentIndex);
+                console.log(pastIndex);
+                console.log(previousStatuses);
+                if (previousStatuses.length >= 2) {
+                    const confirmation = confirm(
+                        "Are you sure you want to skip multiple stages?"
+                    );
+                    if (!confirmation) {
+                        status.dataset.prodStatus = pastStatus;
+
+                        if (status.dataset.prodStatus === "") {
+                            status.dataset.prodStatus = "new-order";
+                            status.innerText = "New Order";
+                        } else {
+                            status.innerText = selector.value
+                                .split("-")
+                                .join(" ");
+                        }
+                        target.classList.remove("active");
+                        target.classList.add("status");
+                        return;
+                    }
+                }
+
+                // Continue with the rest of the code...
+
+                const statusData = new FormData();
+                statusData.append("order_id", orderId);
+                statusData.append("new_status", newStatus);
+                statusData.append("status_type", "prod");
+                console.log(statusData);
+                fetch("/api/update_status.php", {
+                    method: "POST",
+                    body: statusData,
+                })
+                    .then((res) => {
+                        if (!res.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return res.json();
+                    })
+                    .then((data) => {
+                        // Handle the response data here
+                        console.log("Response:", data);
+                    })
+                    .catch((error) => {
+                        console.error("Error: ", error);
+                    });
+            });
+            selector.addEventListener("blur", (e) => {
+                // console.log('change')
+                status.dataset.prodStatus = selector.value;
+
+                if (status.dataset.prodStatus === "") {
+                    status.dataset.prodStatus = "new-order";
+                    status.innerText = "New Order";
+                } else {
+                    status.innerText = selector.value.split("-").join(" ");
+                }
+                target.classList.remove("active");
+                target.classList.add("status");
+            });
+        }
+    }
+});

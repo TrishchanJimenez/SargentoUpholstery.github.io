@@ -221,14 +221,14 @@
                             <?php elseif ($order['order_phase'] == "out_for_delivery"): ?>
                                 <tr>
                                     <td>
-
+                                        <button class="order-actions__confirmDelivery   order-actions__btn" onclick="openModal('confirmDelivery')">Confirm Arrival of Delivery</button>
                                     </td>
                                 </tr>
                             <?php elseif ($order['order_phase'] == "received"): ?>
                                 <?php if(!isset($order['review_id'])): ?>
                                     <tr>
                                         <td>
-
+                                            <button class="order-actions__review   order-actions__btn" onclick="openModal('review')">Review Order</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>

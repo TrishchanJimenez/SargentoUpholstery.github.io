@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeUPOD = document.getElementById('closeUPOD');
     const upofModal = document.getElementById('upofModal');
     const closeUPOF = document.getElementById('closeUPOF');
+    const confirmDeliveryModal = document.getElementById('confirmDeliveryModal');
+    const closeConfirmDelivery = document.getElementById('closeConfirmDelivery');
+    const reviewModal = document.getElementById('reviewModal');
+    const closeReview = document.getElementById('closeReview');
 
     function openModal(action) {
         switch(action) {
@@ -51,6 +55,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case 'upof':
                 upofModal.style.display = 'flex';
+                break;
+            case 'confirmDelivery':
+                confirmDeliveryModal.style.display = 'flex';
+                break;
+            case 'review':
+                reviewModal.style.display = 'flex';
                 break;
             default:
                 break;
@@ -67,6 +77,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     closeUPOF.addEventListener('click', function() {
         upofModal.style.display = 'none';
+    });
+
+    closeConfirmDelivery.addEventListener('click', function() {
+        confirmDeliveryModal.style.display = 'none';
+    });
+
+    closeReview.addEventListener('click', function() {
+        reviewModal.style.display = 'none';
     });
 
     // Expose openModal to global scope

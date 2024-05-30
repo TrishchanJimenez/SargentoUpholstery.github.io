@@ -93,14 +93,27 @@
                             $type = ($quote['type'] === "mto") ? "MTO" : "Repair";
                             $status = $quote['status'];
                             $status_text = ($status === "pending") ? "Pending" : "Approved";
-                            $item = strlen($quote['item']) > 12 ? substr($quote['item'], 0, 12) . '...' : $quote['item'];
+
+                            $item = ucwords($quote['item']);
+                            if (strlen($item) > 12) {
+                                $item = substr($item, 0, 12) . '...';
+
+                                $item_display = "
+                                    <span class='item-display'>
+                                        {$quote['item']}
+                                    </span>
+                                ";
+                            }
                             // $item = ucfirst($quote['item']);
                             echo "
                             <tr data-id='{$quote['quote_id']}'>
                                 <td>{$quote['quote_id']}</td>
                                 <td>{$quote['name']}</td>
                                 <td>{$quote['email']}</td>
-                                <td>{$item}</td>
+                                <td class='item'>
+                                    {$item}
+                                    {$item_display}
+                                </td>
                                 <td>{$type}</td>
                                 <td>{$date}</td>
                                 <td class='prod-status status'>
