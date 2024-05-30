@@ -152,12 +152,13 @@
                     FROM 
                         `orders` o
                             INNER JOIN
-                        `quotes` q
-                            USING (quote_id)
+                        `quotes` q ON o.quote_id = q.quote_id
+                            INNER JOIN
+                        `items` i ON q.quote_id = i.quote_id
                     WHERE 
-                        `user_id` = :user_id
+                        q.customer_id = :user_id
                     ORDER BY
-                        `last_updated` DESC
+                        q.updated_at DESC
                     LIMIT :limit OFFSET :offset
                 ";
                 $order_stmt = $conn->prepare($order_query);
@@ -168,9 +169,9 @@
                 $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Get the total number of orders
-                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `user_id` = :user_id";
+                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `quote_id` = :quote_id";
                 $total_orders_stmt = $conn->prepare($total_orders_query);
-                $total_orders_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $total_orders_stmt->bindParam(':quote_id', $orders['quote_id'], PDO::PARAM_INT);
                 $total_orders_stmt->execute();
                 $total_orders = $total_orders_stmt->fetchColumn();
                 $total_pages_orders = ceil($total_orders / $results_per_page);
@@ -186,9 +187,6 @@
                         <th class="onq__th--corner">Order ID</th>
                         <th class="onq__th onq__th--order">Furniture Type</th>
                         <th class="onq__th onq__th--order">Service Type</th>
-                        <th class="onq__th onq__th--order">Quantity</th>
-                        <th class="onq__th onq__th--order">Delivery Method</th>
-                        <th class="onq__th onq__th--order">Price</th>
                         <th class="onq__th onq__th--order">Status</th>
                         <th class="onq__th--corner"></th>
                     </tr>
@@ -199,7 +197,7 @@
                             foreach ($orders as $row) {
                                 echo '
                                     <tr>
-                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) . '</td>
+                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) ?? 'N/A' . '</td>
                                         <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
                                         <td class="onq__td onq__td--alt onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>
