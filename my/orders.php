@@ -193,7 +193,6 @@
                                 if(!isset($order['delivery_method']) && !isset($order['delivery_address'])): ?>
                                     <tr>
                                         <td>
-                                            <?php include_once('set_order_address.php'); ?>
                                             <button class="order-actions__soa   order-actions__btn" onclick="openModal('soa')">Set Order Address</button>
                                         </td>
                                     </tr>
@@ -201,7 +200,6 @@
                                 <?php if(!isset($order['downpayment_method']) && !isset($order['downpayment_img'])): ?>
                                     <tr>
                                         <td>
-                                            <?php include_once('upload_proof_of_downpayment.php'); ?>
                                             <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
                                         </td>
                                     </tr>
@@ -210,21 +208,21 @@
                                 <?php if(!isset($order['fullpayment_method']) && !isset($order['fullpayment_img'])): ?>
                                     <tr>
                                         <td>
-                                            <?php include_once('upload_proof_of_fullpayment.php'); ?>
+
                                         </td>
                                     </tr>
                                 <?php endif; ?>
                             <?php elseif ($order['order_phase'] == "out_for_delivery"): ?>
                                 <tr>
                                     <td>
-                                        <?php include_once('confirm_arrival.php'); ?>
+
                                     </td>
                                 </tr>
                             <?php elseif ($order['order_phase'] == "received"): ?>
                                 <?php if(!isset($order['review_id'])): ?>
                                     <tr>
                                         <td>
-                                            <?php include_once('submit_review.php'); ?>
+
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -346,7 +344,13 @@
             </div>
         </div>
 
+        <!-- All Modals -->
         <?php include_once('item_details.php') ?>
+        <?php include_once('set_order_address.php'); ?>
+        <?php include_once('upload_proof_of_downpayment.php'); ?>
+        <?php include_once('upload_proof_of_fullpayment.php'); ?>
+        <?php include_once('confirm_arrival.php'); ?>
+        <?php include_once('submit_review.php'); ?>
 
         <script src="/js/my/orders.js"></script>
         <script>
