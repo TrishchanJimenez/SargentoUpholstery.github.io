@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 29, 2024 at 04:39 PM
+-- Generation Time: May 30, 2024 at 07:53 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `sargento_2`
 --
-CREATE DATABASE IF NOT EXISTS `sargento_2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `sargento_2`;
 
 -- --------------------------------------------------------
 
@@ -29,13 +27,11 @@ USE `sargento_2`;
 -- Table structure for table `addresses`
 --
 
-DROP TABLE IF EXISTS `addresses`;
-CREATE TABLE IF NOT EXISTS `addresses` (
-  `address_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `addresses` (
+  `address_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `address` varchar(255) NOT NULL,
-  PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `address` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `addresses`
@@ -57,17 +53,14 @@ INSERT INTO `addresses` (`address_id`, `user_id`, `address`) VALUES
 -- Table structure for table `chats`
 --
 
-DROP TABLE IF EXISTS `chats`;
-CREATE TABLE IF NOT EXISTS `chats` (
-  `chat_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `chats` (
+  `chat_id` int NOT NULL,
   `sender_id` int DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
   `message` text,
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`chat_id`),
-  KEY `chat_sender_id_fk` (`sender_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `is_read` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chats`
@@ -110,14 +103,12 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 -- Table structure for table `contents`
 --
 
-DROP TABLE IF EXISTS `contents`;
-CREATE TABLE IF NOT EXISTS `contents` (
+CREATE TABLE `contents` (
   `content_id` varchar(255) NOT NULL,
   `page` varchar(50) NOT NULL,
   `content_type` varchar(50) DEFAULT NULL,
   `content_text` text,
-  `image` text,
-  PRIMARY KEY (`content_id`)
+  `image` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -198,15 +189,13 @@ INSERT INTO `contents` (`content_id`, `page`, `content_type`, `content_text`, `i
 -- Table structure for table `customs`
 --
 
-DROP TABLE IF EXISTS `customs`;
-CREATE TABLE IF NOT EXISTS `customs` (
-  `custom_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `customs` (
+  `custom_id` int NOT NULL,
   `dimensions` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `materials` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fabric` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `customs`
@@ -238,7 +227,10 @@ INSERT INTO `customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`
 (23, '', '', '', 'black'),
 (24, 'sadfasdf', 'asfdasdf', 'asdfasd', 'asdfadsf'),
 (25, 'asdfasdf', 'asdfasdf', '', ''),
-(26, '', '', '', '');
+(26, '', '', '', ''),
+(27, '1x2x3', 'wood', '', 'blue'),
+(28, '1x2x3', 'metal', 'leather', 'blue'),
+(29, '2x4x5', 'wood', 'linen', 'orange');
 
 -- --------------------------------------------------------
 
@@ -246,15 +238,19 @@ INSERT INTO `customs` (`custom_id`, `dimensions`, `materials`, `fabric`, `color`
 -- Table structure for table `delivery`
 --
 
-DROP TABLE IF EXISTS `delivery`;
-CREATE TABLE IF NOT EXISTS `delivery` (
-  `delivery_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `delivery` (
+  `delivery_id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `delivery_method` enum('third_party','self') DEFAULT NULL,
-  `delivery_address` text,
-  PRIMARY KEY (`delivery_id`),
-  KEY `delivery_order_id_fk` (`order_id`)
+  `delivery_address` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`delivery_id`, `order_id`, `delivery_method`, `delivery_address`) VALUES
+(1, 4, 'third_party', '1123 Rizal Taguig City');
 
 -- --------------------------------------------------------
 
@@ -262,17 +258,15 @@ CREATE TABLE IF NOT EXISTS `delivery` (
 -- Table structure for table `downpayment`
 --
 
-DROP TABLE IF EXISTS `downpayment`;
-CREATE TABLE IF NOT EXISTS `downpayment` (
-  `downpayment_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `downpayment` (
+  `downpay_id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `downpay_method` enum('gcash','paymaya','cash') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpay_img_path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `downpay_account_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `downpay_amount` float DEFAULT NULL,
   `downpay_ref_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  PRIMARY KEY (`downpayment_id`),
-  KEY `downpayment_order_id_fk` (`order_id`)
+  `downpay_verification_status` enum('waiting_for_verification','needs_reverification','verified') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -281,13 +275,11 @@ CREATE TABLE IF NOT EXISTS `downpayment` (
 -- Table structure for table `faqs`
 --
 
-DROP TABLE IF EXISTS `faqs`;
-CREATE TABLE IF NOT EXISTS `faqs` (
-  `faq_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `faqs` (
+  `faq_id` int NOT NULL,
   `question` text NOT NULL,
-  `answer` text NOT NULL,
-  PRIMARY KEY (`faq_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `answer` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `faqs`
@@ -311,17 +303,15 @@ INSERT INTO `faqs` (`faq_id`, `question`, `answer`) VALUES
 -- Table structure for table `fullpayment`
 --
 
-DROP TABLE IF EXISTS `fullpayment`;
-CREATE TABLE IF NOT EXISTS `fullpayment` (
-  `fullpay_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fullpayment` (
+  `fullpay_id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `fullpay_method` enum('gcash','paymaya','cash') DEFAULT NULL,
   `fullpay_img_path` text,
   `fullpay_account_name` varchar(255) DEFAULT NULL,
   `fullpay_amount` float DEFAULT NULL,
   `fullpay_ref_no` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`fullpay_id`),
-  KEY `fullpayment_order_id_fk` (`order_id`)
+  `fullpay_verification_status` enum('waiting_for_verification','needs_reverification','verified') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -330,9 +320,8 @@ CREATE TABLE IF NOT EXISTS `fullpayment` (
 -- Table structure for table `items`
 --
 
-DROP TABLE IF EXISTS `items`;
-CREATE TABLE IF NOT EXISTS `items` (
-  `item_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `items` (
+  `item_id` int NOT NULL,
   `quote_id` int DEFAULT NULL,
   `custom_id` int DEFAULT NULL,
   `furniture` varchar(255) DEFAULT NULL,
@@ -340,11 +329,8 @@ CREATE TABLE IF NOT EXISTS `items` (
   `item_ref_img` text,
   `quantity` int UNSIGNED DEFAULT NULL,
   `item_price` float DEFAULT NULL,
-  `item_status` enum('pending','approved','modified','rejected','accepted','cancelled') DEFAULT 'pending',
-  PRIMARY KEY (`item_id`),
-  KEY `items_quote_id_fk` (`quote_id`),
-  KEY `items_custom_id_fk` (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `item_status` enum('pending','approved','modified','rejected','accepted','cancelled') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `items`
@@ -369,7 +355,11 @@ INSERT INTO `items` (`item_id`, `quote_id`, `custom_id`, `furniture`, `descripti
 (16, 18, NULL, 'adsfasdf', 'asdfasdf', 'uploadedImages/referenceImages/prog2.png', 1, 1590, 'pending'),
 (17, 19, NULL, 'asdfasf', 'asfas', 'uploadedImages/referenceImages/cor.png', 1, 1231, 'pending'),
 (18, 19, NULL, 'asdfasdf', 'asdfasdf', NULL, 1, 13123, 'pending'),
-(19, 19, NULL, 'asdfa', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending');
+(19, 19, NULL, 'asdfa', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending'),
+(20, 20, NULL, 'Test furniture', 'Test description', NULL, 2, NULL, 'pending'),
+(21, 21, NULL, 'Experiment furniture', 'Experiment desc', 'uploadedImages/referenceImages/61F8CTCqVVL._AC_SL1001_.jpg', 3, NULL, 'pending'),
+(22, 22, 28, 'Pilot furniture', 'pilot desc', 'uploadedImages/referenceImages/Stool.jpg', 6, NULL, 'pending'),
+(23, 22, 29, 'Example furniture', 'example desc', 'uploadedImages/referenceImages/images.jpg', 2, NULL, 'pending');
 
 -- --------------------------------------------------------
 
@@ -377,17 +367,14 @@ INSERT INTO `items` (`item_id`, `quote_id`, `custom_id`, `furniture`, `descripti
 -- Table structure for table `notifs`
 --
 
-DROP TABLE IF EXISTS `notifs`;
-CREATE TABLE IF NOT EXISTS `notifs` (
-  `notif_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `notifs` (
+  `notif_id` int NOT NULL,
   `user_id` int DEFAULT NULL,
   `notif_msg` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_read` tinyint(1) DEFAULT '0',
-  `redirect_link` tinytext,
-  PRIMARY KEY (`notif_id`),
-  KEY `notifs_user_id_fk` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `redirect_link` tinytext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `notifs`
@@ -448,7 +435,10 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (52, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:25:02', 0, '/my/user_orders.php'),
 (53, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:26:29', 0, '/my/user_orders.php'),
 (54, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:28:02', 0, '/my/user_orders.php'),
-(55, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:28:52', 0, '/my/user_orders.php');
+(55, 26, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 03:28:52', 0, '/my/user_orders.php'),
+(56, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 21:40:17', 0, '/my/user_orders.php'),
+(57, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 21:41:26', 0, '/my/user_orders.php'),
+(58, 22, 'You have successfully placed a quote request. Please wait for us to evaluate your request', '2024-05-29 23:13:54', 0, '/my/user_orders.php');
 
 -- --------------------------------------------------------
 
@@ -456,18 +446,15 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE IF NOT EXISTS `orders` (
-  `order_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orders` (
+  `order_id` int NOT NULL,
   `quote_id` int DEFAULT NULL,
   `order_phase` enum('pending_downpayment','awaiting_furniture','in_production','pending_fullpayment','out_for_delivery','received','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pending_downpayment',
   `payment_phase` enum('unpaid','partially_paid','fully_paid') NOT NULL DEFAULT 'unpaid',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `est_completion_date` date DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`order_id`),
-  KEY `orders_quote_id_fk` (`quote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
@@ -475,12 +462,12 @@ CREATE TABLE IF NOT EXISTS `orders` (
 
 INSERT INTO `orders` (`order_id`, `quote_id`, `order_phase`, `payment_phase`, `created_at`, `est_completion_date`, `updated_at`) VALUES
 (2, 18, 'pending_downpayment', 'unpaid', '2024-05-29 20:49:23', '2024-06-12', '2024-05-29 12:49:23'),
-(3, 19, 'pending_downpayment', 'unpaid', '2024-05-29 20:50:50', '2024-06-12', '2024-05-29 12:50:50');
+(3, 19, 'pending_downpayment', 'unpaid', '2024-05-29 20:50:50', '2024-06-12', '2024-05-29 12:50:50'),
+(4, 22, 'pending_downpayment', 'unpaid', '2024-05-30 07:27:58', '2024-06-13', '2024-05-29 23:27:58');
 
 --
 -- Triggers `orders`
 --
-DROP TRIGGER IF EXISTS `set_est_completion_date`;
 DELIMITER $$
 CREATE TRIGGER `set_est_completion_date` BEFORE INSERT ON `orders` FOR EACH ROW SET NEW.est_completion_date = DATE_ADD(NOW(), INTERVAL 2 WEEK)
 $$
@@ -492,15 +479,20 @@ DELIMITER ;
 -- Table structure for table `pickup`
 --
 
-DROP TABLE IF EXISTS `pickup`;
-CREATE TABLE IF NOT EXISTS `pickup` (
-  `pickup_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pickup` (
+  `pickup_id` int NOT NULL,
   `order_id` int DEFAULT NULL,
   `pickup_method` enum('third_party','self') DEFAULT NULL,
-  `pickup_address` text,
-  PRIMARY KEY (`pickup_id`),
-  KEY `pickup_order_id_fk` (`order_id`)
+  `pickup_address` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `pickup`
+--
+
+INSERT INTO `pickup` (`pickup_id`, `order_id`, `pickup_method`, `pickup_address`) VALUES
+(1, 4, 'third_party', '1123 Rizal Taguig City'),
+(2, 4, 'third_party', '1123 Rizal Taguig City');
 
 -- --------------------------------------------------------
 
@@ -508,18 +500,15 @@ CREATE TABLE IF NOT EXISTS `pickup` (
 -- Table structure for table `quotes`
 --
 
-DROP TABLE IF EXISTS `quotes`;
-CREATE TABLE IF NOT EXISTS `quotes` (
-  `quote_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `quotes` (
+  `quote_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
   `service_type` enum('','repair','mto') DEFAULT NULL,
   `total_price` float DEFAULT NULL,
   `quote_status` enum('pending','approved','modified','rejected','accepted','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`quote_id`),
-  KEY `quotes_customer_id_fk` (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `quotes`
@@ -539,12 +528,14 @@ INSERT INTO `quotes` (`quote_id`, `customer_id`, `service_type`, `total_price`, 
 (16, 26, 'repair', 1231, 'approved', '2024-05-29 03:25:02', '2024-05-29 10:32:44'),
 (17, 26, 'mto', 2364, 'approved', '2024-05-29 03:26:28', '2024-05-29 10:32:24'),
 (18, 26, 'repair', 3032, 'accepted', '2024-05-29 03:28:01', '2024-05-29 12:49:23'),
-(19, 26, 'mto', 17478, 'accepted', '2024-05-29 03:28:51', '2024-05-29 12:50:50');
+(19, 26, 'mto', 17478, 'accepted', '2024-05-29 03:28:51', '2024-05-29 12:50:50'),
+(20, 22, 'repair', NULL, 'cancelled', '2024-05-29 21:40:17', '2024-05-30 01:38:09'),
+(21, 22, 'mto', NULL, 'approved', '2024-05-29 21:41:26', '2024-05-29 23:23:55'),
+(22, 22, 'repair', 25000, 'approved', '2024-05-29 23:13:53', '2024-05-30 05:36:25');
 
 --
 -- Triggers `quotes`
 --
-DROP TRIGGER IF EXISTS `insert_order_after_quote_accept`;
 DELIMITER $$
 CREATE TRIGGER `insert_order_after_quote_accept` AFTER UPDATE ON `quotes` FOR EACH ROW IF NEW.quote_status = 'accepted' AND OLD.quote_status != 'accepted' THEN
         INSERT INTO orders (quote_id)
@@ -559,18 +550,15 @@ DELIMITER ;
 -- Table structure for table `reviews`
 --
 
-DROP TABLE IF EXISTS `reviews`;
-CREATE TABLE IF NOT EXISTS `reviews` (
-  `review_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `reviews` (
+  `review_id` int NOT NULL,
   `order_id` int NOT NULL,
   `rating` int NOT NULL,
   `comment` text,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reply` text,
-  `reply_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`review_id`),
-  KEY `order_review_fk` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `reply_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `reviews`
@@ -595,14 +583,11 @@ INSERT INTO `reviews` (`review_id`, `order_id`, `rating`, `comment`, `date`, `re
 -- Table structure for table `review_images`
 --
 
-DROP TABLE IF EXISTS `review_images`;
-CREATE TABLE IF NOT EXISTS `review_images` (
-  `image_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `review_images` (
+  `image_id` int NOT NULL,
   `review_id` int NOT NULL,
-  `path` text NOT NULL,
-  PRIMARY KEY (`image_id`),
-  KEY `image_review_fk` (`review_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `path` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `review_images`
@@ -619,18 +604,16 @@ INSERT INTO `review_images` (`image_id`, `review_id`, `path`) VALUES
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `user_id` int NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_type` enum('customer','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `contact_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `token_hash` varchar(255) DEFAULT NULL,
-  `token_expiry` datetime DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `token_expiry` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
@@ -670,14 +653,12 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `conta
 -- Table structure for table `works`
 --
 
-DROP TABLE IF EXISTS `works`;
-CREATE TABLE IF NOT EXISTS `works` (
-  `works_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `works` (
+  `works_id` int NOT NULL,
   `category` varchar(50) DEFAULT NULL,
   `color` varchar(50) DEFAULT NULL,
-  `img_path` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`works_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `img_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `works`
@@ -740,6 +721,224 @@ INSERT INTO `works` (`works_id`, `category`, `color`, `img_path`) VALUES
 (58, 'sofa', 'brown', '/websiteimages/galleryimages/sofa18.jpg'),
 (59, 'sofa', 'red', '/websiteimages/galleryimages/sofa19.jpg'),
 (60, 'sofa', 'black', '/websiteimages/galleryimages/sofa20.jpg');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`address_id`);
+
+--
+-- Indexes for table `chats`
+--
+ALTER TABLE `chats`
+  ADD PRIMARY KEY (`chat_id`),
+  ADD KEY `chat_sender_id_fk` (`sender_id`);
+
+--
+-- Indexes for table `contents`
+--
+ALTER TABLE `contents`
+  ADD PRIMARY KEY (`content_id`);
+
+--
+-- Indexes for table `customs`
+--
+ALTER TABLE `customs`
+  ADD PRIMARY KEY (`custom_id`);
+
+--
+-- Indexes for table `delivery`
+--
+ALTER TABLE `delivery`
+  ADD PRIMARY KEY (`delivery_id`),
+  ADD KEY `delivery_order_id_fk` (`order_id`);
+
+--
+-- Indexes for table `downpayment`
+--
+ALTER TABLE `downpayment`
+  ADD PRIMARY KEY (`downpay_id`),
+  ADD KEY `downpayment_order_id_fk` (`order_id`);
+
+--
+-- Indexes for table `faqs`
+--
+ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`faq_id`);
+
+--
+-- Indexes for table `fullpayment`
+--
+ALTER TABLE `fullpayment`
+  ADD PRIMARY KEY (`fullpay_id`),
+  ADD KEY `fullpayment_order_id_fk` (`order_id`);
+
+--
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `items_quote_id_fk` (`quote_id`),
+  ADD KEY `items_custom_id_fk` (`custom_id`);
+
+--
+-- Indexes for table `notifs`
+--
+ALTER TABLE `notifs`
+  ADD PRIMARY KEY (`notif_id`),
+  ADD KEY `notifs_user_id_fk` (`user_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `orders_quote_id_fk` (`quote_id`);
+
+--
+-- Indexes for table `pickup`
+--
+ALTER TABLE `pickup`
+  ADD PRIMARY KEY (`pickup_id`),
+  ADD KEY `pickup_order_id_fk` (`order_id`);
+
+--
+-- Indexes for table `quotes`
+--
+ALTER TABLE `quotes`
+  ADD PRIMARY KEY (`quote_id`),
+  ADD KEY `quotes_customer_id_fk` (`customer_id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD KEY `order_review_fk` (`order_id`);
+
+--
+-- Indexes for table `review_images`
+--
+ALTER TABLE `review_images`
+  ADD PRIMARY KEY (`image_id`),
+  ADD KEY `image_review_fk` (`review_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indexes for table `works`
+--
+ALTER TABLE `works`
+  ADD PRIMARY KEY (`works_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `addresses`
+--
+ALTER TABLE `addresses`
+  MODIFY `address_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `chats`
+--
+ALTER TABLE `chats`
+  MODIFY `chat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `customs`
+--
+ALTER TABLE `customs`
+  MODIFY `custom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `delivery`
+--
+ALTER TABLE `delivery`
+  MODIFY `delivery_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `downpayment`
+--
+ALTER TABLE `downpayment`
+  MODIFY `downpay_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `faqs`
+--
+ALTER TABLE `faqs`
+  MODIFY `faq_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `fullpayment`
+--
+ALTER TABLE `fullpayment`
+  MODIFY `fullpay_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `notifs`
+--
+ALTER TABLE `notifs`
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `pickup`
+--
+ALTER TABLE `pickup`
+  MODIFY `pickup_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `quotes`
+--
+ALTER TABLE `quotes`
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `review_images`
+--
+ALTER TABLE `review_images`
+  MODIFY `image_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `works`
+--
+ALTER TABLE `works`
+  MODIFY `works_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- Constraints for dumped tables

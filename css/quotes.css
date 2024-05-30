@@ -74,7 +74,6 @@
                 border-radius: 15px;
                 background-color: #333;
                 color: white;
-                margin: 2.5vmin;
                 margin-bottom: 2.5em;
             }
                 .quotes-segment__title {
@@ -100,8 +99,6 @@
                     padding: 2.5vmin;
                     border-radius: 15px;
                     border: 1px solid #eee;
-                }
-                .quote-identif__section {
                     width: 50%;
                     flex: 1 1 (50%-2.5vmin);
                     margin: 1.25vmin;
@@ -142,11 +139,6 @@
                         text-align: right;
                         font-size: 1.75em;
                     }
-                .quote-info__section {
-                    width: 50%;
-                    flex: 1 1 (50%-2.5vmin);
-                    margin: 1.25vmin;
-                }
                 .quote-type__wrapper,
                 .quote-price__wrapper,
                 .quote-actions__wrapper {

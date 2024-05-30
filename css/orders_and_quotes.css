@@ -20,31 +20,6 @@
     margin: 0 5%;
 }
 
-
-.quote-buttons{
-    width: 90%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    margin: 0 5%; 
-}
-
-.quote-button{
-    width: 50%;
-    height: auto;
-    padding: 2.5vmin;
-    font-size: larger;
-    cursor: pointer;
-    border: 1px solid #ccc;  
-}
-.order-filters {
-    width: 90%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    margin: 0 5%;
-}
-
 .onq__tab-button {
     width: 50%;
     height: auto;
@@ -79,7 +54,7 @@
     height: auto;
     border: 1px solid #bbb;
     padding: 2.5vmin;
-    font-size: 3.75vmin;
+    font-size: 100%;
 }
 
 .onq__th,
@@ -106,7 +81,6 @@
 .onq__td {
     height: 15vh;
     text-align: center;
-    font-size: 3.75vmin;
 }
 
 .onq__td--alt,
@@ -205,6 +179,29 @@
     background-color: #0056b3;
 }
 
-.pagination{
-    display: flex;
+.pagination {
+    margin-top: 20px; /* Adjust as needed */
 }
+
+.pagination__button {
+    background-color: #ccc;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination__button:hover {
+    background-color: #ccc; /* Darker green */
+}
+
+.pagination__button.active {
+    background-color: #FCD34D; /* Blue, or any other color you prefer */
+}
+

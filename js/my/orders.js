@@ -31,6 +31,50 @@ confirmBtn.addEventListener('click', () => {
     });
 }); */
 
+// ---------- Modal for order actions ---------- //
+
+document.addEventListener('DOMContentLoaded', function () {
+    const soaModal = document.getElementById('soaModal');
+    const closeSOA = document.getElementById('closeSOA');
+    const upodModal = document.getElementById('upodModal');
+    const closeUPOD = document.getElementById('closeUPOD');
+    const upofModal = document.getElementById('upofModal');
+    const closeUPOF = document.getElementById('closeUPOF');
+
+    function openModal(action) {
+        switch(action) {
+            case 'soa':
+                soaModal.style.display = 'flex';
+                break;
+            case 'upod':
+                upodModal.style.display = 'flex';
+                break;
+            case 'upof':
+                upofModal.style.display = 'flex';
+                break;
+            default:
+                break;
+        }
+    }
+
+    closeSOA.addEventListener('click', function() {
+        soaModal.style.display = 'none';
+    });
+
+    closeUPOD.addEventListener('click', function() {
+        upodModal.style.display = 'none';
+    });
+
+    closeUPOF.addEventListener('click', function() {
+        upofModal.style.display = 'none';
+    });
+
+    // Expose openModal to global scope
+    window.openModal = openModal;
+});
+
+
+
 // ---------- Modal for item details ---------- //
 
 document.addEventListener('DOMContentLoaded', function() {

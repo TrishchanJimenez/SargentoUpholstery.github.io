@@ -74,7 +74,6 @@
                 border-radius: 15px;
                 background-color: #333;
                 color: white;
-                margin: 2.5vmin;
                 margin-bottom: 2.5em;
             }
                 .orders-segment__title {
@@ -89,19 +88,21 @@
                     font-size: 1.15em;
                 }
             .order-identif,
-            .order-info {
+            .order-info,
+            .order-requisite,
+            .order-downpayment-standing,
+            .order-downpayment-submission,
+            .order-fullpayment-standing,
+            .order-fullpayment-submission {
                 width: calc(100%-2.5vmin);
                 display: flex;
                 margin: 1.25vmin;
             }
-                .order-identif__section,
-                .order-info__section {
+                .order-section {
                     background-color: #f9f9f9;
                     padding: 2.5vmin;
                     border-radius: 15px;
                     border: 1px solid #eee;
-                }
-                .order-identif__section {
                     width: 50%;
                     flex: 1 1 (50%-2.5vmin);
                     margin: 1.25vmin;
@@ -119,17 +120,17 @@
                         margin: 0 15px;
                     }
                     .order-number,
-                    .order-status {
+                    .order-status{
                         text-align: right;
                         font-size: 1.75em;
                     }
-                .order-info__section {
-                    width: 50%;
-                    flex: 1 1 (50%-2.5vmin);
-                    margin: 1.25vmin;
-                }
                 .order-type__wrapper,
                 .order-price__wrapper,
+                .order-payment__wrapper,
+                .payment-status__wrapper,
+                .payment-due__wrapper,
+                .payment-proof__wrapper,
+                .payment-actions__wrapper,
                 .order-actions__wrapper {
                     display: flex;
                     flex-direction: column;
@@ -138,16 +139,30 @@
                     .order-type,
                     .order-price__title,
                     .order-price,
+                    .order-payment__title,
+                    .order-payment,
+                    .payment-status__title,
+                    .payment-due__title,
+                    .payment-proof__title,
+                    .payment-proof,
+                    .payment-actions__title,
+                    .payment-actions
                     .order-actions__title,
                     .order-actions {
                         margin: 1.25vmin;
                     }
                     .order-type,
                     .order-price,
+                    .order-payment,
+                    .payment-status,
+                    .payment-due,
+                    .payment-proof,
+                    .payment-actions,
                     .order-actions {
                         font-size: 1.75em;
                     }
-                    .order-actions {
+                    .order-actions,
+                    .payment-proof {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
