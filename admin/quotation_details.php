@@ -44,9 +44,9 @@
     if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['reject-quote'])) {
         $quote_id = $_POST['quote_id'];
         $rejection_reason = $_POST['rejection-reason'];
-        $sql = "UPDATE quotes SET quote_status = 'rejected', rejection_reason = :rejection_reason WHERE quote_id = :quote_id";
+        $sql = "UPDATE quotes SET quote_status = 'rejected', cancellation_reason = :cancellation_reason WHERE quote_id = :quote_id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':rejection_reason', $rejection_reason);
+        $stmt->bindParam(':cancellation_reason', $rejection_reason);
         $stmt->bindParam(':quote_id', $quote_id);
         $stmt->execute();
         // sendAlert('success', 'Quote has been rejected successfully');
