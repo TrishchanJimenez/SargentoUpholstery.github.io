@@ -180,73 +180,25 @@
     }
 </style>
 
-<?php
-    // Include database connection
-    require_once('../database_connection.php');
-    include_once('../notif.php');
+<script>
+    document.getElementById("soaForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-    // Check if the form is submitted
-    // if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--soa"])) {
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--soa"])) {
-        // Sanitize and validate input (you can use more robust validation methods)
-        $delivery_method = htmlspecialchars($_POST['delivery_method']);
-        $delivery_address = htmlspecialchars(trim($_POST['delivery_address']));
-        
-        try {
-            // If order is of type repair
-            if($_SESSION['enablePickup']) {
-                $pickup_method = htmlspecialchars($_POST['pickup_method']);
-                $pickup_address = htmlspecialchars(trim($_POST['pickup_address']));
-                // Write the query
-                $query_pickup = "
-                    INSERT INTO
-                        `pickup` (
-                            `order_id`,
-                            `pickup_method`,
-                            `pickup_address`
-                        )
-                    VALUES (
-                        :order_id,
-                        :pickup_method,
-                        :pickup_address
-                    )
-                ";
-                // Prepare the query
-                $stmt_pickup = $conn->prepare($query_pickup);
-                $stmt_pickup->bindParam(':order_id', $order_id);
-                $stmt_pickup->bindParam(':pickup_method', $pickup_method);
-                $stmt_pickup->bindParam(':pickup_address', $pickup_address);
+        const formData = new FormData(this);
+        fetch("../api/submit_order_address.php", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                console.error("Error:", data.error);
+                alert("An error occurred: " + data.error);
             }
-            // Write the query
-            $query_delivery = "
-                INSERT INTO 
-                    `delivery` (
-                        `order_id`,
-                        `delivery_method`,
-                        `delivery_address`
-                    )
-                VALUES (
-                    :order_id,
-                    :delivery_method,
-                    :delivery_address
-                )
-            ";
-            // Prepare the query
-            $stmt_delivery = $conn->prepare($query_delivery);
-            $stmt_delivery->bindParam(':order_id', $order_id);
-            $stmt_delivery->bindParam(':delivery_method', $delivery_method);
-            $stmt_delivery->bindParam(':delivery_address', $delivery_address);
-            // Execute the queries
-            if ($_SESSION['enablePickup']) {
-                $stmt_pickup->execute();
-            }
-            $stmt_delivery->execute();
-            $stmt_pickup = null;
-            $stmt_delivery = null;
-            echo '<script type="text/javascript"> alert("You have successfully set the address of an order.") </script>'; 
-        } catch (PDOException $e) {
-            // Handle database error
-            echo "<script>console.log(" . $e->getMessage() . ")</script>";
-        }
-    }
-?>
+        })
+        .catch(error => console.error("Fetch error:", error));
+    });
+</script>
