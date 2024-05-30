@@ -18,3 +18,24 @@ width: 100%;
     flex-direction: row;
     gap: 2%;
 }
+
+.filter-date {
+    position: relative;
+    display: inline-block; /* Ensure it only takes up as much width as necessary */
+}
+
+.custom-date {
+    position: absolute;
+    top: 100%; /* Position below the label "Start to end" */
+    left: 0;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 1000; /* Adjust z-index as needed */
+}
+
+/* Optional styling for the custom date inputs */
+.custom-date input[type="date"] {
+    width: 150px; /* Adjust width as needed */
+    margin-right: 10px;
+}
