@@ -214,7 +214,7 @@
                                 <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
                                     <tr>
                                         <td>
-
+                                        <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -450,11 +450,11 @@
                                                     <?php endif; ?>
                                                     </td>
 
-                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["custom_id"] ?? '') ?></td>
-                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["dimensions"] ?? 'None.') ?></td>
-                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["materials"] ?? 'None.') ?></td>
-                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["fabric"] ?? 'None.') ?></td>
-                                                    <td class="quote-items__td" hidden><?= htmlspecialchars($item["color"] ?? 'None.') ?></td>
+                                                    <td class="order-items__td" hidden><?= htmlspecialchars($item["custom_id"] ?? '') ?></td>
+                                                    <td class="order-items__td" hidden><?= htmlspecialchars($item["dimensions"] ?? 'None.') ?></td>
+                                                    <td class="order-items__td" hidden><?= htmlspecialchars($item["materials"] ?? 'None.') ?></td>
+                                                    <td class="order-items__td" hidden><?= htmlspecialchars($item["fabric"] ?? 'None.') ?></td>
+                                                    <td class="order-items__td" hidden><?= htmlspecialchars($item["color"] ?? 'None.') ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>
@@ -502,7 +502,7 @@
                 let currentPage = 1;
 
                 function fetchItems(page) {
-                    fetch(`../api/orders_pagination.php?quote_id=${quoteId}&page=${page}`)
+                    fetch(`../api/orders_pagination.php?order_id=${quoteId}&page=${page}`)
                         .then(response => response.json())
                         .then(data => {
                             updateTable(data.items);

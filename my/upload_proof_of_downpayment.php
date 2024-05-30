@@ -11,27 +11,30 @@
         <div class="form__wrapper form__wrapper--upload">
             <h1 class="form__title">Upload Proof of Downpayment</h1>
             <form id="upodForm" class="form" method="post" enctype="multipart/form-data">
-                <label class="form__label" for="payment_method">Payment Method</label>
-                <select class="form__select" name="payment_method" id="payment_method">
+                
+                <input type="hidden" id="order_id" name="order_id" value="<?= $order_id; ?>">
+
+                <label class="form__label" for="downpay_method">Payment Method</label>
+                <select class="form__select" name="downpay_method" id="downpay_method">
                     <option class="form__option" value="gcash">GCash</option>
                     <option class="form__option" value="paymaya">Paymaya</option>
                     <option class="form__option" value="cash">Cash</option>
                 </select>
 
-                <label class="form__label" for="account_holder">Account Holder Name</label>
-                <input class="form__input" type="text" id="account_holder" name="account_holder" required>
+                <label class="form__label" for="downpay_account_name">Account Holder Name</label>
+                <input class="form__input" type="text" id="downpay_account_name" name="downpay_account_name" required>
 
-                <label class="form__label" for="amount">Amount</label>
-                <input class="form__input" type="number" id="amount" name="amount" required>
+                <label class="form__label" for="downpay_amount">Amount</label>
+                <input class="form__input" type="number" id="downpay_amount" name="downpay_amount" required>
 
-                <label class="form__label" for="reference_no">Reference No. (For cash payments, enter N/A instead)</label>
-                <input class="form__input" type="text" id="reference_no" name="reference_no" required>
+                <label class="form__label" for="downpay_ref_no">Reference No. (For cash payments, enter N/A instead)</label>
+                <input class="form__input" type="text" id="downpay_ref_no" name="downpay_ref_no" required>
 
-                <label class="form__label" for="proof_upload">Upload File</label>
-                <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
+                <label class="form__label" for="downpay_img">Upload File</label>
+                <input class="form__input" type="file" id="downpay_img" name="downpay_img" accept="image/*,application/pdf" required>
 
                 <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
-                <input class="form__submit" type="submit" name="submit--upod" value="Submit Proof">
+                <input class="form__submit" type="submit" name="submit" value="Submit Proof">
             </form>
         </div>
     </div>
@@ -161,23 +164,87 @@
     }
 </style>
 
-<script>
-    document.getElementById("upodForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+<?php
+    require_once('../database_connection.php');
 
-        const formData = new FormData(this);
-        fetch("../api/submit_proof_of_downpayment.php", {
-            method: "POST",
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit"])) {
+        // Define the target directory for uploads
+        $targetDir = "../uploadedImages/paymentImages";
+        // Create the uploads directory if it doesn't exist
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Get the uploaded file information
+        $fileName = basename($_FILES["downpay_img"]["name"]);
+        $targetFilePath = $targetDir . '/' . $fileName;
+        $dbpath = "uploadedImages/paymentImages/" . $fileName;
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        
+        // Set the allowed file types and maximum file size (5MB)
+        $allowedTypes = array('jpg', 'jpeg', 'png');
+        $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+
+        $downpay_method = $_POST['downpay_method'];
+        $downpay_account_name = htmlspecialchars(trim($_POST['downpay_account_name']));
+        $downpay_amount = $_POST['downpay_amount'];
+        $downpay_ref_no = htmlspecialchars(trim($_POST['downpay_ref_no']));
+
+        // Check if the file type is allowed
+        if (in_array(strtolower($fileType), $allowedTypes)) {
+            // Check the file size
+            if ($_FILES["downpay_img"]["size"] <= $maxFileSize) {
+                // Move the uploaded file to the target directory
+                if (move_uploaded_file($_FILES["downpay_img"]["tmp_name"], $targetFilePath)) {
+                    try {
+                        // Write the query
+                        $query = "
+                            INSERT INTO
+                                `downpayment` (
+                                    order_id,
+                                    downpay_method,
+                                    downpay_img_path,
+                                    downpay_account_name,
+                                    downpay_amount,
+                                    downpay_ref_no,
+                                    downpay_verification_status
+                                )
+                            VALUES (
+                                :order_id,
+                                :downpay_method,
+                                :downpay_img_path,
+                                :downpay_account_name,
+                                :downpay_amount,
+                                :downpay_ref_no,
+                                'waiting_for_verification'
+                            )
+                        ";
+                        // Prepare the query
+                        $stmt = $conn->prepare($query);
+                        $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':downpay_method', $downpay_method, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_img_path', $dbpath, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_account_name', $downpay_account_name, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_amount', $downpay_amount);
+                        $stmt->bindParam(':downpay_ref_no', $downpay_ref_no, PDO::PARAM_STR);
+                        
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "Proof of downpayment successfully uploaded.";
+                        } else {
+                            echo "Failed to execute query.";
+                        }
+                    } catch (PDOException $e) {
+                        echo $e->getMessage();
+                    }
+                } else {
+                    echo "Error uploading file.";
+                }
             } else {
-                console.error("Error:", data.error);
+                echo "File is too large. Maximum size is 5MB.";
             }
-        })
-        .catch(error => console.error("Fetch error:", error));
-    });
-</script>
+        } else {
+            echo "Invalid file type. Only JPG, JPEG, and PNG files are allowed.";
+        }
+    }
+?>
