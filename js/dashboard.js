@@ -1,4 +1,4 @@
-const chartConfig = {
+const orderStatusConfig = {
 	type: "doughnut",
 	data: {
 		labels: [],
@@ -57,8 +57,66 @@ const chartConfig = {
 	}
 };
 
+const orderTypeConfig = {
+	type: "doughnut",
+	data: {
+		labels: [],
+		datasets: [
+		{
+			label: "Type",
+			data: [],
+			backgroundColor: [
+			"rgba(255, 99, 132, 0.2)",
+			"rgba(54, 162, 235, 0.2)",
+			"rgba(255, 205, 86, 0.2)",
+			"rgba(75, 192, 192, 0.2)",
+			"rgba(153, 102, 255, 0.2)",
+			"rgba(255, 159, 64, 0.2)",
+			"rgba(201, 203, 207, 0.2)",
+			],
+			borderColor: [
+			"rgb(255, 99, 132)",
+			"rgb(54, 162, 235)",
+			"rgb(255, 205, 86)",
+			"rgb(75, 192, 192)",
+			"rgb(153, 102, 255)",
+			"rgb(255, 159, 64)",
+			"rgb(201, 203, 207)",
+			],
+			borderWidth: 1,
+		},
+		],
+	},
+	options: {
+		responsive: true,
+		aspectRatio: 1.75,
+		plugins: {
+			legend: {
+				display: true,
+				position: "bottom",
+				labels: {
+				font: {
+					family: "Inter",
+					size: 16,
+					style: "normal",
+					weight: 400,
+					lineHeight: 24,
+				},
+				color: "rgb(26, 25, 25)",
+				},
+			},
+			tooltip: {
+				callbacks: {
+					label: function (tooltipItem) {
+						return tooltipItem.label + ": " + tooltipItem.raw;
+					},
+				},
+			},
+		},
+	}
+};
 // Chart configuration
-const barchartConfig = {
+const furnitureTypeConfig = {
 	type: 'bar',
 	data: {
 		labels: [], // Labels will be populated with fetched data
@@ -106,9 +164,9 @@ const barchartConfig = {
 	}
 };
 
-const chartOrderStatus = new Chart(document.getElementById('statusChart'), chartConfig);
-const chartOrderType = new Chart(document.getElementById('typeChart'), chartConfig);
-const chartFurnitureType = new Chart(document.getElementById('furnitureChart'), barchartConfig);
+const chartOrderStatus = new Chart(document.getElementById('statusChart'), orderStatusConfig);
+const chartOrderType = new Chart(document.getElementById('typeChart'), orderTypeConfig);
+const chartFurnitureType = new Chart(document.getElementById('furnitureChart'), furnitureTypeConfig);
         
 function fetchStatusData(chart) {
     fetch(`../chartData/order_status_data.php`)
@@ -169,6 +227,6 @@ function fetchFurnitureData(chart) {
 		});
 }
 
-fetchStatusData(chartOrderStatus);
 fetchTypeData(chartOrderType);
+fetchStatusData(chartOrderStatus);
 fetchFurnitureData(chartFurnitureType);
