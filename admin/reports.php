@@ -131,7 +131,7 @@ if ($current_page !== 1) {
 // Execute main query to fetch filtered orders
 $stmt = $conn->query($query);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>  
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -165,19 +165,19 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
 
             .selector-container {
-                padding:0.4rem 0.3rem
+                padding: 0.4rem 0.3rem
             }
 
-            .filter{
+            .filter {
                 display: none;
-            
+
             }
 
-            .Print_button{
+            .Print_button {
                 display: none;
             }
 
-            .Download_button{
+            .Download_button {
                 display: none;
             }
         }
@@ -474,7 +474,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
-        ?>      
+        ?>
                 <div class="daily_container tab-content" id="daily_container" data-tab="daily">
                     <div class="daily">
                         <table class="order-table">
@@ -536,7 +536,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </tbody>
                         </table>
                     </div>
-                
+
                     <div class="breakdown_of_furnitures_container">
 
                         <table class="order-table-breakdown">
@@ -549,11 +549,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </thead>
                             <tbody>
                                 <?php foreach ($daily_results as $row): ?>
-                                    <tr>
-                                        <td><?php echo $row['furniture_type']; ?></td>
-                                        <td><?php echo $row['number_ordered']; ?></td>
-                                        <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $row['furniture_type']; ?></td>
+                                    <td><?php echo $row['number_ordered']; ?></td>
+                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -568,11 +568,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </thead>
                             <tbody>
                                 <?php foreach ($daily_results as $row): ?>
-                                    <tr>
-                                        <td><?php echo $row['furniture_type']; ?></td>
-                                        <td><?php echo $row['number_ordered']; ?></td>
-                                        <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $row['furniture_type']; ?></td>
+                                    <td><?php echo $row['number_ordered']; ?></td>
+                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -580,179 +580,179 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-            
 
 
 
-            <div class="weekly_container tab-content" id="weekly_container" data-tab="weekly">
-                <div class="weekly">
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Weekly Statistics</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total Sales</td>
-                                <td><?= '₱ ' . $total_revenue_current_week ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Orders</td>
-                                <td><?= $new_orders_current_week ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Finished Orders</td>
-                                <td><?= $completed_orders_current_week ?></td>
-                            </tr>
-                            <tr>
-                                <td>Average Ratings</td>
-                                <td>
-                                    <?= $avg_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>New Customers</td>
-                                <td><?= $new_customers_current_week ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Average Star Rating</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Made To Order</td>
-                                <td>
-                                    <?= $mto_weekly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Repair</td>
-                                <td>
-                                    <?= $repair_weekly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div class="weekly_container tab-content" id="weekly_container" data-tab="weekly">
+                    <div class="weekly">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Weekly Statistics</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Sales</td>
+                                    <td><?= '₱ ' . $total_revenue_current_week ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Orders</td>
+                                    <td><?= $new_orders_current_week ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Finished Orders</td>
+                                    <td><?= $completed_orders_current_week ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Average Ratings</td>
+                                    <td>
+                                        <?= $avg_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>New Customers</td>
+                                    <td><?= $new_customers_current_week ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    
-                <div class="breakdown_of_furnitures_container">
-                    <table class="order-table-breakdown">
-                        <thead>
-                            <tr>
-                                <th>Furniture Type</th>
-                                <th>Number Ordered</th>
-                                <th>Total Price Ordered</th>
-                               </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($weekly_results as $row): ?>
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Average Star Rating</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Made To Order</td>
+                                    <td>
+                                        <?= $mto_weekly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Repair</td>
+                                    <td>
+                                        <?= $repair_weekly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="breakdown_of_furnitures_container">
+                        <table class="order-table-breakdown">
+                            <thead>
+                                <tr>
+                                    <th>Furniture Type</th>
+                                    <th>Number Ordered</th>
+                                    <th>Total Price Ordered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($weekly_results as $row): ?>
                                 <tr>
                                     <td><?php echo $row['furniture_type']; ?></td>
                                     <td><?php echo $row['number_ordered']; ?></td>
                                     <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
 
-                    <table class="order-table-breakdown">
-                        <thead>
-                            <tr>
-                                <th>Furniture Type</th>
-                                <th>Number Ordered</th>
-                                <th>Total Price Ordered</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($weekly_results as $row): ?>
+                        <table class="order-table-breakdown">
+                            <thead>
+                                <tr>
+                                    <th>Furniture Type</th>
+                                    <th>Number Ordered</th>
+                                    <th>Total Price Ordered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($weekly_results as $row): ?>
                                 <tr>
                                     <td><?php echo $row['furniture_type']; ?></td>
                                     <td><?php echo $row['number_ordered']; ?></td>
                                     <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                 </div>
-            </div>
-
-            
-            <div class="monthly_container tab-content" id="monthly_container" data-tab="monthly">
-                <div class="monthly">
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Monthly Statistics</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total Sales</td>
-                                <td><?= '₱ ' . $total_revenue_current_month ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Orders</td>
-                                <td><?= $new_orders_current_month ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Finished Orders</td>
-                                <td><?= $completed_orders_current_month ?></td>
-                            </tr>
-                            <tr>
-                                <td>Average Ratings</td>
-                                <td>
-                                    <?= $avg_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>New Customers</td>
-                                <td><?= $new_customers_current_month ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Average Star Rating</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Made To Order</td>
-                                <td>
-                                    <?= $mto_monthly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Repair</td>
-                                <td>
-                                    <?= $repair_monthly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="breakdown_of_furnitures_container">
-                    <table class="order-table-breakdown">
+
+                <div class="monthly_container tab-content" id="monthly_container" data-tab="monthly">
+                    <div class="monthly">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Monthly Statistics</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Sales</td>
+                                    <td><?= '₱ ' . $total_revenue_current_month ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Orders</td>
+                                    <td><?= $new_orders_current_month ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Finished Orders</td>
+                                    <td><?= $completed_orders_current_month ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Average Ratings</td>
+                                    <td>
+                                        <?= $avg_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>New Customers</td>
+                                    <td><?= $new_customers_current_month ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Average Star Rating</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Made To Order</td>
+                                    <td>
+                                        <?= $mto_monthly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Repair</td>
+                                    <td>
+                                        <?= $repair_monthly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="breakdown_of_furnitures_container">
+                        <table class="order-table-breakdown">
                             <thead>
                                 <tr>
                                     <th>Furniture Type</th>
@@ -762,140 +762,140 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </thead>
                             <tbody>
                                 <?php foreach ($monthly_results as $row): ?>
-                                    <tr>
-                                        <td><?php echo $row['furniture_type']; ?></td>
-                                        <td><?php echo $row['number_ordered']; ?></td>
-                                        <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                    </tr>
+                                <tr>
+                                    <td><?php echo $row['furniture_type']; ?></td>
+                                    <td><?php echo $row['number_ordered']; ?></td>
+                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
 
-                    <table class="order-table-breakdown">
-                        <thead>
-                            <tr>
-                                <th>Furniture Type</th>
-                                <th>Number Ordered</th>
-                                <th>Total Price Ordered</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($monthly_results as $row): ?>
+                        <table class="order-table-breakdown">
+                            <thead>
+                                <tr>
+                                    <th>Furniture Type</th>
+                                    <th>Number Ordered</th>
+                                    <th>Total Price Ordered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($monthly_results as $row): ?>
                                 <tr>
                                     <td><?php echo $row['furniture_type']; ?></td>
                                     <td><?php echo $row['number_ordered']; ?></td>
                                     <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="yearly_container tab-content" id="yearly_container" data-tab="yearly">
-                <div class="yearly">
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Yearly Statistics</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total Sales</td>
-                                <td><?= '₱ ' . $total_revenue_current_year ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Orders</td>
-                                <td><?= $new_orders_current_year ?></td>
-                            </tr>
-                            <tr>
-                                <td>Total Finished Orders</td>
-                                <td><?= $completed_orders_current_year ?></td>
-                            </tr>
-                            <tr>
-                                <td>Average Ratings</td>
-                                <td>
-                                    <?= $avg_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            </tr>
-                            <tr>
-                                <td>New Customers</td>
-                                <td><?= $new_customers_current_year ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <table class="order-table">
-                        <thead>
-                            <tr>
-                                <th>Average Star Rating</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Made To Order</td>
-                                <td>
-                                    <?= $mto_yearly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Repair</td>
-                                <td>
-                                    <?= $repair_yearly_average_rating ?>
-                                    <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="breakdown_of_furnitures_container">
-                    <table class="order-table-breakdown">
-                                <thead>
-                                    <tr>
-                                        <th>Furniture Type</th>
-                                        <th>Number Ordered</th>
-                                        <th>Total Price Ordered</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($yearly_results as $row): ?>
-                                        <tr>
-                                            <td><?php echo $row['furniture_type']; ?></td>
-                                            <td><?php echo $row['number_ordered']; ?></td>
-                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                <div class="yearly_container tab-content" id="yearly_container" data-tab="yearly">
+                    <div class="yearly">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Yearly Statistics</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Sales</td>
+                                    <td><?= '₱ ' . $total_revenue_current_year ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Orders</td>
+                                    <td><?= $new_orders_current_year ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Finished Orders</td>
+                                    <td><?= $completed_orders_current_year ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Average Ratings</td>
+                                    <td>
+                                        <?= $avg_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                </tr>
+                                <tr>
+                                    <td>New Customers</td>
+                                    <td><?= $new_customers_current_year ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <table class="order-table-breakdown">
-                        <thead>
-                            <tr>
-                                <th>Furniture Type</th>
-                                <th>Number Ordered</th>
-                                <th>Total Price Ordered</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($yearly_results as $row): ?>
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Average Star Rating</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Made To Order</td>
+                                    <td>
+                                        <?= $mto_yearly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Repair</td>
+                                    <td>
+                                        <?= $repair_yearly_average_rating ?>
+                                        <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="breakdown_of_furnitures_container">
+                        <table class="order-table-breakdown">
+                            <thead>
+                                <tr>
+                                    <th>Furniture Type</th>
+                                    <th>Number Ordered</th>
+                                    <th>Total Price Ordered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($yearly_results as $row): ?>
                                 <tr>
                                     <td><?php echo $row['furniture_type']; ?></td>
                                     <td><?php echo $row['number_ordered']; ?></td>
                                     <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+
+                        <table class="order-table-breakdown">
+                            <thead>
+                                <tr>
+                                    <th>Furniture Type</th>
+                                    <th>Number Ordered</th>
+                                    <th>Total Price Ordered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($yearly_results as $row): ?>
+                                <tr>
+                                    <td><?php echo $row['furniture_type']; ?></td>
+                                    <td><?php echo $row['number_ordered']; ?></td>
+                                    <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
 
@@ -1084,12 +1084,12 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <script>
             let content = document.body;
             download_button.addEventListener('click', async function() {
-            const filename = 'table_data.pdf';
+                const filename = 'table_data.pdf';
 
-            // Create a new style element
-            const style = document.createElement('style');
-            // Set the CSS rules
-            style.innerHTML = `
+                // Create a new style element
+                const style = document.createElement('style');
+                // Set the CSS rules
+                style.innerHTML = `
 
             .admin-sidebar {
                 visibility: hidden;
@@ -1129,87 +1129,87 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
 
             `;
-            // Append the style element to the content element
-            content.appendChild(style);
+                // Append the style element to the content element
+                content.appendChild(style);
 
-        
 
-            try {
-                const opt = {
-                    margin: 1,
-                    filename: filename,
-                    image: {
-                        type: 'jpeg',
-                        quality: 100
-                    },
-                    html2canvas: {
-                        scale: 2
-                    },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'letter',
-                        orientation: 'landscape'
-                    }
 
-                };
-                await html2pdf().set(opt).from(content).save();
-            } catch (error) {
-                console.error('Error:', error.message);
-            }
+                try {
+                    const opt = {
+                        margin: 1,
+                        filename: filename,
+                        image: {
+                            type: 'jpeg',
+                            quality: 100
+                        },
+                        html2canvas: {
+                            scale: 2
+                        },
+                        jsPDF: {
+                            unit: 'mm',
+                            format: 'letter',
+                            orientation: 'landscape'
+                        }
 
-            // Remove the style element after converting to PDF
-            content.removeChild(style);
-        });
-
-        
-            document.addEventListener('DOMContentLoaded', function() {
-            // Get references to elements
-            const dateRangeSelect = document.getElementById('date-range');
-            const customDateDiv = document.getElementById('custom-date');
-
-            // Function to toggle display of custom date inputs
-            function toggleCustomDateInputs() {
-                const selectedValue = dateRangeSelect.value;
-                if (selectedValue === 'custom') {
-                    customDateDiv.style.display = 'block';
-                } else {
-                    customDateDiv.style.display = 'none';
+                    };
+                    await html2pdf().set(opt).from(content).save();
+                } catch (error) {
+                    console.error('Error:', error.message);
                 }
-            }
 
-            // Initial call to set initial state based on default selection
-            toggleCustomDateInputs();
-
-            // Event listener for when dropdown value changes
-            dateRangeSelect.addEventListener('change', toggleCustomDateInputs);
-        });
-</script>
+                // Remove the style element after converting to PDF
+                content.removeChild(style);
+            });
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-  const dropdown = document.getElementById('tab-dropdown');
-  const tabContents = document.querySelectorAll('.tab-content');
+            document.addEventListener('DOMContentLoaded', function() {
+                // Get references to elements
+                const dateRangeSelect = document.getElementById('date-range');
+                const customDateDiv = document.getElementById('custom-date');
 
-  dropdown.addEventListener('change', function() {
-    const target = dropdown.value;
-    
-    // Hide all tab contents
-    tabContents.forEach(content => {
-      content.classList.remove('active');
-    });
-    
-    // Display the selected tab content
-    const selectedTab = document.getElementById(`${target}_container`);
-    if (selectedTab) {
-      selectedTab.classList.add('active');
-    }
-  });
+                // Function to toggle display of custom date inputs
+                function toggleCustomDateInputs() {
+                    const selectedValue = dateRangeSelect.value;
+                    if (selectedValue === 'custom') {
+                        customDateDiv.style.display = 'block';
+                    } else {
+                        customDateDiv.style.display = 'none';
+                    }
+                }
 
-  // Trigger change event to show the initial content
-  dropdown.dispatchEvent(new Event('change'));
-});
-</script>
+                // Initial call to set initial state based on default selection
+                toggleCustomDateInputs();
+
+                // Event listener for when dropdown value changes
+                dateRangeSelect.addEventListener('change', toggleCustomDateInputs);
+            });
+        </script>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dropdown = document.getElementById('tab-dropdown');
+                const tabContents = document.querySelectorAll('.tab-content');
+
+                dropdown.addEventListener('change', function() {
+                    const target = dropdown.value;
+
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Display the selected tab content
+                    const selectedTab = document.getElementById(`${target}_container`);
+                    if (selectedTab) {
+                        selectedTab.classList.add('active');
+                    }
+                });
+
+                // Trigger change event to show the initial content
+                dropdown.dispatchEvent(new Event('change'));
+            });
+        </script>
 </body>
 
 </html>
