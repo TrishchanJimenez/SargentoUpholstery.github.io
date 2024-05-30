@@ -292,16 +292,17 @@ input, textarea {
         display: none;
         align-items: center;
         justify-content: center;
-        border: 3px dotted lightseagreen;
+        border: 3px dotted #111;
         background-color: transparent;
 
         .plus {
             width: 3rem;
             height: 3rem;
+            border-radius: 0.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: lightseagreen;
+            background-color: #FFDC5C;
         }
     }
 
