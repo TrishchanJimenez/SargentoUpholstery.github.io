@@ -81,7 +81,7 @@
             <div class="quotes"> 
                 <div class="quotes-top   quotes-segment" id="overview">
                     <div class="quotes-top__intro   quotes-segment__intro">
-                        <h1 class="quotes-top__title   quotes-segment__title">Quote Information</h1>
+                        <h1 class="quotes-top__title   quotes-segment__title">Quote Overview</h1>
                         <p class="quotes-top__desc   quotes-segment__desc">
                             This is the detailed information about the quote you submitted. 
                             It includes all the necessary details, actions, and a comprehensive 

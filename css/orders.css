@@ -74,7 +74,6 @@
                 border-radius: 15px;
                 background-color: #333;
                 color: white;
-                margin: 2.5vmin;
                 margin-bottom: 2.5em;
             }
                 .orders-segment__title {
@@ -89,19 +88,19 @@
                     font-size: 1.15em;
                 }
             .order-identif,
-            .order-info {
+            .order-info,
+            .order-requisite {
                 width: calc(100%-2.5vmin);
                 display: flex;
                 margin: 1.25vmin;
             }
                 .order-identif__section,
-                .order-info__section {
+                .order-info__section,
+                .order-requisite__section {
                     background-color: #f9f9f9;
                     padding: 2.5vmin;
                     border-radius: 15px;
                     border: 1px solid #eee;
-                }
-                .order-identif__section {
                     width: 50%;
                     flex: 1 1 (50%-2.5vmin);
                     margin: 1.25vmin;
@@ -123,13 +122,9 @@
                         text-align: right;
                         font-size: 1.75em;
                     }
-                .order-info__section {
-                    width: 50%;
-                    flex: 1 1 (50%-2.5vmin);
-                    margin: 1.25vmin;
-                }
                 .order-type__wrapper,
                 .order-price__wrapper,
+                .order-payment__wrapper,
                 .order-actions__wrapper {
                     display: flex;
                     flex-direction: column;
@@ -138,12 +133,15 @@
                     .order-type,
                     .order-price__title,
                     .order-price,
+                    .order-payment__title,
+                    .order-payment,
                     .order-actions__title,
                     .order-actions {
                         margin: 1.25vmin;
                     }
                     .order-type,
                     .order-price,
+                    .order-payment,
                     .order-actions {
                         font-size: 1.75em;
                     }
