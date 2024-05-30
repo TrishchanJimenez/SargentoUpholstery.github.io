@@ -27,7 +27,7 @@
         require_once('../header.php'); 
 
         // Pagination logic
-        $results_per_page = 5;  // Number of results per page
+        $results_per_page = 3;  // Number of results per page
 
         // Get the current page number from the URL, if none exists set to 1
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -57,7 +57,7 @@
             <button class="onq__tab-button onq__tab-button--orders">All Orders</button>
         </div>
         <div class="onq__tab onq__tab--quotes" style="display:flex; flex-direction:column; align-items:center;">
-            <form class="order-filters" method="get" action="">
+        <form class="order-filters" method="get" action="">
                 <table class="filter-table">
                     <tr>
                         <td>
@@ -127,7 +127,15 @@
             <!-- Pagination for Quotes -->
             <div class="pagination">
                 <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>'" class="pagination__button"><?php echo $page; ?></button>
+                    <?php
+                        // Check if $_GET['page'] is set and matches the loop iteration
+                        $active_class = (isset($_GET['page']) && $page == $_GET['page']) ? 'active' : '';
+                        // Add the active class if it's the first page and $_GET['page'] is not set
+                        if (!isset($_GET['page']) && $page === 1) {
+                            $active_class = 'active';
+                        }
+                    ?>
+                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page; ?></button>
                 <?php endfor; ?>
             </div>
         </div>
@@ -144,40 +152,25 @@
                     FROM 
                         `orders` o
                             INNER JOIN
-                        `quotes` q ON o.quote_id = q.quote_id
-                            INNER JOIN
-                        `items` i ON q.quote_id = i.quote_id
+                        `quotes` q
+                            USING (quote_id)
                     WHERE 
-                        q.customer_id = :customer_id
+                        `user_id` = :user_id
                     ORDER BY
-                        q.updated_at DESC
+                        `last_updated` DESC
                     LIMIT :limit OFFSET :offset
                 ";
                 $order_stmt = $conn->prepare($order_query);
-                $order_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
+                $order_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $order_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
                 $order_stmt->bindParam(':offset', $offset_orders, PDO::PARAM_INT);
                 $order_stmt->execute();
                 $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Get the total number of orders
-                $total_orders_query = "
-                    SELECT 
-                        COUNT(*) 
-                    FROM 
-                        `orders` 
-                    WHERE 
-                        `quote_id` IN (
-                            SELECT
-                                `quote_id`
-                            FROM
-                                `quotes`
-                            WHERE
-                                `customer_id` = :customer_id
-                        )
-                ";
+                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `user_id` = :user_id";
                 $total_orders_stmt = $conn->prepare($total_orders_query);
-                $total_orders_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
+                $total_orders_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $total_orders_stmt->execute();
                 $total_orders = $total_orders_stmt->fetchColumn();
                 $total_pages_orders = ceil($total_orders / $results_per_page);
@@ -228,7 +221,15 @@
             <!-- Pagination for Orders -->
             <div class="pagination">
                 <?php for ($page_orders = 1; $page_orders <= $total_pages_orders; $page_orders++): ?>
-                    <button onclick="window.location.href='orders_and_quotes.php?page_orders=<?php echo $page_orders; ?>'" class="pagination__button"><?php echo $page_orders; ?></button>
+                    <?php
+                        // Check if $_GET['page_orders'] is set and matches the loop iteration
+                        $active_class = (isset($_GET['page_orders']) && $page_orders == $_GET['page_orders']) ? 'active' : '';
+                        // Add the active class if it's the first page and $_GET['page_orders'] is not set
+                        if (!isset($_GET['page_orders']) && $page_orders === 1) {
+                            $active_class = 'active';
+                        }
+                    ?>
+                    <button onclick="window.location.href='orders_and_quotes.php?page_orders=<?php echo $page_orders; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page_orders; ?></button>
                 <?php endfor; ?>
             </div>
         </div>
