@@ -92,8 +92,7 @@
     }
 
     $count_result = $conn->query($count_query);
-    $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'];
-
+    $total_records = $count_result->fetch(PDO::FETCH_ASSOC)['total_records'] ?? 0;
     // Append the ORDER BY and LIMIT clauses for fetching the actual records
     if (!($order_sort === 'default' || empty($order_sort))) {
         $query .= " ORDER BY $order_sort DESC";
