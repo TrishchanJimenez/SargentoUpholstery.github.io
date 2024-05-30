@@ -188,21 +188,7 @@ $user_id = $_SESSION['user_id'];
                 $offset_orders = ($page_orders - 1) * $results_per_page;
 
                 // Fetch the orders for the current page
-                $order_query = "
-                    SELECT 
-                        *
-                    FROM 
-                        `orders` o
-                            INNER JOIN
-                        `quotes` q ON o.quote_id = q.quote_id
-                            INNER JOIN
-                        `items` i ON q.quote_id = i.quote_id
-                    WHERE 
-                        q.customer_id = :user_id
-                    ORDER BY
-                        q.updated_at DESC
-                    LIMIT :limit OFFSET :offset
-                ";
+                $order_query = " SELECT * FROM `quotes` q LEFT JOIN `orders` o USING (quote_id) WHERE `quote_id` = :quote_id ORDER BY `q.updated_at` DESC LIMIT :limit OFFSET :offset";
                 $order_stmt = $conn->prepare($order_query);
                 $order_stmt->bindParam(':quote_id', $quote_id, PDO::PARAM_INT);
                 if ($order_item_type != 'default') {
@@ -220,9 +206,9 @@ $user_id = $_SESSION['user_id'];
                 $orders = $order_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Get the total number of orders
-                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `quote_id` = :quote_id";
+                $total_orders_query = "SELECT COUNT(*) FROM `orders` WHERE `user_id` = :user_id";
                 $total_orders_stmt = $conn->prepare($total_orders_query);
-                $total_orders_stmt->bindParam(':quote_id', $orders['quote_id'], PDO::PARAM_INT);
+                $total_orders_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $total_orders_stmt->execute();
                 $total_orders = $total_orders_stmt->fetchColumn();
                 $total_pages_orders = ceil($total_orders / $results_per_page);
@@ -282,7 +268,7 @@ $user_id = $_SESSION['user_id'];
                             foreach ($orders as $row) {
                                 echo '
                                     <tr>
-                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) ?? 'N/A' . '</td>
+                                        <td class="onq__td">' . htmlspecialchars($row["order_id"]) . '</td>
                                         <td class="onq__td onq__td--alt onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture_type"] ?? 'N/A'))) . '</td>
                                         <td class="onq__td onq__td--order">' . ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) . '</td>
                                         <td class="onq__td onq__td--alt onq__td--order">' . htmlspecialchars($row["quantity"] ?? 'N/A') . ' item/s</td>

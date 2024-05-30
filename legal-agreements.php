@@ -42,6 +42,11 @@
             </p>
             <ul>
                 <li>
+                    <span class="section-title">Repairing Damaged Furniture:</span>
+                    Whether it’s a wobbly chair leg, a cracked tabletop, or a broken drawer, we’re here to restore functionality and beauty to your furniture. 
+                    Our expertise extends to various materials, including wood, metal, and upholstery.
+                </li>
+                <li>
                     <span class="section-title">Restoring Antique Pieces:</span>
                     Antique furniture holds sentimental value and historical significance. We take pride in preserving the authenticity of these timeless pieces.
                     Our restoration process involves meticulous attention to detail, from matching wood grains to replicating intricate carvings.
@@ -78,15 +83,20 @@
             <p>
                 <span class="section-title">5. Estimates and Pricing</span>
             </p>
-            <p>
-                Detailed estimates will be provided for each repair project.
-                Transparent Pricing:
-                Our pricing is competitive and reflects the quality of our work.
-                Factors influencing pricing include complexity, materials, and labor hours.
-                No Hidden Costs:
-                Any changes to the estimate will be communicated promptly.
-                We believe in transparency, so you’ll know exactly what to expect.
-            </p>
+            <ul>
+                <p>Detailed estimates will be provided for each repair project.</p>
+                <li>
+                    <span class="section-title">Transparent Pricing:</span>
+                    Our pricing is competitive and reflects the quality of our work.
+                    Factors influencing pricing include complexity, materials, and labor hours.
+                </li>
+                <li>
+                    <span class="section-title">No Hidden Costs:</span>
+                    Any changes to the estimate will be communicated promptly.
+                    We believe in transparency, so you’ll know exactly what to expect.
+                </li>
+            </ul>
+                
             <p>
                 <span class="section-title">6. Payment Terms</span>
             </p>
@@ -98,37 +108,100 @@
                 Receipts and Invoices:
                 You’ll receive a detailed invoice for your records.
             </p>
+
             <p>
-                <span class="section-title">7. Warranty and Satisfaction</span>
-            </p>
-            <p>
-                All repairs come with a 30-day warranty from the completion date.
-                Our Commitment:
-                If you encounter any issues during this period, notify us promptly.
-                We stand by our workmanship and will address any concerns.
-                Customer Satisfaction:
-                Your happiness matters to us. We strive to exceed your expectations.
-            </p>
-            <p>
-                <span class="section-title">8. Liability and Responsibility</span>
+                <span class="section-title">7. Liability and Responsibility</span>
             </p>
             <p>
                 While we take utmost care during repairs, accidents can happen.
-                Pre-existing Damage:
-                We are not liable for any pre-existing damage or unforeseen issues that arise during the repair process.
-                Please inform us of any relevant details about the furniture item.
-                Protecting Your Valuables:
-                We recommend removing any valuable or fragile items from the furniture before repair to prevent accidental damage.
+            </p>  
+            <ul>
+                <li>
+                    <span class="section-title">Pre-existing Damage:</span>
+                    We are not liable for any pre-existing damage or unforeseen issues that arise during the repair process.
+                    Please inform us of any relevant details about the furniture item.
+                </li>
+                <li>
+                    <span class="section-title">Protecting Your Valuable</span>
+                    We recommend removing any valuable or fragile items from the furniture before repair to prevent accidental damage.
+                </li>
+            </ul>    
+            <p>
+                <span class="section-title">8. Dispute Resolution</span>
             </p>
             <p>
-                <span class="section-title">9. Dispute Resolution</span>
+                In case of problems or disagreements, refer to our dispute resolution process.  
+            </p>
+            <ul>
+                <li>
+                    <span class="section-title">Fair Solutions:</span>
+                    We believe in fair and transparent resolutions.
+                     Your satisfaction remains our priority.
+                </li>
+            </ul>
+            <p>
+                <span class="section-title">9. Initial Quote Terms, Acceptance of Quote, Order Confirmation, and Terms and Conditions</span>
             </p>
             <p>
-                In case of problems or disagreements, refer to our dispute resolution process.
-                Fair Solutions:
-                We believe in fair and transparent resolutions.
-                Your satisfaction remains our priority.
+                When a quote is provided, it generally includes the price, description of services,
+                materials to be used, and estimated timelines. At this stage,
+                the quote serves as an offer but does not bind either party legally.
             </p>
+            <p>
+                When the customer accepts the quote, it often leads to the creation
+                of a binding contract. This acceptance can be formalized through written
+                communication, a signed agreement, or by placing an order through the
+                website.  
+            </p>
+            <p>
+                Once the quote is accepted and the order is placed, the terms of the quote
+                 typically become part of the official contract
+            </p>
+            <p>
+                <span class="section-title">10. Customization and Detailed Agreement</span>
+            </p>
+            <p>
+                For custom upholstery work, there may be a more detailed agreement outlining
+                specific fabrics, designs, and customizations requested by the customer.
+                This agreement will detail the obligations of both parties, including
+                any responsibilities the customer has (e.g., providing specific measurements or approving design drafts).
+            </p>
+            <p>
+                <span class="section-title">11. Enforcement of Contract</span>
+            </p>
+            <p>
+                If the customer fails to adhere to the terms (e.g., non-payment or cancellation), the company can enforce the contract terms, potentially seeking legal remedies for breaches.
+            </p>
+            <p>
+                Conversely, if the upholstery company fails to deliver as per the agreed terms, the customer can hold them accountable based on the contractual obligations.
+            </p>
+            <p>
+                <span class="section-title">12. Additional Terms</span>
+            </p>
+                <p>
+                    In addition to the aforementioned terms, the following provisions apply:
+                </p>
+                    <ul>
+                        <li>
+                            <span class="section-title">
+                                Cancellation Of Order:
+                            </span>
+                            <p>
+                            If the customer cancels the order after making the downpayment,
+                            the downpayment is owned to Sargento Upholstery. 
+                            </p>
+                        </li>
+                        <li>
+                            <span class="section-title">
+                                Non-Recepient of Finished Product:
+                            </span>
+                            <p>
+                                If the customer fails to receive the finished product 
+                                within 30 days of completion and notification of availability,
+                                ownership of the product reverts to Sargento Upholstery. 
+                            </p>
+                        </li>
+                    </ul>
 </div>
 </div>
 
