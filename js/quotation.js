@@ -54,3 +54,10 @@ priceSetForm.addEventListener('submit', (e) => {
         // ...
     }
 });
+
+function cancelPriceSet() {
+    confirm("Are you sure you want to cancel setting the price?");
+    if (confirm) {
+        closeModal();
+    }
+}
