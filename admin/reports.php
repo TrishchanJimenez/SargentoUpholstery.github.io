@@ -160,7 +160,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: ;
+                width: 100%;
                 height: 100%;
             }
 
@@ -316,10 +316,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->execute();
         $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $total_revenue_today = number_format($stats['total_revenue_today']);
-        $total_revenue_current_week = number_format($stats['total_revenue_current_week']);
-        $total_revenue_current_month = number_format($stats['total_revenue_current_month']);
-        $total_revenue_current_year = number_format($stats['total_revenue_current_year']);
+        $total_revenue_today = number_format($stats['total_revenue_today'] ?? 0);
+        $total_revenue_current_week = number_format($stats['total_revenue_current_week'] ?? 0);
+        $total_revenue_current_month = number_format($stats['total_revenue_current_month'] ?? 0);
+        $total_revenue_current_year = number_format($stats['total_revenue_current_year'] ?? 0);
 
         $new_orders_today = $stats['new_orders_today'];
         $new_orders_current_week = $stats['new_orders_current_week'];
@@ -382,14 +382,14 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $ratings_by_type = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-        $mto_daily_average_rating = $ratings_by_type['mto_daily_average_rating'];
-        $repair_daily_average_rating = $ratings_by_type['repair_daily_average_rating'];
-        $mto_weekly_average_rating = $ratings_by_type['mto_weekly_average_rating'];
-        $repair_weekly_average_rating = $ratings_by_type['repair_weekly_average_rating'];
-        $mto_monthly_average_rating = $ratings_by_type['mto_monthly_average_rating'];
-        $repair_monthly_average_rating = $ratings_by_type['repair_monthly_average_rating'];
-        $mto_yearly_average_rating = $ratings_by_type['mto_yearly_average_rating'];
-        $repair_yearly_average_rating = $ratings_by_type['repair_yearly_average_rating'];
+        $mto_daily_average_rating = $ratings_by_type['mto_daily_average_rating'] ?? 0;
+        $repair_daily_average_rating = $ratings_by_type['repair_daily_average_rating'] ?? 0;
+        $mto_weekly_average_rating = $ratings_by_type['mto_weekly_average_rating'] ?? 0;
+        $repair_weekly_average_rating = $ratings_by_type['repair_weekly_average_rating'] ?? 0;
+        $mto_monthly_average_rating = $ratings_by_type['mto_monthly_average_rating'] ?? 0;
+        $repair_monthly_average_rating = $ratings_by_type['repair_monthly_average_rating'] ?? 0;
+        $mto_yearly_average_rating = $ratings_by_type['mto_yearly_average_rating'] ?? 0;
+        $repair_yearly_average_rating = $ratings_by_type['repair_yearly_average_rating'] ?? 0;
 
         //For the breakdown of furnitures and  total sales
         $daily_sql = "
