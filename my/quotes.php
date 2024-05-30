@@ -390,5 +390,6 @@
             fetchItems(currentPage);
         });
     </script>
+    <script src="/js/globals.js"></script>
 </body>
 </html>
