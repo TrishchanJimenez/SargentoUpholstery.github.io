@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeSOA = document.getElementById('closeSOA');
     const upodModal = document.getElementById('upodModal');
     const closeUPOD = document.getElementById('closeUPOD');
+    const upofModal = document.getElementById('upofModal');
+    const closeUPOF = document.getElementById('closeUPOF');
 
     function openModal(action) {
         switch(action) {
@@ -46,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case 'upod':
                 upodModal.style.display = 'flex';
+                break;
+            case 'upof':
+                upofModal.style.display = 'flex';
                 break;
             default:
                 break;
@@ -58,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     closeUPOD.addEventListener('click', function() {
         upodModal.style.display = 'none';
+    });
+
+    closeUPOF.addEventListener('click', function() {
+        upofModal.style.display = 'none';
     });
 
     // Expose openModal to global scope
