@@ -22,9 +22,9 @@
     $sql = "
         SELECT
             U.name,
-            IF(Q.service_type = 'mto', 'MTO', 'Repair') AS order_type,
-            Q.furniture_type,
+            IF(Q.service_type = 'mto', 'Made-To-Order', 'Repair') AS order_type,
             R.review_id,
+            I.item AS furniture_type,
             R.comment,
             R.date,
             R.rating,
@@ -34,15 +34,20 @@
         FROM 
             reviews R 
         JOIN 
-            orders O ON R.order_id = O.order_id
+            orders O USING(order_id)
         JOIN
-            quotes Q ON O.quote_id = Q.quote_id
+            quotes Q USING(quote_id)
         JOIN 
-            users U ON U.user_id = O.user_id
+            users U ON Q.customer_id = U.user_id
         LEFT JOIN 
             review_images RI ON RI.review_id = R.review_id
+        LEFT JOIN (
+            SELECT quote_id, MAX(furniture) AS item
+            FROM items
+            GROUP BY quote_id
+        ) I ON I.quote_id = Q.quote_id
         GROUP BY 
-            R.review_id
+            R.review_id, I.item
         ORDER BY 
             R.review_id DESC;
     ";
