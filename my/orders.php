@@ -219,6 +219,16 @@
                                         </td>
                                     </tr>
                                 <?php endif; ?>
+                            <?php elseif ($order['order_phase'] == "ready_for_pickup"): ?>
+                                <?php
+                                $_SESSION['enablePickup'] = ($order['service_type'] == "repair") ? true : false;
+                                if(!isset($order['delivery_method']) && !isset($order['delivery_address'])): ?>
+                                    <tr>
+                                        <td>
+                                            <button class="order-actions__soa   order-actions__btn" onclick="openModal('soa')">Set Order Address</button>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php elseif ($order['order_phase'] == "pending_fullpayment"): ?>
                                 <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
                                     <tr>

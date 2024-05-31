@@ -72,8 +72,8 @@
                         
                         // Execute the query
                         if($stmt->execute()) {
-                            sendAlert("success", "You have successfully uploaded a proof of fullpayment for this order.");
-                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of fullpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
+                            sendAlert("success", "You have successfully uploaded a proof of downpayment for this order.");
+                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of downpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
                         } else {
                             echo "<script> console.log('Failed to execute query in upload_proof_of_downpayment.php') </script>";
                         }
