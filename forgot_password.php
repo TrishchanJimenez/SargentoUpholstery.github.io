@@ -22,6 +22,9 @@
             <input type="email" name="email" id="" placeholder="Enter email address" required>
             <p class="email-notif">Email Sent. Please check your inbox</p>
             <input type="submit" value="Send Reset Link" name="submitEmail" class="sendButton">
+            <div class="center">
+                <a href="login.php" class="login-link">Back to Login</a>
+            </div>
         </form>
     </div>
     <script src="js/reset_password.js"></script>
