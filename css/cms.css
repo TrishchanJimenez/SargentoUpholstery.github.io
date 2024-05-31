@@ -190,6 +190,10 @@ input, textarea {
         width: 80%;
     }
 
+    .vh60 {
+        height: 60vh !important;
+    }
+
     .intro-title {
         margin-bottom: 1.5rem;
         color: #000;
@@ -235,7 +239,7 @@ input, textarea {
     .selector-container {
         display: flex;
         justify-content: center;
-        margin: 20vh auto 2.5vh;
+        margin: 5vh auto 2.5vh;
     }
 
     #type-selector {

@@ -33,6 +33,8 @@
     <title>Content Management</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/cms.css">
+    <link rel="stylesheet" href="/css/intro.css">
+    <link rel="stylesheet" href="/css/outro.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -182,29 +184,37 @@
                 </div>
                 <div class="tab" data-page="services-craftsmanship">
                     <?php
-                        // $query = "
-                        //     SELECT 
-                        //         * 
-                        //     FROM 
-                        //         contents 
-                        //     WHERE 
-                        //         page = :
-                        // ";
-                        // $stmt = $conn->prepare($query);
-                        // $stmt->bindParam(':page', $page);
-                        // $stmt->execute();
-                        // $introContents = $stmt->fetchAll();
-                        // $introContentsById = [];
-                        // foreach ($introContents as $introContent) {
-                        //     $introContentsById[$introContent['content_type']] = $introContent;
-                        // }
-                    
-                        // Default value for $needs_cta if it's not set in the including file
-                        // if (!isset($needs_cta)) {
-                        //     $needs_cta = true;
-                        // }
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "services_craftsmanship";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $introContents = $stmt->fetchAll();
+                        $introContentsById = [];
+                        foreach ($introContents as $introContent) {
+                            $introContentsById[$introContent['content_type']] = $introContent;
+                        }
                     ?>
                     <div class="services_craftmanship_card_container">
+                        <div class="intro-banner">
+                            <div class="intro-banner__overlay">
+                                <div class="intro-banner__text">
+                                    <h2 class="intro-banner__title editable short-text" data-id="CRAFTS_INTRO_TITLE"><?= stripslashes(html_entity_decode($introContentsById["INTRO_TITLE"]["content_text"])) ?></h2>
+                                    <?php if (isset($introContentsById["INTRO_DESC"]["content_text"])): ?>
+                                        <p class="intro-banner__description editable long-text" data-id="CRAFTS_INTRO_DESC"><?= stripslashes(html_entity_decode($introContentsById["INTRO_DESC"]["content_text"])) ?></p>
+                                    <?php endif; ?>
+                                    <a class="intro-banner__cta" href="/quote.php">Get a Free Quote</a>
+                                </div>
+                            </div>
+                            <img class="intro-banner__image" src="<?= $introContentsById["INTRO_IMG"]["image"] ?>" alt="">
+                        </div>
                         <div class="services_craftmanship_card">
                             <img src="/websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">
                             <div class="services_craftmanship_card_text"> 
@@ -231,8 +241,69 @@
                         <p class="editable long-text" data-id="CRAFTSFOOTERTEXT" data-id="CRAFTSFOOTERTEXT"><?= stripslashes(htmlspecialchars_decode($contentsById["CRAFTSFOOTERTEXT"]["content_text"])) ?></p>
                     </div>
                     <img src="/websiteimages/Divider.png" div class="services_craftmanship_text_divider_img">
+                    <?php
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "services_craftsmanship";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $outroContents = $stmt->fetchAll();
+                        $outroContentsById = [];
+                        foreach ($outroContents as $outroContent) {
+                            $outroContentsById[$outroContent['content_type']] = $outroContent;
+                        }
+                    ?>
+                    <div class="outro-banner">
+                        <img class="outro-banner__image" src="<?= $outroContentsById["OUTRO_IMG"]["image"] ?>" alt="">
+                        <div class="outro-banner__overlay">
+                            <div class="outro-banner__text">
+                                <h2 class="outro-banner__title editable short-text" data-id="CRAFTS_OUTRO_TITLE"><?= stripslashes(html_entity_decode($outroContentsById["OUTRO_TITLE"]["content_text"])) ?></h2>
+                                <a class="outro-banner__cta" href="<?= stripslashes(html_entity_decode($outroContentsById["OUTRO_CTALINK"]["content_text"])) ?>">
+                                    <?= stripslashes(html_entity_decode($outroContentsById["OUTRO_CTATEXT"]["content_text"])) ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab" data-page="services-works">
+                    <?php
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "services_works";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $introContents = $stmt->fetchAll();
+                        $introContentsById = [];
+                        foreach ($introContents as $introContent) {
+                            $introContentsById[$introContent['content_type']] = $introContent;
+                        }
+                    ?>
+                    <div class="intro-banner vh60">
+                        <div class="intro-banner__overlay">
+                            <div class="intro-banner__text">
+                                <h2 class="intro-banner__title editable short-text" data-id="WORKS_INTRO_TITLE"><?= stripslashes(html_entity_decode($introContentsById["INTRO_TITLE"]["content_text"])) ?></h2>
+                                <?php if (isset($introContentsById["INTRO_DESC"]["content_text"])): ?>
+                                    <p class="intro-banner__description editable long-text" data-id="WORKS_INTRO_DESC"><?= stripslashes(html_entity_decode($introContentsById["INTRO_DESC"]["content_text"])) ?></p>
+                                <?php endif; ?>
+                                <a class="intro-banner__cta" href="/quote.php">Get a Free Quote</a>
+                            </div>
+                        </div>
+                        <img class="intro-banner__image" src="<?= $introContentsById["INTRO_IMG"]["image"] ?>" alt="">
+                    </div>
                     <div class="product-gallery">
                         <div class="selector-container">
                             <select name="type-selector" id="type-selector" onchange="filterGallery()">
@@ -296,6 +367,36 @@
                         </div>
                     </div>
                     <img src="/websiteimages/Divider.png" div class="services_works_text_divider_img">
+                    <?php
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "services_works";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $outroContents = $stmt->fetchAll();
+                        $outroContentsById = [];
+                        foreach ($outroContents as $outroContent) {
+                            $outroContentsById[$outroContent['content_type']] = $outroContent;
+                        }
+                    ?>
+                    <div class="outro-banner">
+                        <img class="outro-banner__image" src="<?= $outroContentsById["OUTRO_IMG"]["image"] ?>" alt="">
+                        <div class="outro-banner__overlay">
+                            <div class="outro-banner__text">
+                                <h2 class="outro-banner__title editable short-text" data-id="WORKS_OUTRO_TITLE"><?= stripslashes(html_entity_decode($outroContentsById["OUTRO_TITLE"]["content_text"])) ?></h2>
+                                <a class="outro-banner__cta" href="<?= stripslashes(html_entity_decode($outroContentsById["OUTRO_CTALINK"]["content_text"])) ?>">
+                                    <?= stripslashes(html_entity_decode($outroContentsById["OUTRO_CTATEXT"]["content_text"])) ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab" data-page="order">
                     <div class="faq">
@@ -322,6 +423,36 @@
                     </div>
                 </div>
                 <div class="tab" data-page="about">
+                    <?php
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "about_us";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $introContents = $stmt->fetchAll();
+                        $introContentsById = [];
+                        foreach ($introContents as $introContent) {
+                            $introContentsById[$introContent['content_type']] = $introContent;
+                        }
+                    ?>
+                    <div class="intro-banner">
+                        <div class="intro-banner__overlay">
+                            <div class="intro-banner__text">
+                                <h2 class="intro-banner__title editable short-text" data-id="ABOUT_INTRO_TITLE"><?= stripslashes(html_entity_decode($introContentsById["INTRO_TITLE"]["content_text"])) ?></h2>
+                                <?php if (isset($introContentsById["INTRO_DESC"]["content_text"])): ?>
+                                    <p class="intro-banner__description editable long-text" data-id="ABOUT_INTRO_DESC"><?= stripslashes(html_entity_decode($introContentsById["INTRO_DESC"]["content_text"])) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <img class="intro-banner__image" src="<?= $introContentsById["INTRO_IMG"]["image"] ?>" alt="">
+                    </div>
                     <div class="about-us-history about-us-container">
                         <h2 class="text-gold short-text editable" data-id="ABOUTHISTORYTITLE"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTITLE"]["content_text"]))?></h2>
                         <p class="long-text editable" data-id="ABOUTHISTORYTEXT"><?=stripslashes(htmlspecialchars_decode($contentsById["ABOUTHISTORYTEXT"]["content_text"]))?></p>
@@ -353,6 +484,36 @@
                     </div>
                 </div>
                 <div class="tab" data-page="contact">
+                    <?php
+                        $query = "
+                            SELECT 
+                                * 
+                            FROM 
+                                contents 
+                            WHERE 
+                                page = :page
+                        ";
+                        $stmt = $conn->prepare($query);
+                        $page = "contact_us";
+                        $stmt->bindParam(':page', $page);
+                        $stmt->execute();
+                        $introContents = $stmt->fetchAll();
+                        $introContentsById = [];
+                        foreach ($introContents as $introContent) {
+                            $introContentsById[$introContent['content_type']] = $introContent;
+                        }
+                    ?>
+                    <div class="intro-banner">
+                        <div class="intro-banner__overlay">
+                            <div class="intro-banner__text">
+                                <h2 class="intro-banner__title editable short-text" data-id="CONTACT_INTRO_TITLE"><?= stripslashes(html_entity_decode($introContentsById["INTRO_TITLE"]["content_text"])) ?></h2>
+                                <?php if (isset($introContentsById["INTRO_DESC"]["content_text"])): ?>
+                                    <p class="intro-banner__description editable long-text" data-id="CONTACT_INTRO_DESC"><?= stripslashes(html_entity_decode($introContentsById["INTRO_DESC"]["content_text"])) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <img class="intro-banner__image" src="<?= $introContentsById["INTRO_IMG"]["image"] ?>" alt="">
+                    </div>
                     <h1 class="contact_us_text_title">Get In Touch With Us</h1>
                     <div class="contact_us_text">
                         <div class="contact_info">
