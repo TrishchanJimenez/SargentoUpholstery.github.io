@@ -154,6 +154,20 @@
                             </table>
                         </div>
                     </div>
+                    <?php if($quote['quote_status'] === "rejected" && $quote['rejection_reason'] !== '' && !is_null($quote['rejection_reason'])): ?>
+                        <div class="quote-rejection">
+                            <div class="quote-reason__wrapper   quote-info__section">
+                                <div class="quote-reason__title   quote-section__title">
+                                    <h1>Rejection Reason</h1>
+                                </div>
+                                <table class="quote-reason">
+                                    <tr>
+                                        <td class="td--top"><?= $quote['rejection_reason'] ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="quote-middle   quotes-segment" id="actions">
                     <div class="quotes-middle__intro   quotes-segment__intro">
@@ -376,5 +390,6 @@
             fetchItems(currentPage);
         });
     </script>
+    <script src="/js/globals.js"></script>
 </body>
 </html>

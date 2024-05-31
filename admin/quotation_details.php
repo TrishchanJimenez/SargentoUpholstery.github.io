@@ -14,8 +14,7 @@
     // PROCESS THE SET PRICE FORM
     include_once("../notif.php");
     include_once("../alert.php");
-    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['submit-price'])) {
-        // echo "helloj";
+    if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['price'])) {
         $total_price = 0;
         // var_dump($_POST);
         $quote_id = $_POST['quote_id'];
@@ -36,7 +35,7 @@
         $stmt->bindParam(':total_price', $total_price);
         $stmt->bindParam(':quote_id', $quote_id);
         $stmt->execute();
-        // sendAlert('success', 'Quote price has been set successfully');
+        sendAlert('success', 'Quote price has been set successfully');
         // header("Refresh: 0");
     }
 ?>
@@ -44,13 +43,13 @@
     if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['reject-quote'])) {
         $quote_id = $_POST['quote_id'];
         $rejection_reason = $_POST['rejection-reason'];
-        $sql = "UPDATE quotes SET quote_status = 'rejected', cancellation_reason = :cancellation_reason WHERE quote_id = :quote_id";
+        $sql = "UPDATE quotes SET quote_status = 'rejected', rejection_reason = :rejection_reason WHERE quote_id = :quote_id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':cancellation_reason', $rejection_reason);
+        $stmt->bindParam(':rejection_reason', $rejection_reason);
         $stmt->bindParam(':quote_id', $quote_id);
         $stmt->execute();
-        // sendAlert('success', 'Quote has been rejected successfully');
-        header("Refresh: 0");
+        sendAlert('success', 'Quote has been rejected');
+        // header("Refresh: 0");
     }    
 ?>
 <?php
@@ -154,6 +153,14 @@
                                 <span class="info-name">TOTAL PRICE</span>
                                 <span class="info-detail">
                                     <?= '₱' . number_format($quote_details['total_price'], 2, '.', ',') ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if(!is_null($quote_details['rejection_reason']) && $quote_details['rejection_reason'] !== ''): ?>
+                            <div class="info">
+                                <span class="info-name">REASON FOR REJECTION</span>
+                                <span class="info-detail">
+                                    <?= $quote_details['rejection_reason'] ?>
                                 </span>
                             </div>
                         <?php endif; ?>
@@ -269,7 +276,7 @@
                         <div class="info-order-detail">
                             <div class="action-buttons">
                                 <input type="button" value="quote" class="green-button accept-order action-button" onclick="openModal()">
-                                <input type="button" value="reject order" class="red-button reject-order reject-quote action-button">
+                                <input type="button" value="reject quote" class="red-button reject-order reject-quote action-button">
                             </div>
                             <form action="" method="post" id="quote-reject-form">
                                 <input type="hidden" name="quote_id" <?= "value={$quote_id}" ?>>

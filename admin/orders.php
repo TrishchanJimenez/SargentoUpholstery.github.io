@@ -184,7 +184,7 @@
                         <th></th>
                         <th>Order Id</th>
                         <th>Customer Name</th>
-                        <th>ITEM/S</th>
+                        <th>ITEM(S)</th>
                         <th>Type</th>
                         <th>Price</th>
                         <th>Placement Date</th>
