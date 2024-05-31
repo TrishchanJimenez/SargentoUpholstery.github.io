@@ -1,64 +1,4 @@
-.onq {
-    font-family: "Inter", sans-serif;
-}
 
-.tab-button-container {
-    margin-left: 93px;
-    margin-top: 80px;
-}
-.tab.active {
-    background-color: #333; /* Active tab background color */
-    filter: drop-shadow(0px 4px 2px #000000);
-    color: white;
-}
-.onq__table {
-    width: 90%;
-    background-color: #FFFFFF;
-    border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-    filter: drop-shadow(0px 4px 2px #000000);
-}
-.table-data {
-    text-align: center;
-    height: 100px;
-    border-bottom: 2px solid #DDD;
-}
-
-/* ---------- Orders and Quotes ---------- */
-
-.tab__container {
-    width: 90%;
-    height: auto;
-    display: flex;
-}
-
-.tab-button__wrapper {
-    width: 90%;
-    height: auto;
-    display: flex;
-}
-
-.tab-filter__wrapper {
-    width: 30%;
-    flex: 1 1 30%;
-}
-
-.tab {
-    background-color: #555;
-    border: none;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 1.2%;
-    cursor: pointer;
-    border-top-left-radius: 15px;
-    margin-left: 25px;
-}
-
-.tab-content__wrapper {
-    width: 90%;
-    height: auto;
-}
 
 .tab-content {
     width: 100%;
@@ -86,15 +26,6 @@
     align-items:center;
 }
 
-.onq__table {
-    width: 100%;
-    height: auto;
-    border: 1px solid #ccc;
-    margin: 2.5vmin;
-    margin-top: 0;
-    border: none;
-}
-
 .onq__tr {
     text-align: center;
     height: 50px;
@@ -120,24 +51,11 @@
     border: none;
 }
 
-.onq__th--quote {
-    width: calc(85%/4);
-}
-
-.onq__th--order {
-    width: calc(85%/7);
-}
-
 .onq__th--title {
     padding: 2.5vmin;
     font-size: xx-large;
     background-color: #333;
     color: white;
-}
-
-.onq__td {
-    height: 15vh;
-    text-align: center;
 }
 
 .onq__td--alt,
@@ -215,6 +133,8 @@
     }
 }
 
+/* ---------- CSS Stlyes (official) ----------*/
+
 .onq {
     width: 90%;
     height: auto;
@@ -226,6 +146,9 @@
 }
 .onq__content {
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .onq__header {
     display: flex;
@@ -234,8 +157,29 @@
 .filter__container {
     width: 50%;
 }
+.tab__container {
+    width: 90%;
+    height: auto;
+    display: flex;  
+}
 .tab {
     padding: 0 25px;
+    background-color: #555;
+    border: none;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 1.25vmin 2.5vmin;
+    cursor: pointer;
+    border-top-left-radius: 15px;
+}
+.tab--orders {
+    border-top-left-radius: 0;
+    border-top-right-radius: 15px;
+}
+.tab.active {
+    background-color: #333; /* Active tab background color */
+    filter: drop-shadow(0px 4px 2px #000000);
+    color: white;
 }
 .filter {
     display: flex;
@@ -249,4 +193,31 @@
     padding: 5px;
     border: 1px solid #ccc;
     background-color: white;
+}
+.onq__table-wrapper {
+    width: 100%;
+    height: auto;
+    min-height: 55vh;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 2.5vmin;
+}
+.onq__table {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    margin-top: 0;
+    border: none;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    filter: drop-shadow(0px 2px 1px #000000);
+}
+.onq__td {
+    width: 20%;
+    height: auto;
+    text-align: center;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
 }
