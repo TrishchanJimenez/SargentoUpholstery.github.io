@@ -99,24 +99,24 @@
         <div class="form__wrapper form__wrapper--upload">
             <h1 class="form__title">Upload Proof of Fullpayment</h1>
             <form id="upofForm" class="form" method="post" enctype="multipart/form-data">
-                <label class="form__label" for="payment_method">Payment Method</label>
-                <select class="form__select" name="payment_method" id="payment_method">
+                <label class="form__label" for="fullpay_method">Payment Method</label>
+                <select class="form__select" name="fullpay_method" id="fullpay_method">
                     <option class="form__option" value="gcash">GCash</option>
                     <option class="form__option" value="paymaya">Paymaya</option>
                     <option class="form__option" value="cash">Cash</option>
                 </select>
 
-                <label class="form__label" for="account_holder">Account Holder Name</label>
-                <input class="form__input" type="text" id="account_holder" name="account_holder" required>
+                <label class="form__label" for="fullpay_account_name">Account Holder Name</label>
+                <input class="form__input" type="text" id="fullpay_account_name" name="fullpay_account_name" required>
 
-                <label class="form__label" for="amount">Amount</label>
-                <input class="form__input" type="number" id="amount" name="amount" required>
+                <label class="form__label" for="fullpay_amount">Amount</label>
+                <input class="form__input" type="number" id="fullpay_amount" name="fullpay_amount" required>
 
-                <label class="form__label" for="reference_no">Reference No. (For cash payments, enter N/A instead)</label>
-                <input class="form__input" type="text" id="reference_no" name="reference_no" required>
+                <label class="form__label" for="fullpay_ref_no">Reference No. (For cash payments, enter N/A instead)</label>
+                <input class="form__input" type="text" id="fullpay_ref_no" name="fullpay_ref_no" required>
 
-                <label class="form__label" for="proof_upload">Upload File</label>
-                <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
+                <label class="form__label" for="fullpay_img">Upload File</label>
+                <input class="form__input" type="file" id="fullpay_img" name="fullpay_img" accept="image/*,application/pdf" required>
 
                 <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
                 <input class="form__submit" type="submit" name="submit--upof" value="Submit Proof">

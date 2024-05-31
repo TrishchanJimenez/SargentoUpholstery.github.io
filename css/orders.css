@@ -180,6 +180,9 @@
                             .td--no-action {
                                 padding: 5vmin;
                             }
+                            .order-payment__wrapper {
+                                width: 100%;
+                            }
             .order-items__wrapper {
                 width: calc(100%-2.5vmin);
                 margin: 2.5vmin;
