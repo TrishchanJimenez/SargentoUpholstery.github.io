@@ -16,6 +16,7 @@
 
     // Get the current page number from the URL, if none exists set to 1
     $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    $tab = isset($_GET['tab']) ? $_GET['tab'] : 'quotes';
     $offset = ($page - 1) * $results_per_page;
 ?>
 <!DOCTYPE html>
@@ -32,12 +33,12 @@
 <body>
     <div class="onq">
         <div class="tab__container">
-            <button class="tab active" onclick="openTab('tab--quotes', this)">QUOTES</button>
-            <button class="tab" onclick="openTab('tab--orders', this)">ORDERS</button>
+            <button class="tab <?= ($tab === 'quotes') ? 'active' : ''?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
+            <button class="tab <?= ($tab === 'orders') ? 'active' : ''?>" onclick="openTab('tab--orders', this)">ORDERS</button>
         </div>
 
         <div class="tab-content__wrapper">
-            <div id="tab--quotes" class="tab-content" style="display: block;">
+            <div id="tab--quotes" class="tab-content" style="<?= ($tab === 'quotes') ? 'display: block;' : 'display:none '?>">
                 <?php
                     // Get filter parameters
                     $item_type = isset($_GET['item_type']) ? $_GET['item_type'] : 'default';
@@ -157,7 +158,7 @@
                     <?php endfor; ?>
                 </div>
             </div>
-            <div id="tab--orders" class="tab-content" style="display: none;">
+            <div id="tab--orders" class="tab-content" style="<?= ($tab === 'orders') ? 'display: block;' : 'display:none '?>">
                 <?php
                     // Get filter parameters
                     $item_type = isset($_GET['item_type']) ? $_GET['item_type'] : 'default';
@@ -293,6 +294,7 @@
 </body>
 
 <script>
+    let lastTab = "quotes";
     function openTab(tabName, elmnt) {
         // Hide all tab content
         var tabcontent = document.getElementsByClassName("tab-content");
@@ -308,16 +310,22 @@
 
         // Show the selected tab content
         document.getElementById(tabName).style.display = "block";
+        if(tabName === "tab--quotes") {
+            lastTab = "quotes";
+        } else {
+            lastTab = "orders";
+        }
 
         // Add the "active" class to the clicked tab
         elmnt.classList.add("active");
 
         // Reset pagination by clearing all URL parameters
         var url = new URL(window.location.href);
-        url.search = ''; // Clear all parameters
+        url.search = `?page=1&tab=${lastTab}`; // Clear all parameters
         window.history.replaceState({}, '', url);
+        window.location.reload();
     }
 </script>
-<script src="/js/globals.js"></script>
+<!-- <script src="/js/globals.js"></script> -->
 
 </html>
