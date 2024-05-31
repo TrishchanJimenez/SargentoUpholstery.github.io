@@ -9,7 +9,7 @@
     include_once('../notif.php');
     include_once('../alert.php');
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--upof"])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--rupof"])) {
         // Define the target directory for uploads
         $targetDir = "../uploadedImages/paymentImages";
         // Create the uploads directory if it doesn't exist
@@ -41,25 +41,17 @@
                     try {
                         // Write the query
                         $query = "
-                            INSERT INTO
-                                `fullpayment` (
-                                    order_id,
-                                    fullpay_method,
-                                    fullpay_img_path,
-                                    fullpay_account_name,
-                                    fullpay_amount,
-                                    fullpay_ref_no,
-                                    fullpay_verification_status
-                                )
-                            VALUES (
-                                :order_id,
-                                :fullpay_method,
-                                :fullpay_img_path,
-                                :fullpay_account_name,
-                                :fullpay_amount,
-                                :fullpay_ref_no,
-                                'waiting_for_verification'
-                            )
+                            UPDATE
+                                `fullpayment`
+                            SET
+                                fullpay_method = :fullpay_method,
+                                fullpay_img_path = :fullpay_img_path,
+                                fullpay_account_name = :fullpay_account_name,
+                                fullpay_amount = :fullpay_amount,
+                                fullpay_ref_no = :fullpay_ref_no,
+                                fullpay_verification_status = 'waiting_for_verification'
+                            WHERE
+                                `order_id` = :order_id
                         ";
                         // Prepare the query
                         $stmt = $conn->prepare($query);
@@ -72,8 +64,8 @@
                         
                         // Execute the query
                         if($stmt->execute()) {
-                            sendAlert("success", "You have successfully uploaded a proof of downpayment for this order.");
-                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of downpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
+                            sendAlert("success", "You have successfully uploaded a proof of fullpayment for this order.");
+                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of fullpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
                         } else {
                             echo "<script> console.log('Failed to execute query in upload_proof_of_fullpayment.php') </script>";
                         }
@@ -92,13 +84,13 @@
     }
 ?>
 
-<!-- Modal for Upload Proof of Fullpayment -->
-<div class="modal" id="upofModal">
+<!-- Modal for Reupload Proof of Fullpayment -->
+<div class="modal" id="rupofModal">
     <div class="modal__content">
-        <span class="modal__close" id="closeUPOF">&times;</span>
+        <span class="modal__close" id="closeRUPOF">&times;</span>
         <div class="form__wrapper form__wrapper--upload">
-            <h1 class="form__title">Upload Proof of Fullpayment</h1>
-            <form id="upofForm" class="form" method="post" enctype="multipart/form-data">
+            <h1 class="form__title">Reupload Proof of Fullpayment</h1>
+            <form id="rupofForm" class="form" method="post" enctype="multipart/form-data">
                 <label class="form__label" for="payment_method">Payment Method</label>
                 <select class="form__select" name="payment_method" id="payment_method">
                     <option class="form__option" value="gcash">GCash</option>
@@ -115,11 +107,11 @@
                 <label class="form__label" for="reference_no">Reference No. (For cash payments, enter N/A instead)</label>
                 <input class="form__input" type="text" id="reference_no" name="reference_no" required>
 
-                <label class="form__label" for="proof_upload">Upload File</label>
+                <label class="form__label" for="proof_upload">Reupload File</label>
                 <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
 
                 <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
-                <input class="form__submit" type="submit" name="submit--upof" value="Submit Proof">
+                <input class="form__submit" type="submit" name="submit--rupof" value="Submit Proof">
             </form>
         </div>
     </div>
@@ -248,4 +240,3 @@
         background-color: #0056b3;
     }
 </style>
-

@@ -213,12 +213,24 @@
                                             <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
                                         </td>
                                     </tr>
+                                <?php elseif(!isset($order['downpay_method']) || !isset($order['downpay_img_path'])): ?>
+                                    <tr>
+                                        <td>
+                                            <button class="order-actions__rupod   order-actions__btn" onclick="openModal('rupod')">Reupload Proof Of Downpayment</button>
+                                        </td>
+                                    </tr>
                                 <?php endif; ?>
                             <?php elseif ($order['order_phase'] == "pending_fullpayment"): ?>
                                 <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
                                     <tr>
                                         <td>
-                                        <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
+                                            <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
+                                        </td>
+                                    </tr>
+                                <?php elseif(!isset($order['fullpay_method']) || !isset($order['fullpay_img_path'])): ?>
+                                    <tr>
+                                        <td>
+                                            <button class="order-actions__rupof   order-actions__btn" onclick="openModal('rupof')">Reupload Proof Of Fullpayment</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -299,14 +311,18 @@
                                 </div>
                                 <table class="payment-actions">
                                     <tr>
-                                        <?php if ($order['order_phase'] == "pending_downpayment"): ?>
-                                            <?php if(!isset($order['downpay_method']) && !isset($order['downpay_img_path'])): ?>
-                                                <tr>
-                                                    <td>
-                                                        <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
-                                                    </td>
-                                                </tr>
-                                            <?php endif; ?>
+                                        <?php if(!isset($order['downpay_method']) && !isset($order['downpay_img_path'])): ?>
+                                            <tr>
+                                                <td>
+                                                    <button class="order-actions__upod   order-actions__btn" onclick="openModal('upod')">Upload Proof Of Downpayment</button>
+                                                </td>
+                                            </tr>
+                                        <?php elseif(!isset($order['downpay_method']) || !isset($order['downpay_img_path'])): ?>
+                                            <tr>
+                                                <td>
+                                                    <button class="order-actions__rupod   order-actions__btn" onclick="openModal('rupod')">Reupload Proof Of Downpayment</button>
+                                                </td>
+                                            </tr>
                                         <?php endif; ?>
                                     </tr>
                                 </table>
@@ -368,14 +384,18 @@
                                     </div>
                                     <table class="payment-actions">
                                         <tr>
-                                            <?php if ($order['order_phase'] == "pending_fullpayment"): ?>
-                                                <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
-                                                    <tr>
-                                                        <td>
-                                                            <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
-                                                        </td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                            <?php if(!isset($order['fullpay_method']) && !isset($order['fullpay_img_path'])): ?>
+                                                <tr>
+                                                    <td>
+                                                        <button class="order-actions__upof   order-actions__btn" onclick="openModal('upof')">Upload Proof Of Fullpayment</button>
+                                                    </td>
+                                                </tr>
+                                            <?php elseif(!isset($order['fullpay_method']) || !isset($order['fullpay_img_path'])): ?>
+                                                <tr>
+                                                    <td>
+                                                        <button class="order-actions__rupof   order-actions__btn" onclick="openModal('rupof')">Reupload Proof Of Fullpayment</button>
+                                                    </td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tr>
                                     </table>
@@ -496,7 +516,9 @@
         <?php include_once('item_details.php') ?>
         <?php include_once('set_order_address.php'); ?>
         <?php include_once('upload_proof_of_downpayment.php'); ?>
+        <?php include_once('reupload_proof_of_downpayment.php'); ?>
         <?php include_once('upload_proof_of_fullpayment.php'); ?>
+        <?php include_once('reupload_proof_of_fullpayment.php'); ?>
         <?php include_once('confirm_arrival.php'); ?>
         <?php include_once('submit_review.php'); ?>
 

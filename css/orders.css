@@ -178,7 +178,7 @@
                             cursor: pointer;
                         }
                             .td--no-action {
-                                padding: 2.5vmin;
+                                padding: 5vmin;
                             }
             .order-items__wrapper {
                 width: calc(100%-2.5vmin);

@@ -10,6 +10,31 @@
     }
 ?>
 
+<?php
+    // Include database connection
+    require_once('../database_connection.php');
+    include_once('../notif.php');
+    include_once('../alert.php');
+
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--confirmDelivery"])) {
+        try {
+            // Write the query
+            $query = "UPDATE `orders` SET `order_phase` = 'received' WHERE order_id = :order_id";
+            // Prepare the query
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':order_id', $order_id);
+            // Execute the query
+            if($stmt->execute()) {
+                sendAlert("success", "You have successfully confirmed the arrival of an order.");
+                createNotif($_SESSION['user_id'], 'You have confirmed the arrival of Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
+            }
+        } catch (PDOException $e) {
+            echo "<script> console.log(" . $e->getMessage() . ") </script>";
+        }
+    }
+?>
+
 <div class="modal" id="confirmDeliveryModal">
     <div class="modal__content">
         <span class="modal__close" id="closeConfirmDelivery">&times;</span>
@@ -147,27 +172,3 @@
     }
 </style>
 
-<?php
-    // Include database connection
-    require_once('../database_connection.php');
-    include_once('../notif.php');
-    include_once('../alert.php');
-
-    // Check if the form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--confirmDelivery"])) {
-        try {
-            // Write the query
-            $query = "UPDATE `orders` SET `order_phase` = 'received' WHERE order_id = :order_id";
-            // Prepare the query
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':order_id', $order_id);
-            // Execute the query
-            if($stmt->execute()) {
-                sendAlert("success", "You have successfully confirmed the arrival of an order.");
-                createNotif($_SESSION['user_id'], 'You have confirmed the arrival of Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
-            }
-        } catch (PDOException $e) {
-            echo "<script> console.log(" . $e->getMessage() . ") </script>";
-        }
-    }
-?>

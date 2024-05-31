@@ -9,7 +9,7 @@
     include_once('../notif.php');
     include_once('../alert.php');
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--upof"])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--rupod"])) {
         // Define the target directory for uploads
         $targetDir = "../uploadedImages/paymentImages";
         // Create the uploads directory if it doesn't exist
@@ -18,7 +18,7 @@
         }
 
         // Get the uploaded file information
-        $fileName = basename($_FILES["fullpay_img"]["name"]);
+        $fileName = basename($_FILES["downpay_img"]["name"]);
         $targetFilePath = $targetDir . '/' . $fileName;
         $dbpath = "uploadedImages/paymentImages/" . $fileName;
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
@@ -27,55 +27,47 @@
         $allowedTypes = array('jpg', 'jpeg', 'png');
         $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
-        $fullpay_method = $_POST['fullpay_method'];
-        $fullpay_account_name = htmlspecialchars(trim($_POST['fullpay_account_name']));
-        $fullpay_amount = $_POST['fullpay_amount'];
-        $fullpay_ref_no = htmlspecialchars(trim($_POST['fullpay_ref_no']));
+        $downpay_method = $_POST['downpay_method'];
+        $downpay_account_name = htmlspecialchars(trim($_POST['downpay_account_name']));
+        $downpay_amount = $_POST['downpay_amount'];
+        $downpay_ref_no = htmlspecialchars(trim($_POST['downpay_ref_no']));
 
         // Check if the file type is allowed
         if (in_array(strtolower($fileType), $allowedTypes)) {
             // Check the file size
-            if ($_FILES["fullpay_img"]["size"] <= $maxFileSize) {
+            if ($_FILES["downpay_img"]["size"] <= $maxFileSize) {
                 // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["fullpay_img"]["tmp_name"], $targetFilePath)) {
+                if (move_uploaded_file($_FILES["downpay_img"]["tmp_name"], $targetFilePath)) {
                     try {
                         // Write the query
                         $query = "
-                            INSERT INTO
-                                `fullpayment` (
-                                    order_id,
-                                    fullpay_method,
-                                    fullpay_img_path,
-                                    fullpay_account_name,
-                                    fullpay_amount,
-                                    fullpay_ref_no,
-                                    fullpay_verification_status
-                                )
-                            VALUES (
-                                :order_id,
-                                :fullpay_method,
-                                :fullpay_img_path,
-                                :fullpay_account_name,
-                                :fullpay_amount,
-                                :fullpay_ref_no,
-                                'waiting_for_verification'
-                            )
+                            UPDATE
+                                `downpayment`
+                            SET
+                                downpay_method = :downpay_method,
+                                downpay_img_path = :downpay_img_path,
+                                downpay_account_name = :downpay_account_name,
+                                downpay_amount = :downpay_amount,
+                                downpay_ref_no = :downpay_ref_no,
+                                downpay_verification_status = 'waiting_for_verification'
+                            WHERE
+                                `order_id` = :order_id
                         ";
                         // Prepare the query
                         $stmt = $conn->prepare($query);
                         $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
-                        $stmt->bindParam(':fullpay_method', $fullpay_method, PDO::PARAM_STR);
-                        $stmt->bindParam(':fullpay_img_path', $dbpath, PDO::PARAM_STR);
-                        $stmt->bindParam(':fullpay_account_name', $fullpay_account_name, PDO::PARAM_STR);
-                        $stmt->bindParam(':fullpay_amount', $fullpay_amount);
-                        $stmt->bindParam(':fullpay_ref_no', $fullpay_ref_no, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_method', $downpay_method, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_img_path', $dbpath, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_account_name', $downpay_account_name, PDO::PARAM_STR);
+                        $stmt->bindParam(':downpay_amount', $downpay_amount);
+                        $stmt->bindParam(':downpay_ref_no', $downpay_ref_no, PDO::PARAM_STR);
                         
                         // Execute the query
                         if($stmt->execute()) {
-                            sendAlert("success", "You have successfully uploaded a proof of downpayment for this order.");
-                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of downpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
+                            sendAlert("success", "You have successfully uploaded a proof of fullpayment for this order.");
+                            createNotif($_SESSION['user_id'], 'You have uploaded a proof of fullpayment for Order #' . $order_id . '.', '/my/orders.php?order_id=' . $order_id);
                         } else {
-                            echo "<script> console.log('Failed to execute query in upload_proof_of_fullpayment.php') </script>";
+                            echo "<script> console.log('Failed to execute query in upload_proof_of_downpayment.php') </script>";
                         }
                     } catch (PDOException $e) {
                         echo "<script> console.log(" . $e->getMessage() . ") </script>";
@@ -92,34 +84,36 @@
     }
 ?>
 
-<!-- Modal for Upload Proof of Fullpayment -->
-<div class="modal" id="upofModal">
+<!-- Modal for Reupload Proof of Downpayment -->
+
+<div class="modal" id="rupodModal">
     <div class="modal__content">
-        <span class="modal__close" id="closeUPOF">&times;</span>
+        <span class="modal__close" id="closeRUPOD">&times;</span>
         <div class="form__wrapper form__wrapper--upload">
-            <h1 class="form__title">Upload Proof of Fullpayment</h1>
-            <form id="upofForm" class="form" method="post" enctype="multipart/form-data">
-                <label class="form__label" for="payment_method">Payment Method</label>
-                <select class="form__select" name="payment_method" id="payment_method">
+            <h1 class="form__title">Reupload Proof of Downpayment</h1>
+            <form id="rupodForm" class="form" method="post" enctype="multipart/form-data">
+
+                <label class="form__label" for="downpay_method">Payment Method</label>
+                <select class="form__select" name="downpay_method" id="downpay_method">
                     <option class="form__option" value="gcash">GCash</option>
                     <option class="form__option" value="paymaya">Paymaya</option>
                     <option class="form__option" value="cash">Cash</option>
                 </select>
 
-                <label class="form__label" for="account_holder">Account Holder Name</label>
-                <input class="form__input" type="text" id="account_holder" name="account_holder" required>
+                <label class="form__label" for="downpay_account_name">Account Holder Name</label>
+                <input class="form__input" type="text" id="downpay_account_name" name="downpay_account_name" required>
 
-                <label class="form__label" for="amount">Amount</label>
-                <input class="form__input" type="number" id="amount" name="amount" required>
+                <label class="form__label" for="downpay_amount">Amount</label>
+                <input class="form__input" type="number" id="downpay_amount" name="downpay_amount" required>
 
-                <label class="form__label" for="reference_no">Reference No. (For cash payments, enter N/A instead)</label>
-                <input class="form__input" type="text" id="reference_no" name="reference_no" required>
+                <label class="form__label" for="downpay_ref_no">Reference No. (For cash payments, enter N/A instead)</label>
+                <input class="form__input" type="text" id="downpay_ref_no" name="downpay_ref_no" required>
 
-                <label class="form__label" for="proof_upload">Upload File</label>
-                <input class="form__input" type="file" id="proof_upload" name="proof_upload" accept="image/*,application/pdf" required>
+                <label class="form__label" for="downpay_img">Reupload File</label>
+                <input class="form__input" type="file" id="downpay_img" name="downpay_img" accept="image/*,application/pdf" required>
 
                 <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
-                <input class="form__submit" type="submit" name="submit--upof" value="Submit Proof">
+                <input class="form__submit" type="submit" name="submit--rupod" value="Submit Proof">
             </form>
         </div>
     </div>

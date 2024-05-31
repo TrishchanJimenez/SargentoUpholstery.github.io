@@ -38,8 +38,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeSOA = document.getElementById('closeSOA');
     const upodModal = document.getElementById('upodModal');
     const closeUPOD = document.getElementById('closeUPOD');
+    const rupodModal = document.getElementById('rupodModal');
+    const closeRUPOD = document.getElementById('closeRUPOD');
     const upofModal = document.getElementById('upofModal');
     const closeUPOF = document.getElementById('closeUPOF');
+    const rupofModal = document.getElementById('rupofModal');
+    const closeRUPOF = document.getElementById('closeRUPOF');
     const confirmDeliveryModal = document.getElementById('confirmDeliveryModal');
     const closeConfirmDelivery = document.getElementById('closeConfirmDelivery');
     const reviewModal = document.getElementById('reviewModal');
@@ -53,8 +57,14 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'upod':
                 upodModal.style.display = 'flex';
                 break;
+            case 'rupod':
+                rupodModal.style.display = 'flex';
+                break;
             case 'upof':
                 upofModal.style.display = 'flex';
+                break;
+            case 'rupof':
+                rupofModal.style.display = 'flex';
                 break;
             case 'confirmDelivery':
                 confirmDeliveryModal.style.display = 'flex';
@@ -75,8 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
         upodModal.style.display = 'none';
     });
 
+    closeRUPOD.addEventListener('click', function() {
+        rupodModal.style.display = 'none';
+    });
+
     closeUPOF.addEventListener('click', function() {
         upofModal.style.display = 'none';
+    });
+
+    closeRUPOF.addEventListener('click', function() {
+        rupofModal.style.display = 'none';
     });
 
     closeConfirmDelivery.addEventListener('click', function() {
