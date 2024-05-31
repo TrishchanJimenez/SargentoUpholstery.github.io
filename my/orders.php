@@ -112,7 +112,7 @@
                                 </div>
                                 <table class="order-number">
                                     <tr>
-                                        <td class="td--top"><?= $order['order_id'] ?></td>
+                                        <td class="td--top"><?= $order_id ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -365,7 +365,7 @@
                                     </div>
                                     <table class="payment-due">
                                         <tr>
-                                            <td class="td--top">₱ <?= number_format(($order["total_price"]) ?? 0, 2, '.', ',') ?></td>
+                                            <td class="td--top">₱ <?= number_format(($order["total_price"]) ?? 0/ 2, '.', ',') ?></td>
                                         </tr>
                                     </table>
                                 </div>
