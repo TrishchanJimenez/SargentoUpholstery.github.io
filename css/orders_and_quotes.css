@@ -146,6 +146,9 @@
 }
 .onq__content {
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .onq__header {
     display: flex;
@@ -165,9 +168,13 @@
     border: none;
     font-weight: bold;
     font-size: 1em;
-    padding: 1.2%;
+    padding: 1.25vmin 2.5vmin;
     cursor: pointer;
     border-top-left-radius: 15px;
+}
+.tab--orders {
+    border-top-left-radius: 0;
+    border-top-right-radius: 15px;
 }
 .tab.active {
     background-color: #333; /* Active tab background color */
@@ -187,6 +194,14 @@
     border: 1px solid #ccc;
     background-color: white;
 }
+.onq__table-wrapper {
+    width: 100%;
+    height: auto;
+    min-height: 55vh;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 2.5vmin;
+}
 .onq__table {
     width: 100%;
     height: auto;
@@ -201,4 +216,8 @@
     width: 20%;
     height: auto;
     text-align: center;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
 }

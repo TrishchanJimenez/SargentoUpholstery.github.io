@@ -143,72 +143,74 @@
                     echo "Error: " . $e->getMessage();
                 }
             ?>
-            <div class="onq__header">
-                <div class="tab__container">
-                    <button class="tab--quotes tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
-                    <button class="tab--orders tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
+            <div class="onq__table-wrapper">
+                <div class="onq__header">
+                    <div class="tab__container">
+                        <button class="tab--quotes tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
+                        <button class="tab--orders tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
+                    </div>
+                    <div class="filter__container">
+                        <form class="filter" method="get">
+                            <table class="filter__table">
+                                <tr class="filter__tr">
+                                    <td class="filter__td">
+                                        <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= htmlspecialchars($item_type) ?>">
+                                    </td>
+                                    <td class="filter__td">
+                                        <select name="service_type" class="selector">
+                                            <option value="default">Service Type</option>
+                                            <option value="mto" <?= $service_type == 'mto' ? 'selected' : '' ?>>MTO</option>
+                                            <option value="repair" <?= $service_type == 'repair' ? 'selected' : '' ?>>Repair</option>
+                                        </select>
+                                    </td>
+                                    <td class="filter__td">
+                                        <select name="status" class="selector">
+                                            <option value="default">All Status</option>
+                                            <option value="pending" <?= $status == 'pending' ? 'selected' : '' ?>>Pending</option>
+                                            <option value="approved" <?= $status == 'approved' ? 'selected' : '' ?>>Approved</option>
+                                            <option value="accepted" <?= $status == 'accepted' ? 'selected' : '' ?>>Accepted</option>
+                                            <option value="rejected" <?= $status == 'rejected' ? 'selected' : '' ?>>Rejected</option>
+                                            <option value="cancelled" <?= $status == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                                        </select>
+                                    </td>
+                                    <td class="filter__td">
+                                        <input class="submit-filter" type="submit" value="Filter">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
-                <div class="filter__container">
-                    <form class="filter" method="get">
-                        <table class="filter__table">
-                            <tr class="filter__tr">
-                                <td class="filter__td">
-                                    <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= htmlspecialchars($item_type) ?>">
-                                </td>
-                                <td class="filter__td">
-                                    <select name="service_type" class="selector">
-                                        <option value="default">Service Type</option>
-                                        <option value="mto" <?= $service_type == 'mto' ? 'selected' : '' ?>>MTO</option>
-                                        <option value="repair" <?= $service_type == 'repair' ? 'selected' : '' ?>>Repair</option>
-                                    </select>
-                                </td>
-                                <td class="filter__td">
-                                    <select name="status" class="selector">
-                                        <option value="default">All Status</option>
-                                        <option value="pending" <?= $status == 'pending' ? 'selected' : '' ?>>Pending</option>
-                                        <option value="approved" <?= $status == 'approved' ? 'selected' : '' ?>>Approved</option>
-                                        <option value="accepted" <?= $status == 'accepted' ? 'selected' : '' ?>>Accepted</option>
-                                        <option value="rejected" <?= $status == 'rejected' ? 'selected' : '' ?>>Rejected</option>
-                                        <option value="cancelled" <?= $status == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                                    </select>
-                                </td>
-                                <td class="filter__td">
-                                    <input class="submit-filter" type="submit" value="Filter">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
+                <table class="onq__table">
+                    <!-- Table headers of all quotes -->
+                    <thead class="onq__thead">
+                        <tr class="onq__tr   onq__tr--th">
+                            <th class="onq__th">Quote ID</th>
+                            <th class="onq__th">Item Type</th>
+                            <th class="onq__th">Service Type</th>
+                            <th class="onq__th">Status</th>
+                            <th class="onq__th">View</th>
+                        </tr>
+                    </thead>
+                    <tbody class="onq__tbody">
+                        <?php if ($quotes) : ?>
+                            <?php foreach ($quotes as $row) : ?>
+                                <tr class="onq__tr   onq__tr--head">
+                                    <td class="onq__td"> <?= htmlspecialchars($row["quote_id"]) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) ?> </td>
+                                    <td class="onq__td">
+                                        <a href="quotes.php?quote_id=<?= htmlspecialchars($row["quote_id"]) ?> ">
+                                            >
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-            <table class="onq__table">
-                <!-- Table headers of all quotes -->
-                <thead class="onq__thead">
-                    <tr class="onq__tr   onq__tr--th">
-                        <th class="onq__th">Quote ID</th>
-                        <th class="onq__th">Item Type</th>
-                        <th class="onq__th">Service Type</th>
-                        <th class="onq__th">Status</th>
-                        <th class="onq__th">View</th>
-                    </tr>
-                </thead>
-                <tbody class="onq__tbody">
-                    <?php if ($quotes) : ?>
-                        <?php foreach ($quotes as $row) : ?>
-                            <tr class="onq__tr   onq__tr--head">
-                                <td class="onq__td"> <?= htmlspecialchars($row["quote_id"]) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) ?> </td>
-                                <td class="onq__td">
-                                    <a href="quotes.php?quote_id=<?= htmlspecialchars($row["quote_id"]) ?> ">
-                                        >
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
             <div class="pagination">
                 <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
                     <?php
@@ -311,74 +313,76 @@
                     echo "Error: " . $e->getMessage();
                 }
             ?>
-            <div class="onq__header">
-                <div class="tab__container">
-                    <button class="tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
-                    <button class="tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
+            <div class="onq__table-wrapper">
+                <div class="onq__header">
+                    <div class="tab__container">
+                        <button class="tab--quotes tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
+                        <button class="tab--orders tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
+                    </div>
+                    <div class="filter-container">
+                        <form class="filter" method="get">
+                            <table class="filter__table">
+                                <tr class="filter__tr">
+                                    <td class="filter__td">
+                                        <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= htmlspecialchars($item_type) ?>">
+                                    </td>
+                                    <td class="filter__td">
+                                        <select name="service_type" class="selector">
+                                            <option value="default">Service Type</option>
+                                            <option value="mto" <?= $service_type == 'mto' ? 'selected' : '' ?>>MTO</option>
+                                            <option value="repair" <?= $service_type == 'repair' ? 'selected' : '' ?>>Repair</option>
+                                        </select>
+                                    </td>
+                                    <td class="filter__td">
+                                        <select name="status" class="selector">
+                                            <option value="default">All Phases</option>
+                                            <option value="pending_downpayment" <?= $order_phase == 'pending_downpayment' ? 'selected' : '' ?>>Pending Downpayment</option>
+                                            <option value="awaiting_furniture" <?= $order_phase == 'awaiting_furniture' ? 'selected' : '' ?>>Awaiting Furniture Pickup</option>
+                                            <option value="in_production" <?= $order_phase == 'in_production' ? 'selected' : '' ?>>In Production</option>
+                                            <option value="pending_fullpayment" <?= $order_phase == 'pending_fullpayment' ? 'selected' : '' ?>>Pending Fullpayment</option>
+                                            <option value="out_for_delivery" <?= $order_phase == 'out_for_delivery' ? 'selected' : '' ?>>Out For Delivery</option>
+                                            <option value="received" <?= $order_phase == 'received' ? 'selected' : '' ?>>Received</option>
+                                            <option value="cancelled" <?= $order_phase == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                                        </select>
+                                    </td>
+                                    <td class="filter__td">
+                                        <input class="submit-filter" type="submit" value="Filter">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
-                <div class="filter-container">
-                    <form class="filter" method="get">
-                        <table class="filter__table">
-                            <tr class="filter__tr">
-                                <td class="filter__td">
-                                    <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= htmlspecialchars($item_type) ?>">
-                                </td>
-                                <td class="filter__td">
-                                    <select name="service_type" class="selector">
-                                        <option value="default">Service Type</option>
-                                        <option value="mto" <?= $service_type == 'mto' ? 'selected' : '' ?>>MTO</option>
-                                        <option value="repair" <?= $service_type == 'repair' ? 'selected' : '' ?>>Repair</option>
-                                    </select>
-                                </td>
-                                <td class="filter__td">
-                                    <select name="status" class="selector">
-                                        <option value="default">All Phases</option>
-                                        <option value="pending_downpayment" <?= $order_phase == 'pending_downpayment' ? 'selected' : '' ?>>Pending Downpayment</option>
-                                        <option value="awaiting_furniture" <?= $order_phase == 'awaiting_furniture' ? 'selected' : '' ?>>Awaiting Furniture Pickup</option>
-                                        <option value="in_production" <?= $order_phase == 'in_production' ? 'selected' : '' ?>>In Production</option>
-                                        <option value="pending_fullpayment" <?= $order_phase == 'pending_fullpayment' ? 'selected' : '' ?>>Pending Fullpayment</option>
-                                        <option value="out_for_delivery" <?= $order_phase == 'out_for_delivery' ? 'selected' : '' ?>>Out For Delivery</option>
-                                        <option value="received" <?= $order_phase == 'received' ? 'selected' : '' ?>>Received</option>
-                                        <option value="cancelled" <?= $order_phase == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                                    </select>
-                                </td>
-                                <td class="filter__td">
-                                    <input class="submit-filter" type="submit" value="Filter">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
+                <table class="onq__table">
+                    <!-- Table headers of all orders -->
+                    <thead class="onq__thead">
+                        <tr class="onq__tr   onq__tr--th">
+                            <th class="onq__th">Order ID</th>
+                            <th class="onq__th">Item Type</th>
+                            <th class="onq__th">Service Type</th>
+                            <th class="onq__th">Order Status</th>
+                            <th class="onq__th">View</th>
+                        </tr>
+                    </thead>
+                    <tbody class="onq__tbody">
+                        <?php if ($orders) : ?>
+                            <?php foreach ($orders as $row) : ?>
+                                <tr class="onq__tr">
+                                    <td class="onq__td"> <?= htmlspecialchars($row["order_id"]) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
+                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["order_phase"] ?? 'N/A'))) ?> </td>
+                                    <td class="onq__td">
+                                        <a href="orders.php?order_id=<?= htmlspecialchars($row["order_id"]) ?>">
+                                            >
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-            <table class="onq__table">
-                <!-- Table headers of all orders -->
-                <thead class="onq__thead">
-                    <tr class="onq__tr   onq__tr--th">
-                        <th class="onq__th">Order ID</th>
-                        <th class="onq__th">Item Type</th>
-                        <th class="onq__th">Service Type</th>
-                        <th class="onq__th">Order Status</th>
-                        <th class="onq__th">View</th>
-                    </tr>
-                </thead>
-                <tbody class="onq__tbody">
-                    <?php if ($orders) : ?>
-                        <?php foreach ($orders as $row) : ?>
-                            <tr class="onq__tr">
-                                <td class="onq__td"> <?= htmlspecialchars($row["order_id"]) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
-                                <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["order_phase"] ?? 'N/A'))) ?> </td>
-                                <td class="onq__td">
-                                    <a href="orders.php?order_id=<?= htmlspecialchars($row["order_id"]) ?>">
-                                        >
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
             <div class="pagination"> <!-- Not working -->
                 <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
                     <?php
