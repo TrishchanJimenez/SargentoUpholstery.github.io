@@ -117,10 +117,12 @@
     <title>Orders</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin/orders.css">
+    <link rel="stylesheet" href="../css/report_generated.css">
 </head>
 <body>
+    <div class="wrapper_body">
+<?php require 'sidebar.php' ?>
     <div class="orders">
-        <?php require 'sidebar.php' ?>
         <div class="order-list">
             <p class="main-title">Order</p>
             <hr class="divider">
@@ -350,6 +352,7 @@
             </div>
         </div>
     </div>
+                    </div>
     <script src="../js/admin/order.js"></script>
 </body>
 </html>
