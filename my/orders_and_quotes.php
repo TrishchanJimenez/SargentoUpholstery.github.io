@@ -18,49 +18,6 @@
     $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
     $tab = isset($_GET['tab']) ? $_GET['tab'] : 'quotes';
     $offset = ($page - 1) * $results_per_page;
-    // Get filter parameters
-    // $item_type = isset($_GET['item_type']) ? $_GET['item_type'] : 'Default';
-    // $service_type = isset($_GET['service_type']) ? $_GET['service_type'] : 'default';
-    // $status = isset($_GET['status']) ? $_GET['status'] : 'default';
-
-    // // Build the filter query
-    // $quote_query = "
-    //     SELECT 
-    //         * 
-    //     FROM 
-    //         `quotes` q 
-    //     JOIN 
-    //         `items` i 
-    //     ON 
-    //         q.quote_id = i.quote_id 
-    //     WHERE 
-    //         q.customer_id = :customer_id";
-    // if ($item_type != 'default') {
-    //     $quote_query .= " AND i.furniture = :item_type";
-    // }
-    // if ($service_type != 'default') {
-    //     $quote_query .= " AND q.service_type = :service_type";
-    // }
-    // if ($status != 'default') {
-    //     $quote_query .= " AND q.quote_status = :status";
-    // }
-    // $quote_query .= " ORDER BY i.item_id DESC LIMIT :limit OFFSET :offset";
-
-    // $quote_stmt = $conn->prepare($quote_query);
-    // $quote_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-    // if ($item_type != 'default') {
-    //     $quote_stmt->bindParam(':item_type', $item_type, PDO::PARAM_STR);
-    // }
-    // if ($service_type != 'default') {
-    //     $quote_stmt->bindParam(':service_type', $service_type, PDO::PARAM_STR);
-    // }
-    // if ($status != 'default') {
-    //     $quote_stmt->bindParam(':status', $status, PDO::PARAM_STR);
-    // }
-    // $quote_stmt->bindParam(':limit', $results_per_page, PDO::PARAM_INT);
-    // $quote_stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-    // $quote_stmt->execute();
-    // $quotes = $quote_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +35,6 @@
         <div id="tab--quotes" class="onq__content" style="<?= ($tab === 'quotes') ? 'display: block;' : 'display:none ' ?>">
             <?php
                 // Get filter parameters
-                $item_type = isset($_GET['item_type']) ? $_GET['item_type'] : '';
                 $service_type = isset($_GET['service_type']) ? $_GET['service_type'] : 'default';
                 $status = isset($_GET['status']) ? $_GET['status'] : 'default';
 
@@ -88,15 +44,9 @@
                             * 
                         FROM 
                             `quotes` q 
-                                JOIN 
-                            `items` i ON q.quote_id = i.quote_id
                         WHERE 
                             q.customer_id = :customer_id
                     ";
-                if ($item_type != 'default' && $item_type != '') {
-                    $item_type = '%' . $item_type . '%';
-                    $quote_query .= " AND i.furniture LIKE :item_type";
-                }
                 if ($service_type != 'default') {
                     $quote_query .= " AND q.service_type = :service_type";
                 }
@@ -104,14 +54,11 @@
                     $quote_query .= " AND q.quote_status = :status";
                 }
 
-                $quote_query .= " ORDER BY i.item_id DESC LIMIT :limit OFFSET :offset";
+                $quote_query .= " ORDER BY q.quote_id DESC LIMIT :limit OFFSET :offset";
 
                 try {
                     $quote_stmt = $conn->prepare($quote_query);
                     $quote_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                    if ($item_type != 'default' && $item_type != '') {
-                        $quote_stmt->bindParam(':item_type', $item_type, PDO::PARAM_STR);
-                    }
                     if ($service_type != 'default') {
                         $quote_stmt->bindParam(':service_type', $service_type, PDO::PARAM_STR);
                     }
@@ -124,10 +71,9 @@
                     $quotes = $quote_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     // Get the total number of quotes
-                    $total_quotes_query = "SELECT COUNT(*) FROM `quotes` q JOIN items i USING(quote_id) WHERE `customer_id` = :customer_id";
-                    if ($item_type != 'default' && $item_type != '') {
-                        $total_quotes_query .= " AND i.furniture = :item_type";
-                    }
+                    $total_quotes_query = "
+                        SELECT COUNT(*) FROM `quotes` q WHERE `customer_id` = :customer_id
+                    ";
                     if ($service_type != 'default') {
                         $total_quotes_query .= " AND q.service_type = :service_type";
                     }
@@ -137,9 +83,6 @@
 
                     $total_quotes_stmt = $conn->prepare($total_quotes_query);
                     $total_quotes_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                    if ($item_type != 'default' && $item_type != '') {
-                        $total_quotes_stmt->bindParam(':item_type', $item_type, PDO::PARAM_STR);
-                    }
                     if ($service_type != 'default') {
                         $total_quotes_stmt->bindParam(':service_type', $service_type, PDO::PARAM_STR);
                     }
@@ -164,9 +107,6 @@
                         <form class="filter" method="get">
                             <table class="filter__table">
                                 <tr class="filter__tr">
-                                    <td class="filter__td">
-                                        <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= str_replace("%", "", htmlspecialchars($item_type)) ?>">
-                                    </td>
                                     <td class="filter__td">
                                         <select name="service_type" class="selector">
                                             <option value="default">Service Type</option>
@@ -232,14 +172,13 @@
                         $active_class = 'active';
                     }
                     ?>
-                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>&item_type=<?php echo $item_type; ?>&service_type=<?php echo $service_type; ?>&status=<?php echo $status; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page; ?></button>
+                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>&service_type=<?php echo $service_type; ?>&status=<?php echo $status; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page; ?></button>
                 <?php endfor; ?>
             </div>
         </div>
         <div id="tab--orders" class="onq__content" style="<?= ($tab === 'orders') ? 'display: block;' : 'display:none ' ?>">
             <?php
                 // Get filter parameters
-                $item_type = isset($_GET['item_type']) ? $_GET['item_type'] : '';
                 $service_type = isset($_GET['service_type']) ? $_GET['service_type'] : 'default';
                 $order_phase = isset($_GET['order_phase']) ? $_GET['order_phase'] : 'default';
 
@@ -251,29 +190,20 @@
                             `orders` o 
                                 JOIN
                             `quotes` q ON o.quote_id = q.quote_id
-                                JOIN 
-                            `items` i ON q.quote_id = i.quote_id
                         WHERE 
                             `customer_id` = :customer_id
                     ";
-                if ($item_type != 'default' && $item_type != '') {
-                    $item_type = '%' . $item_type . '%';
-                    $order_query .= " AND i.furniture LIKE :item_type";
-                }
                 if ($service_type != 'default') {
                     $order_query .= " AND q.service_type = :service_type";
                 }
                 if ($order_phase != 'default') {
                     $order_query .= " AND o.order_phase = :order_phase";
                 }
-                $order_query .= " ORDER BY i.item_id DESC LIMIT :limit OFFSET :offset";
+                $order_query .= " ORDER BY O.order_id DESC LIMIT :limit OFFSET :offset";
 
                 try {
                     $order_stmt = $conn->prepare($order_query);
                     $order_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                    if ($item_type != 'default' && $item_type != '') {
-                        $order_stmt->bindParam(':item_type', $item_type, PDO::PARAM_STR);
-                    }
                     if ($service_type != 'default') {
                         $order_stmt->bindParam(':service_type', $service_type, PDO::PARAM_STR);
                     }
@@ -293,15 +223,9 @@
                                 `orders` o 
                                     JOIN
                                 `quotes` q ON o.quote_id = q.quote_id   
-                                    LEFT JOIN
-                                `items` i ON q.quote_id = i.quote_id
                             WHERE 
                                 q.customer_id = :customer_id
                         ";
-                    if ($item_type != 'default' && $item_type != '') {
-                        $item_type = '%' . $item_type . '%';
-                        $total_orders_query .= " AND i.furniture LIKE :item_type";
-                    }
                     if ($service_type != 'default') {
                         $total_orders_query .= " AND q.service_type = :service_type";
                     }
@@ -311,9 +235,6 @@
 
                     $total_orders_stmt = $conn->prepare($total_orders_query);
                     $total_orders_stmt->bindParam(':customer_id', $user_id, PDO::PARAM_INT);
-                    if ($item_type != 'default' && $item_type != '') {
-                        $total_orders_stmt->bindParam(':item_type', $item_type, PDO::PARAM_STR);
-                    }
                     if ($service_type != 'default') {
                         $total_orders_stmt->bindParam(':service_type', $service_type, PDO::PARAM_STR);
                     }
@@ -340,9 +261,6 @@
                         <table class="filter__table">
                             <tr class="filter__tr">
                                 <td class="filter__td">
-                                    <td class="filter__td">
-                                        <input type="text" name="item_type" class="selector" placeholder="Item Type" value="<?= str_replace("%", "", htmlspecialchars($item_type)) ?>">
-                                    </td>
                                     <td class="filter__td">
                                         <select name="service_type" class="selector">
                                             <option value="default">Service Type</option>
@@ -410,7 +328,7 @@
                         $active_class = 'active';
                     }
                     ?>
-                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>&item_type=<?php echo $item_type; ?>&service_type=<?php echo $service_type; ?>&status=<?php echo $status; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page; ?></button>
+                    <button onclick="window.location.href='orders_and_quotes.php?page=<?php echo $page; ?>&service_type=<?php echo $service_type; ?>&status=<?php echo $status; ?>'" class="pagination__button <?php echo $active_class; ?>"><?php echo $page; ?></button>
                 <?php endfor; ?>
             </div>
         </div>
