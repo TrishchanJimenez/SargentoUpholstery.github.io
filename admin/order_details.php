@@ -467,7 +467,7 @@
                             <div class='info'>
                                 <span class='info-name'>REFERENCE NO.</span>
                                 <span class='info-detail'>
-                                    <?= '₱' . number_format($order['fullpay_ref_no']) ?>
+                                    <?= $order['fullpay_ref_no'] ?>
                                 </span>
                             </div>
                             <div class='info'>
