@@ -1,4 +1,11 @@
+.wrapper_body{
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
 
+
+
+}
 .content-container{
     width: 100%;
     height: 100%;
