@@ -137,7 +137,6 @@
                     <thead class="onq__thead">
                         <tr class="onq__tr   onq__tr--th">
                             <th class="onq__th">Quote ID</th>
-                            <th class="onq__th">Item Type</th>
                             <th class="onq__th">Service Type</th>
                             <th class="onq__th">Status</th>
                             <th class="onq__th">View</th>
@@ -148,7 +147,6 @@
                             <?php foreach ($quotes as $row) : ?>
                                 <tr class="onq__tr   onq__tr--head">
                                     <td class="onq__td"> <?= htmlspecialchars($row["quote_id"]) ?> </td>
-                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
                                     <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
                                     <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["quote_status"] ?? 'N/A'))) ?> </td>
                                     <td class="onq__td">
@@ -293,7 +291,6 @@
                     <thead class="onq__thead">
                         <tr class="onq__tr   onq__tr--th">
                             <th class="onq__th">Order ID</th>
-                            <th class="onq__th">Item Type</th>
                             <th class="onq__th">Service Type</th>
                             <th class="onq__th">Order Status</th>
                             <th class="onq__th">View</th>
@@ -304,7 +301,6 @@
                             <?php foreach ($orders as $row) : ?>
                                 <tr class="onq__tr">
                                     <td class="onq__td"> <?= htmlspecialchars($row["order_id"]) ?> </td>
-                                    <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
                                     <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
                                     <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["order_phase"] ?? 'N/A'))) ?> </td>
                                     <td class="onq__td">
