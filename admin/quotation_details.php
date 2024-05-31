@@ -99,7 +99,8 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/admin/quotations.css">
 </head>
-<body class="orders">
+<body> 
+<div class="orders">
     <?php require 'sidebar.php' ?>
     <div class="order-detail">
         <p class="main-title">Quote Detail</p>
@@ -334,5 +335,6 @@
         </div>
     </div>
     <script src="/js/quotation.js"></script>
+</div>
 </body>
 </html>
