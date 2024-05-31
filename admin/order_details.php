@@ -384,116 +384,118 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <?php if(!is_null($order['downpay_method'])) : ?>
-                    <div class='payment-information downpayment-info'>
-                        <p class='info-title'>
-                            DOWNPAYMENT INFORMATION
-                        </p>
-                        <div class='info-order-detail payment-info'>
-                            <div class='info'>
-                                <span class='info-name'>MODE OF PAYMENT</span>
-                                <span class='info-detail'>
-                                    <?= ucfirst($order['downpay_method']) ?>
-                                </span>
+                <div class="downpayment-container" style="border: none;display:flex;">
+                    <?php if(!is_null($order['downpay_method'])) : ?>
+                        <div class='payment-information downpayment-info'>
+                            <p class='info-title'>
+                                DOWNPAYMENT INFORMATION
+                            </p>
+                            <div class='info-order-detail payment-info'>
+                                <div class='info'>
+                                    <span class='info-name'>MODE OF PAYMENT</span>
+                                    <span class='info-detail'>
+                                        <?= ucfirst($order['downpay_method']) ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>ACCOUNT NAME</span>
+                                    <span class='info-detail'>
+                                        <?= $order['downpay_account_name'] ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>AMOUNT</span>
+                                    <span class='info-detail'>
+                                        <?= '₱ ' . number_format($order['downpay_amount']) ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>REFERENCE NO.</span>
+                                    <span class='info-detail'>
+                                        <?= $order['downpay_ref_no'] ?>
+                                    </span>
+                                </div>
+                                <?php if(!is_null($order['downpay_img_path'])) : ?>
+                                    <div class='info'>
+                                        <span class='info-name'>PROOF OF PAYMENT</span>
+                                        <span class='info-detail'>
+                                            <img src="<?= '/' . $order['downpay_img_path'] ?>" alt="">
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                <div class='info'>
+                                    <span class='info-name'>VERIFICATION STATUS</span>
+                                    <span class='info-detail downpayment-status'>
+                                        <?= ucfirst(str_replace("_", " ", $order['downpay_verification_status'] ?? '')) ?>
+                                    </span>
+                                </div>
+                                <?php if($order['downpay_verification_status'] === "waiting_for_verification") : ?>
+                                    <form class="verification-buttons button-container downpayment" method="post">
+                                        <input type="hidden" name="user_id" value="<?= $order['customer_id'] ?>">
+                                        <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
+                                        <input type="hidden" name="order_type" value="<?= $order['service_type'] ?>">
+                                        <input type='submit' name="verify-downpayment" value='Verify' class='green-button accept-verification'>
+                                        <input type='submit' name="reverify-downpayment" value='Needs Reverification' class='red-button reject-verification'>
+                                    </form> 
+                                <?php endif; ?>
                             </div>
-                            <div class='info'>
-                                <span class='info-name'>ACCOUNT NAME</span>
-                                <span class='info-detail'>
-                                    <?= $order['downpay_account_name'] ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>AMOUNT</span>
-                                <span class='info-detail'>
-                                    <?= '₱ ' . number_format($order['downpay_amount']) ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>REFERENCE NO.</span>
-                                <span class='info-detail'>
-                                    <?= $order['downpay_ref_no'] ?>
-                                </span>
-                            </div>
-                            <?php if(!is_null($order['downpay_img_path'])) : ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if(!is_null($order['fullpay_method'])) : ?>
+                        <div class="payment-information fullpayment-info">
+                            <p class="info-title">
+                                FULLPAYMENT INFORMATION
+                            </p>
+                            <div class="info-order-detail payment-info">
+                                <div class='info'>
+                                    <span class='info-name'>MODE OF PAYMENT</span>
+                                    <span class='info-detail'>
+                                        <?= ucfirst($order['fullpay_method']) ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>ACCOUNT NAME</span>
+                                    <span class='info-detail'>
+                                        <?= $order['fullpay_account_name'] ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>AMOUNT</span>
+                                    <span class='info-detail'>
+                                        <?= '₱' . number_format($order['fullpay_amount']) ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>REFERENCE NO.</span>
+                                    <span class='info-detail'>
+                                        <?= $order['fullpay_ref_no'] ?>
+                                    </span>
+                                </div>
+                                <div class='info'>
+                                    <span class='info-name'>VERIFICATION STATUS</span>
+                                    <span class='info-detail downpayment-status'>
+                                        <?= ucfirst(str_replace("_", " ", $order['fullpay_verification_status'] ?? '')) ?>
+                                    </span>
+                                </div>
                                 <div class='info'>
                                     <span class='info-name'>PROOF OF PAYMENT</span>
                                     <span class='info-detail'>
-                                        <img src="<?= '/' . $order['downpay_img_path'] ?>" alt="">
+                                        <img src="<?= '/' . $order['fullpay_img_path'] ?>" alt="">
                                     </span>
                                 </div>
-                            <?php endif; ?>
-                            <div class='info'>
-                                <span class='info-name'>VERIFICATION STATUS</span>
-                                <span class='info-detail downpayment-status'>
-                                    <?= ucfirst(str_replace("_", " ", $order['downpay_verification_status'] ?? '')) ?>
-                                </span>
+                                <?php if($order['fullpay_verification_status'] === "waiting_for_verification") : ?>
+                                    <form class="verification-buttons button-container fullpayment" method="post">
+                                        <input type="hidden" name="user_id" value="<?= $order['customer_id'] ?>">
+                                        <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
+                                        <input type="hidden" name="order_type" value="<?= $order['service_type'] ?>">
+                                        <input type="submit" name="verify-fullpayment" value="Verify" class="green-button accept-verification">
+                                        <input type="submit" name="reverify-fullpayment" value="Needs Reverification" class="red-button reject-verification">
+                                    </form> 
+                                <?php endif; ?>
                             </div>
-                            <?php if($order['downpay_verification_status'] === "waiting_for_verification") : ?>
-                                <form class="verification-buttons button-container downpayment" method="post">
-                                    <input type="hidden" name="user_id" value="<?= $order['customer_id'] ?>">
-                                    <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
-                                    <input type="hidden" name="order_type" value="<?= $order['service_type'] ?>">
-                                    <input type='submit' name="verify-downpayment" value='Verify' class='green-button accept-verification'>
-                                    <input type='submit' name="reverify-downpayment" value='Needs Reverification' class='red-button reject-verification'>
-                                </form> 
-                            <?php endif; ?>
                         </div>
-                    </div>
-                <?php endif; ?>
-                <?php if(!is_null($order['fullpay_method'])) : ?>
-                    <div class="payment-information fullpayment-info">
-                        <p class="info-title">
-                            FULLPAYMENT INFORMATION
-                        </p>
-                        <div class="info-order-detail payment-info">
-                            <div class='info'>
-                                <span class='info-name'>MODE OF PAYMENT</span>
-                                <span class='info-detail'>
-                                    <?= ucfirst($order['fullpay_method']) ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>ACCOUNT NAME</span>
-                                <span class='info-detail'>
-                                    <?= $order['fullpay_account_name'] ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>AMOUNT</span>
-                                <span class='info-detail'>
-                                    <?= '₱' . number_format($order['fullpay_amount']) ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>REFERENCE NO.</span>
-                                <span class='info-detail'>
-                                    <?= $order['fullpay_ref_no'] ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>VERIFICATION STATUS</span>
-                                <span class='info-detail downpayment-status'>
-                                    <?= ucfirst(str_replace("_", " ", $order['fullpay_verification_status'] ?? '')) ?>
-                                </span>
-                            </div>
-                            <div class='info'>
-                                <span class='info-name'>PROOF OF PAYMENT</span>
-                                <span class='info-detail'>
-                                    <img src="<?= '/' . $order['fullpay_img_path'] ?>" alt="">
-                                </span>
-                            </div>
-                            <?php if($order['fullpay_verification_status'] === "waiting_for_verification") : ?>
-                                <form class="verification-buttons button-container fullpayment" method="post">
-                                    <input type="hidden" name="user_id" value="<?= $order['customer_id'] ?>">
-                                    <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
-                                    <input type="hidden" name="order_type" value="<?= $order['service_type'] ?>">
-                                    <input type="submit" name="verify-fullpayment" value="Verify" class="green-submit accept-verification">
-                                    <input type="submit" name="reverify-fullpayment" value="Needs Reverification" class="red-button reject-verification">
-                                </form> 
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="right">
                 <div class="customer-information">
