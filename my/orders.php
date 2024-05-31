@@ -13,7 +13,7 @@
         exit;
     }
 
-    $order_id = htmlspecialchars($_GET['order_id']);
+    $order_id = $_GET['order_id'];
 
     require_once('../database_connection.php');
 
@@ -65,7 +65,6 @@
     <link rel="stylesheet" href="/css/orders.css">
     <title>Order Details - Sargento Upholstery</title>
 </head>
-
     <body>
         <?php require_once('../header.php'); ?>
         <div class="main-wrapper">
@@ -113,26 +112,26 @@
                                 </div>
                                 <table class="order-number">
                                     <tr>
-                                        <td class="td--top"><?= ($order["order_id"]) ?></td>
+                                        <td class="td--top"><?= $order['order_id'] ?></td>
                                     </tr>
                                 </table>
                             </div>
                             <?php
                                 $phase_class = '';
                                 switch ($order["order_phase"]) {
-                                    case 'pending_down':
+                                    case 'pending_downpayment':
                                         $phase_class = 'status-pending-down';
                                         break;
-                                    case 'pickup':
+                                    case 'awaiting_furniture':
                                         $phase_class = 'status-pickup';
                                         break;
-                                    case 'production':
+                                    case 'in_production':
                                         $phase_class = 'status-production';
                                         break;
-                                    case 'pending_full':
+                                    case 'pending_fullpayment':
                                         $phase_class = 'status-pending-full';
                                         break;
-                                    case 'delivery':
+                                    case 'out_for_delivery':
                                         $phase_class = 'status-delivery';
                                         break;
                                     case 'received':
@@ -420,9 +419,13 @@
                                     SELECT 
                                         * 
                                     FROM 
-                                        `items` i
+                                        `orders` o
+                                            INNER JOIN
+                                        `quotes` q ON o.quote_id = q.quote_id
+                                            INNER JOIN
+                                        `items` i ON q.quote_id = i.quote_id
                                     WHERE 
-                                        i.quote_id = :quote_id
+                                        q.quote_id = :quote_id
                                     LIMIT :limit 
                                     OFFSET :offset
                                 ";

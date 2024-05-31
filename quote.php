@@ -62,21 +62,21 @@
                 <div class="quote-form__wrapper">
                     <!-- Personal Information Section -->
                     <div class="quote-form__display" id="personal-information">
-                        <h2 class="quote-form__header">Personal Information</h2>
+                        <h2 class="quote-form__header">Display of Personal Information</h2>
                         <p class="quote-form__description">Please ensure that your personal information is correct.</p>
                         
                         <div class="quote-form__output-container">
-                            <label class="quote-form__label" for="name">Full Name *</label> 
+                            <label class="quote-form__label" for="name">Full Name</label> 
                             <input class="quote-form__output quote-form__output--text" type="text" id="name" name="name" value="<?= $af_name ?>" required readonly>
                         </div>
 
-                        <div class="quote-form__input-container">
-                            <label class="quote-form__label" for="user_address">Address *</label> 
+                        <!-- <div class="quote-form__input-container">
+                            <label class="quote-form__label" for="user_address">Address</label> 
                             <input class="quote-form__output quote-form__output--text" type="text" id="user_address" name="user_address" value="<?= $af_address ?>" required readonly>
-                        </div>
+                        </div> -->
 
                         <div class="quote-form__input-container">
-                            <label class="quote-form__label" for="contact_no">Contact Number *</label> 
+                            <label class="quote-form__label" for="contact_no">Contact Number</label> 
                             <div class="quote-form__input-text--contact">
                                 <!-- <select class="quote-form__output" id="country-code" name="country-code" required>
                                     <option value="+63">+63</option>
