@@ -23,7 +23,7 @@
         $stmt->bindParam(':reason', $rejection_reason);
         $stmt->bindParam(':order_id', $order_id);
         $stmt->execute();
-        createNotif($user_id, "Your order has unfortunately been rejected. Click here to see Reason", "/my/user_order_details.php?order-id={$order_id}");
+        createNotif($user_id, "Your order has unfortunately been rejected. Click here to see Reason", "/my/orders.php?order_id={$order_id}");
         sendAlert("success", "Order has succesfully been rejected");
         // header("Refresh: 0");
         // exit();
@@ -59,7 +59,7 @@
 
             if($stmt->rowCount() > 0) {
                 // Update successful
-                createNotif($user_id, "Your order is now in production", "/order.php?id=$order_id");
+                createNotif($user_id, "Your order is now in production", "/my/orders.php?id=$order_id");
                 if($order_type === "mto") {
                     sendAlert("success", "Downpayment has been successfully verified. Order is now in production.");
                 } else {
@@ -76,7 +76,7 @@
             if($stmt->rowCount() > 0) {
                 // Update successful
                 // echo json_encode(["payment_status" => 'Needs Reverification']);
-                createNotif($user_id, "Your downpayment needs reverification", "/order.php?id=$order_id");
+                createNotif($user_id, "Your downpayment needs reverification", "/my/orders.php?id=$order_id");
                 sendAlert("success", "Downpayment status has been updated to needs reverification");
             } else {
                 // Update failed
@@ -374,7 +374,7 @@
                                 </div>
                             <?php endif; ?>
                             <?php if(!is_null($item['item_ref_img']) && $item['item_ref_img'] !== ''): ?>
-                                <div class="info">
+                                <div class="info picture-detail">
                                     <span class="info-name">PICTURE</span>
                                     <span class="info-detail">
                                         <img src='/<?= $item['item_ref_img'] ?>' alt='' class='repair-img'>

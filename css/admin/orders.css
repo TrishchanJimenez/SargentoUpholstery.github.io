@@ -596,3 +596,7 @@ input[type="number"] {
 
     transition: all 0.2s ease-in-out;
 }
+
+.picture-detail {
+    grid-column: span 2;
+}
