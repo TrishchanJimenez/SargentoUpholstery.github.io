@@ -4,6 +4,7 @@
 
     $items_per_page = 10;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $quote_id = $_GET['quote_id'];
     $offset = ($page - 1) * $items_per_page;
 
     $query = "SELECT * FROM `items` WHERE `quote_id` = :quote_id LIMIT :limit OFFSET :offset";
