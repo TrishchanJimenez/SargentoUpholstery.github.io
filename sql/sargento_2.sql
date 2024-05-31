@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 30, 2024 at 12:16 PM
+-- Generation Time: May 31, 2024 at 12:13 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -75,7 +75,6 @@ INSERT INTO `chats` (`chat_id`, `sender_id`, `customer_id`, `message`, `timestam
 (6, 23, 22, 'justine joven casiano\r\n', '2024-05-21 04:58:17', 0),
 (7, 23, 22, 'oyoy', '2024-05-21 05:00:56', 0),
 (8, 22, 22, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2024-05-21 05:02:26', 0),
-(9, 22, 22, 'putanginamo', '2024-05-21 07:09:38', 0),
 (10, 21, 22, 'fasdfasf', '2024-05-22 11:28:02', 0),
 (11, 21, 21, 'hello', '2024-05-23 00:13:15', 0),
 (12, 21, 21, 'fadfa', '2024-05-23 00:13:21', 0),
@@ -352,25 +351,28 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`item_id`, `quote_id`, `custom_id`, `furniture`, `description`, `item_ref_img`, `quantity`, `item_price`, `item_status`) VALUES
-(1, 3, NULL, 'Sofa', 'sira ung foam', NULL, 1, NULL, 'pending'),
-(2, 7, NULL, 'sofa', 'asdfasd', NULL, 3, NULL, 'pending'),
-(3, 8, NULL, 'sofa', 'sadaf', NULL, 1, NULL, 'pending'),
-(4, 8, NULL, 'dining seat', 'asdfasd', NULL, 4, NULL, 'pending'),
-(5, 9, NULL, 'Sofa', 'Malaki', NULL, 1, NULL, 'pending'),
-(6, 10, NULL, 'sadfa', 'adfas', NULL, 1, NULL, 'pending'),
-(7, 11, NULL, 'sdfasfa', 'asdfasdf', NULL, 1, NULL, 'pending'),
-(8, 12, NULL, 'asdfasdf', 'asdfasf', NULL, 1, NULL, 'pending'),
-(9, 13, NULL, 'asdfasdf', 'dsafsaf', NULL, 1, 1233, 'pending'),
-(10, 14, NULL, 'asfasdf', 'asdfasdf', NULL, 1, 12334, 'pending'),
-(11, 15, NULL, 'afasd', 'asdfasdf', NULL, 1, 2000, 'pending'),
-(12, 16, NULL, 'asfasd', 'adfasdf', 'uploadedImages/referenceImages/testimg1.jpg', 1, 1231, 'pending'),
-(13, 17, NULL, 'asdfasd', 'afsasdfasd', '', 1, 1231, 'pending'),
-(14, 17, NULL, 'fasdfas', 'dsafsdfasdfasdf', 'uploadedImages/referenceImages/table.png', 1, 1133, 'pending'),
-(15, 18, NULL, 'safsdf', 'asdfasdfa', NULL, 1, 1442, 'pending'),
-(16, 18, NULL, 'adsfasdf', 'asdfasdf', 'uploadedImages/referenceImages/prog2.png', 1, 1590, 'pending'),
-(17, 19, NULL, 'asdfasf', 'asfas', 'uploadedImages/referenceImages/cor.png', 1, 1231, 'pending'),
-(18, 19, NULL, 'asdfasdf', 'asdfasdf', NULL, 1, 13123, 'pending'),
-(19, 19, NULL, 'asdfa', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending');
+(1, 3, NULL, 'Sofa', 'sira ung foam', NULL, 1, NULL, 'accepted'),
+(2, 7, NULL, 'sofa', 'asdfasd', NULL, 3, NULL, 'accepted'),
+(3, 8, NULL, 'sofa', 'sadaf', NULL, 1, NULL, 'accepted'),
+(4, 8, NULL, 'dining seat', 'asdfasd', NULL, 4, NULL, 'approved'),
+(5, 9, NULL, 'Sofa', 'Malaki', NULL, 1, NULL, 'accepted'),
+(6, 10, NULL, 'Sofa', 'adfas', NULL, 1, NULL, 'accepted'),
+(7, 11, NULL, 'Ottoman', 'asdfasdf', NULL, 1, NULL, 'accepted'),
+(8, 12, NULL, 'bed', 'asdfasf', NULL, 1, NULL, 'accepted'),
+(9, 13, NULL, 'bed', 'dsafsaf', NULL, 1, 1233, 'accepted'),
+(10, 14, NULL, 'bed', 'asdfasdf', NULL, 1, 12334, 'pending'),
+(11, 15, NULL, 'ottoman', 'asdfasdf', NULL, 1, 2000, 'pending'),
+(12, 16, NULL, 'bed', 'adfasdf', 'uploadedImages/referenceImages/testimg1.jpg', 1, 1231, 'pending'),
+(13, 17, NULL, 'loveseats', 'afsasdfasd', '', 1, 1231, 'pending'),
+(14, 17, NULL, 'ottoman', 'dsafsdfasdfasdf', 'uploadedImages/referenceImages/table.png', 1, 1133, 'pending'),
+(15, 18, NULL, 'Dining chair', 'asdfasdfa', NULL, 1, 1442, 'pending'),
+(16, 18, NULL, 'Dining chair', 'asdfasdf', 'uploadedImages/referenceImages/prog2.png', 1, 1590, 'pending'),
+(17, 19, NULL, 'Dining chair', 'asfas', 'uploadedImages/referenceImages/cor.png', 1, 1231, 'pending'),
+(18, 19, NULL, 'Ottoman', 'asdfasdf', NULL, 1, 13123, 'pending'),
+(19, 19, NULL, 'bed', 'asdfa', 'uploadedImages/referenceImages/cor.png', 1, 3124, 'pending'),
+(20, 20, NULL, 'bed', 'elegant', NULL, 1, 12222, 'pending'),
+(21, 20, NULL, 'dining seats', 'kai', NULL, 1, 20000, 'pending'),
+(22, 20, NULL, 'bed', 'dasd', NULL, 4, 40000, 'pending');
 
 -- --------------------------------------------------------
 
@@ -397,18 +399,7 @@ INSERT INTO `notifs` (`notif_id`, `user_id`, `notif_msg`, `created_at`, `is_read
 (3, 22, 'New quotation form submitted by: Joaquin Luis Guevarra', '2024-05-21 07:09:19', 1, NULL),
 (4, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 13:53:07', 0, NULL),
 (5, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 14:07:43', 0, NULL),
-(6, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-23 14:25:30', 0, NULL),
-(7, 24, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-23 22:14:44', 0, '/my/orders.php'),
-(8, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:29:11', 0, '/my/user_orders.php'),
-(9, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:41:50', 0, '/my/user_orders.php'),
-(10, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:46:07', 0, '/my/user_orders.php'),
-(11, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:47:47', 0, '/my/user_orders.php'),
-(12, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 09:49:31', 0, '/my/user_orders.php'),
-(13, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:02:48', 0, '/my/user_orders.php'),
-(14, 22, 'You have successfully placed a quote request. Please await confirmation of order.', '2024-05-26 10:04:20', 0, '/my/user_orders.php'),
-(63, 26, 'Your order is now in production', '2024-05-30 09:14:08', 0, '/order.php?id=2'),
-(64, 26, 'Your downpayment needs reverification', '2024-05-30 09:24:41', 0, '/order.php?id=2'),
-(65, 26, 'Your order is now in production', '2024-05-30 09:30:50', 0, '/order.php?id=2');
+(6, 21, 'New quotation form submitted by: Sargento Upholstery', '2024-05-31 12:11:26', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -432,8 +423,15 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `quote_id`, `order_phase`, `payment_phase`, `cancellation_reason`, `created_at`, `est_completion_date`, `updated_at`) VALUES
-(2, 18, 'pending_downpayment', 'partially_paid', NULL, '2024-05-29 20:49:23', '2024-06-12', '2024-05-29 12:49:23'),
-(3, 19, 'pending_downpayment', 'unpaid', NULL, '2024-05-29 20:50:50', '2024-06-12', '2024-05-29 12:50:50');
+(2, 18, 'received', 'fully_paid', NULL, '2024-05-29 20:49:23', '2024-06-12', '2024-05-29 12:49:23'),
+(3, 19, 'received', 'fully_paid', NULL, '2024-05-14 20:50:50', '2024-06-12', '2024-05-29 12:50:50'),
+(4, 20, 'pending_downpayment', 'unpaid', NULL, '2024-05-31 09:22:55', '2024-06-14', '2024-05-31 01:22:55'),
+(5, 20, 'pending_downpayment', 'unpaid', NULL, '2024-05-16 13:57:46', '2024-06-14', '2024-05-31 05:57:46'),
+(6, 17, 'received', 'fully_paid', NULL, '2024-04-10 13:57:55', '2024-06-14', '2024-05-31 05:57:55'),
+(7, 16, 'received', 'fully_paid', NULL, '2024-05-31 13:58:20', '2024-06-14', '2024-05-31 05:58:20'),
+(8, 15, 'received', 'fully_paid', NULL, '2024-05-31 13:58:24', '2024-06-14', '2024-05-31 05:58:24'),
+(9, 14, 'received', 'fully_paid', NULL, '2024-05-31 13:58:31', '2024-06-14', '2024-05-31 05:58:31'),
+(10, 13, 'received', 'fully_paid', NULL, '2024-05-31 13:58:36', '2024-06-14', '2024-05-31 05:58:36');
 
 --
 -- Triggers `orders`
@@ -485,13 +483,14 @@ INSERT INTO `quotes` (`quote_id`, `customer_id`, `service_type`, `total_price`, 
 (10, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:16:50', '2024-05-29 05:52:35'),
 (11, 26, 'repair', NULL, 'rejected', 'Di ko na kaya', '2024-05-29 03:18:55', '2024-05-30 02:31:24'),
 (12, 26, 'repair', NULL, 'pending', NULL, '2024-05-29 03:19:23', '2024-05-29 05:52:35'),
-(13, 26, 'repair', 1233, 'approved', NULL, '2024-05-29 03:20:06', '2024-05-29 10:41:35'),
-(14, 26, 'repair', 12334, 'approved', NULL, '2024-05-29 03:20:26', '2024-05-29 10:41:27'),
-(15, 26, 'repair', 2000, 'approved', NULL, '2024-05-29 03:21:38', '2024-05-30 00:54:30'),
-(16, 26, 'repair', 1231, 'approved', NULL, '2024-05-29 03:25:02', '2024-05-29 10:32:44'),
-(17, 26, 'mto', 2364, 'approved', NULL, '2024-05-29 03:26:28', '2024-05-29 10:32:24'),
+(13, 26, 'repair', 1233, 'accepted', NULL, '2024-05-29 03:20:06', '2024-05-31 05:58:36'),
+(14, 26, 'repair', 12334, 'accepted', NULL, '2024-05-29 03:20:26', '2024-05-31 05:58:31'),
+(15, 26, 'repair', 2000, 'accepted', NULL, '2024-05-29 03:21:38', '2024-05-31 05:58:24'),
+(16, 26, 'repair', 1231, 'accepted', NULL, '2024-05-29 03:25:02', '2024-05-31 05:58:20'),
+(17, 26, 'mto', 2364, 'accepted', NULL, '2024-05-29 03:26:28', '2024-05-31 05:57:55'),
 (18, 26, 'repair', 3032, 'accepted', NULL, '2024-05-29 03:28:01', '2024-05-29 12:49:23'),
-(19, 26, 'mto', 17478, 'accepted', NULL, '2024-05-29 03:28:51', '2024-05-29 12:50:50');
+(19, 26, 'mto', 17478, 'accepted', NULL, '2024-05-29 03:28:51', '2024-05-29 12:50:50'),
+(20, 27, 'repair', 72222, 'accepted', NULL, '2024-05-31 01:20:56', '2024-05-31 05:57:46');
 
 --
 -- Triggers `quotes`
@@ -525,8 +524,8 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`review_id`, `order_id`, `rating`, `comment`, `date`, `reply`, `reply_date`) VALUES
-(1, 21, 4, 'Good service', '2024-05-14 10:11:28', NULL, NULL),
-(2, 22, 5, 'Excellent workmanship', '2024-05-14 10:11:28', NULL, NULL),
+(1, 2, 4, 'Good service', '2024-05-14 10:11:28', NULL, NULL),
+(2, 3, 5, 'Excellent workmanship', '2024-05-14 10:11:28', NULL, NULL),
 (3, 23, 3, 'Satisfactory', '2024-05-14 10:11:28', NULL, NULL),
 (4, 24, 4, 'Fast delivery', '2024-05-14 10:11:28', NULL, NULL),
 (5, 25, 2, 'Poor quality', '2024-05-14 10:11:28', NULL, NULL),
@@ -605,7 +604,8 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `user_type`, `conta
 (23, 'Sargento Upholstery 2', 'sargentoadmin@gmail.com', '$2y$10$N4HNoV6MtBGyB7Xu58Lmn.NIAMyzgVA/wbK/yWI8DAp0O..drS7iy', 'admin', '09123456789', NULL, NULL),
 (24, 'Lance Jimenez', 'trishchan@gmail.com', '$2y$10$YEHSUssJkiVGzdmnzbyxwuaWrCtxVV7BegI6/I80StyNAtEi0rapG', 'admin', '09791406736', NULL, NULL),
 (25, 'Chris Paul', 'chispaul@gmail.com', '$2y$10$dXItxFQz3d2n.9KS0MF9GOWDqBhUS8k28HEEDz3a/NkRwSBOGnLAa', 'customer', '09312818482', NULL, NULL),
-(26, 'Trishchan Earl Jimenez', 'trishchanjimenez01@gmail.com', '$2y$10$pSzx6DILyGRIQ/tv/fWUs.gcvaEiHogf7fi/BkuIDifbJ7KNKoIkG', 'customer', '09122142423', '6247c42f633ec36257c91afebd2b04d8a745efe5a4ecce47d8e9e6d9e7e42d58', '2024-05-29 12:28:24');
+(26, 'Trishchan Earl Jimenez', 'trishchanjimenez01@gmail.com', '$2y$10$pSzx6DILyGRIQ/tv/fWUs.gcvaEiHogf7fi/BkuIDifbJ7KNKoIkG', 'customer', '09122142423', '6247c42f633ec36257c91afebd2b04d8a745efe5a4ecce47d8e9e6d9e7e42d58', '2024-05-29 12:28:24'),
+(27, 'Christian Paul', 'cnarido78@gmail.com', '$2y$10$5BAH09tAbzONo1CeShMS1uPeduVI.kSp5ZszzwBDpl49SIGIHxCLi', 'customer', '09464160007', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -849,19 +849,19 @@ ALTER TABLE `fullpayment`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `notifs`
 --
 ALTER TABLE `notifs`
-  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `notif_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `pickup`
@@ -873,7 +873,7 @@ ALTER TABLE `pickup`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
-  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `quote_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -891,7 +891,7 @@ ALTER TABLE `review_images`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `works`

@@ -1268,10 +1268,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Print
                     </button>
 
-                    <button id="download_button" class="Download_button">
+                    <!-- <button id="download_button" class="Download_button">
                         <img src="../websiteimages/Download_icon.png" alt="" class="Download">
                         Download
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
