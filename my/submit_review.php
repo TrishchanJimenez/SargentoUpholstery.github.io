@@ -44,6 +44,91 @@
         </form>
     </div>
 </div>
+<script>
+    // const reviewBtn = document.querySelector('.button--review');
+    const reviewForm = document.getElementById('reviewForm');
+    const ratingStars = document.getElementById('ratingStars');
+    const stars = document.querySelectorAll('.rating__star');
+    const ratingInput = document.getElementById('rating');
+    const imagePreview = document.getElementById('imagesPreview');
+    const reviewImageInput = document.getElementById('images');
+    let currentStarValue = 0;
+
+    // Open review modal
+    // reviewBtn.addEventListener('click', () => {
+    //     openReviewModal();
+    //     resetStars();
+    // });
+
+    // Star rating hover effect
+    ratingStars.addEventListener('mouseover', (event) => {
+        console.log(event.target);
+        if (event.target.classList.contains('rating__star')) {
+            const tempStarValue = event.target.getAttribute('data-value');
+            highlightStars(tempStarValue);
+        }
+    });
+
+    // Reset stars on mouse out
+    ratingStars.addEventListener('mouseout', () => {
+        highlightStars(currentStarValue);
+    });
+
+    // Set rating on click
+    ratingStars.addEventListener('click', (event) => {
+        if (event.target.classList.contains('rating__star')) {
+            currentStarValue = event.target.getAttribute('data-value');
+            ratingInput.value = currentStarValue;
+            highlightStars(currentStarValue);
+        }
+    });
+
+    // Highlight stars based on rating
+    function highlightStars(value) {
+        stars.forEach(star => {
+            const starValue = parseInt(star.getAttribute('data-value'));
+            star.style.color = starValue <= value ? '#f39c12' : '#ddd';
+        });
+    }
+
+    // Reset stars to initial state
+    function resetStars() {
+        currentStarValue = 0;
+        ratingInput.value = 0;
+        highlightStars(0);
+    }
+
+    // Preview selected images
+    function previewImages(event) {
+        imagePreview.innerHTML = '';
+        const files = event.target.files;
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const image = document.createElement('img');
+                image.src = e.target.result;
+                image.classList.add('form__image-preview');
+                imagePreview.appendChild(image);
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    // Open the review modal
+    window.openReviewModal = function() {
+        document.querySelector('.modal--review').style.display = 'flex';
+    };
+
+    // Close the review modal
+    window.closeReviewModal = function() {
+        document.querySelector('.modal--review').style.display = 'none';
+    };
+
+    // Simulate click to upload image
+    window.clickUploadImage = function() {
+        reviewImageInput.click();
+    };
+</script>
 
 <style>
     /* Modal Styles */
@@ -115,9 +200,10 @@
     }
 
     .rating__star {
-        width: 50px;
+        font-size: 2.5rem;
         height: auto;
         cursor: pointer;
+        color: #ddd;
     }
 
     .form__textarea {
@@ -163,6 +249,7 @@
     // Include database connection
     require_once('../database_connection.php');
     include_once('../notif.php');
+    require_once('../alert.php');
 
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--review"])) {
@@ -197,8 +284,9 @@
                         $allowed_types = array('image/jpeg', 'image/png', 'image/gif');
                         if (in_array($file_type, $allowed_types)) {
                             // Generate unique file name and move the file
-                            $target_path = '/uploadedImages/reviewImages/' . basename($file_name);
+                            $target_path = '../uploadedImages/reviewImages/' . basename($file_name);
                             move_uploaded_file($file_tmp, $target_path);
+                            $dbpath = 'uploadedImages/reviewImages/' . basename($file_name);
 
                             // Insert image path into review_images table
                             $query_image = "INSERT INTO review_images (review_id, path) VALUES (:review_id, :path)";
@@ -216,6 +304,8 @@
                     }
                 }
             }
+
+            sendAlert("success", "Review submitted successfully!");
         } catch (PDOException $e) {
             // Handle database error
             echo "Error: " . $e->getMessage();
@@ -223,89 +313,3 @@
     }
 ?>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const reviewBtn = document.querySelector('.button--review');
-        const reviewForm = document.getElementById('reviewForm');
-        const ratingStars = document.getElementById('ratingStars');
-        const stars = document.querySelectorAll('.rating__star');
-        const ratingInput = document.getElementById('rating');
-        const imagePreview = document.getElementById('imagesPreview');
-        const reviewImageInput = document.getElementById('images');
-        let currentStarValue = 0;
-
-        // Open review modal
-        reviewBtn.addEventListener('click', () => {
-            openReviewModal();
-            resetStars();
-        });
-
-        // Star rating hover effect
-        ratingStars.addEventListener('mouseover', (event) => {
-            if (event.target.classList.contains('rating__star')) {
-                const tempStarValue = event.target.getAttribute('data-value');
-                highlightStars(tempStarValue);
-            }
-        });
-
-        // Reset stars on mouse out
-        ratingStars.addEventListener('mouseout', () => {
-            highlightStars(currentStarValue);
-        });
-
-        // Set rating on click
-        ratingStars.addEventListener('click', (event) => {
-            if (event.target.classList.contains('rating__star')) {
-                currentStarValue = event.target.getAttribute('data-value');
-                ratingInput.value = currentStarValue;
-                highlightStars(currentStarValue);
-            }
-        });
-
-        // Highlight stars based on rating
-        function highlightStars(value) {
-            stars.forEach(star => {
-                const starValue = parseInt(star.getAttribute('data-value'));
-                star.style.color = starValue <= value ? '#f39c12' : '#ddd';
-            });
-        }
-
-        // Reset stars to initial state
-        function resetStars() {
-            currentStarValue = 0;
-            ratingInput.value = 0;
-            highlightStars(0);
-        }
-
-        // Preview selected images
-        window.previewImages = function(event) {
-            imagePreview.innerHTML = '';
-            const files = event.target.files;
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.createElement('img');
-                    image.src = e.target.result;
-                    image.classList.add('form__image-preview');
-                    imagePreview.appendChild(image);
-                };
-                reader.readAsDataURL(file);
-            });
-        };
-
-        // Open the review modal
-        window.openReviewModal = function() {
-            document.querySelector('.modal--review').style.display = 'flex';
-        };
-
-        // Close the review modal
-        window.closeReviewModal = function() {
-            document.querySelector('.modal--review').style.display = 'none';
-        };
-
-        // Simulate click to upload image
-        window.clickUploadImage = function() {
-            reviewImageInput.click();
-        };
-    });
-</script>

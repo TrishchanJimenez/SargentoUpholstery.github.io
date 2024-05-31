@@ -21,6 +21,7 @@ tableBody.addEventListener('mousedown', (e) => {
 
             selector.value = status.dataset.prodStatus;
             const pastStatus = status.dataset.prodStatus;
+            console.log(pastStatus);
     
             selector.addEventListener('change', (e) => {
                 // console.log('change')
@@ -44,22 +45,18 @@ tableBody.addEventListener('mousedown', (e) => {
                 const pastIndex = statusKeys.indexOf(pastStatus);
                 const previousStatuses = statusKeys.slice(pastIndex, currentIndex);
 
-                console.log(currentIndex);
-                console.log(pastIndex);
-                console.log(previousStatuses);
                 if (previousStatuses.length >= 2) {
                     const confirmation = confirm("Are you sure you want to skip multiple stages?");
                     if (!confirmation) {
-                        status.dataset.prodStatus = pastStatus;
-
-                        if(status.dataset.prodStatus === '') {
-                            status.dataset.prodStatus = 'new-order';
-                            status.innerText = 'New Order';
-                        } else {
-                            status.innerText = selector.value.split('-').join(' ');
-                        }
                         target.classList.remove('active');
+
+                        status.dataset.prodStatus = pastStatus;
+                        status.innerText = statuses[pastStatus];
+                        
+                        console.log(status);
+
                         target.classList.add('status');
+
                         return;
                     }
                 }
