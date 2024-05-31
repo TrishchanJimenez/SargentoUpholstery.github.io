@@ -172,7 +172,9 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 display: none;
 
             }
-
+            .hide{
+                display: none;
+            }
             .Print_button {
                 display: none;
             }
@@ -1107,7 +1109,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
             <div class="order-list-reports" id="order-list">
-                <p class="main-title">Order Filtering</p>
+                <p class="main-title hide">Order Filtering</p>
                 <hr class="divider1">
                 <form class="order-filters" method="get" action="">
                     <div class="order-filter-search">
