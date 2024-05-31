@@ -1,4 +1,5 @@
 <?php
+    require '../database_connection.php';
     header('Content-Type: application/json');
 
     $items_per_page = 10;

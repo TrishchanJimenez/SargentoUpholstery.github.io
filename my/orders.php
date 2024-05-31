@@ -36,6 +36,8 @@
             `fullpayment` fp ON o.order_id = fp.order_id
                 LEFT JOIN
             `pickup` p ON o.order_id = p.order_id
+                LEFT JOIN
+            `reviews` r ON o.order_id = r.order_id
         WHERE
             o.order_id = :order_id
                 AND
@@ -502,8 +504,11 @@
                 let currentPage = 1;
 
                 function fetchItems(page) {
-                    fetch(`../api/orders_pagination.php?order_id=${quoteId}&page=${page}`)
-                        .then(response => response.json())
+                    fetch(`/api/orders_pagination.php?order_id=${quoteId}&page=${page}`)
+                        .then(response => {
+                            // console.log(response.text());
+                            return response.json();
+                        })
                         .then(data => {
                             updateTable(data.items);
                             updatePagination(data.totalPages, page);

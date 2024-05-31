@@ -181,7 +181,6 @@
             <table class="order-table">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>Order Id</th>
                         <th>Customer Name</th>
                         <th>ITEM(S)</th>
@@ -243,9 +242,9 @@
                                 $item_display = "";
                             }
 
+                            //<td><input type='checkbox' name='' id=''></td>
                             echo "
                             <tr data-id='{$order['order_id']}'>
-                                <td><input type='checkbox' name='' id=''></td>
                                 <td>{$order['order_id']}</td>
                                 <td>{$order['customer_name']}</td>
                                 <td class='item'>
