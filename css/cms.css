@@ -351,7 +351,8 @@ div[data-page="home"] {
         text-align: center;
     }
     
-    .featured-title {
+    .featured-title > :first-child{
+        margin-top: 6rem;
         color: #111;
         font-size: 2.75rem;
         width: 80%;

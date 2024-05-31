@@ -119,8 +119,8 @@
                 <div class="tab" data-page="home">
                     <div class="featured">
                         <h2 class="featured-title">
-                            Well-crafted & Timeless
-                            <span>We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
+                            <span class="text-gold" style="white-space: nowrap;overflow:visible;">Well-crafted & Timeless</span>
+                            <span class="text-gold">We Bring Your Vision to Life: Crafting Excellence in Every Design</span>
                         </h2>
                         <a href="/quote.php" class="btn btn-black">Get a free quote</a>
                     </div>
@@ -181,6 +181,29 @@
                     </div>
                 </div>
                 <div class="tab" data-page="services-craftsmanship">
+                    <?php
+                        // $query = "
+                        //     SELECT 
+                        //         * 
+                        //     FROM 
+                        //         contents 
+                        //     WHERE 
+                        //         page = :
+                        // ";
+                        // $stmt = $conn->prepare($query);
+                        // $stmt->bindParam(':page', $page);
+                        // $stmt->execute();
+                        // $introContents = $stmt->fetchAll();
+                        // $introContentsById = [];
+                        // foreach ($introContents as $introContent) {
+                        //     $introContentsById[$introContent['content_type']] = $introContent;
+                        // }
+                    
+                        // Default value for $needs_cta if it's not set in the including file
+                        // if (!isset($needs_cta)) {
+                        //     $needs_cta = true;
+                        // }
+                    ?>
                     <div class="services_craftmanship_card_container">
                         <div class="services_craftmanship_card">
                             <img src="/websiteimages/malopit.png" alt="wood crafting" div class="services_craftmanship_card_1_image">

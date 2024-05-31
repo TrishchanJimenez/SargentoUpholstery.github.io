@@ -283,6 +283,7 @@
             const hash = (location.href.split('#')[1]);
             document.querySelector((hash === 'terms-and-conditions') ? '#terms-and-conditions' : '#data-privacy').style.display = 'flex';
         </script>
+        <script src="/js/globals.js"></script>
     <?php
         require_once('footer.php');
     ?>
