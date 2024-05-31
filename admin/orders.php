@@ -16,18 +16,24 @@
 
     $count_query = "
         SELECT 
-            GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') AS item,
-            COUNT(*) AS total_records
+            COUNT(DISTINCT O.order_id) AS total_records
         FROM 
             orders O 
         JOIN 
             quotes Q USING(quote_id)
         LEFT JOIN
-            items I USING(quote_id)
+    ";
+
+    if(!empty($search_input) && $search_type === 'item') {
+        $count_query .= "items I USING(quote_id)";
+    } else {
+        $count_query .= "(SELECT MAX(item_id), quote_id FROM items GROUP BY quote_id) AS I USING(quote_id)";
+    }
+
+    $count_query .= "
         JOIN 
             users U ON Q.customer_id = U.user_id
-        WHERE 1
-    ";
+        WHERE 1";
 
     $query = "
         SELECT
@@ -79,11 +85,11 @@
         $query .= " AND payment_phase = '$order_payment_status'";
     }
 
-    $count_query .= " GROUP BY O.order_id";
-    $query .= " GROUP BY O.order_id";
 
+    $query .= " GROUP BY O.order_id";
     if(!empty($search_input) && $search_type === 'item') {
-        $count_query .= " HAVING item LIKE '%$search_input%'";
+        $count_query .= " GROUP BY O.order_id";
+        $count_query .= " HAVING GROUP_CONCAT(CONCAT(UPPER(SUBSTRING(I.furniture, 1, 1)), LOWER(SUBSTRING(I.furniture, 2))) SEPARATOR ', ') LIKE '%$search_input%'";
         $query .= " HAVING item LIKE '%$search_input%'";
     }
 
