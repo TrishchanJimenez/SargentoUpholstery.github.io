@@ -563,8 +563,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         //For the breakdown of furnitures and  total sales
         $daily_sql = "
         SELECT
-        'Daily' AS period,
-        DATE(o.created_at) AS time_period,
         i.furniture AS furniture_type,
         COUNT(*) AS number_ordered,
         ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -573,12 +571,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         JOIN orders o ON q.quote_id = o.quote_id
         WHERE o.order_phase = 'received'
         AND DATE(o.created_at) = CURDATE()  -- Filter for current day
-        GROUP BY period, time_period, furniture_type;
+        GROUP BY furniture_type;
     ";
     
     $weekly_sql = "
         SELECT
-            DATE_FORMAT(o.created_at, '%x-%v') AS period,
             i.furniture AS furniture_type,
             COUNT(*) AS number_ordered,
             ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -586,8 +583,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         JOIN quotes q ON i.quote_id = q.quote_id
         JOIN orders o ON q.quote_id = o.quote_id
         WHERE o.order_phase = 'received'
-        GROUP BY period, furniture_type
-        ORDER BY period, furniture_type;
+        GROUP BY furniture_type
+        ORDER BY furniture_type;
     ";
     
     $monthly_sql = "
