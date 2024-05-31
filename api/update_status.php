@@ -3,7 +3,7 @@
     include  dirname(__DIR__) . '/notif.php';
     if(isset($_POST['status_type'])) {
         $status_type = $_POST['status_type'];
-        $is_multiple = $_POST['is_multiple'] === "true" ? true : false;
+        // $is_multiple = $_POST['is_multiple'] === "true" ? true : false;
 
         $updateStmt = null;
         if($status_type === "prod") {
@@ -22,52 +22,51 @@
             "received"
         ];
 
-        if($is_multiple) {
-            $array = $_POST['order_id'];
-            $sql = "SELECT * FROM orders WHERE order_id IN (";
-            foreach($array as $id) {
-                $sql .= $id . ",";
-            }
-            $sql = rtrim($sql, ',');
-            $sql .= ")";
-            $selectStmt = $conn->query($sql);
-            $selectStmt ->execute();
-            $orders = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
-            $response = [];
-            foreach($orders as $order) {
-                if($order['order_phase'] === "received") {
-                    continue;
-                }
-                $new_status = $statuses[array_search($order['order_phase'], $statuses) + 1];
-                if($order['order_type'] === "mto" && $new_status === "ready_for_pickup") {
-                    $new_status = "in_production";
-                }
-                $updateStmt->bindParam(':id', $order['order_id']);
-                $updateStmt->bindParam(':status', $new_status);
-                $updateStmt->execute();
-                $response[] = [
-                    "order_id" => $order['order_id'],
-                    "new_status" => $new_status
-                ];
-            }
-            echo json_encode($response);
-        } else {
-            $sql = "SELECT * FROM orders WHERE order_id = :id";
-            $selectStmt = $conn->prepare($sql);
-            $selectStmt->bindParam(':id', $_POST['order_id']);
-            $selectStmt->execute();
-            $order = $selectStmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM orders JOIN quotes USING(quote_id) WHERE order_id = :id";
+        $selectStmt = $conn->prepare($sql);
+        $selectStmt->bindParam(':id', $_POST['order_id']);
+        $selectStmt->execute();
+        $order = $selectStmt->fetch(PDO::FETCH_ASSOC);
 
-            $new_status = str_replace("-", "_", $_POST['new_status']);
-            $order_id = $_POST['order_id'];
-            $updateStmt->bindParam(':status', $new_status);
-            $updateStmt->bindParam(':id', $order_id);
-            $updateStmt->execute();
-            echo json_encode([
-                "status" => $status_type,
-                "new_status" => $new_status,
-                "order_id" => $order_id
-            ]);
+        $new_status = str_replace("-", "_", $_POST['new_status']);
+        $order_id = $_POST['order_id'];
+        $user_id = $order['customer_id'];
+
+        if($new_status === "awaiting_furniture") {
+            $checkQuery = "SELECT pickup_method FROM pickup WHERE order_id = :order_id";
+            $checkStmt = $conn->prepare($checkQuery);
+            $checkStmt->bindParam(":order_id", $order_id);
+            $checkStmt->execute();
+            $recordCount = $checkStmt->rowCount();
+            if ($recordCount > 0) {
+                // Record found
+                createNotif($customerId, "Your order is now set to awaiting furniture, please wait for us to pickup your furniture or drop it off at our location", "/my/orders.php?order_id=$order_id");
+            } else {
+                $record = $checkStmt->fetch(PDO::FETCH_ASSOC);
+                // $pickupMethod = $record['pickup_method'];
+                if (isset($record['pickup_method'])) {
+                    createNotif($customerId, "Your order is now set to awaiting furniture, please wait for us to pickup your furniture or drop it off at our location", "/my/orders.php?order_id=$order_id");
+                    // Pickup method is not set
+                    // Add your code here
+                } else {
+                    createNotif($customerId, "Your order is now set to awaiting furniture, please set your pickup address", "/my/orders.php?order_id=$order_id");
+                    // Pickup method is set
+                    // Add your code here
+                }
+                // Add your code here
+            }
+        } else if ($new_status === "") {
+
         }
+        
+
+        $updateStmt->bindParam(':status', $new_status);
+        $updateStmt->bindParam(':id', $order_id);
+        $updateStmt->execute();
+        echo json_encode([
+            "status" => $status_type,
+            "new_status" => $new_status,
+            "order_id" => $order_id
+        ]);
     }
 ?>
