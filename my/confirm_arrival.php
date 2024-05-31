@@ -17,7 +17,7 @@
             <h1 class="form__title">Confirm Arrival of Order</h1>
             <form id="confirmDeliveryForm" class="form" method="post">
                 <p>Confirm the arrival of your order at the set delivery address?</p>
-                <input class="form__submit form__submit--confirm" name="submit" type="submit" value="Confirm">
+                <input class="form__submit form__submit--confirm" name="submit--confirmDelivery" type="submit" value="Confirm">
             </form>
         </div>
     </div>
@@ -154,7 +154,7 @@
     include_once('../alert.php');
 
     // Check if the form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit--confirmDelivery"])) {
         try {
             // Write the query
             $query = "UPDATE `orders` SET `order_phase` = 'received' WHERE order_id = :order_id";
