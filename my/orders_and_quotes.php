@@ -343,7 +343,7 @@
                                     </select>
                                 </td>
                                 <td class="filter__td">
-                                    <input type="submit" value="Filter">
+                                    <input class="submit-filter" type="submit" value="Filter">
                                 </td>
                             </tr>
                         </table>
@@ -364,7 +364,7 @@
                 <tbody class="onq__tbody">
                     <?php if ($orders) : ?>
                         <?php foreach ($orders as $row) : ?>
-                            <tr>
+                            <tr class="onq__tr">
                                 <td class="onq__td"> <?= htmlspecialchars($row["order_id"]) ?> </td>
                                 <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["furniture"] ?? 'N/A'))) ?> </td>
                                 <td class="onq__td"> <?= ucwords(str_replace('_', ' ', htmlspecialchars($row["service_type"] ?? 'N/A') == "mto" ? "Made-To-Order" : "Repair")) ?> </td>
