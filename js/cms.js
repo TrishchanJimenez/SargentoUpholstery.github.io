@@ -417,10 +417,10 @@ function handleFaqFormSubmit(e) {
         method: 'POST',
         body: insertData
     }).then(response => {
+        // console.log(response.text());
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // console.log(response.text());
         return response.json();
     }).then(data => {
         console.log(data);
@@ -431,8 +431,7 @@ function handleFaqFormSubmit(e) {
     } else {
         faqItem.remove();
     }
-
-    imageToEdit.querySelector('img').src = imagePreviewWebsite.src;
+    // imageToEdit.querySelector('img').src = imagePreviewWebsite.src;
     closeModal();
 }
 

@@ -112,10 +112,10 @@
                 <span class="tab-button active" data-tab="home">Home</span>
                 <span class="tab-button" data-tab="services-craftsmanship">Craftsmanship</span>
                 <span class="tab-button" data-tab="services-works">Works</span>
-                <span class="tab-button" data-tab="order">Order</span>
                 <!-- <span class="tab-button" data-tab="testimonial">Testimonial</span> -->
                 <span class="tab-button" data-tab="about">About Us</span>
                 <span class="tab-button" data-tab="contact">Contact Us</span>
+                <span class="tab-button" data-tab="order">FAQs</span>
             </div> 
             <div class="active-tab">
                 <div class="tab" data-page="home">
@@ -417,10 +417,6 @@
                             ?>
                         </ol>
                     </div>
-                    <div class="order-testimonials-cta">
-                        <p>See What Our Clients Say</p>
-                        <a href="testimonials.php">See More</a>
-                    </div>
                 </div>
                 <div class="tab" data-page="about">
                     <?php
@@ -584,7 +580,7 @@
                     <br>
                     <div class="button_container">
                         <button type="submit" class="button btn-save">Save</button>
-                        <button type="submit" class="button btn-delete">Delete</button>
+                        <!-- <button type="submit" class="button btn-delete">Delete</button> -->
                         <button type="button" class="button btn-cancel" onclick="cancelModal()">Cancel</button>
                     </div>
                 </form>
