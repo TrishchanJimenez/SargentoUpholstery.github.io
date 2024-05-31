@@ -324,7 +324,7 @@
             // Create a new notification message
             $notif_msg = "You have successfully placed a quote request. Please wait for us to evaluate your request"; // Customize the message as needed
             // Call the createNotif function
-            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/user_orders.php")) {
+            if (createNotif($_SESSION['user_id'], $notif_msg, "/my/quotes.php?quote_id=$quote_id")) {
                 // Notification created successfully
                 // echo "Notification created successfully";
                 sendAlert("success", $notif_msg);
