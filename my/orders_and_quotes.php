@@ -145,8 +145,8 @@
             ?>
             <div class="onq__header">
                 <div class="tab__container">
-                    <button class="tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
-                    <button class="tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
+                    <button class="tab--quotes tab <?= ($tab === 'quotes') ? 'active' : '' ?>" onclick="openTab('tab--quotes', this)">QUOTES</button>
+                    <button class="tab--orders tab <?= ($tab === 'orders') ? 'active' : '' ?>" onclick="openTab('tab--orders', this)">ORDERS</button>
                 </div>
                 <div class="filter__container">
                     <form class="filter" method="get">
