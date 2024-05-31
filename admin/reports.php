@@ -185,8 +185,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-<div class="wrapper_body">
-<div class="admin-sidebar">
+    <div class="orders">
+    <div class="admin-sidebar">
             <h1>
                 <p class="text-gold">Sargento</p>
                 <p class="text-gold">Upholstery</p>
@@ -270,8 +270,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </ul>
         </div>
-    <div class="orders">
-
         <?php
         //for the ranking system
 
@@ -1279,7 +1277,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-</div>
+
 
 
         <script src="../js/admin/order.js"></script>
@@ -1324,10 +1322,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 height: 100%;
             }
 
-            .divider{
-                display:none;
-            }
-
             .filter{
                 display: none;
             }
@@ -1355,10 +1349,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             quality: 100
                         },
                         html2canvas: {
-                            scale: 2
+                            scale: 5,
+                            pagebreak: { mode: 'avoid-all', before: '.pageBreak' }
                         },
                         jsPDF: {
-                            unit: 'mm',
+                            unit: 'in',
                             format: 'letter',
                             orientation: 'landscape'
                         }
