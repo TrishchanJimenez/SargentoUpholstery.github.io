@@ -341,7 +341,7 @@ body {
 .link-container {
     display: flex;
     flex-flow: column wrap-reverse;
-    height: 50%;
+    height: 60%;
 }
 
 @media (max-width: 800px) {
