@@ -580,7 +580,7 @@
                     <br>
                     <div class="button_container">
                         <button type="submit" class="button btn-save">Save</button>
-                        <button type="submit" class="button btn-delete">Delete</button>
+                        <!-- <button type="submit" class="button btn-delete">Delete</button> -->
                         <button type="button" class="button btn-cancel" onclick="cancelModal()">Cancel</button>
                     </div>
                 </form>
