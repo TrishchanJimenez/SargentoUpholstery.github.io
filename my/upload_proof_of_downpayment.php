@@ -33,7 +33,7 @@
                 <input class="form__input" type="file" id="downpay_img" name="downpay_img" accept="image/*,application/pdf" required>
 
                 <p class="form__note">Accepted formats: JPEG, PNG, PDF. Maximum size: 5MB.</p>
-                <input class="form__submit" type="submit" name="submit" value="Submit Proof">
+                <input class="form__submit" type="submit" name="submit--upod" value="Submit Proof">
             </form>
         </div>
     </div>
@@ -168,7 +168,7 @@
     include_once('../notif.php');
     include_once('../alert.php');
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit"])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["submit--upod"])) {
         // Define the target directory for uploads
         $targetDir = "../uploadedImages/paymentImages";
         // Create the uploads directory if it doesn't exist
