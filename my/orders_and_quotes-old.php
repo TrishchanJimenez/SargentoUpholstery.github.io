@@ -100,31 +100,9 @@
         </div>
         <div class="onq__tab onq__tab--quotes">
             <form class="order-filters" method="get">
-                <table class="filter-table">
+                <table>
                     <tr>
-                        <td>
-                            <input type="text" name="order_item_type" class="selector" placeholder="Item Type" value="<?= htmlspecialchars($order_item_type) ?>">
-                        </td>
-                        <td>
-                            <select name="service_type" class="selector">
-                                <option value="default">Service Type</option>
-                                <option value="mto" <?= $service_type == 'mto' ? 'selected' : '' ?>>MTO</option>
-                                <option value="repair" <?= $service_type == 'repair' ? 'selected' : '' ?>>Repair</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="status" class="selector">
-                                <option value="default">All Status</option>
-                                <option value="pending" <?= $status == 'pending' ? 'selected' : '' ?>>Pending</option>
-                                <option value="approved" <?= $status == 'approved' ? 'selected' : '' ?>>Approved</option>
-                                <option value="accepted" <?= $status == 'accepted' ? 'selected' : '' ?>>Accepted</option>
-                                <option value="rejected" <?= $status == 'rejected' ? 'selected' : '' ?>>Rejected</option>
-                                <option value="cancelled" <?= $status == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="submit" value="Filter">
-                        </td>
+                        
                     </tr>
                 </table>
             </form>

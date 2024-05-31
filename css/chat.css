@@ -97,6 +97,7 @@
     padding: 10px;
     border: none;
     outline: none;
+    border-bottom-left-radius: 7px;
 }
 
 .chat-window__input-button {
@@ -105,6 +106,7 @@
     background-color: #FFDC5C;
     color: #000;
     cursor: pointer;
+    border-bottom-right-radius: 7px;
 }
 
 .chat-window__input-button:hover {
@@ -141,10 +143,7 @@
     border-radius: 10px;
     max-width: 70%;
     word-wrap: break-word; /* Enable word wrapping */
-<<<<<<< HEAD
-=======
     /* white-space: pre-wrap; Preserve line breaks */
->>>>>>> dcbce2a53b446a74a4f486edc66a098821cf58b3
     overflow-wrap: break-word; /* Ensure long words are wrapped */
 }
 

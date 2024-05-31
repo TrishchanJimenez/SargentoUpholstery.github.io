@@ -1,9 +1,7 @@
-body{
-    background-color: #ECECEE;
-}
 .onq {
     font-family: "Inter", sans-serif;
 }
+
 .tab-button-container {
     margin-left: 93px;
     margin-top: 80px;
@@ -29,20 +27,21 @@ body{
 
 /* ---------- Orders and Quotes ---------- */
 
-.onq {
-    width: 100%;
-    max-width: 90vw;
-    margin: 2.5vmin;
-    font-family: "Inter", sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .tab__container {
     width: 90%;
     height: auto;
     display: flex;
+}
+
+.tab-button__wrapper {
+    width: 90%;
+    height: auto;
+    display: flex;
+}
+
+.tab-filter__wrapper {
+    width: 30%;
+    flex: 1 1 30%;
 }
 
 .tab {
@@ -181,11 +180,9 @@ body{
     background-color: #FCD34D; /* Blue, or any other color you prefer */
 }
 
-.order-filters {
+.quote-filters {
     display: flex;
-    margin-left: 25px;
-    margin-right: 25px;    
-    gap: 1100px;
+    width: 30%;
 }
 
 .order-filters input[type=submit] {
@@ -204,7 +201,7 @@ body{
 }
 
 .selector {
-    padding: 20px 20px; 
+    padding: 2.5vmin; 
     border-radius: 0.375rem;
     border: 1px solid var(--gray-300, #D1D5DB);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
@@ -216,4 +213,40 @@ body{
     &:hover {
         background-color: #D1D5DB;
     }
+}
+
+.onq {
+    width: 90%;
+    height: auto;
+    margin: 5vmin;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.onq__content {
+    width: 90%;
+}
+.onq__header {
+    display: flex;
+}
+.tab__container,
+.filter__container {
+    width: 50%;
+}
+.tab {
+    padding: 0 25px;
+}
+.filter {
+    display: flex;
+    align-items: flex-end;
+}
+.filter__td {
+    padding: 5px 0;
+    padding-left: 15px;
+}
+.submit-filter {
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
 }

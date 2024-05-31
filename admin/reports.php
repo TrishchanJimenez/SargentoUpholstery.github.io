@@ -270,6 +270,90 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </ul>
         </div>
+        <?php
+        //for the ranking system
+
+        $sql_ranking_system_daily = "
+            SELECT 
+                U.name AS user_name,
+                SUM(Q.total_price) AS total_purchased_daily
+            FROM 
+                users U
+            JOIN 
+                quotes Q ON U.user_id = Q.customer_id 
+            JOIN 
+                orders O USING(quote_id)
+            WHERE 
+                O.order_phase = 'received'
+                AND DATE(O.created_at) = CURDATE()
+            GROUP BY 
+                U.user_id
+        ";
+    
+        $stmt = $conn->query($sql_ranking_system_daily);
+        $results_ranking_daily = $stmt->fetchAll();
+
+
+        $sql_ranking_system_weekly = "
+            SELECT 
+                U.name AS user_name,
+                SUM(Q.total_price) AS total_purchased_weekly
+            FROM 
+                users U
+            JOIN 
+                quotes Q ON U.user_id = Q.customer_id 
+            JOIN 
+                orders O USING(quote_id)
+            WHERE 
+                O.order_phase = 'received'
+                AND YEARWEEK(O.created_at, 1) = YEARWEEK(CURDATE(), 1)
+            GROUP BY 
+                U.user_id
+        ";
+        $stmt_weekly = $conn->query($sql_ranking_system_weekly);
+        $results_ranking_weekly = $stmt_weekly->fetchAll();
+
+
+        $sql_ranking_system_monthly = "
+            SELECT 
+                U.name AS user_name,
+                SUM(Q.total_price) AS total_purchased_monthly
+            FROM 
+                users U
+            JOIN 
+                quotes Q ON U.user_id = Q.customer_id 
+            JOIN 
+                orders O USING(quote_id)
+            WHERE 
+                O.order_phase = 'received'
+                AND YEAR(O.created_at) = YEAR(CURDATE())
+                AND MONTH(O.created_at) = MONTH(CURDATE())
+            GROUP BY 
+                U.user_id
+        ";
+        $stmt_monthly = $conn->query($sql_ranking_system_monthly);
+        $results_ranking_monthly = $stmt_monthly->fetchAll();
+
+
+        $sql_ranking_system_yearly = "
+            SELECT 
+                U.name AS user_name,
+                SUM(Q.total_price) AS total_purchased_yearly
+            FROM 
+                users U
+            JOIN 
+                quotes Q ON U.user_id = Q.customer_id 
+            JOIN 
+                orders O USING(quote_id)
+            WHERE 
+                O.order_phase = 'received'
+                AND YEAR(O.created_at) = YEAR(CURDATE())
+            GROUP BY 
+                U.user_id
+        ";
+        $stmt_yearly = $conn->query($sql_ranking_system_yearly);
+        $results_ranking_yearly = $stmt_yearly->fetchAll();
+        ?>
 
         <div class="content-container">
             <p class="main-title">Summarized Statistics</p>
@@ -341,61 +425,144 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $completed_orders_current_month = $stats['completed_orders_current_month'];
         $completed_orders_current_year = $stats['completed_orders_current_year'];
 
-        $avg_rating_sql = "
-            SELECT AVG(rating) AS average_rating FROM reviews
-        ";
-
-        $stmt = $conn->prepare($avg_rating_sql);
-        $stmt->execute();
-        $avg_rating = round($stmt->fetch(PDO::FETCH_ASSOC)['average_rating'], 2);
-
-        $review_count_sql = "
-            SELECT COUNT(*) AS review_count FROM reviews
-        ";
-        $stmt = $conn->prepare($review_count_sql);
-        $stmt->execute();
-        $review_count = $stmt->fetch(PDO::FETCH_ASSOC)['review_count'];
-
-        $ratings_by_type_sql = "
-            SELECT
-            DATE(quotes.created_at) AS day,
-            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_daily_average_rating,
-            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_daily_average_rating,
-            DATE_FORMAT(quotes.created_at, '%x-%v') AS week,
-            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_weekly_average_rating,
-            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_weekly_average_rating,
-            DATE_FORMAT(quotes.created_at, '%Y-%m') AS month,
-            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_monthly_average_rating,
-            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_monthly_average_rating,
-            YEAR(quotes.created_at) AS year,
-            ROUND(AVG(CASE WHEN service_type = 'mto' THEN rating ELSE NULL END), 2) AS mto_yearly_average_rating,
-            ROUND(AVG(CASE WHEN service_type = 'repair' THEN rating ELSE NULL END), 2) AS repair_yearly_average_rating
+        // SQL query for average ratings
+        $daily_avg_rating_sql = "
+        SELECT DATE(o.created_at) AS date_created, AVG(reviews.rating) AS average_rating 
         FROM reviews
-        JOIN orders USING (order_id)
+        JOIN orders o ON reviews.order_id = o.order_id
+        WHERE DATE(o.created_at) = CURDATE()
+        GROUP BY DATE(o.created_at)
+    ";
+    
+    $stmt_daily = $conn->prepare($daily_avg_rating_sql);
+    $stmt_daily->execute();
+    $result_daily_average = $stmt_daily->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Weekly Average Ratings query
+    $weekly_avg_rating_sql = "
+        SELECT YEARWEEK(o.created_at) AS year_week, AVG(reviews.rating) AS average_rating 
+        FROM reviews
+        JOIN orders o ON reviews.order_id = o.order_id
+        WHERE WEEK(o.created_at) = WEEK(CURDATE())
+        GROUP BY YEARWEEK(o.created_at)
+    ";
+    
+    $stmt_weekly = $conn->prepare($weekly_avg_rating_sql);
+    $stmt_weekly->execute();
+    $result_weekly_average = $stmt_weekly->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Monthly Average Ratings query
+    $monthly_avg_rating_sql = "
+        SELECT MONTH(o.created_at) AS month, AVG(reviews.rating) AS average_rating 
+        FROM reviews
+        JOIN orders o ON reviews.order_id = o.order_id
+        WHERE MONTH(o.created_at) = MONTH(CURDATE())
+        GROUP BY MONTH(o.created_at)
+    ";
+    
+    $stmt_monthly = $conn->prepare($monthly_avg_rating_sql);
+    $stmt_monthly->execute();
+    $result_monthly_average = $stmt_monthly->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Yearly Average Ratings query
+    $yearly_avg_rating_sql = "
+        SELECT YEAR(o.created_at) AS year, AVG(reviews.rating) AS average_rating 
+        FROM reviews
+        JOIN orders o ON reviews.order_id = o.order_id
+        WHERE YEAR(o.created_at) = YEAR(CURDATE())
+        GROUP BY YEAR(o.created_at)
+    ";
+    
+    $stmt_yearly = $conn->prepare($yearly_avg_rating_sql);
+    $stmt_yearly->execute();
+    $result_yearly_average = $stmt_yearly->fetchAll(PDO::FETCH_ASSOC);
+
+    // Function to round to 2 decimal places
+    function roundToTwoDecimalPlaces($number) {
+        return number_format((float)$number, 2, '.', '');
+    }
+
+    // Accessing and rounding average ratings
+    $avg_rating_daily = isset($result_daily_average[0]['average_rating']) ? roundToTwoDecimalPlaces($result_daily_average[0]['average_rating']) : 0;
+    $avg_rating_weekly = isset($result_weekly_average[0]['average_rating']) ? roundToTwoDecimalPlaces($result_weekly_average[0]['average_rating']) : 0;
+    $avg_rating_monthly = isset($result_monthly_average[0]['average_rating']) ? roundToTwoDecimalPlaces($result_monthly_average[0]['average_rating']) : 0;
+    $avg_rating_yearly = isset($result_yearly_average[0]['average_rating']) ? roundToTwoDecimalPlaces($result_yearly_average[0]['average_rating']) : 0;
+    // SQL query for daily average ratings per type
+    $sqlDailyRatings = "
+        SELECT
+            ROUND(AVG(CASE WHEN quotes.service_type = 'mto' THEN reviews.rating ELSE NULL END), 2) AS mto_average_rating,
+            ROUND(AVG(CASE WHEN quotes.service_type = 'repair' THEN reviews.rating ELSE NULL END), 2) AS repair_average_rating
+        FROM reviews
+        JOIN orders ON reviews.order_id = orders.order_id
         JOIN quotes ON orders.quote_id = quotes.quote_id
-        GROUP BY day, week, month, year
-        ORDER BY day, week, month, year;    
-        ";
+        WHERE DATE(orders.created_at) = CURDATE()
+    ";
 
-        $stmt = $conn->prepare($ratings_by_type_sql);
-        $stmt->execute();
-        $ratings_by_type = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Execute the query and fetch the result
+    $stmtDailyRatings = $conn->query($sqlDailyRatings);
+    $dailyRatings = $stmtDailyRatings->fetch();
+
+    // SQL query for weekly average ratings
+    $sqlWeeklyRatings = "
+        SELECT
+            ROUND(AVG(CASE WHEN quotes.service_type = 'mto' THEN reviews.rating ELSE NULL END), 2) AS mto_average_rating,
+            ROUND(AVG(CASE WHEN quotes.service_type = 'repair' THEN reviews.rating ELSE NULL END), 2) AS repair_average_rating
+        FROM reviews
+        JOIN orders ON reviews.order_id = orders.order_id
+        JOIN quotes ON orders.quote_id = quotes.quote_id
+        WHERE YEARWEEK(orders.created_at, 1) = YEARWEEK(CURDATE(), 1)
+    ";
+
+    // Execute the query and fetch the result
+    $stmtWeeklyRatings = $conn->query($sqlWeeklyRatings);
+    $weeklyRatings = $stmtWeeklyRatings->fetch();
+
+    // SQL query for monthly average ratings
+    $sqlMonthlyRatings = "
+        SELECT
+            ROUND(AVG(CASE WHEN quotes.service_type = 'mto' THEN reviews.rating ELSE NULL END), 2) AS mto_average_rating,
+            ROUND(AVG(CASE WHEN quotes.service_type = 'repair' THEN reviews.rating ELSE NULL END), 2) AS repair_average_rating
+        FROM reviews
+        JOIN orders ON reviews.order_id = orders.order_id
+        JOIN quotes ON orders.quote_id = quotes.quote_id
+        WHERE MONTH(orders.created_at) = MONTH(CURDATE())
+          AND YEAR(orders.created_at) = YEAR(CURDATE())
+    ";
+
+    // Execute the query and fetch the result
+    $stmtMonthlyRatings = $conn->query($sqlMonthlyRatings);
+    $monthlyRatings = $stmtMonthlyRatings->fetch();
+
+    // SQL query for yearly average ratings
+    $sqlYearlyRatings = "
+        SELECT
+            ROUND(AVG(CASE WHEN quotes.service_type = 'mto' THEN reviews.rating ELSE NULL END), 2) AS mto_average_rating,
+            ROUND(AVG(CASE WHEN quotes.service_type = 'repair' THEN reviews.rating ELSE NULL END), 2) AS repair_average_rating
+        FROM reviews
+        JOIN orders ON reviews.order_id = orders.order_id
+        JOIN quotes ON orders.quote_id = quotes.quote_id
+        WHERE YEAR(orders.created_at) = YEAR(CURDATE())
+    ";
+
+    // Execute the query and fetch the result
+    $stmtYearlyRatings = $conn->query($sqlYearlyRatings);
+    $yearlyRatings = $stmtYearlyRatings->fetch();
 
 
-        $mto_daily_average_rating = $ratings_by_type['mto_daily_average_rating'] ?? 0;
-        $repair_daily_average_rating = $ratings_by_type['repair_daily_average_rating'] ?? 0;
-        $mto_weekly_average_rating = $ratings_by_type['mto_weekly_average_rating'] ?? 0;
-        $repair_weekly_average_rating = $ratings_by_type['repair_weekly_average_rating'] ?? 0;
-        $mto_monthly_average_rating = $ratings_by_type['mto_monthly_average_rating'] ?? 0;
-        $repair_monthly_average_rating = $ratings_by_type['repair_monthly_average_rating'] ?? 0;
-        $mto_yearly_average_rating = $ratings_by_type['mto_yearly_average_rating'] ?? 0;
-        $repair_yearly_average_rating = $ratings_by_type['repair_yearly_average_rating'] ?? 0;
+        $mto_daily_average_rating = $dailyRatings['mto_average_rating'] ?? 0;
+        $repair_daily_average_rating = $dailyRatings['repair_average_rating'] ?? 0;
+        $mto_weekly_average_rating = $weeklyRatings['mto_average_rating'] ?? 0;
+        $repair_weekly_average_rating = $weeklyRatings['repair_average_rating'] ?? 0;
+        $mto_monthly_average_rating = $monthlyRatings['mto_average_rating'] ?? 0;
+        $repair_monthly_average_rating = $monthlyRatings['repair_average_rating'] ?? 0;
+        $mto_yearly_average_rating = $yearlyRatings['mto_average_rating'] ?? 0;
+        $repair_yearly_average_rating = $yearlyRatings['repair_average_rating'] ?? 0;
 
         //For the breakdown of furnitures and  total sales
         $daily_sql = "
         SELECT
         'Daily' AS period,
-        DATE(q.created_at) AS time_period,
+        DATE(o.created_at) AS time_period,
         i.furniture AS furniture_type,
         COUNT(*) AS number_ordered,
         ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -403,13 +570,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         JOIN quotes q ON i.quote_id = q.quote_id
         JOIN orders o ON q.quote_id = o.quote_id
         WHERE o.order_phase = 'received'
-        AND DATE(q.created_at) = CURDATE()  -- Filter for current day
+        AND DATE(o.created_at) = CURDATE()  -- Filter for current day
         GROUP BY period, time_period, furniture_type;
     ";
     
     $weekly_sql = "
         SELECT
-            DATE_FORMAT(q.created_at, '%x-%v') AS period,
+            DATE_FORMAT(o.created_at, '%x-%v') AS period,
             i.furniture AS furniture_type,
             COUNT(*) AS number_ordered,
             ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -423,7 +590,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     $monthly_sql = "
         SELECT
-            DATE_FORMAT(q.created_at, '%Y-%m') AS period,
+            DATE_FORMAT(o.created_at, '%Y-%m') AS period,
             i.furniture AS furniture_type,
             COUNT(*) AS number_ordered,
             ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -437,7 +604,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     $yearly_sql = "
         SELECT
-            YEAR(q.created_at) AS period,
+            YEAR(o.created_at) AS period,
             i.furniture AS furniture_type,
             COUNT(*) AS number_ordered,
             ROUND(SUM(i.item_price), 2) AS total_price_ordered
@@ -447,7 +614,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         WHERE o.order_phase = 'received'
         GROUP BY period, furniture_type
         ORDER BY period, furniture_type;
-    ";    
+    ";  
+     
     // Initialize variables to store query results
     $daily_results = [];
     $weekly_results = [];
@@ -500,7 +668,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr>
                                     <td>Average Ratings</td>
                                     <td>
-                                        <?= $avg_rating ?>
+                                            <?= $avg_rating_daily ?>
                                         <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
                                     </td>
                                 </tr>
@@ -539,7 +707,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <div class="breakdown_of_furnitures_container">
 
-                        <table class="order-table-breakdown">
+                    <table class="order-table-breakdown">
                             <thead>
                                 <tr>
                                     <th>Furniture Type</th>
@@ -567,28 +735,25 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <table class="order-table-breakdown">
                             <thead>
                                 <tr>
-                                    <th>Furniture Type</th>
-                                    <th>Number Ordered</th>
+                                    <th>User Name</th>
                                     <th>Total Price Ordered</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (empty($daily_results)): ?>
+                                <?php if (empty($results_ranking_daily)): ?>
                                     <tr>
                                         <td colspan="3">No records found</td>
                                     </tr>
                                 <?php else: ?>
-                                    <?php foreach ($daily_results as $row): ?>
+                                    <?php foreach ($results_ranking_daily as $row): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
-                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['user_name']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_purchased_daily']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
 
@@ -621,7 +786,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr>
                                     <td>Average Ratings</td>
                                     <td>
-                                        <?= $avg_rating ?>
+                                        <?= $avg_rating_weekly ?>
                                         <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
                                     </td>
                                 </tr>
@@ -688,22 +853,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <table class="order-table-breakdown">
                             <thead>
                                 <tr>
-                                    <th>Furniture Type</th>
-                                    <th>Number Ordered</th>
+                                    <th>User Name</th>
                                     <th>Total Price Ordered</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (empty($weekly_results)): ?>
+                                <?php if (empty($results_ranking_weekly)): ?>
                                     <tr>
                                         <td colspan="3">No records found</td>
                                     </tr>
                                 <?php else: ?>
-                                    <?php foreach ($weekly_results as $row): ?>
+                                    <?php foreach ($results_ranking_weekly as $row): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
-                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['user_name']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_purchased_weekly']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -738,7 +901,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr>
                                     <td>Average Ratings</td>
                                     <td>
-                                        <?= $avg_rating ?>
+                                        <?= $avg_rating_monthly ?>
                                         <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
                                     </td>
                                 </tr>
@@ -805,22 +968,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <table class="order-table-breakdown">
                             <thead>
                                 <tr>
-                                    <th>Furniture Type</th>
-                                    <th>Number Ordered</th>
+                                    <th>User Name</th>
                                     <th>Total Price Ordered</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (empty($monthly_results)): ?>
+                                <?php if (empty($results_ranking_monthly)): ?>
                                     <tr>
                                         <td colspan="3">No records found</td>
                                     </tr>
                                 <?php else: ?>
-                                    <?php foreach ($monthly_results as $row): ?>
+                                    <?php foreach ($results_ranking_monthly as $row): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
-                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['user_name']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_purchased_monthly']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -854,7 +1015,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr>
                                     <td>Average Ratings</td>
                                     <td>
-                                        <?= $avg_rating ?>
+                                        <?= $avg_rating_yearly ?>
                                         <img src="../websiteimages/starimg.png" alt="Average Ratings" width="15%" height="15%">
                                     </td>
                                 </tr>
@@ -921,22 +1082,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <table class="order-table-breakdown">
                             <thead>
                                 <tr>
-                                    <th>Furniture Type</th>
-                                    <th>Number Ordered</th>
+                                    <th>User Name</th>
                                     <th>Total Price Ordered</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (empty($yearly_results)): ?>
+                                <?php if (empty($results_ranking_yearly)): ?>
                                     <tr>
                                         <td colspan="3">No records found</td>
                                     </tr>
                                 <?php else: ?>
-                                    <?php foreach ($yearly_results as $row): ?>
+                                    <?php foreach ($results_ranking_yearly as $row): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($row['furniture_type']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['number_ordered']); ?></td>
-                                            <td><?php echo 'Php ' . number_format($row['total_price_ordered']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['user_name']); ?></td>
+                                            <td><?php echo 'Php ' . number_format($row['total_purchased_yearly']); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
