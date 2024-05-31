@@ -368,6 +368,6 @@
         window.location.reload();
     }
 </script>
-<!-- <script src="/js/globals.js"></script> -->
+<script src="/js/globals.js"></script>
 
 </html>
