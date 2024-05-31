@@ -55,8 +55,14 @@
                 }
                 // Add your code here
             }
-        } else if ($new_status === "") {
-
+        } else if ($new_status === "in_production") {
+            createNotif($user_id, "Your order is now in production", "/my/orders.php?order_id=$order_id");
+        } else if ($new_status === "pending_fullpayment") {
+            createNotif($user_id, "Your order is now finished please pay your remaining balance to get your order", "/my/orders.php?order_id=$order_id");
+        } else if ($new_status === "out_for_delivery") {
+            createNotif($user_id, "Your order is now out for delivery", "/my/orders.php?order_id=$order_id");
+        } else if ($new_status === "out_for_delivery") {
+            createNotif($user_id, "Your order is now out for delivery", "/my/orders.php?order_id=$order_id");
         }
         
 
